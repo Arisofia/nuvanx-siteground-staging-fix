@@ -146,9 +146,9 @@
   /* Home video stage: keep the upper frame open; scrim only under the bottom copy. */
   --nvx-home-hero-overlay: linear-gradient(
     180deg,
-    rgba(26, 26, 26, 0.16) 0%,
-    rgba(26, 26, 26, 0.12) 32%,
-    rgba(26, 26, 26, 0.28) 52%,
+    rgba(26, 26, 26, 0.35) 0%,
+    rgba(26, 26, 26, 0.28) 32%,
+    rgba(26, 26, 26, 0.35) 52%,
     rgba(26, 26, 26, 0.68) 70%,
     rgba(26, 26, 26, 0.86) 86%,
     rgba(26, 26, 26, 0.92) 100%
