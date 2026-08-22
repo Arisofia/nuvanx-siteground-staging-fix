@@ -431,6 +431,15 @@ if (report.origin.pass) {
     try {
       const { response, finalUrl, hops } = await fetchSameHost(requested);
       const html = await response.text();
+      const stagingLeaks = [];
+      if (html.includes('staging2.nuvanx.com')) stagingLeaks.push('staging2.nuvanx.com');
+      if (html.includes('nvx_env=staging')) stagingLeaks.push('nvx_env=staging');
+      if (html.includes('is_test_lead')) stagingLeaks.push('is_test_lead');
+      if (html.includes('test_run_id')) stagingLeaks.push('test_run_id');
+      if (html.includes('debug:true')) stagingLeaks.push('debug:true');
+      if (stagingLeaks.length > 0) {
+        throw new Error(`Staging parameters leaked in production HTML: ${stagingLeaks.join(', ')}`);
+      }
       const robots = extractMetaContent(html, 'robots');
       const identity = {
         DEPLOY_SHA: extractMetaContent(html, 'nvx-deploy-sha'),
