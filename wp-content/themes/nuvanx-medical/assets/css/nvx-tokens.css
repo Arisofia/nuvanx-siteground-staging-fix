@@ -261,6 +261,14 @@
 --nvx-transition-normal: var(--nvx-duration-normal) var(--nvx-ease-standard);
 --nvx-transition-slow: var(--nvx-duration-slow) var(--nvx-ease-standard);
 
+  /* Alias para variables huérfanas (Audit 4.5) */
+  --nvx-color-soft: var(--nvx-surface-soft);
+  --nvx-edge: var(--nvx-color-line);
+  --nvx-fw-semibold: 600;
+  --nvx-lh-body-sm: 1.5;
+  --nvx-lh-heading: var(--nvx-lh-h2);
+  --nvx-type-body-sm: var(--nvx-type-small);
+
 }
 /* Z-index system (CSS-1) */
 :root {
