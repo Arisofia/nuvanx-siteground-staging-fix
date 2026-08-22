@@ -74,7 +74,7 @@ function nvx_valoracion_modal_markup(): string {
 		? nvx_cta_valoracion_url()
 		: home_url( '/madrid/valoracion/' );
 
-	$html  = '<dialog id="nvx-valoracion-modal" class="nvx-valoracion-modal" aria-labelledby="nvx-valoracion-modal-title">';
+	$html  = '<dialog id="nvx-valoracion-modal" class="nvx-valoracion-modal" aria-labelledby="nvx-valoracion-modal-title" aria-modal="true">';
 	$html .= '<div class="nvx-valoracion-modal__backdrop" data-nvx-valoracion-modal-close tabindex="-1"></div>';
 	$html .= '<div class="nvx-valoracion-modal__panel" role="document">';
 	$html .= '<button type="button" class="nvx-valoracion-modal__close" data-nvx-valoracion-modal-close aria-label="' . esc_attr__( 'Cerrar formulario', 'nuvanx-medical' ) . '">&times;</button>';
