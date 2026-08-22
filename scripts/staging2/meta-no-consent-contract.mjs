@@ -149,11 +149,24 @@ for (const route of routes) {
         continue;
       }
       row.issues.push(`origin_fallback_edge_status=${response.status}`);
-      const fallback = await fetchOriginAfterChallenge(url);
-      responseStatus = fallback.status;
-      responseFinalUrl = fallback.finalUrl;
-      html = fallback.html;
-      cookies = fallback.cookies;
+      try {
+        const fallback = await fetchOriginAfterChallenge(url);
+        if (fallback.status === 408 || fallback.status === 429 || fallback.status >= 500) {
+          transient = true;
+          row.issues.push(`origin_fallback_transient status=${fallback.status}`);
+          report.routes.push(row);
+          continue;
+        }
+        responseStatus = fallback.status;
+        responseFinalUrl = fallback.finalUrl;
+        html = fallback.html;
+        cookies = fallback.cookies;
+      } catch (err) {
+        transient = true;
+        row.issues.push(`origin_fallback_error error="${err.message.replace(/\n/g, ' ')}"`);
+        report.routes.push(row);
+        continue;
+      }
     } else {
       responseStatus = response.status;
       responseFinalUrl = response.url;
