@@ -1141,16 +1141,7 @@ body.nvx-valoracion-modal-open{
 }
 
 
-@media (max-width: 680px) {
 
-  .nvx-brand-actions .nvx-button,
-  .nvx-brand-actions .nvx-btn,
-  .nvx-brand-actions .nvx-brand-btn {
-    width: 100%;
-    max-width: 320px;
-    align-self: flex-start;
-  }
-}
 
 
 
@@ -1393,3 +1384,42 @@ body.nvx-valoracion-modal-open{
 
 
 
+
+
+/* CTA excesivamente ancho (Audit 4.3) */
+.nvx-brand-hero__copy .nvx-brand-actions,
+.nvx-page-hero__copy .nvx-brand-actions,
+.nvx-hero__copy .nvx-brand-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--nvx-space-2);
+  width: auto;
+}
+
+.nvx-brand-hero__copy .nvx-brand-actions .nvx-brand-btn,
+.nvx-page-hero__copy .nvx-brand-actions .nvx-brand-btn,
+.nvx-hero__copy .nvx-brand-actions .nvx-brand-btn {
+  width: auto;
+  max-width: 22rem;
+  flex: 0 1 auto;
+}
+
+@media (max-width: 680px) {
+  .nvx-brand-hero__copy .nvx-brand-actions,
+  .nvx-page-hero__copy .nvx-brand-actions,
+  .nvx-hero__copy .nvx-brand-actions {
+    align-items: flex-start;
+  }
+
+  .nvx-brand-hero__copy .nvx-brand-actions .nvx-brand-btn,
+  .nvx-page-hero__copy .nvx-brand-actions .nvx-brand-btn,
+  .nvx-hero__copy .nvx-brand-actions .nvx-brand-btn {
+    width: min(100%, 22rem);
+  }
+}
+
+.nvx-valoracion-direct-form__submit {
+  width: 100%;
+}
