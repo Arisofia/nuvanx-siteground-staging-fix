@@ -7,7 +7,7 @@
 	var FIRST_TOUCH_KEY = 'nvx_first_touch';
 	var CONVERSION_TOUCH_KEY = 'nvx_conversion_touch';
 	var LEAD_SESSION_KEY = 'nvx_lead_id';
-	var qa = (window.nvxConversionEvents && window.nvxConversionEvents.qa) || { is_test_lead: false, test_run_id: '' };
+	function getQaConfig() { return (window.nvxConversionEvents && window.nvxConversionEvents.qa) || { is_test_lead: false, test_run_id: '' }; }
 
 	function isUuidV4(value) {
 		return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ''));
@@ -61,7 +61,11 @@
 	}
 
 	function hasMarketingConsent() {
-		return typeof window.wp_has_consent === 'function' && window.wp_has_consent('marketing') === true;
+		try {
+			if (typeof window.cmplz_has_consent === 'function') return window.cmplz_has_consent('marketing') === true;
+			if (typeof window.wp_has_consent === 'function') return window.wp_has_consent('marketing') === true;
+		} catch (_error) { return false; }
+		return false;
 	}
 
 	function lsGet(key) {
@@ -196,8 +200,8 @@
 		};
 		var rawValues = {
 			nvx_lead_id: leadId,
-			nvx_is_test_lead: qa.is_test_lead === true,
-			nvx_test_run_id: qa.test_run_id || '',
+			nvx_is_test_lead: getQaConfig().is_test_lead === true,
+			nvx_test_run_id: getQaConfig().test_run_id || '',
 			utm_source: conversion.source || first.source || '',
 			utm_medium: conversion.medium || first.medium || '',
 			utm_campaign: conversion.campaign_id || first.campaign_id || '',
@@ -223,9 +227,10 @@
 		};
 
 		var result = {};
+		var hasFilter = available && typeof available.has === 'function';
 		Object.keys(fieldMap).forEach(function(key) {
 			var fieldName = fieldMap[key];
-			if (!available.has(fieldName)) return;
+			if (hasFilter && !available.has(fieldName)) return;
 			var rawValue = rawValues[key];
 			result[fieldName] = key === 'nvx_is_test_lead' ? Boolean(rawValue) : rawValue;
 		});

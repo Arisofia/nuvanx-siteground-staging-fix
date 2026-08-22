@@ -43,9 +43,9 @@
         "col_exion": "@nvx-t:EXION® BTL",
         "col_other": "@nvx-t:Tratamientos superficiales",
         "rows": [
-            { "param": "@nvx-t:Naturaleza", "exion": "@nvx-t:Microagujas RF + RF monopolar (estimulo profundo)", "other": "@nvx-t:Calentamiento superficial (dermis epidérmica)" },
+            { "param": "@nvx-t:Naturaleza", "exion": "@nvx-t:Microagujas RF + RF monopolar (estímulo profundo)", "other": "@nvx-t:Calentamiento superficial (dermis epidérmica)" },
             { "param": "@nvx-t:Profundidad", "exion": "@nvx-t:Actúa en dermis reticular y septos profundos", "other": "@nvx-t:Limitado a capas superficiales de la piel" },
-            { "param": "@nvx-t:Estimulo colágeno", "exion": "@nvx-t:Neocolagénesis estructural y retracción tisular", "other": "@nvx-t:Estimulo transitorio y superficial" },
+            { "param": "@nvx-t:Estímulo colágeno", "exion": "@nvx-t:Neocolagénesis estructural y retracción tisular", "other": "@nvx-t:Estímulo transitorio y superficial" },
             { "param": "@nvx-t:Recuperación", "exion": "@nvx-t:24–48 horas de enrojecimiento leve", "other": "@nvx-t:Sin baja social (efecto cosmético)" },
             { "param": "@nvx-t:Duración efecto", "exion": "@nvx-t:12–18 meses con protocolo de mantenimiento", "other": "@nvx-t:3–6 meses (requiere sesiones muy frecuentes)" },
             { "param": "@nvx-t:Resultados", "exion": "@nvx-t:Progresivos; consolidación 3–6 meses", "other": "@nvx-t:Inmediatos pero temporales" }
@@ -53,10 +53,10 @@
     },
     "biophysics": {
         "kicker": "@nvx-t:La biofísica",
-        "title": "@nvx-t:Microagujas RF + RF monopolar: estimulo controlado",
+        "title": "@nvx-t:Microagujas RF + RF monopolar: estímulo controlado",
         "body1": "@nvx-t:Fractional RF utiliza microagujas de 25–50 micras que penetran en dermis reticular, liberando energía RF directamente en el tejido. Esto crea microcanales de coagulación que estimulan neocolagénesis. Face/Body aplican RF monopolar para calentamiento volumétrico y retracción tisular.",
         "caption": "@nvx-t:Combinación secuencial según diagnóstico: microagujas para textura, monopolar para firmeza.",
-        "body2": "@nvx-t:En rango térmico de 55–65 °C en dermis, se produce desnaturalización controlada del colágeno con estimulo de fibroblastos. El resultado es piel más firme, poros visiblemente reducidos y textura mejorada, con retracción progresiva del tejido."
+        "body2": "@nvx-t:En rango térmico de 55–65 °C en dermis, se produce desnaturalización controlada del colágeno con estímulo de fibroblastos. El resultado es piel más firme, poros visiblemente reducidos y textura mejorada, con retracción progresiva del tejido."
     },
     "process": {
         "kicker": "@nvx-t:El procedimiento en NUVANX",
@@ -66,7 +66,7 @@
             { "icon": "assess", "n": "01", "title": "@nvx-t:Valoración anatómica", "body": "@nvx-t:Diagnóstico de tipo de piel, calidad cutánea y objetivos. Definición de protocolo EXION®." },
             { "icon": "anesthesia", "n": "02", "title": "@nvx-t:Preparación cutánea", "body": "@nvx-t:Limpieza y aplicación de anestésico tópico (opcional según zona)." },
             { "icon": "procedure", "n": "03", "title": "@nvx-t:Aplicación EXION®", "body": "@nvx-t:Fractional RF, Face o Body según protocolo. Sensación de calor y pinchazos controlados." },
-            { "icon": "recover", "n": "04", "title": "@nvx-t:Post-tratamiento inmediato", "body": "@nvx-t:Aplicación de serum calmante y protector solar. Ambulatorio sin baja laboral." }
+            { "icon": "recover", "n": "04", "title": "@nvx-t:Post-tratamiento inmediato", "body": "@nvx-t:Aplicación de sérum calmante y protector solar. Ambulatorio sin baja laboral." }
         ]
     },
     "postop": {
@@ -108,7 +108,7 @@
             },
             {
                 "q": "@nvx-t:¿Cuántas sesiones requieren?",
-                "a": "@nvx-t:Depende del protocolo. Fractional RF: 3–4 sesiones cada 4 semanas. Face/Body: 4–6 sesiones cada 2–3 semanas. El protocolo definitivo se define tras valoración médica."
+                "a": "@nvx-t:Depende del protocolo. Fractional RF: 3–4 sesiones cada 4 semanas. Face/Body: 4 sesiones cada 2–3 semanas. El protocolo definitivo se define tras valoración médica."
             },
             {
                 "q": "@nvx-t:¿Cuánto dura el efecto?",

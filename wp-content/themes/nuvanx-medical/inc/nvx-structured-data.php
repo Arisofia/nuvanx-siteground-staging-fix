@@ -1765,12 +1765,12 @@ function nvx_schema_attach_publications( array &$graph, int $page_id, array $phy
 		if ( empty( $person['@id'] ) ) {
 			continue;
 		}
-		if ( false !== strpos( $person['@id'], 'rivera-deras' ) ) {
+		if ( false !== strpos( $person['name'] ?? '', 'Ivon' ) ) {
 			foreach ( nvx_schema_ivon_publications( $person['@id'] ) as $work ) {
 				$graph[] = $work;
 			}
 		}
-		if ( false !== strpos( $person['@id'], 'quinonez-bareiro' ) ) {
+		if ( false !== strpos( $person['name'] ?? '', 'Fabio' ) ) {
 			foreach ( nvx_schema_fabio_publications( $person['@id'] ) as $work ) {
 				$graph[] = $work;
 			}
@@ -1788,7 +1788,7 @@ function nvx_schema_attach_publications( array &$graph, int $page_id, array $phy
  * @param string $entityId  Entity node @id.
  * @return array Updated schema graph.
  */
-function nvxSchemaLinkWebpageMainEntity( array $graph, string $pageUrl, string $entityId ): array {
+function nvx_schema_link_webpage_main_entity( array $graph, string $pageUrl, string $entityId ): array {
 	if ( '' === $pageUrl || '' === $entityId ) {
 		return $graph;
 	}
@@ -1819,7 +1819,7 @@ function nvx_schema_attach_treatment_and_faq( array &$graph, int $page_id, strin
 	if ( null !== $treatment ) {
 		$graph[] = $treatment;
 		if ( ! empty( $treatment['@id'] ) && ! empty( $treatment['url'] ) ) {
-			$graph = nvxSchemaLinkWebpageMainEntity( $graph, (string) $treatment['url'], (string) $treatment['@id'] );
+			$graph = nvx_schema_link_webpage_main_entity( $graph, (string) $treatment['url'], (string) $treatment['@id'] );
 		}
 	}
 

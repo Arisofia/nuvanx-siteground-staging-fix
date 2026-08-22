@@ -9,7 +9,7 @@
   if (mobileNav && mobileNav instanceof HTMLDialogElement) {
     function openNav() {
       if (typeof mobileNav.showModal === 'function') {
-        mobileNav.showModal();
+        try { if (!mobileNav.open) mobileNav.showModal(); } catch (_e) { mobileNav.setAttribute('open', 'open'); }
       } else {
         mobileNav.setAttribute('open', 'open');
       }

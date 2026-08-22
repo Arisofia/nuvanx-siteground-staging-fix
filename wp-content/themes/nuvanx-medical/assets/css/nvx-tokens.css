@@ -262,3 +262,15 @@
 --nvx-transition-slow: var(--nvx-duration-slow) var(--nvx-ease-standard);
 
 }
+/* Z-index system (CSS-1) */
+:root {
+  --nvx-z-base: 1;
+  --nvx-z-raised: 10;
+  --nvx-z-dropdown: 100;
+  --nvx-z-sticky: 200;
+  --nvx-z-header: 1000;
+  --nvx-z-overlay: 2000;
+  --nvx-z-modal: 3000;
+  --nvx-z-toast: 4000;
+  --nvx-z-a11y: 10000;
+}

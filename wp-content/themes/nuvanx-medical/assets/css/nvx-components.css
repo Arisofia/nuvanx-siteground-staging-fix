@@ -203,7 +203,7 @@ svg, .icon-whatsapp, .nvx-laser-icon, .nvx-endolift-step__icon, .nvx-icon {
   position: fixed !important;
   bottom: 20px !important;
   right: 20px !important;
-  z-index: 1000 !important;
+  z-index: var(--nvx-z-header) !important;
 }
 
 .joinchat__button svg,
@@ -1611,7 +1611,7 @@ select[aria-invalid="true"] {
   position: fixed;
   bottom: var(--nvx-space-4);
   right: var(--nvx-space-4);
-  z-index: 10000;
+  z-index: var(--nvx-z-a11y);
   display: flex;
   align-items: center;
   gap: var(--nvx-space-2);
@@ -2775,7 +2775,7 @@ div[id*="cmplz-cookiebanner"] {
   font-family: var(--nvx-sans) !important;
   font-size: var(--nvx-type-caption) !important;
   line-height: var(--nvx-lh-caption) !important;
-  z-index: 99999 !important;
+  z-index: calc(var(--nvx-z-a11y) + 10) !important;
 }
 
 .cmplz-cookiebanner .cmplz-header,

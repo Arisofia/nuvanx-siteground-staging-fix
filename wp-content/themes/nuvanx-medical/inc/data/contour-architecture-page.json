@@ -48,7 +48,7 @@
             { "param": "@nvx-t:Anestesia", "contour": "@nvx-t:Local infiltrativa en consulta", "lipo": "@nvx-t:General o sedación profunda habitual" },
             { "param": "@nvx-t:Entorno", "contour": "@nvx-t:Ambulatorio en cabina médica", "lipo": "@nvx-t:Quirófano; a menudo ingreso" },
             { "param": "@nvx-t:Baja social", "contour": "@nvx-t:5–10 días de edema moderado", "lipo": "@nvx-t:14–21 días de compresión y curación" },
-            { "param": "@nvx-t:Recuperación piel", "contour": "@nvx-t:Estimulo de colágeno + retracción progresiva", "lipo": "@nvx-t:Riesgo de irregularidades y flacidez residual" },
+            { "param": "@nvx-t:Recuperación piel", "contour": "@nvx-t:Estímulo de colágeno + retracción progresiva", "lipo": "@nvx-t:Riesgo de irregularidades y flacidez residual" },
             { "param": "@nvx-t:Evolución del resultado", "contour": "@nvx-t:Progresiva; pico de firmeza ~3–6 meses", "lipo": "@nvx-t:Estructural tras remitir el edema postquirúrgico" }
         ]
     },
@@ -76,7 +76,7 @@
         "body": "@nvx-t:Contour Architecture™ no requiere quirófano ni anestesia general. Esta es la evolución clínica esperada:",
         "items": [
             { "title": "@nvx-t:Días 1 a 5 (Inflamación inicial):", "body": "@nvx-t:Inflamación, sensibilidad y tirantez. Faja compresiva obligatoria. Posibilidad de pequeños hematomas. Disconfort manejado con analgésicos estándar." },
-            { "title": "@nvx-t:Semana 1 a 2 (Recuperación Social):", "body": "@nvx-t:La inflamación cede. Retorno a actividad laboral sedentaria en 3–5 días y física suave tras 7–10 días. Uso discontinuo de faja según indicación." },
+            { "title": "@nvx-t:Semana 1 a 2 (Recuperación Social):", "body": "@nvx-t:La inflamación cede. Retorno a actividad laboral sedentaria en 3–5 días y física suave tras 7 días. Uso discontinuo de faja según indicación." },
             { "title": "@nvx-t:Semanas 3 a 6 (Remodelación Tisular):", "body": "@nvx-t:Inicio de remodelación interna. Mejora de la firmeza y contorno. Ejercicio progresivo según tolerancia." },
             { "title": "@nvx-t:Meses 3 a 6 (Resultado Definitivo):", "body": "@nvx-t:Consolidación de la neocolagénesis y resultado del contorno corporal." }
         ],
@@ -117,7 +117,7 @@
             },
             {
                 "q": "@nvx-t:¿Cuál es el tiempo de recuperación?",
-                "a": "@nvx-t:3–5 días para reincorporación laboral sedentaria. 7–10 días para actividad física suave. Faja compresiva obligatoria los primeros 5 días continuos + uso discontinuo 2–3 semanas. Dolor controlado con analgésicos orales estándar."
+                "a": "@nvx-t:3–5 días para reincorporación laboral sedentaria. 7 días para actividad física suave. Faja compresiva obligatoria los primeros 5 días continuos + uso discontinuo 2–3 semanas. Dolor controlado con analgésicos orales estándar."
             },
             {
                 "q": "@nvx-t:¿Cuáles son las contraindicaciones?",

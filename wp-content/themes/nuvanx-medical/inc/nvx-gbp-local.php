@@ -701,3 +701,8 @@ function nvx_gbp_admin_register_form(): void {
 	<?php
 }
 add_action( 'all_admin_notices', 'nvx_gbp_admin_register_form' );
+
+// Clean up cron hook on theme deactivation (PHP-1)
+add_action( 'switch_theme', function() {
+  wp_clear_scheduled_hook( NVX_GBP_CRON_HOOK );
+} );

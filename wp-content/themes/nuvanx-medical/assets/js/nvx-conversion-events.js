@@ -58,13 +58,12 @@
 
 	function pushAdsConversion(sendTo, extra) {
 		var payload = Object.assign({ send_to: sendTo }, extra || {});
-		window.dataLayer = window.dataLayer || [];
 		if (typeof window.gtag === 'function') {
 			window.gtag('event', 'conversion', payload);
-			return;
+		} else {
+			window.dataLayer = window.dataLayer || [];
+			window.dataLayer.push(Object.assign({ event: 'conversion' }, payload));
 		}
-		window.dataLayer.push(['event', 'conversion', payload]);
-		window.dataLayer.push(Object.assign({ event: 'conversion' }, payload));
 	}
 
 	function whenGtagReady(callback) {
@@ -162,7 +161,8 @@
 				cta_region: regionFor(target),
 				cta_marker: dataEvent || 'tel_link',
 			});
-			if (reportPhoneWhatsAppConversion(href, { newTab: false })) event.preventDefault();
+			pushAdsConversion(adsClickSendTo);
+			return;
 		}
 	}
 
@@ -322,10 +322,10 @@
 
 	function hasMarketingConsent() {
 		try {
-			return typeof window.wp_has_consent === 'function' && window.wp_has_consent('marketing') === true;
-		} catch (_error) {
-			return false;
-		}
+			if (typeof window.cmplz_has_consent === 'function') return window.cmplz_has_consent('marketing') === true;
+			if (typeof window.wp_has_consent === 'function') return window.wp_has_consent('marketing') === true;
+		} catch (_error) { return false; }
+		return false;
 	}
 
 	window.NUVANXGoogleAttributionQA = Object.freeze({
@@ -335,7 +335,7 @@
 		marketingConsent: hasMarketingConsent,
 	});
 
-	if (!eligiblePath || !hasGoogleClickIdentifier(clickValues)) return;
+	var isAttributionEligible = eligiblePath && hasGoogleClickIdentifier(clickValues);
 
 	function isCanonicalForm(form) {
 		if (!form || typeof form.getFormId !== 'function') return false;
@@ -351,6 +351,7 @@
 	}
 
 	async function populateHubSpotClickFields(form) {
+		if (!isAttributionEligible) return false;
 		if (syncOwnsCanonicalHubSpotFields()) return false;
 		if (!isCanonicalForm(form)) return false;
 		if (typeof form.getFormFieldValues !== 'function' || typeof form.setFieldValue !== 'function') return false;
@@ -599,6 +600,7 @@
 	}
 
 	function populateLegacyClickFields(formLike, formId) {
+		if (!isAttributionEligible) return false;
 		var root = canonicalLegacyRoot(formLike, formId);
 		if (!root) return false;
 		if (legacyFormRoots.indexOf(root) === -1) legacyFormRoots.push(root);
@@ -684,6 +686,7 @@
 	}
 
 	async function transmitLegacySuccess(formLike, formId) {
+		if (!isAttributionEligible) return false;
 		var pending = legacyPendingSubmission;
 		if (!pending) return;
 		if (formLike !== undefined) {
@@ -757,6 +760,7 @@
 	});
 
 	window.addEventListener('hs-form-event:on-submission:success', async function (event) {
+		if (!isAttributionEligible) return;
 		var detail = event && event.detail ? event.detail : {};
 		if (String(detail.formId || '').toLowerCase() !== FORM_ID) return;
 		if (!claimAudit()) return;
