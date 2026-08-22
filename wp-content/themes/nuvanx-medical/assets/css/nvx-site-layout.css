@@ -1,43 +1,29 @@
-/* Page frame is full-bleed so heroes match the home video edge-to-edge.
-   Gutters live on section inners / readable columns — not on the page shell. */
+/* Unified layout contract (Audit 4.1) */
+:root {
+  --nvx-shell-max: 1240px;
+  --nvx-gutter-inline: clamp(20px, 4vw, 64px);
+}
+
 .nvx-shell,
 .nvx-container,
-.nvx-brand-section__inner {
-  width: var(--nvx-shell);
-  max-width: 100%;
-  margin-inline: auto;
-  padding-inline: var(--nvx-gutter-inner);
-  box-sizing: border-box;
-}
-
+.nvx-brand-section__inner,
+.nvx-blog-article__shell,
+.nvx-content-shell,
 .nvx-page__content,
 .entry-content {
-  width: var(--nvx-shell);
-  max-width: 100%;
+  width: min(var(--nvx-shell-max), calc(100% - 2 * var(--nvx-gutter-inline)));
+  max-width: var(--nvx-shell-max);
   margin-inline: auto;
-  padding-inline: 0;
   box-sizing: border-box;
 }
 
-/* Canonical content shell — no inner padding, consistent with soluciones-medicas */
-.nvx-content-shell {
-  width: var(--nvx-shell);
-  max-width: 100%;
-  margin-inline: auto;
-  padding-inline: 0;
-  box-sizing: border-box;
-}
-
-/* Page content frame: diseño elegante con mejor prose */
-
-/* Content is full-width so heroes fill the viewport like home video */
 .nvx-page__content.nvx-prose,
-.entry-content,
+.entry-content.nvx-prose,
 .nvx-prose {
   width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0;
+  max-width: 68ch;
+  margin-inline: auto;
+  padding-inline: 0;
   line-height: 1.7;
   font-size: var(--nvx-type-body);
   color: var(--nvx-text-body);
@@ -45,7 +31,7 @@
 
 .nvx-page__content.nvx-prose p {
   margin-bottom: var(--nvx-space-4);
-  max-width: 68ch;
+  max-width: 100%;
 }
 
 .nvx-page__content.nvx-prose h2 {
@@ -75,16 +61,7 @@
   padding-block: var(--nvx-pad-section);
 }
 
-.nvx-page__content .nvx-container,
-.nvx-brand-page .nvx-container,
-.nvx-page__content .nvx-brand-section__inner,
-.nvx-brand-page > .nvx-brand-section > .nvx-brand-section__inner {
-  width: var(--nvx-shell);
-  max-width: 100%;
-  margin-inline: auto;
-  padding-inline: var(--nvx-gutter-inner);
-  box-sizing: border-box;
-}
+
 
 /* Brand heroes inside content match home full-bleed, not shell box */
 /* NOTE: Double .nvx-brand-page nesting is supported by CSS and is "by design" */
@@ -133,15 +110,7 @@
   padding-inline: 0;
 }
 
-.nvx-brand-page--signature > .nvx-brand-section > .nvx-brand-section__inner,
-.nvx-signature-hub > .nvx-brand-section > .nvx-brand-section__inner,
-.nvx-signature-phase-page > .nvx-brand-section > .nvx-brand-section__inner {
-  width: var(--nvx-shell);
-  max-width: 100%;
-  margin-inline: auto;
-  padding-inline: 0;
-  box-sizing: border-box;
-}
+
 
 /*
  * Post-hero clinical intro is emitted as a normal brand-section
@@ -357,44 +326,11 @@
   width: min(100%, var(--nvx-measure));
 }
 
-/* === NUVANX VISUAL FORENSIC BLOCK 1 === */
-/* Authority strategy page: full document shell, measured copy inside it.
-   Investment/review strategy pages already opt into .nvx-shell and are excluded. */
-.nvx-strategy-page.nvx-brand-readable:not(.nvx-shell) {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-}
-
-.nvx-strategy-page:not(.nvx-shell) > .nvx-brand-hero {
-  width: 100vw;
-  max-width: 100vw;
-  margin-inline: calc(50% - 50vw);
-  background: var(--nvx-ink);
-}
-
-.nvx-strategy-page:not(.nvx-shell) > .nvx-brand-section {
-  width: var(--nvx-shell);
-  max-width: 100%;
-  margin-inline: auto;
-  padding-block: var(--nvx-pad-section);
-  padding-inline: var(--nvx-gutter-inner);
-  box-sizing: border-box;
-}
-
-.nvx-strategy-page:not(.nvx-shell) > .nvx-brand-section > :where(h2, h3, p, ul, ol) {
-  max-width: var(--nvx-measure);
-}
-
 /* Legal documents: the CMS already supplies nvx-blog-article + nvx-legal-* classes.
    Give them an explicit editorial shell instead of leaving the 68ch wrapper pinned
    to the left edge of a 1240px desktop canvas. */
 .nvx-page.nvx-page--legal > .nvx-blog-article.nvx-brand-readable {
-  width: min(980px, calc(100vw - var(--nvx-gutter)));
-  max-width: min(980px, calc(100vw - var(--nvx-gutter)));
-  margin-inline: auto;
   padding-block: clamp(48px, 6vw, 88px) var(--nvx-pad-section);
-  box-sizing: border-box;
 }
 
 .nvx-page.nvx-page--legal > .nvx-blog-article.nvx-brand-readable > .nvx-legal-page {
@@ -460,18 +396,12 @@
 }
 
 .nvx-page.nvx-page--legal > .nvx-blog-article.nvx-brand-readable + p {
-  width: min(980px, calc(100vw - var(--nvx-gutter)));
-  max-width: min(980px, calc(100vw - var(--nvx-gutter)));
   margin: calc(-1 * var(--nvx-space-6)) auto var(--nvx-pad-section);
   color: var(--nvx-text-muted);
 }
 
 @media (max-width: 600px) {
-  .nvx-page.nvx-page--legal > .nvx-blog-article.nvx-brand-readable,
-  .nvx-page.nvx-page--legal > .nvx-blog-article.nvx-brand-readable + p {
-    width: calc(100vw - 32px);
-    max-width: calc(100vw - 32px);
-  }
+
 
   .nvx-page.nvx-page--legal > .nvx-blog-article.nvx-brand-readable {
     padding-block: var(--nvx-space-6) var(--nvx-pad-section-tight);
