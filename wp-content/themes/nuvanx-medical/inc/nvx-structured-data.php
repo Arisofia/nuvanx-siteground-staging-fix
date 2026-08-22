@@ -1829,6 +1829,91 @@ function nvx_schema_attach_treatment_and_faq( array &$graph, int $page_id, strin
 	}
 }
 
+
+/**
+ * Emits BreadcrumbList schema based on routes.json
+ */
+function nvx_schema_breadcrumb_node( $page_id ) {
+	$path = nvx_schema_current_path( $page_id );
+	if ( function_exists( 'nvx_catalog_json_resolved' ) ) {
+		$routes = nvx_catalog_json_resolved( 'routes.json' );
+		if ( ! empty( $routes[ $path ]['breadcrumb'] ) && is_array( $routes[ $path ]['breadcrumb'] ) ) {
+			$items = array();
+			$position = 1;
+			foreach ( $routes[ $path ]['breadcrumb'] as $b ) {
+				if ( ! empty( $b['name'] ) && ! empty( $b['url'] ) ) {
+					$items[] = array(
+						'@type'    => 'ListItem',
+						'position' => $position++,
+						'name'     => $b['name'],
+						'item'     => home_url( $b['url'] ),
+					);
+				}
+			}
+			if ( ! empty( $items ) ) {
+				return array(
+					'@type'           => 'BreadcrumbList',
+					'@id'             => home_url( $path . '#breadcrumb' ),
+					'itemListElement' => $items,
+				);
+			}
+		}
+	}
+	return null;
+}
+
+/**
+ * Emits VideoObject schema for the homepage hero video.
+ */
+function nvx_schema_video_object_node() {
+	if ( ! is_front_page() ) {
+		return null;
+	}
+	return array(
+		'@type'        => 'VideoObject',
+		'@id'          => home_url( '/#video' ),
+		'name'         => 'NUVANX Medicina Estética Láser - Presentación',
+		'description'  => 'Conoce NUVANX Medicina Estética Láser en Madrid. Tratamientos médicos con criterio, tecnología avanzada y resultados naturales.',
+		'thumbnailUrl' => home_url( '/wp-content/themes/nuvanx-medical/assets/images/responsive/nvx-home-hero-poster-1920-1080.webp' ),
+		'uploadDate'   => '2023-01-01T00:00:00Z',
+		'contentUrl'   => home_url( '/wp-content/themes/nuvanx-medical/assets/video/nvx-home-hero-1080p.mp4' ),
+	);
+}
+
+/**
+ * Emits HowTo schema for treatment pages.
+ */
+function nvx_schema_howto_node( $page_id ) {
+	// A simple heuristic for now: emit a standard HowTo for clinical assessment if it's a treatment page
+	if ( nvx_schema_resolve_treatment_key( $page_id ) ) {
+		$path = nvx_schema_current_path( $page_id );
+		return array(
+			'@type'       => 'HowTo',
+			'@id'         => home_url( $path . '#howto' ),
+			'name'        => 'Proceso de Valoración y Tratamiento',
+			'description' => 'Pasos desde el diagnóstico hasta el tratamiento en NUVANX.',
+			'step'        => array(
+				array(
+					'@type' => 'HowToStep',
+					'name'  => 'Diagnóstico Clínico',
+					'text'  => 'Evaluación médica integral, ecografía cutánea y diagnóstico diferencial para determinar la viabilidad.',
+				),
+				array(
+					'@type' => 'HowToStep',
+					'name'  => 'Planificación del Protocolo',
+					'text'  => 'Definición de sesiones, parámetros y combinación tecnológica según el estado anatómico.',
+				),
+				array(
+					'@type' => 'HowToStep',
+					'name'  => 'Ejecución y Seguimiento',
+					'text'  => 'Realización del procedimiento médico y pautas de recuperación guiadas por el equipo clínico.',
+				),
+			),
+		);
+	}
+	return null;
+}
+
 /**
  * Add NUVANX medical locations and page entities to Yoast's canonical graph.
  *
@@ -1893,6 +1978,21 @@ function nvx_extend_yoast_schema_graph( $graph ) {
 
 	nvx_schema_attach_publications( $graph, $page_id, $physicians );
 	nvx_schema_attach_treatment_and_faq( $graph, $page_id, $organization['id'], $physician );
+
+	$breadcrumb = nvx_schema_breadcrumb_node( $page_id );
+	if ( $breadcrumb ) {
+		$graph[] = $breadcrumb;
+	}
+
+	$video = nvx_schema_video_object_node();
+	if ( $video ) {
+		$graph[] = $video;
+	}
+
+	$howto = nvx_schema_howto_node( $page_id );
+	if ( $howto ) {
+		$graph[] = $howto;
+	}
 
 	return $graph;
 }
