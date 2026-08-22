@@ -13,7 +13,7 @@
  * Location: nvx_public_vendor_image_url_regex (lines 132-134)
  * Python equivalent: VENDOR_URL_RE (scripts/editorial/audit_production_70_postrelease.py:24-27)
  *
- * Root cause: Tokens like 'endolift', 'exion' have no word boundaries in URL regex.
+ * Root cause: Tokens like 'Endolift®', 'exion' have no word boundaries in URL regex.
  * Applied via nvx_public_html_vendor_attr_is_blocked (lines 144-150) against
  * src/srcset/data-* of every image in the_content (hook priority 198, line 234).
  *
@@ -26,7 +26,7 @@
  *
  * Fix: Anchor URL regex to filename/packshot stems instead of loose brand tokens,
  * matching nvx_clinic_vendor_packshot_regex pattern (lines 120-122):
- *   return '/deka\.|btl[_-]|btl-exilite|BTL-Exion|eufoton|endolift-lasemar|Endolift-ISO9001|lasemar-1500|SmartLipo|exilite/i';
+ *   return '/deka\.|btl[_-]|btl-exilite|BTL-Exion|eufoton|endolift-lasemar|Endolift-ISO9001|lasemar-1500|Smartlipo®|exilite/i';
  * And replicate in Python audit script.
  *
  * Status: UNFIXED - critical production impact (deletes approved content)
@@ -194,12 +194,12 @@ function nvx_clinic_html_contains_vendor_packshot( string $html ): bool {
  * Technological copy outside img/source attributes is not a block.
  */
 function nvx_public_vendor_image_url_regex(): string {
-	return '/deka|btl[_-]|btl-exilite|exion|eufoton|endolift|lasemar|smartlipo|exilite/i';
+	return '/deka|btl[_-]|btl-exilite|exion|eufoton|Endolift®|lasemar|Smartlipo®|exilite/i';
 }
 
 /** Vendor brand tokens in image alt text (logo, equipment or packshot). */
 function nvx_public_vendor_image_alt_regex(): string {
-	return '/\b(?:deka|btl|exion|eufoton|endolift|lasemar|smartlipo|exilite)\b/iu';
+	return '/\b(?:deka|btl|exion|eufoton|Endolift®|lasemar|Smartlipo®|exilite)\b/iu';
 }
 
 /**

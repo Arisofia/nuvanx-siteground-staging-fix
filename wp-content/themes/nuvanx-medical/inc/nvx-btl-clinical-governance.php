@@ -58,7 +58,7 @@ function nvx_btl_claim_library(): array {
 	$btl_disclaimer = 'El aplicador incorpora refrigeración de superficie. Los efectos y riesgos se explican antes de decidir, según el protocolo y la respuesta individual.';
 
 	$library = array(
-		'exion_face_mech_intro' => 'EXION Face combina radiofrecuencia monopolar y ultrasonido terapéutico orientados a estimular fibroblastos y matriz extracelular. La comparación con plataformas de mayor pico térmico depende del aplicador, los parámetros y la indicación.',
+		'exion_face_mech_intro' => 'EXION® Face combina radiofrecuencia monopolar y ultrasonido terapéutico orientados a estimular fibroblastos y matriz extracelular. La comparación con plataformas de mayor pico térmico depende del aplicador, los parámetros y la indicación.',
 		'exion_face_ha_224'     => 'La documentación del fabricante describe cambios en marcadores de matriz cutánea en modelos evaluados. La evidencia aplicable, la indicación y la respuesta clínica deben valorarse de forma individual; no se comunica como porcentaje ni como resultado garantizado.',
 		'exion_face_compare'    => 'Las tecnologías energéticas se seleccionan por mecanismo, zona, fototipo, antecedentes, objetivo y período de recuperación aceptable. La indicación no se establece por una comparación comercial entre marcas.',
 		'exion_body_btl_22'     => 'La documentación técnica describe cambios en adiposidad en series evaluadas. No se publica un porcentaje porque depende de población, zona, protocolo y evaluación clínica, y no constituye un resultado individual garantizado.',

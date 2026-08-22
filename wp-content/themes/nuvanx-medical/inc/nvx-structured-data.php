@@ -42,7 +42,7 @@ if ( ! defined( 'NVX_CONTACT_EMAIL' ) ) {
 	define( 'NVX_CONTACT_EMAIL', $config['contact']['email'] ?? 'info@nuvanx.com' );
 }
 /**
- * Editorial review month label for Endolift byline (update with clinical review).
+ * Editorial review month label for Endolift® byline (update with clinical review).
  */
 if ( ! defined( 'NVX_ENDOLIFT_REVIEW_LABEL' ) ) {
 	define( 'NVX_ENDOLIFT_REVIEW_LABEL', 'agosto 2026' );
@@ -84,7 +84,7 @@ function nvx_get_tariff_catalog() {
  * Now loaded from JSON tariff-catalog.json for single source of truth.
  *
  * @return array{
- *   endolift: array<string, array{label:string,pvp:float,group:string}>,
+ *   Endolift®: array<string, array{label:string,pvp:float,group:string}>,
  *   endolift_combo: array<string, array{label:string,pvp:float,group:string}>,
  *   laser_co2: array<string, array{label:string,pvp:float,group:string}>
  * }
@@ -114,7 +114,7 @@ function nvx_tariff_catalog() {
  * @return float
  */
 function nvx_endolift_price_from_eur() {
-	$pvp = function_exists( 'nvx_tariff_pvp' ) ? nvx_tariff_pvp( 'endolift', 'ojeras' ) : null;
+	$pvp = function_exists( 'nvx_tariff_pvp' ) ? nvx_tariff_pvp( 'Endolift®', 'ojeras' ) : null;
 	return null !== $pvp ? $pvp : 798.60;
 }
 
@@ -124,7 +124,7 @@ function nvx_endolift_price_from_eur() {
  * @return float
  */
 function nvx_endolift_price_papada_eur() {
-	$pvp = function_exists( 'nvx_tariff_pvp' ) ? nvx_tariff_pvp( 'endolift', 'papada' ) : null;
+	$pvp = function_exists( 'nvx_tariff_pvp' ) ? nvx_tariff_pvp( 'Endolift®', 'papada' ) : null;
 	return null !== $pvp ? $pvp : 1064.80;
 }
 
@@ -794,7 +794,7 @@ function nvx_schema_faq_catalog() {
 		$catalog = array_merge( $catalog, $signature_faqs );
 	}
 
-	// Replace hardcoded Endolift prices with dynamic tariff constants in FAQ answers
+	// Replace hardcoded Endolift® prices with dynamic tariff constants in FAQ answers
 	if ( ! empty( $catalog['endolift_facial'] ) && function_exists( 'nvx_endolift_price_from_eur' ) && function_exists( 'nvx_endolift_price_papada_eur' ) ) {
 		$from   = function_exists( 'nvx_format_price_eur' ) ? nvx_format_price_eur( nvx_endolift_price_from_eur() ) : number_format_i18n( nvx_endolift_price_from_eur(), 2 );
 		$papada = function_exists( 'nvx_format_price_eur' ) ? nvx_format_price_eur( nvx_endolift_price_papada_eur() ) : number_format_i18n( nvx_endolift_price_papada_eur(), 2 );
@@ -990,7 +990,7 @@ function nvx_schema_treatment_node_laser( string $key, string $permalink, string
 			'@type'             => array( 'MedicalProcedure', 'Service' ),
 			'@id'               => $permalink . NVX_SD_ID_MEDICAL_PROCEDURE,
 			'name'              => 'Endolift® facial para papada y línea mandibular',
-			'alternateName'     => array( NVX_SD_ENDOLIFT_FACIAL, 'Láser intersticial facial', 'Endolift Chamberí Madrid', 'Endolift Goya Madrid' ),
+			'alternateName'     => array( NVX_SD_ENDOLIFT_FACIAL, 'Láser intersticial facial', 'Endolift® Chamberí Madrid', 'Endolift® Goya Madrid' ),
 			'url'               => $permalink,
 			'mainEntityOfPage'  => array( '@id' => $permalink ),
 			'provider'          => array( '@id' => $organization_id ),
@@ -1200,7 +1200,7 @@ function nvx_schema_physician_director( $organization_id ) {
 		'jobTitle'         => 'Director médico e investigador clínico aplicado · NUVANX Madrid',
 		'description'      => 'Dirección médica de NUVANX. Láser intersticial (Endolift®, laserlipólisis), CO₂ fraccionado, geometría facial con inductores y tricología. ' . NVX_SD_LABEL_COLEGIADO_PREFIX . $colegiado . '. Perfil público en Doctoralia.',
 		'url'              => $equipo . '#physician-rivera-tejeda',
-		'knowsAbout'       => array( 'Medicina estética', 'Medicina estética láser', 'Endolift', 'Láser CO₂', 'Tricología' ),
+		'knowsAbout'       => array( 'Medicina estética', 'Medicina estética láser', 'Endolift®', 'Láser CO₂', 'Tricología' ),
 		'worksFor'         => array( '@id' => $organization_id ),
 		'hasCredential'    => array(
 			array(
@@ -1957,7 +1957,7 @@ function nvx_extend_yoast_schema_graph( $graph ) {
 				'@id'         => $website_id,
 				'url'         => home_url( '/' ),
 				'name'        => 'NUVANX Medicina Estética Láser Madrid',
-				'description' => 'Medicina estética láser en Madrid: Endolift, EXION, BTL, láser CO₂. Valoración presencial en Chamberí y Salamanca–Goya. Protocolos médicos basados en evidencia.',
+				'description' => 'Medicina estética láser en Madrid: Endolift®, EXION®, BTL, láser CO₂. Valoración presencial en Chamberí y Salamanca–Goya. Protocolos médicos basados en evidencia.',
 				'publisher'   => array( '@id' => $organization['id'] ),
 			);
 		}

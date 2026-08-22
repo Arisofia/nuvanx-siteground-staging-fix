@@ -102,7 +102,7 @@ function nvx_laser_hero_ctas_markup(): string {
 }
 
 /**
- * Unified brand hero — same shell as Endolift / medicina-estética (still media, no video).
+ * Unified brand hero — same shell as Endolift® / medicina-estética (still media, no video).
  */
 function nvx_laser_hero_markup(): string {
 	$colegiado = defined( 'NVX_DIRECTOR_COLEGIADO' ) ? NVX_DIRECTOR_COLEGIADO : '282864786';
@@ -167,7 +167,7 @@ function nvx_laser_editorial_catalog(): array {
  * Full editorial body from theme JSON catalog.
  */
 function nvx_laser_editorial_body_markup(): string {
-	// Sections are direct children of .nvx-brand-page (same as Endolift / med hubs).
+	// Sections are direct children of .nvx-brand-page (same as Endolift® / med hubs).
 	$html = '';
 
 	$html .= '<section class="nvx-brand-section nvx-laser-focus" aria-labelledby="nvx-laser-focus-title">';

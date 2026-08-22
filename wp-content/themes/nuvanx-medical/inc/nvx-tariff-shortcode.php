@@ -4,7 +4,7 @@
  *
  * Usage: [nvx_tariff key="laser_co2.facial"]
  * Usage: [nvx_tariff key="exion.exion_face_sesion"]
- * Usage: [nvx_tariff key="endolift.papada"]
+ * Usage: [nvx_tariff key="Endolift®.papada"]
  *
  * @package nuvanx-medical
  */

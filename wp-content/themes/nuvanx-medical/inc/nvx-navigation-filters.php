@@ -30,15 +30,15 @@ function nvx_navigation_treatment_definitions(): array {
 				'slugs' => array( 'btl-exilite-ipl-madrid' ),
 			),
 			'exion-face'       => array(
-				'label' => 'EXION Face',
+				'label' => 'EXION® Face',
 				'slugs' => array( 'exion-face' ),
 			),
 			'exion-body'       => array(
-				'label' => 'EXION Body',
+				'label' => 'EXION® Body',
 				'slugs' => array( 'exion-body' ),
 			),
 			'exion-fractional' => array(
-				'label' => 'EXION Fractional',
+				'label' => 'EXION® Fractional',
 				'slugs' => array( 'exion-fractional' ),
 			),
 			'emfusion'         => array(
@@ -473,7 +473,7 @@ function nvx_navigation_append_treatment_children( array $items, array $publishe
 }
 
 /**
- * Dynamically inject published EXION/EMFUSION pages under Tratamientos.
+ * Dynamically inject published EXION®/EMFUSION pages under Tratamientos.
  *
  * Database-managed menus receive only published routes. Existing children of
  * the Tratamientos submenu are preserved and deduplicated by normalized URL.

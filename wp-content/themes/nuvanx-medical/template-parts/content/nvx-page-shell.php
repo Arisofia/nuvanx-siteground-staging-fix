@@ -45,7 +45,7 @@ while ( have_posts() ) :
 	$has_content_hero = (bool) preg_match( '/nvx-[a-z0-9\-]+-hero/i', $content );
 
 	// Modules that inject a canonical hero + H1 via the_content even when CMS body is empty.
-	// Without this, the shell prints a second H1 (e.g. EXION Body / Face / EMFUSION).
+	// Without this, the shell prints a second H1 (e.g. EXION® Body / Face / EMFUSION).
 	$has_managed_editorial = false;
 	if ( function_exists( 'nvx_get_page_owner' ) ) {
 		$owner = nvx_get_page_owner();

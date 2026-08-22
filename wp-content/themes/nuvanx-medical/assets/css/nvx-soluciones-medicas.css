@@ -34,9 +34,9 @@
 .nvx-solutions-page > .nvx-brand-hero {
   position: relative;
   display: block;
-  width: 100vw;
-  max-width: 100vw;
-  margin-inline: calc(50% - 50vw);
+  width: calc(100vw - var(--nvx-scrollbar-width, 0px));
+  max-width: calc(100vw - var(--nvx-scrollbar-width, 0px));
+  margin-inline: calc(50% - 50vw + (var(--nvx-scrollbar-width, 0px) / 2));
   overflow: hidden;
 }
 

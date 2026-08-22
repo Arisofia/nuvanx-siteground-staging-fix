@@ -447,7 +447,7 @@ function nvx_theme_wrap_top1_commercial_mentions( string $slug, string $content 
 		'plan-anual-medicina-estetica-sin-sobretratar' => array(
 			array(
 				'path'    => '/endolift-facial-papada-mandibula/',
-				'needles' => array( 'Endolift® Facial', 'Endolift®', 'Endolift', 'tercio inferior' ),
+				'needles' => array( 'Endolift® Facial', 'Endolift®', 'Endolift®', 'tercio inferior' ),
 				'anchor'  => 'Endolift® facial',
 			),
 			array(

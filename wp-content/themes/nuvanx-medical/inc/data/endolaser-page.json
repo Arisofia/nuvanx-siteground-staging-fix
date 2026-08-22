@@ -2,7 +2,7 @@
     "hero": {
         "kicker": "@nvx-t:NUVANX · Medicina estética láser",
         "h1": "@nvx-t:Endoláser corporal en Madrid: grasa localizada y mejor contorno",
-        "byline_author": "@nvx-t:Escrito y revisado por Dr. Javier Rivera Tejeda",
+        "byline_author": "@nvx-t:Escrito y revisado por Dr. José Javier Rivera Tejeda",
         "byline_title": "@nvx-t:Director médico NUVANX · Fecha de última revisión: julio 2026",
         "lead": "@nvx-t:Láser médico para focos de grasa localizada con componente de flacidez leve–moderada (abdomen, flancos, muslos, brazos…), tras valoración y plan por zonas.",
         "description": "@nvx-t:No es un tratamiento de obesidad ni de pérdida masiva de peso. No es liposucción. Es un protocolo ambulatorio con criterios de inclusión y exclusión.",
@@ -141,6 +141,6 @@
         "kicker": "@nvx-t:Inversión",
         "title": "@nvx-t:Tarifas orientativas Endoláser corporal Madrid",
         "note": "@nvx-t:El precio final se establece en valoración según superficie a tratar, técnica y plan médico. Las tarifas son orientativas.",
-        "reference_catalog": "endolift"
+        "reference_catalog": "Endolift®"
     }
 }

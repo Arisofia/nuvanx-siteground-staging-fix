@@ -6,11 +6,11 @@
     "h1": "@nvx-t:EXION® Face en Madrid: radiofrecuencia y ultrasonido",
     "lead": "@nvx-t:Aplicador de radiofrecuencia y ultrasonido para protocolos de calidad cutánea cuando existe indicación médica. La elección valora zona, tipo de piel, antecedentes y expectativas.",
     "meta": "@nvx-t:Chamberí (CS20144) · Salamanca–Goya (CS20073) · Indicación médica personalizada",
-    "aria": "@nvx-t:EXION Face NUVANX",
+    "aria": "@nvx-t:EXION® Face NUVANX",
     "marker": "nvx-exion-face",
     "yoast_title": "EXION® Face Madrid | Tratamiento Facial y Cuello | NUVANX",
     "yoast_desc": "EXION® Face en Madrid: radiofrecuencia y ultrasonido para protocolos de calidad cutánea según valoración médica. Chamberí (CS20144) y Salamanca–Goya (CS20073).",
-    "focuskw": "EXION Face Madrid",
+    "focuskw": "EXION® Face Madrid",
     "hub": "@nvx-url:/exion-btl/",
     "schema_name": "EXION® Face en Madrid",
     "schema_type": "Protocolo médico facial con EXION® Face (RF monopolar + ultrasonido)",
@@ -21,7 +21,7 @@
       "collagen_stimulation": "Aumento histológico de colágeno demostrado a 12 semanas",
       "sessions": "4 sesiones protocolo estándar, separadas 2–4 semanas",
       "downtime": "Sin downtime. Eritema transitorio 1–2 horas tras la sesión.",
-      "price_range": "Desde 395€/sesión · Pack 4 sesiones 1.395€",
+      "price_range": "Desde 395 €/sesión · Pack 4 sesiones 1.395 €",
       "duration_result": "Mejora progresiva visible a partir de la 2ª sesión. Resultado maduro 8–12 semanas.",
       "contraindications": [
         "Marcapasos o dispositivos electrónicos implantados",
@@ -55,7 +55,7 @@
     "indications": [
       {
         "title": "@nvx-t:Envejecimiento cronológico leve–moderado",
-        "body": "@nvx-t:Pérdida progresiva de densidad y turgencia. EXION Face puede contribuir a redensificar la dermis cuando el diagnóstico apunta a déficit de matriz más que a exceso de grasa o ptosis severa."
+        "body": "@nvx-t:Pérdida progresiva de densidad y turgencia. EXION® Face puede contribuir a redensificar la dermis cuando el diagnóstico apunta a déficit de matriz más que a exceso de grasa o ptosis severa."
       },
       {
         "title": "@nvx-t:Deshidratación y piel apagada",
@@ -108,7 +108,7 @@
     ],
     "faqs": [
       {
-        "q": "@nvx-t:¿Qué datos se revisan antes de indicar EXION Face?",
+        "q": "@nvx-t:¿Qué datos se revisan antes de indicar EXION® Face?",
         "a": "@nvx-t:Se revisan calidad de piel, anatomía, antecedentes, objetivo, contraindicaciones y período de recuperación aceptable. Los datos técnicos no se presentan como una promesa de resultado individual."
       },
       {
@@ -129,7 +129,7 @@
       },
       {
         "q": "@nvx-t:¿Puedo combinarlo con toxina o rellenos?",
-        "a": "@nvx-t:Sí, con secuencia médica. EXION Face no sustituye automáticamente a rellenos: mejora matriz e hidratación; el déficit estructural puede seguir requiriendo inductores o HA inyectable. El orden e intervalos se definen en valoración."
+        "a": "@nvx-t:Sí, con secuencia médica. EXION® Face no sustituye automáticamente a rellenos: mejora matriz e hidratación; el déficit estructural puede seguir requiriendo inductores o HA inyectable. El orden e intervalos se definen en valoración."
       },
       {
         "q": "@nvx-t:¿Cuándo se ven resultados?",
@@ -148,11 +148,11 @@
     "h1": "@nvx-t:EXION® Body en Madrid: contorno corporal y calidad cutánea",
     "lead": "@nvx-t:Radiofrecuencia monopolar con refrigeración activa para protocolos de contorno corporal y calidad cutánea cuando el diagnóstico lo permite.",
     "meta": "@nvx-t:Chamberí (CS20144) · Salamanca–Goya (CS20073) · Contorno corporal con criterio médico",
-    "aria": "@nvx-t:EXION Body NUVANX",
+    "aria": "@nvx-t:EXION® Body NUVANX",
     "marker": "nvx-exion-body",
     "yoast_title": "EXION® Body Madrid | Grasa Localizada y Laxitud | NUVANX",
     "yoast_desc": "EXION® Body en NUVANX Madrid: radiofrecuencia con refrigeración activa para grasa localizada y calidad cutánea, según valoración médica. Chamberí (CS20144) y Salamanca–Goya (CS20073).",
-    "focuskw": "EXION Body Madrid",
+    "focuskw": "EXION® Body Madrid",
     "hub": "@nvx-url:/exion-btl/",
     "schema_name": "EXION® Body en Madrid",
     "schema_type": "Protocolo médico corporal con EXION® Body",
@@ -162,9 +162,9 @@
       "action": "Retensado dérmico y mejora de firmeza en flacidez leve-moderada de contorno corporal",
       "sessions": "4 sesiones protocolo estándar, separadas 2–4 semanas",
       "downtime": "Sin downtime. Calor residual en zona tratada 1–2 horas.",
-      "price_range": "Desde 445€/sesión",
+      "price_range": "Desde 445 €/sesión",
       "duration_result": "Mejoras visibles a partir de la 3ª sesión (orientativo; variable según respuesta individual). Mantenimiento recomendado a los 6 meses.",
-      "differentiation": "EXION Body combina apoptosis de adipocitos y tensado dérmico en una sola plataforma no invasiva. Para depósitos de grasa de mayor espesor o fibrosis, el Endoláser corporal actúa como láser subdérmico intervencionista. EXION Body no trata grasa visceral.",
+      "differentiation": "EXION® Body combina apoptosis de adipocitos y tensado dérmico en una sola plataforma no invasiva. Para depósitos de grasa de mayor espesor o fibrosis, el Endoláser corporal actúa como láser subdérmico intervencionista. EXION® Body no trata grasa visceral.",
       "cta_contour_architecture": "@nvx-t:Para valoración por zona específica (abdomen/flancos/brazos/muslos), consulta NUVANX Contour Architecture™."
     },
     "mechanism": {
@@ -212,7 +212,7 @@
       },
       {
         "title": "@nvx-t:Combinación con endoláser (espesor alto)",
-        "body": "@nvx-t:En adiposidad >~4–5 cm puede proponerse laserlipólisis y, en fase posterior (~semana 5+), EXION Body para consolidar tensado. Umbral e intervalo son clínicos."
+        "body": "@nvx-t:En adiposidad >~4–5 cm puede proponerse laserlipólisis y, en fase posterior (~semana 5+), EXION® Body para consolidar tensado. Umbral e intervalo son clínicos."
       }
     ],
     "compare": {
@@ -226,7 +226,7 @@
       },
       {
         "title": "@nvx-t:Sesiones orientativas",
-        "body": "@nvx-t:Leve: 2–3. Moderada: 3–4. Severa: valorar endoláser + EXION en secuencia. Mantenimiento cada 18–24 meses según evolución y estilo de vida. No es un protocolo de “una sesión y listo” para todos."
+        "body": "@nvx-t:Leve: 2–3. Moderada: 3–4. Severa: valorar endoláser + EXION® en secuencia. Mantenimiento cada 18–24 meses según evolución y estilo de vida. No es un protocolo de “una sesión y listo” para todos."
       },
       {
         "title": "@nvx-t:Cuidados posteriores",
@@ -261,7 +261,7 @@
     ],
     "faqs": [
       {
-        "q": "@nvx-t:¿EXION Body elimina grasa o solo tensa la piel?",
+        "q": "@nvx-t:¿EXION® Body elimina grasa o solo tensa la piel?",
         "a": "@nvx-t:Busca ambos efectos en un mismo protocolo: acción sobre adiposidad localizada y remodelado de colágeno. No es liposucción quirúrgica ni un método de pérdida de peso corporal."
       },
       {
@@ -278,11 +278,11 @@
       },
       {
         "q": "@nvx-t:¿Puedo combinarlo con ejercicio o dieta?",
-        "a": "@nvx-t:Sí. EXION Body no sustituye hábitos: estabilizar peso y actividad mejora la duración del contorno. Tampoco “quema” kilos de grasa sistémica."
+        "a": "@nvx-t:Sí. EXION® Body no sustituye hábitos: estabilizar peso y actividad mejora la duración del contorno. Tampoco “quema” kilos de grasa sistémica."
       },
       {
         "q": "@nvx-t:¿Cuándo combinar con laserlipólisis?",
-        "a": "@nvx-t:En espesores altos (orientativo >~4–5 cm) puede proponerse fase 1 con endoláser y fase 2 con EXION Body para tensado. Intervalos y candidatura son médicos."
+        "a": "@nvx-t:En espesores altos (orientativo >~4–5 cm) puede proponerse fase 1 con endoláser y fase 2 con EXION® Body para tensado. Intervalos y candidatura son médicos."
       },
       {
         "q": "@nvx-t:¿Los resultados son permanentes?",
@@ -301,11 +301,11 @@
     "h1": "@nvx-t:EXION® Fractional RF en Madrid: arrugas profundas, cicatrices y textura",
     "lead": "@nvx-t:Radiofrecuencia fraccionada con microagujas y control de impedancia para protocolos de textura, poros y cicatrices según diagnóstico y fototipo.",
     "meta": "@nvx-t:Chamberí (CS20144) · Salamanca–Goya (CS20073) · Textura y remodelado dérmico",
-    "aria": "@nvx-t:EXION Fractional NUVANX",
+    "aria": "@nvx-t:EXION® Fractional NUVANX",
     "marker": "nvx-exion-fractional",
     "yoast_title": "EXION® Fractional RF Madrid | Textura y Cicatrices | NUVANX",
     "yoast_desc": "EXION® Fractional RF en Madrid: microagujas con control de impedancia para textura, poros y cicatrices según diagnóstico y fototipo.",
-    "focuskw": "EXION Fractional Madrid",
+    "focuskw": "EXION® Fractional Madrid",
     "hub": "@nvx-url:/exion-btl/",
     "schema_name": "EXION® Fractional RF en Madrid",
     "schema_type": "Protocolo de radiofrecuencia fraccionada EXION®",
@@ -315,8 +315,8 @@
       "target": "Tejido dérmico: cicatrices de acné, poros, textura, arrugas finas",
       "sessions": "3 sesiones para protocolo de rejuvenecimiento. 1–3 sesiones para cicatrices según profundidad.",
       "downtime": "24–72h de eritema. Descamación fina 3–5 días en profundidades medias.",
-      "price_range": "Desde 595€/sesión cara completa",
-      "vs_co2": "El Láser CO₂ actúa en la epidermis y la dermis superficial con mayor agresividad. EXION Fractional actúa en dermis con menor tiempo de recuperación.",
+      "price_range": "Desde 595 €/sesión cara completa",
+      "vs_co2": "El Láser CO₂ actúa en la epidermis y la dermis superficial con mayor agresividad. EXION® Fractional actúa en dermis con menor tiempo de recuperación.",
       "contraindications": [
         "Keloides o cicatrices hipertróficas activas",
         "Isotretinoína en los últimos 6 meses",
@@ -328,7 +328,7 @@
       "body": [
         "@nvx-t:Emite radiofrecuencia a través de microagujas con control de entrega energética. El sistema incorpora feedback de impedancia para ajustar la coagulación al tejido real, no solo a un número fijo de pasadas “por si acaso”.",
         "@nvx-t:Profundidad de acción ajustable (0,5–4 mm en zona facial; hasta 4 mm en cuerpo combinando inserción mecánica y gradiente térmico por RF monopolar, solo cuando hay indicación médica específica). El algoritmo de IA (AI-driven RF) mide la impedancia en tiempo real para personalizar la energía en cada microdisparo.",
-        "@nvx-t:EXION Surface Renewal es el hub de decisión clínica: evalúa si el paciente requiere fraccionado (Fractional RF), CO₂ ablativo u otra tecnología según diagnóstico y objetivos.",
+        "@nvx-t:EXION® Surface Renewal es el hub de decisión clínica: evalúa si el paciente requiere fraccionado (Fractional RF), CO₂ ablativo u otra tecnología según diagnóstico y objetivos.",
         "@nvx-t:Objetivo clínico: coagulación controlada de colágeno y renovación de textura (poros, cicatrices superficiales, arrugas finas) con plan de sesiones realista."
       ]
     },
@@ -375,7 +375,7 @@
       },
       {
         "q": "@nvx-t:¿Cuánto cuesta EXION® Fractional en Madrid?",
-        "a": "@nvx-t:El precio de EXION® Fractional en NUVANX parte de 595€ por sesión cara completa. El número de sesiones depende del objetivo: 3 para rejuvenecimiento, 1–3 para cicatrices. Se define en valoración médica."
+        "a": "@nvx-t:El precio de EXION® Fractional en NUVANX parte de 595 € por sesión cara completa. El número de sesiones depende del objetivo: 3 para rejuvenecimiento, 1–3 para cicatrices. Se define en valoración médica."
       },
       {
         "q": "@nvx-t:¿Cuánto tiempo de recuperación tiene EXION® Fractional?",
@@ -416,7 +416,7 @@
       "target": "Calidad cutánea global: luminosidad, hidratación, tono uniforme",
       "sessions": "4 sesiones protocolo inicial, separadas 1 semana",
       "downtime": "Downtime mínimo. Eritema leve transitorio posible en algunos pacientes.",
-      "price_range": "Desde 345€/sesión",
+      "price_range": "Desde 345 €/sesión",
       "duration_result": "Mejora progresiva de luminosidad y textura a partir de la 2ª sesión.",
       "differentiation": "EMFUSION no sustituye a un facial cosmético: trabaja en planos más profundos. El resultado no es inmediato ni superficial.",
       "contraindications": [
@@ -464,7 +464,7 @@
         "body": "@nvx-t:Solo tras filtrar contraindicaciones; protocolos “sensitive” con activos calmantes."
       },
       {
-        "title": "@nvx-t:Post-EXION / post-láser",
+        "title": "@nvx-t:Post-EXION® / post-láser",
         "body": "@nvx-t:Fase de consolidación de hidratación y barrera dentro de protocolos combinados NUVANX."
       },
       {
@@ -480,7 +480,7 @@
       "@nvx-t:Valoración de barrera, inflamación y compatibilidad de activos.",
       "@nvx-t:Protocolos tipo Hydration / Regeneration / Sensitive según caso.",
       "@nvx-t:Sesiones cortas; downtime habitual mínimo.",
-      "@nvx-t:Frecuente como complemento de EXION Face o Fractional, no como monoterapia milagrosa."
+      "@nvx-t:Frecuente como complemento de EXION® Face o Fractional, no como monoterapia milagrosa."
     ],
     "faqs": [
       {
@@ -497,7 +497,7 @@
       },
       {
         "q": "@nvx-t:¿Cuánto cuesta EMFUSION® en Madrid?",
-        "a": "@nvx-t:El precio de sesión de EMFUSION® en NUVANX parte de 345€. El protocolo inicial son 4 sesiones semanales. Se define el número exacto en valoración médica previa."
+        "a": "@nvx-t:El precio de sesión de EMFUSION® en NUVANX parte de 345 €. El protocolo inicial son 4 sesiones semanales. Se define el número exacto en valoración médica previa."
       },
       {
         "q": "@nvx-t:¿Para qué tipo de piel es EMFUSION®?",
@@ -535,7 +535,7 @@
       "target": "Alteraciones pigmentarias (léntigos, manchas solares), vasculares (telangiectasias, rojeces) y calidad cutánea",
       "sessions": "1–3 sesiones para pigmentación leve; 2–4 para vascular mixto; 3–4 para fotodaño moderado",
       "downtime": "Eritema transitorio 1–2 horas. Posible leve oscurecimiento de manchas antes de descamar (3–7 días).",
-      "price_range": "Cara completa desde 295€ · Escote desde 245€ · Manos desde 195€",
+      "price_range": "Cara completa desde 295 € · Escote desde 245 € · Manos desde 195 €",
       "duration_result": "Mejora progresiva. Resultado consolidado 4–6 semanas tras última sesión.",
       "contraindications": [
         "Bronceado reciente o exposición solar intensa",
@@ -644,7 +644,7 @@
       },
       {
         "q": "@nvx-t:¿Cuánto cuesta BTL EXILITE™ IPL en Madrid?",
-        "a": "@nvx-t:El precio en NUVANX parte de 295€ por sesión cara completa, 245€ para escote y 195€ para manos. El número de sesiones depende del diagnóstico y se confirma en valoración médica."
+        "a": "@nvx-t:El precio en NUVANX parte de 295 € por sesión cara completa, 245 € para escote y 195 € para manos. El número de sesiones depende del diagnóstico y se confirma en valoración médica."
       },
       {
         "q": "@nvx-t:¿Cuánto dura el resultado?",

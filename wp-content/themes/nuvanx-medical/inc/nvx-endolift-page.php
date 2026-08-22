@@ -3,7 +3,7 @@
  * Endolift® facial treatment page — editorial high-authority structure.
  *
  * Wire-frame: Hero → Qué es → Indicaciones → vs cirugía → Biofísica → Proceso → Tarifas → FAQ → CTA.
- * Pattern-based (Endolift markers), not page-ID gated.
+ * Pattern-based (Endolift® markers), not page-ID gated.
  *
  * @package nuvanx-medical
  */
@@ -22,13 +22,13 @@ function nvx_endolift_is_singular_context(): bool {
 		return false;
 	}
 
-	// Prefer real page views; still allow content that carries structural Endolift markers
+	// Prefer real page views; still allow content that carries structural Endolift® markers
 	// when queried via the main loop (avoids rewriting random posts/excerpts).
 	return is_singular( 'page' ) || is_page();
 }
 
 /**
- * Detect Endolift facial treatment content before rewrite.
+ * Detect Endolift® facial treatment content before rewrite.
  * Anchors primarily on stable structural markers (aria-label / ids / brand classes).
  */
 function nvx_content_is_endolift_page( string $content ): bool {
@@ -44,7 +44,7 @@ function nvx_content_is_endolift_page( string $content ): bool {
 		false !== strpos( $path, 'endolaser-corporal' )
 		|| false !== strpos( $path, 'laser-co2-fraccionado' )
 		|| false !== strpos( $path, 'equipo-medico' )
-		|| ( false !== strpos( $path, 'exion' ) && false === strpos( $path, 'endolift' ) )
+		|| ( false !== strpos( $path, 'exion' ) && false === strpos( $path, 'Endolift®' ) )
 	) ) {
 		return false;
 	}
@@ -62,7 +62,7 @@ function nvx_content_is_endolift_page( string $content ): bool {
 	}
 
 	if ( preg_match(
-		'/aria-label=["\']Endolift facial NUVANX["\']|id=["\']nvx-endolift-h1["\']|class=["\'][^"\']*nvx-endolift-hero(?![^"\']*nvx-endolaser)(?![^"\']*nvx-co2)(?![^"\']*nvx-equipo)/iu',
+		'/aria-label=["\']Endolift® facial NUVANX["\']|id=["\']nvx-endolift-h1["\']|class=["\'][^"\']*nvx-endolift-hero(?![^"\']*nvx-endolaser)(?![^"\']*nvx-co2)(?![^"\']*nvx-equipo)/iu',
 		$content
 	) ) {
 		return true;
@@ -91,7 +91,7 @@ function nvx_endolift_process_icon( string $name ): string {
 }
 
 /**
- * Builds the Endolift hero copy with medical authority details, descriptive content, calls to action, and metadata.
+ * Builds the Endolift® hero copy with medical authority details, descriptive content, calls to action, and metadata.
  *
  * @return string The rendered hero copy markup.
  */
@@ -123,7 +123,7 @@ function nvx_endolift_hero_copy_markup(): string {
 
 
 /**
- * Builds the Endolift editorial body markup, including clinical information, treatment details, pricing, recovery guidance, and FAQs.
+ * Builds the Endolift® editorial body markup, including clinical information, treatment details, pricing, recovery guidance, and FAQs.
  *
  * @return string The rendered editorial body HTML.
  */
@@ -207,7 +207,7 @@ function nvx_endolift_editorial_body_markup(): string {
 	// C. Comparativa vs lifting (new — not elsewhere on page).
 	$html .= nvx_page_brand_section_open_markup( 'nvx-endolift-compare', 'nvx-endolift-compare-title' );
 	$html .= nvx_page_brand_section_heading_markup( esc_html( $data['compare']['kicker'] ?? '' ), 'nvx-endolift-compare-title', esc_html( $data['compare']['title'] ?? '' ) );
-	$html .= '<div class="nvx-endolift-compare-wrap" role="region" aria-label="' . esc_attr__( 'Tabla comparativa de Endolift y lifting quirúrgico', 'nuvanx-medical' ) . '" tabindex="0">';
+	$html .= '<div class="nvx-endolift-compare-wrap" role="region" aria-label="' . esc_attr__( 'Tabla comparativa de Endolift® y lifting quirúrgico', 'nuvanx-medical' ) . '" tabindex="0">';
 	$html .= '<table class="nvx-endolift-compare-table">';
 	$html .= '<thead><tr>';
 	$html .= '<th scope="col">' . esc_html( $data['compare']['col_param'] ?? '' ) . '</th>';
@@ -299,9 +299,9 @@ function nvx_endolift_editorial_body_markup(): string {
 	// F. Presupuesto Clínico — Valoración personalizada.
 	$html .= nvx_page_brand_section_open_markup( 'nvx-endolift-investment', 'nvx-endolift-price-title', '', array( 'id' => 'inversion-endolift' ) );
 	$html .= nvx_page_brand_section_heading_markup( esc_html( $data['investment']['kicker'] ?? '' ), 'nvx-endolift-price-title', esc_html( $data['investment']['title'] ?? '' ) );
-	$ojeras     = function_exists( 'nvx_tariff_price_label' ) ? nvx_tariff_price_label( 'endolift', 'ojeras' ) : $price_label . ' €';
-	$papada     = function_exists( 'nvx_tariff_price_label' ) ? nvx_tariff_price_label( 'endolift', 'papada' ) : '';
-	$cuello     = function_exists( 'nvx_tariff_price_label' ) ? nvx_tariff_price_label( 'endolift', 'cuello' ) : '';
+	$ojeras     = function_exists( 'nvx_tariff_price_label' ) ? nvx_tariff_price_label( 'Endolift®', 'ojeras' ) : $price_label . ' €';
+	$papada     = function_exists( 'nvx_tariff_price_label' ) ? nvx_tariff_price_label( 'Endolift®', 'papada' ) : '';
+	$cuello     = function_exists( 'nvx_tariff_price_label' ) ? nvx_tariff_price_label( 'Endolift®', 'cuello' ) : '';
 	$combo      = function_exists( 'nvx_tariff_price_label' ) ? nvx_tariff_price_label( 'endolift_combo', 'papada_cuello' ) : '';
 	$full_face  = function_exists( 'nvx_tariff_price_label' ) ? nvx_tariff_price_label( 'endolift_combo', 'full_face' ) : '';
 	$price_body = sprintf(
@@ -369,7 +369,7 @@ function nvx_endolift_editorial_body_markup(): string {
 
 	$html .= '<div class="nvx-related-links"><p>';
 	$html .= esc_html__( 'Endolift® no es una laserlipólisis corporal. Para comparar longitudes de onda y protocolos, consulta', 'nuvanx-medical' ) . ' ';
-	$html .= '<a href="' . esc_url( home_url( '/smartlipo-laserlipolisis-endolift/' ) ) . '">' . esc_html__( 'Smartlipo, laserlipólisis y Endolift®', 'nuvanx-medical' ) . '</a>.';
+	$html .= '<a href="' . esc_url( home_url( '/smartlipo-laserlipolisis-endolift/' ) ) . '">' . esc_html__( 'Smartlipo®, laserlipólisis y Endolift®', 'nuvanx-medical' ) . '</a>.';
 	$html .= '</p></div>';
 
 	$html .= '</div>';
@@ -378,7 +378,7 @@ function nvx_endolift_editorial_body_markup(): string {
 }
 
 /**
- * Rebuild Endolift page: authority hero + diagnosis + biophysics + process + FAQ + CTA.
+ * Rebuild Endolift® page: authority hero + diagnosis + biophysics + process + FAQ + CTA.
  */
 add_filter(
 	'nvx_page_owner',

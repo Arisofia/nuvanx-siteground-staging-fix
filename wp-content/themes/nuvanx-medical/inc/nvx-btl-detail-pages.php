@@ -1,6 +1,6 @@
 <?php
 /**
- * BTL detail treatment pages: EXION Face / Body / Fractional RF + EMFUSION + EXILITE IPL.
+ * BTL detail treatment pages: EXION® Face / Body / Fractional RF + EMFUSION + EXILITE IPL.
  *
  * Same editorial pattern as IPL EXILITE / CO₂: Hero → Mecanismo → Indicaciones →
  * Comparativa breve → Procedimiento → FAQ → CTA.
@@ -553,7 +553,7 @@ function nvx_content_restructure_btl_detail_page( string $content ): string {
 		return $content;
 	}
 
-	// Same media sources as Endolift / Endoláser / CO₂: content slot, then featured image.
+	// Same media sources as Endolift® / Endoláser / CO₂: content slot, then featured image.
 	$media = nvx_page_extract_brand_hero_media( $content );
 	if ( '' === $media && has_post_thumbnail() ) {
 		$thumb = get_the_post_thumbnail(

@@ -12,6 +12,7 @@
 }
 
 html {
+  --nvx-scrollbar-width: calc(100vw - 100%);
   font-size: var(--nvx-space-2);
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
