@@ -400,3 +400,4 @@
     padding-inline: calc(var(--nvx-space-1) * 0.35);
   }
 }
+.nvx-logo__img { mix-blend-mode: multiply; }

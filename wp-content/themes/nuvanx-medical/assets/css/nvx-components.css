@@ -1961,7 +1961,8 @@ select[aria-invalid="true"] {
 .nvx-brand-hero__copy .nvx-brand-actions{
     margin-top: 0;
     flex-direction: column;
-    align-items: stretch;
+    align-items: start;
+    justify-items: start;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
@@ -1970,7 +1971,8 @@ select[aria-invalid="true"] {
 .nvx-page-hero__copy .nvx-brand-actions{
     margin-top: 0;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: auto;
+    justify-content: start;
     gap: var(--nvx-space-1);
     width: 100%}
 
@@ -2824,4 +2826,44 @@ div[id*="cmplz-cookiebanner"] {
 }
 .nvx-form-stage .cmplz-placeholder-1 {
   background-image: none !important;
+}
+.nvx-brand-actions .nvx-brand-btn, .nvx-brand-actions .nvx-btn { max-width: 320px; justify-self: start; align-self: flex-start; }
+
+/* Formulas — increased spacing for editorial layout */
+.nvx-laser-formula,
+.nvx-endolift-formula,
+.nvx-aes-formula {
+  margin: var(--nvx-space-8) 0;
+  padding: var(--nvx-space-6);
+  background: var(--nvx-surface-soft, #f7f6f2);
+  border-radius: var(--nvx-radius-card);
+  border: var(--nvx-border-hairline) solid var(--nvx-color-line);
+}
+
+.nvx-laser-formula__eq,
+.nvx-endolift-formula__eq,
+.nvx-aes-formula__eq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nvx-space-2);
+  font-family: var(--nvx-serif);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  margin-bottom: var(--nvx-space-4);
+}
+
+.nvx-laser-formula__frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-inline: 4px;
+}
+
+.nvx-laser-formula__num {
+  border-bottom: 1px solid currentColor;
+  padding: 0 4px;
+}
+
+.nvx-laser-formula__den {
+  padding: 0 4px;
 }
