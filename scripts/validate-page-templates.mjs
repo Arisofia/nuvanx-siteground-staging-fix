@@ -23,7 +23,7 @@
 
 import { execFile } from 'node:child_process';
 import { readFileSync, writeFileSync, renameSync, existsSync, statSync } from 'fs';
-import { join, dirname, basename } from 'path';
+import { join, dirname, basename, resolve, sep } from 'path';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'url';
 import { MIN_MANIFEST_ENTRIES } from './staging2/published-pages-contract.mjs';
@@ -151,12 +151,16 @@ function templateExists(templatePath) {
     return false;
   }
   
-  const inTemplatesDir = join(TEMPLATES_DIR, templateName);
-  if (existsSync(inTemplatesDir) && statSync(inTemplatesDir).isFile()) return true;
+  const inTemplatesDir = resolve(TEMPLATES_DIR, templateName);
+  if (inTemplatesDir.startsWith(resolve(TEMPLATES_DIR) + sep)) {
+    if (existsSync(inTemplatesDir) && statSync(inTemplatesDir).isFile()) return true;
+  }
   
   if (!hasTemplatesPrefix) {
-    const inThemeRoot = join(THEME_ROOT, templateName);
-    if (existsSync(inThemeRoot) && statSync(inThemeRoot).isFile()) return true;
+    const inThemeRoot = resolve(THEME_ROOT, templateName);
+    if (inThemeRoot.startsWith(resolve(THEME_ROOT) + sep)) {
+      if (existsSync(inThemeRoot) && statSync(inThemeRoot).isFile()) return true;
+    }
   }
   
   return false;
