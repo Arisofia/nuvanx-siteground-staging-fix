@@ -1431,8 +1431,8 @@ body.nvx-valoracion-modal-open{
 
 /* Clinical Factsheet (SSOT Matrix) */
 .nvx-clinical-factsheet {
-  background: var(--nvx-surface-soft, #f7f9fa);
-  border: 1px solid var(--nvx-color-line, #e2e8f0);
+  background: var(--nvx-surface-soft);
+  border: 1px solid var(--nvx-color-line);
   border-radius: var(--nvx-radius-lg, 8px);
   padding: var(--nvx-space-4, 24px);
   margin-block: var(--nvx-space-5, 32px);
