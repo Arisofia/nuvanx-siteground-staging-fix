@@ -31,13 +31,25 @@ function git(args, options = {}) {
   return execFileSync(gitBinary(), args, { cwd: repoRoot, encoding: 'utf8', ...options });
 }
 
+export const ENDOLASER_SCHEMA_FILES = Object.freeze([
+  'wp-content/themes/nuvanx-medical/inc/nvx-structured-data.php',
+  'wp-content/themes/nuvanx-medical/inc/nvx-schema-foundation.php',
+  'wp-content/themes/nuvanx-medical/inc/nvx-schema-faq.php',
+  'wp-content/themes/nuvanx-medical/inc/nvx-schema-treatments.php',
+  'wp-content/themes/nuvanx-medical/inc/nvx-schema-physicians.php',
+  'wp-content/themes/nuvanx-medical/inc/nvx-schema-graph.php',
+  'wp-content/themes/nuvanx-medical/inc/nvx-aesthetic-treatment-schema.php',
+  'wp-content/themes/nuvanx-medical/inc/nvx-treatment-hub-schema.php',
+  'wp-content/themes/nuvanx-medical/inc/nvx-seo-production-readiness.php',
+  'wp-content/themes/nuvanx-medical/inc/nvx-contacto-valoracion-page.php',
+]);
+
 export const ENDOLASER_PATHS = Object.freeze({
   content: 'wp-content/themes/nuvanx-medical/inc/data/endolaser-page.json',
   emitter: 'wp-content/themes/nuvanx-medical/inc/nvx-endolaser-page.php',
   routes: 'wp-content/themes/nuvanx-medical/inc/data/routes.json',
   seo: 'wp-content/themes/nuvanx-medical/inc/data/seo-metadata.json',
   tariffs: 'wp-content/themes/nuvanx-medical/inc/data/tariff-catalog.json',
-  structuredData: 'wp-content/themes/nuvanx-medical/inc/nvx-structured-data.php',
 });
 
 export const ENDOLASER_ROUTE = '/endolaser-corporal-grasa-localizada/';
@@ -425,7 +437,6 @@ export function evaluateEndolaserChanges({ changedPaths, baseFiles, headFiles })
     ['route', ENDOLASER_PATHS.routes, routeProjection],
     ['seo', ENDOLASER_PATHS.seo, seoProjection],
     ['tariff', ENDOLASER_PATHS.tariffs, tariffProjection],
-    ['schema', ENDOLASER_PATHS.structuredData, structuredDataProjection],
   ]) {
     if (!changed.has(file)) continue;
     const result = semanticSurfaceDiff({ label, baseSource: baseFiles[file], headSource: headFiles[file], projection });
@@ -437,6 +448,23 @@ export function evaluateEndolaserChanges({ changedPaths, baseFiles, headFiles })
     if (result.changed) {
       signals.push(label);
       binding[label] = {
+        base_projection_sha256: sha256(result.baseProjection),
+        head_projection_sha256: sha256(result.headProjection),
+      };
+    }
+  }
+
+  const schemaChanged = ENDOLASER_SCHEMA_FILES.some((file) => changed.has(file));
+  if (schemaChanged) {
+    const baseSource = ENDOLASER_SCHEMA_FILES.map((f) => baseFiles[f] || '').join('\n');
+    const headSource = ENDOLASER_SCHEMA_FILES.map((f) => headFiles[f] || '').join('\n');
+    const result = semanticSurfaceDiff({ label: 'schema', baseSource, headSource, projection: structuredDataProjection });
+    if (result.indeterminate) {
+      signals.push(`indeterminate:${result.indeterminate}`);
+      binding.schema = { indeterminate: result.indeterminate };
+    } else if (result.changed) {
+      signals.push('schema');
+      binding.schema = {
         base_projection_sha256: sha256(result.baseProjection),
         head_projection_sha256: sha256(result.headProjection),
       };
@@ -608,7 +636,10 @@ async function run() {
     process.exit(1);
   }
 
-  const governedFiles = Object.values(ENDOLASER_PATHS);
+  const governedFiles = [
+    ...Object.values(ENDOLASER_PATHS),
+    ...ENDOLASER_SCHEMA_FILES,
+  ];
   const changedGovernedFiles = changed.filter((file) => governedFiles.includes(file));
   const baseFiles = {};
   const headFiles = {};
