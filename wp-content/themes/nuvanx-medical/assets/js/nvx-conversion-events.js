@@ -161,7 +161,9 @@
 				cta_region: regionFor(target),
 				cta_marker: dataEvent || 'tel_link',
 			});
-			pushAdsConversion(adsClickSendTo);
+			if (reportPhoneWhatsAppConversion(href || undefined, { newTab: false })) {
+				event.preventDefault();
+			}
 			return;
 		}
 	}
