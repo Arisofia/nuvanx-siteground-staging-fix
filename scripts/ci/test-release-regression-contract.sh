@@ -13,6 +13,7 @@ BRIDAL="$ROOT/wp-content/themes/nuvanx-medical/inc/nvx-catalog-json.php"
 IDENTITY_CONTRACT="$ROOT/scripts/production/test-deploy-identity-contract.mjs"
 DEPLOY="$ROOT/tools/deploy/deploy-to-prod.sh"
 WORKFLOW="$ROOT/.github/workflows/production.yml"
+PREMERGE_CONTRACT="$ROOT/scripts/ci/test-pre-merge-protection-contract.sh"
 BOUNDARY="$ROOT/scripts/production/verify-production-boundary.mjs"
 VALORACION_FORM_CONTRACT="$ROOT/scripts/production/valoracion-form-contract.mjs"
 VALORACION_FORM_CONTRACT_TEST="$ROOT/scripts/production/test-valoracion-form-contract.mjs"
@@ -25,7 +26,7 @@ WORDPRESS_SECURITY_CONTRACT="$ROOT/scripts/lint/test-wordpress-security-contract
 SEO_TOOLING_DIR="$ROOT/scripts/seo"
 THEME_DIR="$ROOT/wp-content/themes/nuvanx-medical"
 
-for required in "$BRIDAL" "$IDENTITY_CONTRACT" "$DEPLOY" "$WORKFLOW" "$BOUNDARY" "$VALORACION_FORM_CONTRACT" "$VALORACION_FORM_CONTRACT_TEST" "$ENV_FLAGS" "$DEPLOY_STAMP" "$LCP_CSS_CONTRACT" "$META_BROWSER_OWNER_CONTRACT" "$SEO_OWNERSHIP_CONTRACT" "$WORDPRESS_SECURITY_CONTRACT" "$SEO_TOOLING_DIR/package-lock.json" "$THEME_DIR/composer.lock" "$THEME_DIR/composer.json" "$THEME_DIR/phpcs.xml.dist"; do
+for required in "$BRIDAL" "$IDENTITY_CONTRACT" "$DEPLOY" "$WORKFLOW" "$PREMERGE_CONTRACT" "$BOUNDARY" "$VALORACION_FORM_CONTRACT" "$VALORACION_FORM_CONTRACT_TEST" "$ENV_FLAGS" "$DEPLOY_STAMP" "$LCP_CSS_CONTRACT" "$META_BROWSER_OWNER_CONTRACT" "$SEO_OWNERSHIP_CONTRACT" "$WORDPRESS_SECURITY_CONTRACT" "$SEO_TOOLING_DIR/package-lock.json" "$THEME_DIR/composer.lock" "$THEME_DIR/composer.json" "$THEME_DIR/phpcs.xml.dist"; do
   [[ -s "$required" ]] || fail "missing_file:$required"
 done
 
@@ -36,6 +37,12 @@ if grep -RInE '^[[:space:]]*(<<<<<<<|=======|>>>>>>>)' "$ROOT/.github/workflows"
   fail 'workflow_conflict_marker_present'
 fi
 pass_assert 'workflow-no-conflict-markers'
+
+# The executable merge/promotion protection gate is itself a release invariant.
+# Its regression contract locks direct argv execution, canonical-root semantics,
+# production dependency/runtime coverage and current-tree secret-scan semantics.
+bash "$PREMERGE_CONTRACT" || fail 'premerge_protection_contract'
+pass_assert 'premerge-protection-contract'
 
 # Bridal retirement must remain an AND condition. This assertion is textual
 # because the source depends on WordPress runtime state, but it tolerates
