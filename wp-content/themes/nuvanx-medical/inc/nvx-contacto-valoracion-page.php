@@ -212,76 +212,8 @@ function nvx_content_enhance_valoracion_page( string $content ): string {
 }
 add_filter( 'the_content', 'nvx_content_enhance_valoracion_page', NVX_HOOK_PRIO_VALORACION_ENHANCE );
 
-/**
- * Yoast title for valoración.
- *
- * @param string $title Title.
- * @return string
- */
-function nvx_filter_valoracion_document_title( $title ) {
-	if ( ! nvx_is_valoracion_page_request() ) {
-		return $title;
-	}
 
-	return 'Consulta médica estética en Madrid | NUVANX';
-}
-add_filter( 'wpseo_title', 'nvx_filter_valoracion_document_title', 21 );
 
-/**
- * @param string $desc Description.
- * @return string
- */
-function nvx_filter_valoracion_metadesc( $desc ) {
-	if ( ! nvx_is_valoracion_page_request() ) {
-		return $desc;
-	}
-
-	return 'Solicita una consulta médica estética en Chamberí o Salamanca–Goya. Diagnóstico, indicación y presupuesto individualizado.';
-}
-add_filter( 'wpseo_metadesc', 'nvx_filter_valoracion_metadesc', 21 );
-
-/**
- * Yoast title for contacto.
- *
- * @param string $title Title.
- * @return string
- */
-function nvx_filter_contacto_document_title( $title ) {
-	if ( ! nvx_is_contacto_page_request() ) {
-		return $title;
-	}
-
-	return 'Contacto NUVANX Madrid | Chamberí y Goya · Teléfonos y Direcciones';
-}
-add_filter( 'wpseo_title', 'nvx_filter_contacto_document_title', 21 );
-
-/**
- * Generates the contact page meta description with clinic registration numbers and phone numbers.
- *
- * @param string $desc The original meta description.
- * @return string The generated contact page meta description or the original description for other pages.
- */
-function nvx_filter_contacto_metadesc( $desc ) {
-	if ( ! nvx_is_contacto_page_request() ) {
-		return $desc;
-	}
-
-	$config = function_exists( 'nvx_get_clinics_config' ) ? nvx_get_clinics_config() : array();
-
-	$cham_reg = ! empty( $config['chamberi']['reg'] ) ? $config['chamberi']['reg'] : 'CS20144';
-	$cham_ph  = ! empty( $config['chamberi']['phone'] ) ? $config['chamberi']['phone'] : '669 319 836';
-	$goya_reg = ! empty( $config['goya']['reg'] ) ? $config['goya']['reg'] : 'CS20073';
-	$goya_ph  = ! empty( $config['goya']['phone'] ) ? $config['goya']['phone'] : '647 505 107';
-
-	return sprintf(
-		'Contacto NUVANX: Chamberí %s (%s) y Goya %s (%s). Valoración médica en /madrid/valoracion/.',
-		$cham_reg,
-		$cham_ph,
-		$goya_reg,
-		$goya_ph
-	);
-}
-add_filter( 'wpseo_metadesc', 'nvx_filter_contacto_metadesc', 21 );
 
 /**
  * Social preview image for /contacto/.
@@ -385,36 +317,7 @@ if ( ! function_exists( 'nvx_contacto_enforce_final_og_image' ) ) {
 }
 
 /**
- * Open Graph / Twitter title — same string as SERP title.
- *
- * @param mixed $title Title.
- * @return string
- */
-function nvx_filter_contacto_social_title( $title ): string {
-	if ( ! nvx_is_contacto_page_request() ) {
-		return (string) $title;
-	}
 
-	return (string) nvx_filter_contacto_document_title( $title );
-}
-add_filter( 'wpseo_opengraph_title', 'nvx_filter_contacto_social_title', 110 );
-add_filter( 'wpseo_twitter_title', 'nvx_filter_contacto_social_title', 110 );
-
-/**
- * Open Graph / Twitter description — same string as meta description.
- *
- * @param mixed $description Description.
- * @return string
- */
-function nvx_filter_contacto_social_description( $description ): string {
-	if ( ! nvx_is_contacto_page_request() ) {
-		return (string) $description;
-	}
-
-	return (string) nvx_filter_contacto_metadesc( $description );
-}
-add_filter( 'wpseo_opengraph_desc', 'nvx_filter_contacto_social_description', 110 );
-add_filter( 'wpseo_twitter_description', 'nvx_filter_contacto_social_description', 110 );
 
 /**
  * Normalize organization finder payload to a usable index/id pair.
@@ -595,31 +498,7 @@ add_filter( 'page_template', 'nvx_contacto_resolve_legacy_template', 5 );
 
 /**
  * Set custom SEO title for contacto page.
- *
- * @param string $title Yoast title.
- * @return string
- */
-function nvx_contacto_seo_title( string $title ): string {
-	if ( ! nvx_is_contacto_page_request() ) {
-		return $title;
-	}
-	return 'Clínicas NUVANX Madrid: Contacto, Teléfonos y Sedes | Chamberí y Salamanca–Goya';
-}
-add_filter( 'wpseo_title', 'nvx_contacto_seo_title', 10, 1 );
 
-/**
- * Set custom SEO meta description for contacto page.
- *
- * @param string $description Yoast meta description.
- * @return string
- */
-function nvx_contacto_seo_metadesc( string $description ): string {
-	if ( ! nvx_is_contacto_page_request() ) {
-		return $description;
-	}
-	return 'Contacto NUVANX Madrid: direcciones, teléfonos, WhatsApp y horarios de las clínicas Chamberí (CS20144) y Salamanca–Goya (CS20073). Valoración médica presencial para medicina estética láser.';
-}
-add_filter( 'wpseo_metadesc', 'nvx_contacto_seo_metadesc', 10, 1 );
 
 /**
  * Rewrite legacy _wp_page_template meta to the canonical contact template slug.
