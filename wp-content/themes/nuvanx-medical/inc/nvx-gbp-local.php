@@ -194,7 +194,7 @@ function nvx_clinic_html_contains_vendor_packshot( string $html ): bool {
  * Technological copy outside img/source attributes is not a block.
  */
 function nvx_public_vendor_image_url_regex(): string {
-	return '/deka|btl[_-]|btl-exilite|exion|eufoton|Endolift®|lasemar|Smartlipo®|exilite/i';
+	return '~(?:^|/)[^/?#,\s]*(?:deka|btl[_-]|btl-exilite|btl-exion|eufoton|endolift-lasemar|endolift-iso9001|lasemar-1500|smartlipo®?|exion|exilite)[^/?#,\s]*\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#][^,\s]*)?(?=\s*(?:\d+(?:\.\d+)?[wx])?(?:,|$))~iu';
 }
 
 /** Vendor brand tokens in image alt text (logo, equipment or packshot). */
