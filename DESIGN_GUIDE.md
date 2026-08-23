@@ -24,24 +24,33 @@ A dual-font pairing curated for editorial authority:
 - **Warm Accent**: `--nvx-accent-gold` (`#C1A68D`), `--nvx-accent-gold-text` (`#735942`).
 
 ### 4. Strict Contrast & WCAG 2.2 Compliance
-- Body text (#111111 on #f7f7f5 / #f1f1ef) provides $\approx 16.7:1$ contrast (exceeding WCAG AAA).
-- Dark surface text (#f7f7f5 on #111111 / #1c1c1e) provides $\approx 17.6:1$ contrast.
-- Hero media overlays and protective text-shadows ensure $\ge 4.5:1$ contrast across all image and video backdrops.
+- Body text (#111111 on #f7f7f5 / #f1f1ef) provides approximately 16.7:1 contrast (exceeding WCAG AAA).
+- Dark surface text (#f7f7f5 on #111111 / #1c1c1e) provides approximately 17.6:1 contrast.
+- Hero media overlays and protective text-shadows ensure at least 4.5:1 contrast across image and video backdrops.
+- Decorative mockup opacities are never allowed to reduce production text below the applicable WCAG contrast requirement.
 
-### 5. 8px Base Spatial Grid
-All margins, paddings, gaps, and dimensions adhere to multiples of 8px (`--nvx-space-1: 8px` through `--nvx-space-12: 96px`), with fluid clamped layout gutters and section padding.
+### 5. 8px Base Spatial Grid + Exact Responsive Contract
+The base token scale continues to use 8px increments, but page rhythm is governed by the exact breakpoint contract below. Card padding intentionally begins at 20px on mobile; this is an approved component exception rather than a second spacing system.
+
+- **Section vertical padding:** 48px mobile · 64px tablet · 96px desktop.
+- **Compact sections:** 32px mobile · 48px tablet · 64px desktop.
+- **Sub-block gaps:** 24px mobile · 32px tablet · 48px desktop.
+- **Heading-to-grid gap:** 24px mobile · 32px tablet · 40px desktop.
+- **Card padding:** 20px mobile · 24px tablet · 32px desktop.
+- **Outer horizontal gutter:** 24px mobile · 40px tablet · 48px desktop.
+- **Card separation:** 1px hairline where the editorial grid uses contiguous cards.
 
 ### 6. 48px Minimum Touch Targets
-Every clickable element (buttons, hamburger, drawer links, dropdown links, footer links) is guaranteed a minimum touch target of $48\text{px}$ (`--nvx-control-size: 48px`) via `nvx-accessibility-governance.css`.
+Every clickable element (buttons, hamburger, drawer links, dropdown links, footer links) is guaranteed a minimum touch target of 48px (`--nvx-control-size: 48px`) via accessibility governance.
 
 ### 7. Canonical Button Contract
-All conversion actions use a single pill-shaped geometry (`--nvx-radius-pill: 999px`) with uppercase tracking (`--nvx-track-button: 0.14em`), font size `--nvx-type-button` ($13\text{px}$), and tactile hover elevation (`translateY(-2px)` and shadow).
+All conversion actions use a single pill-shaped geometry (`--nvx-radius-pill: 999px`) with uppercase tracking (`--nvx-track-button: 0.14em`), font size `--nvx-type-button` (13px), and tactile hover elevation (`translateY(-2px)` and shadow).
 
 ### 8. Tokenized Motion Architecture
 Transitions and micro-interactions use standardized token durations (`--nvx-duration-instant` through `--nvx-duration-slower`) and easing curves (`--nvx-ease-standard`).
 
 ### 9. Accessible Focus Governance
-Keyboard navigation is fully supported with custom `:focus-visible` outlines (`2px solid var(--button-focus)` with `3px` offset) and immediate adherence to `@media (prefers-reduced-motion: reduce)`.
+Keyboard navigation is fully supported with custom `:focus-visible` outlines and immediate adherence to `@media (prefers-reduced-motion: reduce)`.
 
 ### 10. Resilient Form & Lifecycle Governance
 Conversion forms (HubSpot v2.js embed and native stages) incorporate progressive pulse skeletons, dynamic accessible iframe titles, and automated fallbacks to direct WhatsApp and phone channels if scripts are blocked or timeout.
@@ -65,7 +74,7 @@ Strict adherence to anti-patterns:
 
 ## 2. Design Tokens Reference
 
-All design tokens are defined in `wp-content/themes/nuvanx-medical/assets/css/nvx-tokens.css`.
+All design tokens are defined in `wp-content/themes/nuvanx-medical/assets/css/nvx-tokens.css`. Exact responsive aliases are calibrated in `assets/css/nvx-base.css` so the final critical CSS has one authoritative breakpoint contract.
 
 ### 2.1 Colors
 
@@ -92,16 +101,32 @@ All design tokens are defined in `wp-content/themes/nuvanx-medical/assets/css/nv
 |---|---|---|
 | `--nvx-space-1` | `8px` | Micro spacing, icon gaps |
 | `--nvx-space-2` | `16px` | Inline button padding, item gaps |
-| `--nvx-space-3` | `24px` | Card internal padding, block margins |
-| `--nvx-space-4` | `32px` | Grid gaps, medium container margins |
-| `--nvx-space-5` | `40px` | Large section item spacing |
-| `--nvx-space-6` | `48px` | Major section gap, touch target |
-| `--nvx-space-7` | `56px` | Large button height, spacious padding |
-| `--nvx-space-8` | `64px` | Section margins, grid separation |
+| `--nvx-space-3` | `24px` | Block margins and mobile gutter reference |
+| `--nvx-space-4` | `32px` | Grid gaps and compact mobile section reference |
+| `--nvx-space-5` | `40px` | Tablet gutter reference |
+| `--nvx-space-6` | `48px` | Mobile section padding, desktop gutter, touch target |
+| `--nvx-space-7` | `56px` | Footer desktop top padding |
+| `--nvx-space-8` | `64px` | Tablet section padding |
 | `--nvx-space-9` | `72px` | Mobile header height |
-| `--nvx-space-10` | `80px` | Desktop header height, major breaks |
-| `--nvx-space-12` | `96px` | Maximum section padding |
-| `--nvx-shell` | `min(1240px, calc(100vw - var(--nvx-gutter)))` | Canonical responsive content container |
+| `--nvx-space-10` | `80px` | Desktop header height |
+| `--nvx-space-12` | `96px` | Desktop section padding |
+| `--nvx-shell` | `min(1240px, calc(100vw - var(--nvx-gutter)))` | Legacy/convenience shell for elements that do **not** add their own horizontal gutter |
+
+#### 2.2.1 Canonical breakpoint aliases
+
+`nvx-base.css` owns these aliases:
+
+| Alias | Mobile `<768` | Tablet `768–1239` | Desktop `≥1240` |
+|---|---:|---:|---:|
+| `--nvx-section-py` | 48px | 64px | 96px |
+| `--nvx-section-compact-py` | 32px | 48px | 64px |
+| `--nvx-subblock-gap` | 24px | 32px | 48px |
+| `--nvx-heading-to-grid` | 24px | 32px | 40px |
+| `--nvx-card-padding` | 20px | 24px | 32px |
+| `--nvx-gutter-inner` / `--nvx-gutter-inline` | 24px | 40px | 48px |
+| `--nvx-card-grid-gap` | 1px | 1px | 1px |
+
+**Single-gutter rule:** never combine a shell that already subtracts viewport gutter with another horizontal padding layer. Components that own `padding-inline: var(--nvx-gutter-inner)` must use `width: 100%; max-width: 1240px; margin-inline: auto`. This applies to hero copy, authentic photo grids, footer inner content and footer legal/bottom content.
 
 ### 2.3 Typography Scale
 
@@ -112,13 +137,14 @@ All design tokens are defined in `wp-content/themes/nuvanx-medical/assets/css/nv
 | `--nvx-type-h2` | `clamp(1.7rem, 3vw, 2.4rem)` | `1.15` | `-0.02em` | Section H2 headings |
 | `--nvx-type-h3` | `1.4rem` | `1.15` | `-0.02em` | Sub-section & Card H3 |
 | `--nvx-type-lead` | `clamp(1.0625rem, 1.35vw, 1.25rem)` | `1.6` | `normal` | Hero lead paragraphs |
-| `--nvx-type-body` | `1.0625rem` ($17\text{px}$) | `1.6` | `normal` | Standard editorial copy |
-| `--nvx-type-small` | `0.875rem` ($14\text{px}$) | `1.5` | `normal` | Descriptions, meta copy |
-| `--nvx-type-button` | `0.8125rem` ($13\text{px}$) | `1.0` | `0.14em` | Conversion buttons & actions |
-| `--nvx-type-nav` | `0.8125rem` ($13\text{px}$) | `1.0` | `0.08em` | Desktop navigation menu |
-| `--nvx-type-nav-compact` | `0.75rem` ($12\text{px}$) | `1.0` | `0.08em` | Header CTA and compact nav |
-| `--nvx-type-kicker` | `0.75rem` ($12\text{px}$) | `1.2` | `0.20em` | Section eyebrow labels |
-| `--nvx-type-caption` | `0.75rem` ($12\text{px}$) | `1.5` | `0.04em` | Captions, footnotes, badges |
+| `--nvx-type-body` | `1.0625rem` (17px) | `1.6` | `normal` | Standard editorial copy |
+| `--nvx-type-small` | `0.875rem` (14px) | `1.5` | `normal` | Descriptions, footer links, meta copy |
+| `--nvx-type-caption` | `0.75rem` (12px) | `1.5` | `0.04em` | Captions, NAP details, footnotes, badges |
+| `--nvx-type-micro` | `0.6875rem` (11px) | inherited | contextual | Footer legal and microcopy |
+| `--nvx-type-button` | `0.8125rem` (13px) | `1.0` | `0.14em` | Conversion buttons & actions |
+| `--nvx-type-nav` | `0.8125rem` (13px) | `1.0` | `0.08em` | Desktop navigation menu |
+| `--nvx-type-nav-compact` | `0.8125rem` (13px) | `1.0` | `0.06em` | Header CTA and compact nav |
+| `--nvx-type-kicker` | `0.75rem` (12px) | `1.2` | `0.20em` | Section eyebrow labels |
 
 ### 2.4 Motion & Transitions
 
@@ -148,7 +174,7 @@ Canonical conversion button. Consolidates all button aliases (`.nvx-brand-btn`, 
 </a>
 
 <!-- Secondary Button (Outline) -->
-<a href="https://wa.me/34689317399" class="nvx-brand-btn nvx-btn--secondary" target="_blank" rel="noopener noreferrer">
+<a href="https://wa.me/34669319836" class="nvx-brand-btn nvx-btn--secondary" target="_blank" rel="noopener noreferrer">
   <svg class="icon-whatsapp" ...></svg>
   <span>Contactar por WhatsApp</span>
 </a>
@@ -159,7 +185,7 @@ Canonical conversion button. Consolidates all button aliases (`.nvx-brand-btn`, 
 </a>
 
 <!-- Secondary on Dark Surface -->
-<a href="https://wa.me/34689317399" class="nvx-brand-btn nvx-btn--secondary-on-dark" target="_blank" rel="noopener noreferrer">
+<a href="https://wa.me/34669319836" class="nvx-brand-btn nvx-btn--secondary-on-dark" target="_blank" rel="noopener noreferrer">
   <span>Contactar por WhatsApp</span>
 </a>
 
@@ -177,7 +203,6 @@ Canonical conversion button. Consolidates all button aliases (`.nvx-brand-btn`, 
 ### 3.2 Form & Input Controls
 
 ```html
-<!-- Form Group with Validation States -->
 <div class="nvx-form-group">
   <label for="nvx-email" class="nvx-label">Correo electrónico</label>
   <input type="email" id="nvx-email" class="nvx-input nvx-input--md is-error" aria-invalid="true" aria-describedby="nvx-email-error" value="correo-invalido">
@@ -195,14 +220,37 @@ Canonical conversion button. Consolidates all button aliases (`.nvx-brand-btn`, 
 </div>
 ```
 
+### 3.4 Editorial Photography Grid
+
+The canonical `.nvx-authentic-photo-grid` is intentionally asymmetric on desktop and collapses predictably by breakpoint:
+
+- Desktop: 12-column editorial spread; primary image receives greater visual weight.
+- Tablet: two columns; three-image sets may use a full-width first image.
+- Mobile: one image per row.
+- Grid separation is 1px; image corners remain square.
+- Patient-case media may be added only after individual publication rights/clinical consent are recorded.
+- A patient image is supporting clinical context, not a hero by default and never a promise of result.
+
+### 3.5 Footer Contract
+
+Desktop footer uses four columns in the approximate ratio **25 / 33 / 22 / 20**:
+
+1. Brand and city presence.
+2. Treatments, internally split into two link columns.
+3. Clinics with NAP data.
+4. NUVANX institutional links.
+
+Typography: Playfair Display wordmark; Manrope 14px links; 12px clinic phone/address; 11px legal/microcopy. The footer uses the same single-gutter rule as the rest of the site. On mobile the informational columns become accessible `<details>` accordions.
+
 ---
 
 ## 4. Accessibility Governance Contract
 
-1. **Focus Rings**: `:focus-visible` must always display `outline: 2px solid var(--button-focus)` with offset $3\text{px}$.
+1. **Focus Rings**: `:focus-visible` must always display a visible tokenized outline and offset.
 2. **Keyboard Navigation**: All interactive elements must be accessible via Tab/Shift+Tab and triggered via Enter/Space.
 3. **Reduced Motion**: All animated elements (drawers, spinners, hovers) must reset to instant or non-transform states when `prefers-reduced-motion: reduce` is detected.
-4. **Target Sizing**: All click targets must maintain $\ge 48\text{px}$ in height and width.
+4. **Target Sizing**: All click targets must maintain at least 48px in height and width where applicable.
+5. **Text Contrast**: Production contrast requirements override decorative opacity values from visual references.
 
 ---
 
@@ -223,3 +271,5 @@ node scripts/lint/no-inline-layout-styles.mjs
 # Full static lint test suite
 npm run lint
 ```
+
+Before production promotion, the exact candidate SHA must also complete the canonical Staging2 deployment and produce a successful `staging2-block-c-<sha>` acceptance artifact. A green PR alone is not production evidence.
