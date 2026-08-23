@@ -1,58 +1,53 @@
 # NUVANX Medicina Estética Láser
 
-## Site Overview
-NUVANX is a medical aesthetics clinic in Madrid, Spain, specializing in laser treatments and personalized medical aesthetic procedures with clinical criteria.
+## Sobre NUVANX
+NUVANX es un centro de medicina estética láser en Madrid. La información clínica del sitio se presenta con criterio médico y la indicación final de cualquier tratamiento depende de una valoración individual.
 
-## Purpose
-This file provides structured information for AI agents (Perplexity, ChatGPT Browse, Gemini, Claude Search) to understand the site's content, structure, and purpose.
+## Dirección médica
+- **Director médico**: Dr. José Javier Rivera Tejeda
+- **Número de colegiado ICOMEM**: 282864786
+- **Áreas publicadas**: medicina estética láser, láser intersticial, Endolift®, laserlipólisis/endoláser corporal, láser CO₂ fraccionado, contorno facial, inductores de colágeno, tricología y medicina regenerativa.
 
-## Core Information
-- **Business Type**: Medical aesthetics clinic
-- **Philosophy**: Evidence-based medicine with individualized treatment plans
-- **Director Médico**: Dr. José Javier Rivera Tejeda (Número de Colegiado: 282864786)
+## Centros NUVANX en Madrid
+### NUVANX Chamberí
+- **Nombre**: Centro Clínico NUVANX Chamberí
+- **Dirección**: Calle de Fernández de la Hoz, 4, Bajo Derecha, 28010 Madrid
+- **Teléfono**: +34 669 319 836
+- **Registro sanitario**: CS20144
+- **Página canónica**: https://nuvanx.com/medicina-estetica-chamberi/
 
-## Direcciones de Clínicas
-- **NUVANX Chamberí**: Calle Eloy Gonzalo 38, 28010 Madrid. Tel: +34 669 319 836
-- **NUVANX Goya (Barrio de Salamanca)**: Calle Goya 105, 28009 Madrid. Tel: +34 647 505 107
-- **WhatsApp Directo**: Disponible en la web para citas.
+### NUVANX Salamanca–Goya
+- **Nombre**: Centro Clínico NUVANX Salamanca–Goya
+- **Dirección**: Calle de Fernán González, 26, 28009 Madrid
+- **Teléfono**: +34 647 505 107
+- **Registro sanitario**: CS20073
+- **Página canónica**: https://nuvanx.com/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/
 
-## Descripción de Tratamientos y Resultados Esperados
-- **Endolift® Facial**: Láser intersticial mínimamente invasivo. Produce retracción de la piel y estimulación de colágeno sin cirugía. Resultados visibles de 3 a 6 meses.
-- **Endoláser Corporal**: Tratamiento láser para reducir grasa localizada y flacidez en abdomen, brazos y piernas.
-- **Láser CO₂ Fraccionado**: Renovación epidérmica y dérmica. Ideal para cicatrices, estrías, arrugas profundas y rejuvenecimiento integral.
-- **Marcación Mandibular con Láser**: Definición del arco mandibular sin recurrir exclusivamente a rellenos voluminizadores.
-- **Inductores de Colágeno**: Hidroxiapatita cálcica y ácido poliláctico. Redensificación cutánea progresiva y duradera.
-- **Tricología Médica**: Diagnóstico y tratamiento avanzado de alopecias mediante mesoterapia capilar y protocolos regenerativos.
-- **Medicina Regenerativa**: Terapias avanzadas para reparación tisular y *well aging*.
+## Áreas de tratamiento
+- **Endolift® facial**: tratamiento médico con tecnología láser intersticial; la zona, indicación y plan se determinan tras valoración médica.
+- **Endoláser corporal / laserlipólisis**: protocolos médicos para contorno corporal en zonas seleccionadas según valoración.
+- **Láser CO₂ fraccionado**: tratamiento láser fraccionado utilizado dentro de protocolos de renovación cutánea según diagnóstico e indicación médica.
+- **Contorno facial**: protocolos médicos que pueden integrar tecnología láser e inductores de colágeno según anatomía e indicación.
+- **Tricología médica**: valoración y protocolos médicos orientados a alteraciones capilares.
+- **Medicina regenerativa y well aging**: estrategias individualizadas dentro de la cartera médica publicada por NUVANX.
 
-## Catálogo de Protocolos Signature
-- **Protocolo Skin Quality**: Combinación de láser e hidratación profunda.
-- **Protocolo Contorno Facial**: Armonización mediante inductores y tecnología láser.
-- **Protocolo Well Aging 360**: Diagnóstico integral y prevención activa del exposoma.
+## Precios y valoración médica
+Los importes publicados por NUVANX se gobiernan desde su catálogo tarifario canónico y pueden depender de zona, extensión, protocolo e indicación médica. El presupuesto definitivo se determina tras valoración médica. Este archivo no replica importes para evitar divergencias con la fuente tarifaria vigente.
 
-## Precios de Referencia
-*(Nota: Los precios son indicativos y pueden variar según valoración médica)*
-- **Valoración Médica Inicial**: Incluye diagnóstico facial/corporal avanzado.
-- **Tratamientos Láser**: Desde 300€ según extensión y tecnología.
-- **Neuromoduladores / Rellenos**: Desde 250€ a 350€ por vial o zona.
-- **Endolift®**: Requiere valoración personalizada, desde 1.500€ dependiendo del área.
+## Información clínica
+- La información del sitio es general y no sustituye una consulta médica.
+- La indicación, técnica, número de sesiones, recuperación esperada y presupuesto dependen del diagnóstico y del plan individual.
+- Los resultados varían entre pacientes y no se garantizan resultados concretos.
 
-## FAQ Médico
-- **¿Los tratamientos requieren hospitalización?** No, son procedimientos ambulatorios mínimamente invasivos.
-- **¿Cuánto dura el periodo de recuperación (downtime)?** Depende del procedimiento. Tratamientos como el Láser CO₂ pueden requerir 3-7 días de enrojecimiento.
-- **¿Es obligatoria una valoración previa?** Sí, NUVANX exige una evaluación médica exhaustiva antes de cualquier intervención para garantizar la seguridad clínica.
-- **¿Utilizan rellenos permanentes?** No, solo materiales reabsorbibles y biocompatibles de alta calidad.
-
-## Mapa de URLs
-- [Inicio](https://nuvanx.com)
-- [Cita y Valoración](https://nuvanx.com/madrid/valoracion/)
-- [Clínica Chamberí](https://nuvanx.com/chamberi/)
-- [Clínica Goya](https://nuvanx.com/goya/)
-- [Equipo Médico (Dr. Rivera)](https://nuvanx.com/equipo-medico/)
-- [Tratamientos Endolift](https://nuvanx.com/endolift-ciencia-laser-subdermico/)
+## URLs canónicas principales
+- [Inicio](https://nuvanx.com/)
+- [Valoración médica en Madrid](https://nuvanx.com/madrid/valoracion/)
+- [NUVANX Chamberí](https://nuvanx.com/medicina-estetica-chamberi/)
+- [NUVANX Salamanca–Goya](https://nuvanx.com/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/)
+- [Equipo médico](https://nuvanx.com/equipo-medico/)
+- [Endolift® y ciencia del láser subdérmico](https://nuvanx.com/endolift-ciencia-laser-subdermico/)
 - [Well Aging](https://nuvanx.com/well-aging-estrategia-medica-global/)
-- [Blog de NUVANX](https://nuvanx.com/blog/)
+- [Blog / Journal](https://nuvanx.com/blog/)
 
-## Legal & Compliance
-- Compliant with Spanish medical advertising regulations. Patient data protection follows GDPR.
-- Professional medical licensing displayed clearly. Individual results may vary.
+## Uso de este archivo
+Este documento resume información pública y canónica del sitio para sistemas automatizados que decidan consultarlo. Las páginas canónicas enlazadas y los datos estructurados del sitio prevalecen ante cualquier discrepancia.
