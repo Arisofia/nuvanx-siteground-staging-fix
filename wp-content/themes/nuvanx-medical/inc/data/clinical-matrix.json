@@ -5,41 +5,72 @@
   "treatments": {
     "endolift_facial": {
       "name": "Endolift® Facial",
-      "indications": ["Laxitud cutánea leve a moderada", "Acúmulos grasos localizados en tercio inferior", "Pérdida de definición mandibular"],
-      "contraindications": ["Laxitud severa subsidiaria de lifting quirúrgico", "Infección activa", "Enfermedades autoinmunes descompensadas"],
+      "indications": [
+        "Laxitud cutánea leve a moderada",
+        "Acúmulos grasos localizados en tercio inferior",
+        "Pérdida de definición mandibular"
+      ],
+      "contraindications": [
+        "Laxitud severa subsidiaria de lifting quirúrgico",
+        "Infección activa",
+        "Enfermedades autoinmunes descompensadas"
+      ],
       "mechanism": "Remodelación térmica intersticial mediante energía láser, induciendo lipólisis fototérmica y retracción septal profunda.",
-      "applicators": ["Microfibras ópticas estériles (200-300 micras)"],
+      "applicators": [
+        "Microfibras ópticas estériles (200-300 micras)"
+      ],
       "published_parameters": "Longitud de onda 1470 nm (absorción selectiva agua/grasa). Emisión continua o fraccionada.",
       "anesthesia": "Anestesia local tumescente superficial",
       "duration": "60–90 minutos",
       "recovery": "48–72 horas de edema e inflamación localizada",
       "sessions": "Generalmente 1 sesión. Reevaluación clínica a los 3–6 meses.",
-      "base_price": 798.6,
-      "vat_included": false,
-      "risks": ["Hematoma", "Edema prolongado", "Alteración temporal de la sensibilidad", "Irregularidades en el contorno"],
+      "risks": [
+        "Hematoma",
+        "Edema prolongado",
+        "Alteración temporal de la sensibilidad",
+        "Irregularidades en el contorno"
+      ],
       "follow_up": "Revisión a las 2 semanas, 3 meses y 6 meses.",
       "medical_responsible": "Dr. José Javier Rivera Tejeda (Col. 282864786)",
       "scientific_review_date": "2026-08-01",
-      "clinical_sources": ["PubMed: Clinical applications of 1470 nm interstitial laser", "Protocolo clínico oficial LASEmaR 1500 (Eufoton)"]
+      "clinical_sources": [
+        "PubMed: Clinical applications of 1470 nm interstitial laser",
+        "Protocolo clínico oficial LASEmaR 1500 (Eufoton)"
+      ]
     },
     "exion_face": {
       "name": "EXION® Face",
-      "indications": ["Falta de luminosidad", "Laxitud cutánea inicial", "Prevención de flacidez (Well-aging)"],
-      "contraindications": ["Embarazo", "Infección local activa", "Implantes metálicos en la zona de tratamiento"],
+      "indications": [
+        "Falta de luminosidad",
+        "Laxitud cutánea inicial",
+        "Prevención de flacidez (Well-aging)"
+      ],
+      "contraindications": [
+        "Embarazo",
+        "Infección local activa",
+        "Implantes metálicos en la zona de tratamiento"
+      ],
       "mechanism": "Combinación sincronizada de radiofrecuencia monopolar y ultrasonido focalizado para estimular fibroblastos endógenos.",
-      "applicators": ["Aplicador EXION Face"],
+      "applicators": [
+        "Aplicador EXION Face"
+      ],
       "published_parameters": "Radiofrecuencia monopolar sincronizada con energía ultrasónica",
       "anesthesia": "Sin anestesia (procedimiento indoloro)",
       "duration": "20–30 minutos por zona",
       "recovery": "Inmediata (ligero eritema transitorio)",
       "sessions": "Protocolo base de 4 sesiones (1 por semana)",
-      "base_price": 145.0,
-      "vat_included": false,
-      "risks": ["Eritema transitorio", "Sensación de calor local", "Molestia leve durante la aplicación"],
+      "risks": [
+        "Eritema transitorio",
+        "Sensación de calor local",
+        "Molestia leve durante la aplicación"
+      ],
       "follow_up": "Mantenimiento 1 sesión cada 3–6 meses según evolución.",
       "medical_responsible": "Dr. José Javier Rivera Tejeda (Col. 282864786)",
       "scientific_review_date": "2026-08-01",
-      "clinical_sources": ["Estudios clínicos BTL Aesthetics", "Protocolos de estímulo de ácido hialurónico endógeno"]
+      "clinical_sources": [
+        "Estudios clínicos BTL Aesthetics",
+        "Protocolos de estímulo de ácido hialurónico endógeno"
+      ]
     }
   }
 }

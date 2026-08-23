@@ -133,7 +133,7 @@ function nvx_endolift_editorial_body_markup(): string {
 
 	$colegiado    = defined( 'NVX_DIRECTOR_COLEGIADO' ) ? NVX_DIRECTOR_COLEGIADO : '282864786';
 	$clinical_ssot = nvx_get_clinical_treatment( 'endolift_facial' );
-	$price_from   = $clinical_ssot['base_price'] ?? ( function_exists( 'nvx_endolift_price_from_eur' ) ? nvx_endolift_price_from_eur() : 798.60 );
+	$price_from   = function_exists( 'nvx_endolift_price_from_eur' ) ? nvx_endolift_price_from_eur() : 798.60;
 	$price_label  = function_exists( 'nvx_format_price_eur' ) ? nvx_format_price_eur( $price_from ) : number_format_i18n( $price_from, 2 );
 	$review_label = ! empty( $clinical_ssot['scientific_review_date'] )
 		? wp_date( 'F Y', strtotime( $clinical_ssot['scientific_review_date'] ) )

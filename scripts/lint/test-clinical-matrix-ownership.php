@@ -24,7 +24,7 @@ if ( empty( $treatments ) ) {
 $required_fields = array(
     'name', 'indications', 'contraindications', 'mechanism',
     'applicators', 'published_parameters', 'anesthesia',
-    'duration', 'recovery', 'sessions', 'base_price',
+    'duration', 'recovery', 'sessions',
     'medical_responsible', 'scientific_review_date'
 );
 
