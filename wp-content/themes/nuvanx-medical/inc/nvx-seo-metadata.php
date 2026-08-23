@@ -175,9 +175,7 @@ function nvx_seo_blog_metadata_for_object( string $post_type, string $slug, stri
  * @return array{title:string,description:string,canonical:string}|null
  */
 function nvx_seo_route_metadata_for_canonical( string $canonical ): ?array {
-	if ( ! function_exists( 'nvx_catalog_json_resolved' ) ) {
-		return null;
-	}
+	require_once __DIR__ . '/nvx-catalog-json.php';
 
 	$path   = (string) wp_parse_url( $canonical, PHP_URL_PATH );
 	$path   = '' !== trim( $path, '/' ) ? '/' . trim( $path, '/' ) . '/' : '/';
