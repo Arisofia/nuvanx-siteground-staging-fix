@@ -214,10 +214,3 @@ function nvx_schema_treatment_node( $page_id, $organization_id ) {
 
 	return nvx_schema_treatment_node_btl( $key, $permalink, $organization_id );
 }
-
-/**
- * Director médico as Physician (E-E-A-T entity for GEO specialist queries).
- *
- * @param string $organization_id Organization @id.
- * @return array
- */

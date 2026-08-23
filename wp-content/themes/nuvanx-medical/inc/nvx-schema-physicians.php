@@ -10,6 +10,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Director médico as Physician (E-E-A-T entity for GEO specialist queries).
+ *
+ * @param string $organization_id Organization @id.
+ * @return array
+ */
 function nvx_schema_physician_director( $organization_id ) {
 	$equipo      = home_url( NVX_SD_PATH_EQUIPO_MEDICO );
 	$director_id = home_url( NVX_SD_PATH_EQUIPO_MEDICO . '#physician-rivera-tejeda' );

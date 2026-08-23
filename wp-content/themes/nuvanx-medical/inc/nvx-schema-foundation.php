@@ -178,13 +178,12 @@ function nvx_schema_price_string( $amount ) {
  * permalink path, page URI, page template (Sede Local) and optional post meta
  * `_nvx_clinic_branch` so content moves do not require scattered ID edits.
  *
- * @return array{
- *   clinics: array<string, array{id:int, path:string}>,
- *   clinic_hub: array{id:int, path:string},
- *   treatments: array<string, array{id:int, path:string, schema:string}>
- * }
+ * Build one canonical route registry entry.
+ *
+ * @param int $id The page identifier.
+ * @param string $path The page path.
+ * @return array{id:int, path:string}
  */
-/** Build one canonical route registry entry. */
 function nvxSchemaRouteEntry( int $id, string $path ): array {
 	return compact( 'id', 'path' );
 }

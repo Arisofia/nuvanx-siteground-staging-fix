@@ -15,9 +15,11 @@ defined( 'ABSPATH' ) || exit;
  * Must mirror visible page FAQs (HTML + FAQPage). Answers transactional questions
  * that generative engines cite (precio, duración, recuperación, límites).
  *
+ * Parse a single page JSON file for FAQ items.
+ *
+ * @param string $file JSON file relative path
  * @return array<string, array<int, array{q:string,a:string}>>
  */
-/** Parse a single page JSON file for FAQ items. */
 function nvx_schema_faq_load_single_page( string $file ): array {
 	$json  = nvx_catalog_json_resolved( $file );
 	$items = array();
