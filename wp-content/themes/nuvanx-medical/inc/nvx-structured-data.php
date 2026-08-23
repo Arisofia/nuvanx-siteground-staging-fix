@@ -1200,7 +1200,6 @@ function nvx_schema_physician_director( $organization_id ) {
 		'jobTitle'         => 'Director médico e investigador clínico aplicado · NUVANX Madrid',
 		'description'      => 'Dirección médica de NUVANX. Láser intersticial (Endolift®, laserlipólisis), CO₂ fraccionado, geometría facial con inductores y tricología. ' . NVX_SD_LABEL_COLEGIADO_PREFIX . $colegiado . '. Perfil público en Doctoralia.',
 		'url'              => $equipo . '#physician-rivera-tejeda',
-		'knowsAbout'       => array( 'Medicina estética', 'Medicina estética láser', 'Endolift®', 'Láser CO₂', 'Tricología' ),
 		'worksFor'         => array( '@id' => $organization_id ),
 		'hasCredential'    => array(
 			array(

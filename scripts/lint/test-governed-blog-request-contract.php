@@ -318,7 +318,8 @@ $rebind_definition_pos = is_string( $blog_system ) ? strpos( $blog_system, 'func
 $bootstrap_require_pos = is_string( $blog_system ) ? strpos( $blog_system, "require_once __DIR__ . '/nvx-governed-blog-runtime.php'" ) : false;
 $pre_get_posts_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_action( 'pre_get_posts', 'nvx_governed_blog_runtime_pre_get_posts', PHP_INT_MAX )" ) : false;
 $the_posts_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_filter( 'the_posts', 'nvx_governed_blog_runtime_force_the_posts', PHP_INT_MAX, 2 )" ) : false;
-$wp_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_action( 'wp', 'nvx_governed_blog_runtime_rebind_queries', PHP_INT_MAX )" ) : false;
+$wp_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_action( 'wp', 'nvx_governed_blog_runtime_rebind_queries_action', PHP_INT_MAX )" ) : false;
+$template_redirect_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_action( 'template_redirect', 'nvx_governed_blog_runtime_rebind_queries_action', PHP_INT_MAX )" ) : false;
 $template_include_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_filter( 'template_include', 'nvx_governed_blog_runtime_template_include', PHP_INT_MAX )" ) : false;
 $canonical_filter_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_filter( 'wpseo_canonical', 'nvx_governed_blog_runtime_canonical', PHP_INT_MAX )" ) : false;
 $runtime_require_pos = is_string( $single_entrypoint ) ? strpos( $single_entrypoint, "require_once __DIR__ . '/inc/nvx-governed-blog-runtime.php'" ) : false;
@@ -331,6 +332,7 @@ if ( false === $rebind_definition_pos
 	|| false === $pre_get_posts_hook_pos
 	|| false === $the_posts_hook_pos
 	|| false === $wp_hook_pos
+	|| false === $template_redirect_hook_pos
 	|| false === $template_include_hook_pos
 	|| false === $canonical_filter_pos
 	|| false === $runtime_require_pos

@@ -349,8 +349,6 @@ function nvx_document_governance_governed_blog_opengraph_url( $url ) {
 		return $url;
 	}
 
-	
-
 	return home_url( $request['path'] );
 }
 add_filter( 'wpseo_opengraph_url', 'nvx_document_governance_governed_blog_opengraph_url', PHP_INT_MAX );

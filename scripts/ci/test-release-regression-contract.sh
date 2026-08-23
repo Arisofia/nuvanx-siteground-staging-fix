@@ -13,6 +13,7 @@ BRIDAL="$ROOT/wp-content/themes/nuvanx-medical/inc/nvx-catalog-json.php"
 IDENTITY_CONTRACT="$ROOT/scripts/production/test-deploy-identity-contract.mjs"
 DEPLOY="$ROOT/tools/deploy/deploy-to-prod.sh"
 WORKFLOW="$ROOT/.github/workflows/production.yml"
+PREMERGE_CONTRACT="$ROOT/scripts/ci/test-pre-merge-protection-contract.sh"
 BOUNDARY="$ROOT/scripts/production/verify-production-boundary.mjs"
 VALORACION_FORM_CONTRACT="$ROOT/scripts/production/valoracion-form-contract.mjs"
 VALORACION_FORM_CONTRACT_TEST="$ROOT/scripts/production/test-valoracion-form-contract.mjs"
@@ -21,10 +22,11 @@ DEPLOY_STAMP="$ROOT/wp-content/themes/nuvanx-medical/inc/nvx-deploy-stamp.php"
 LCP_CSS_CONTRACT="$ROOT/scripts/lint/test-lcp-css-delivery.mjs"
 META_BROWSER_OWNER_CONTRACT="$ROOT/scripts/lint/test-meta-browser-owner-retirement.php"
 SEO_OWNERSHIP_CONTRACT="$ROOT/scripts/lint/test-seo-catalog-ownership.php"
+WORDPRESS_SECURITY_CONTRACT="$ROOT/scripts/lint/test-wordpress-security-contract.php"
 SEO_TOOLING_DIR="$ROOT/scripts/seo"
 THEME_DIR="$ROOT/wp-content/themes/nuvanx-medical"
 
-for required in "$BRIDAL" "$IDENTITY_CONTRACT" "$DEPLOY" "$WORKFLOW" "$BOUNDARY" "$VALORACION_FORM_CONTRACT" "$VALORACION_FORM_CONTRACT_TEST" "$ENV_FLAGS" "$DEPLOY_STAMP" "$LCP_CSS_CONTRACT" "$META_BROWSER_OWNER_CONTRACT" "$SEO_OWNERSHIP_CONTRACT" "$SEO_TOOLING_DIR/package-lock.json" "$THEME_DIR/composer.lock"; do
+for required in "$BRIDAL" "$IDENTITY_CONTRACT" "$DEPLOY" "$WORKFLOW" "$PREMERGE_CONTRACT" "$BOUNDARY" "$VALORACION_FORM_CONTRACT" "$VALORACION_FORM_CONTRACT_TEST" "$ENV_FLAGS" "$DEPLOY_STAMP" "$LCP_CSS_CONTRACT" "$META_BROWSER_OWNER_CONTRACT" "$SEO_OWNERSHIP_CONTRACT" "$WORDPRESS_SECURITY_CONTRACT" "$SEO_TOOLING_DIR/package-lock.json" "$THEME_DIR/composer.lock" "$THEME_DIR/composer.json" "$THEME_DIR/phpcs.xml.dist"; do
   [[ -s "$required" ]] || fail "missing_file:$required"
 done
 
@@ -35,6 +37,12 @@ if grep -RInE '^[[:space:]]*(<<<<<<<|=======|>>>>>>>)' "$ROOT/.github/workflows"
   fail 'workflow_conflict_marker_present'
 fi
 pass_assert 'workflow-no-conflict-markers'
+
+# The executable merge/promotion protection gate is itself a release invariant.
+# Its regression contract locks direct argv execution, canonical-root semantics,
+# production dependency/runtime coverage and current-tree secret-scan semantics.
+bash "$PREMERGE_CONTRACT" || fail 'premerge_protection_contract'
+pass_assert 'premerge-protection-contract'
 
 # Bridal retirement must remain an AND condition. This assertion is textual
 # because the source depends on WordPress runtime state, but it tolerates
@@ -128,6 +136,12 @@ pass_assert 'single-deploy-sha-head-owner'
 php "$META_BROWSER_OWNER_CONTRACT" || fail 'meta_browser_owner_retirement_contract'
 pass_assert 'meta-browser-owner-retirement'
 
+# WPCS is intentionally absent from Composer to keep the lock free of the LGPL
+# dependency chain and the vulnerable legacy WPCS release. Preserve the removed
+# WordPress security semantics with a repository-owned, executable contract.
+php "$WORDPRESS_SECURITY_CONTRACT" || fail 'wordpress_security_contract'
+pass_assert 'wordpress-security-contract'
+
 # LCP delivery rules are part of the release contract, not an optional lint.
 # The canonical test protects the inlined foundation, blocking structural CSS,
 # non-blocking Google Fonts, and the narrow editorial-only defer boundary.
@@ -145,19 +159,37 @@ while IFS= read -r -d '' seo_script; do
 done < <(find "$SEO_TOOLING_DIR" -maxdepth 1 -type f -name '*.js' -print0)
 pass_assert 'seo-tooling-syntax'
 
-# The canonical weekly schedule already executes this release contract. Audit
-# the two lockfiles that actually carry dependencies without creating a third
-# workflow or adding registry-sensitive audits to every pull request.
-if [[ "${GITHUB_EVENT_NAME:-}" == 'schedule' ]] || git diff --name-only HEAD~1 2>/dev/null | grep -qE 'package-lock\.json|composer\.lock'; then
+# The canonical weekly schedule executes this release contract. A pull request
+# must evaluate the complete branch delta against its base, not only HEAD~1;
+# otherwise dependency changes split across multiple commits (or followed by a
+# base-branch merge) could bypass audit/install/PHPCS/PHPStan.
+dependency_gate=0
+if [[ "${GITHUB_EVENT_NAME:-}" == 'schedule' ]]; then
+  dependency_gate=1
+elif [[ "${GITHUB_EVENT_NAME:-}" == 'pull_request' ]]; then
+  base_ref="${GITHUB_BASE_REF:-master}"
+  git rev-parse --verify "origin/${base_ref}^{commit}" >/dev/null 2>&1 || fail 'dependency_base_ref_missing'
+  if git diff --name-only "origin/${base_ref}...HEAD" | grep -qE 'package-lock\.json|composer\.lock'; then
+    dependency_gate=1
+  fi
+elif git diff --name-only HEAD~1 2>/dev/null | grep -qE 'package-lock\.json|composer\.lock'; then
+  dependency_gate=1
+fi
+
+if (( dependency_gate == 1 )); then
   (
     cd "$SEO_TOOLING_DIR"
     npm audit --audit-level=high
   ) || fail 'weekly_seo_npm_audit'
   (
     cd "$THEME_DIR"
+    composer validate --no-check-publish
     composer audit --locked --format=summary
-  ) || fail 'weekly_theme_composer_audit'
-  pass_assert 'weekly-dependency-security-audit'
+    composer install --no-interaction --no-progress --prefer-dist
+    ./vendor/bin/phpcs --standard=phpcs.xml.dist
+    ./vendor/bin/phpstan analyse --memory-limit=2G
+  ) || fail 'weekly_theme_dependency_quality'
+  pass_assert 'weekly-dependency-security-and-quality'
 fi
 
 echo "RELEASE_REGRESSION_CONTRACT=PASS assertions=$assertion_count"
