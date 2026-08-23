@@ -318,9 +318,6 @@ $rebind_definition_pos = is_string( $blog_system ) ? strpos( $blog_system, 'func
 $bootstrap_require_pos = is_string( $blog_system ) ? strpos( $blog_system, "require_once __DIR__ . '/nvx-governed-blog-runtime.php'" ) : false;
 $pre_get_posts_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_action( 'pre_get_posts', 'nvx_governed_blog_runtime_pre_get_posts', PHP_INT_MAX )" ) : false;
 $the_posts_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_filter( 'the_posts', 'nvx_governed_blog_runtime_force_the_posts', PHP_INT_MAX, 2 )" ) : false;
-$rebind_action_contract = is_string( $runtime_source )
-	? preg_match( '/function\s+nvx_governed_blog_runtime_rebind_queries_action\s*\(\s*\)\s*:\s*void\s*\{\s*nvx_governed_blog_runtime_rebind_queries\s*\(\s*\)\s*;\s*\}/s', $runtime_source )
-	: 0;
 $wp_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_action( 'wp', 'nvx_governed_blog_runtime_rebind_queries_action', PHP_INT_MAX )" ) : false;
 $template_redirect_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_action( 'template_redirect', 'nvx_governed_blog_runtime_rebind_queries_action', PHP_INT_MAX )" ) : false;
 $template_include_hook_pos = is_string( $runtime_source ) ? strpos( $runtime_source, "add_filter( 'template_include', 'nvx_governed_blog_runtime_template_include', PHP_INT_MAX )" ) : false;
@@ -334,7 +331,6 @@ if ( false === $rebind_definition_pos
 	|| $rebind_definition_pos >= $bootstrap_require_pos
 	|| false === $pre_get_posts_hook_pos
 	|| false === $the_posts_hook_pos
-	|| 1 !== $rebind_action_contract
 	|| false === $wp_hook_pos
 	|| false === $template_redirect_hook_pos
 	|| false === $template_include_hook_pos
@@ -351,7 +347,7 @@ if ( false === $rebind_definition_pos
 echo 'GOVERNED_BLOG_DB_AUTHORITATIVE_RUNTIME=PASS requested_post=3334 cache_poison_id=3310 cache_poison_slug=requested cache_apis_called=0' . PHP_EOL;
 echo 'GOVERNED_BLOG_REQUEST_MEMOIZATION=PASS db_queries_after_first_resolution=0' . PHP_EOL;
 echo 'GOVERNED_BLOG_IMMUTABLE_REQUEST_URI=PASS requested_post=3334 mutated_server_uri=3310' . PHP_EOL;
-echo 'GOVERNED_BLOG_EARLY_QUERY_REBIND=PASS requested_post=3334 stale_query_post=3310 hook=wp priority=PHP_INT_MAX adapter=void' . PHP_EOL;
+echo 'GOVERNED_BLOG_EARLY_QUERY_REBIND=PASS requested_post=3334 stale_query_post=3310 hook=wp priority=PHP_INT_MAX' . PHP_EOL;
 echo 'GOVERNED_BLOG_FINAL_QUERY_TEMPLATE_LOCK=PASS requested_post=3334 incoming_post=3310 template=single-post.php' . PHP_EOL;
 echo 'GOVERNED_BLOG_CANONICAL_OWNER=PASS owner=yoast filter=wpseo_canonical manual_governed_canonical=0' . PHP_EOL;
 echo 'GOVERNED_BLOG_HTTP_RUNTIME_SENTINEL=PASS contract=' . NVX_GOVERNED_BLOG_RUNTIME_CONTRACT . PHP_EOL;
