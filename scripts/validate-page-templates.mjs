@@ -22,7 +22,7 @@
  */
 
 import { execFile } from 'node:child_process';
-import { readFileSync, writeFileSync, renameSync, existsSync, statSync } from 'fs';
+import { readFileSync, writeFileSync, renameSync, existsSync, statSync, realpathSync } from 'fs';
 import { join, dirname, basename, resolve, sep } from 'path';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'url';
@@ -135,6 +135,18 @@ function validatePublicationTopology(pages, manifest) {
 const SITEMAP_FETCH_RETRIES = 4;
 const SITEMAP_BACKOFF_BASE_MS = 1500;
 
+function fileExistsWithinRoot(candidatePath, rootPath) {
+  if (!existsSync(candidatePath)) return false;
+  try {
+    const realRoot = realpathSync(rootPath);
+    const realCandidate = realpathSync(candidatePath);
+    if (!realCandidate.startsWith(`${realRoot}${sep}`)) return false;
+    return statSync(realCandidate).isFile();
+  } catch {
+    return false;
+  }
+}
+
 function templateExists(templatePath) {
   if (!templatePath || templatePath === '' || templatePath === 'default') return true;
   const hasTemplatesPrefix = templatePath.startsWith('templates/');
@@ -152,14 +164,14 @@ function templateExists(templatePath) {
   }
   
   const inTemplatesDir = resolve(TEMPLATES_DIR, templateName);
-  if (inTemplatesDir.startsWith(resolve(TEMPLATES_DIR) + sep)) {
-    if (existsSync(inTemplatesDir) && statSync(inTemplatesDir).isFile()) return true;
+  if (inTemplatesDir.startsWith(resolve(TEMPLATES_DIR) + sep) && fileExistsWithinRoot(inTemplatesDir, TEMPLATES_DIR)) {
+    return true;
   }
   
   if (!hasTemplatesPrefix) {
     const inThemeRoot = resolve(THEME_ROOT, templateName);
-    if (inThemeRoot.startsWith(resolve(THEME_ROOT) + sep)) {
-      if (existsSync(inThemeRoot) && statSync(inThemeRoot).isFile()) return true;
+    if (inThemeRoot.startsWith(resolve(THEME_ROOT) + sep) && fileExistsWithinRoot(inThemeRoot, THEME_ROOT)) {
+      return true;
     }
   }
   
