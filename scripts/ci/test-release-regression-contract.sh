@@ -145,11 +145,24 @@ while IFS= read -r -d '' seo_script; do
 done < <(find "$SEO_TOOLING_DIR" -maxdepth 1 -type f -name '*.js' -print0)
 pass_assert 'seo-tooling-syntax'
 
-# The canonical weekly schedule executes this release contract. When dependency
-# locks change, validate the exact resolved graph immediately as part of the PR
-# static gate: audit, install from lock, then run PHPCS and PHPStan. This keeps a
-# dependency-only PR from going green while the deep-quality job is skipped.
-if [[ "${GITHUB_EVENT_NAME:-}" == 'schedule' ]] || git diff --name-only HEAD~1 2>/dev/null | grep -qE 'package-lock\.json|composer\.lock'; then
+# The canonical weekly schedule executes this release contract. A pull request
+# must evaluate the complete branch delta against its base, not only HEAD~1;
+# otherwise dependency changes split across multiple commits (or followed by a
+# base-branch merge) could bypass audit/install/PHPCS/PHPStan.
+dependency_gate=0
+if [[ "${GITHUB_EVENT_NAME:-}" == 'schedule' ]]; then
+  dependency_gate=1
+elif [[ "${GITHUB_EVENT_NAME:-}" == 'pull_request' ]]; then
+  base_ref="${GITHUB_BASE_REF:-master}"
+  git rev-parse --verify "origin/${base_ref}^{commit}" >/dev/null 2>&1 || fail 'dependency_base_ref_missing'
+  if git diff --name-only "origin/${base_ref}...HEAD" | grep -qE 'package-lock\.json|composer\.lock'; then
+    dependency_gate=1
+  fi
+elif git diff --name-only HEAD~1 2>/dev/null | grep -qE 'package-lock\.json|composer\.lock'; then
+  dependency_gate=1
+fi
+
+if (( dependency_gate == 1 )); then
   (
     cd "$SEO_TOOLING_DIR"
     npm audit --audit-level=high
