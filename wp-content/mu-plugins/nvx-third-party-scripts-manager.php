@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: NUVANX Third-party Scripts Manager
- * Description: Prevents rogue third-party tracking scripts (Facebook, HubSpot tracking, Klaviyo.js) from being added to initial server-rendered HTML and provides a client-side loader.
+ * Description: Prevents rogue third-party tracking scripts (Facebook, HubSpot tracking, Klaviyo.js) from being added to initial server-rendered HTML.
  * Version: 1.1.0
  * Author: NUVANX
  */
@@ -28,7 +28,6 @@ class Nvx_Third_Party_Scripts_Manager {
 	 */
 	public static function init(): void {
 		add_action( 'init', array( self::class, 'remove_server_side_scripts' ) );
-		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue_client_side_loader' ), 100 );
 	}
 
 	/**
@@ -68,25 +67,6 @@ class Nvx_Third_Party_Scripts_Manager {
 			}
 		}
 		return $tag;
-	}
-
-	/**
-	 * Enqueues the client-side script loader that dynamically injects third-party
-	 * scripts after the page has loaded in the browser.
-	 */
-	public static function enqueue_client_side_loader(): void {
-		$script_path       = '/assets/js/nvx-third-party-loader.js';
-		$script_asset_path = get_theme_file_path( $script_path );
-
-		if ( file_exists( $script_asset_path ) ) {
-			wp_enqueue_script(
-				'nvx-third-party-loader',
-				get_theme_file_uri( $script_path ),
-				array(),
-				filemtime( $script_asset_path ), // Version based on file modification time.
-				true // Load in footer.
-			);
-		}
 	}
 }
 

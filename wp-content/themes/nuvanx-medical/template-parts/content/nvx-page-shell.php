@@ -26,7 +26,7 @@ if ( ! empty( $shell_content ) ) {
 	rewind_posts();
 }
 
-// Header.php already provides <main id="nvx-main" class="nvx-main" role="main"> and .nvx-brand-page wrapper
+// Header.php already provides <main id="nvx-main" class="nvx-main"> and .nvx-brand-page wrapper
 // Content renders directly without additional wrapper for consistency with custom templates
 // Only add nvx-main-shell wrapper when nvx_shell_with_wrapper is set (for home page only)
 if ( ! empty( $shell_with_wrap ) ) {

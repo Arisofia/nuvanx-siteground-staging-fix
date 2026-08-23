@@ -99,7 +99,7 @@ wp_head();
 	<a href="<?php echo function_exists( 'nvx_whatsapp_url' ) ? esc_url( nvx_whatsapp_url( 'primary' ) ) : '#'; ?>" class="nvx-brand-btn nvx-btn--secondary" target="_blank" rel="noopener noreferrer" data-gtag="click-whatsapp"><?php esc_html_e( 'Contactar por WhatsApp', 'nuvanx-medical' ); ?></a>
 </dialog>
 
-<main id="nvx-main" class="nvx-main" role="main" tabindex="-1">
+<main id="nvx-main" class="nvx-main" tabindex="-1">
 	<?php
 	// Check if current page has standard wrapper in post_content
 	$has_standard_wrapper = false;
