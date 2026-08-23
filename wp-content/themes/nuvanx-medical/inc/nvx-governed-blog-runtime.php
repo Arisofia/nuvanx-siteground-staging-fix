@@ -183,7 +183,6 @@ function nvx_governed_blog_runtime_pre_get_posts( WP_Query $query ): void {
 	$query->set( 'page_id', 0 );
 }
 
-
 /**
  * Last-word post-array lock after SQL/cache filters have run.
  *
@@ -264,6 +263,10 @@ function nvx_governed_blog_runtime_rebind_queries(): ?WP_Post {
 	return $resolved;
 }
 
+/** WordPress action adapter: actions must not return a value. */
+function nvx_governed_blog_runtime_rebind_queries_action(): void {
+	nvx_governed_blog_runtime_rebind_queries();
+}
 
 /** Force the canonical post entrypoint for an exact governed request. */
 function nvx_governed_blog_runtime_template_include( $template ) {
@@ -401,8 +404,8 @@ function nvx_governed_blog_runtime_print_head_contract(): void {
 // callbacks registered earlier.
 add_action( 'pre_get_posts', 'nvx_governed_blog_runtime_pre_get_posts', PHP_INT_MAX );
 add_filter( 'the_posts', 'nvx_governed_blog_runtime_force_the_posts', PHP_INT_MAX, 2 );
-add_action( 'wp', 'nvx_governed_blog_runtime_rebind_queries', PHP_INT_MAX );
-add_action( 'template_redirect', 'nvx_governed_blog_runtime_rebind_queries', PHP_INT_MAX );
+add_action( 'wp', 'nvx_governed_blog_runtime_rebind_queries_action', PHP_INT_MAX );
+add_action( 'template_redirect', 'nvx_governed_blog_runtime_rebind_queries_action', PHP_INT_MAX );
 add_filter( 'template_include', 'nvx_governed_blog_runtime_template_include', PHP_INT_MAX );
 
 remove_action( 'wp_head', 'nvx_document_governance_print_head_contract', 2 );
