@@ -1160,8 +1160,8 @@ body.nvx-valoracion-modal-open{
    ═══════════════════════════════════════════════════════════ */
 .nvx-treatment-process{padding-block:var(--nvx-pad-section);background:var(--nvx-surface-soft)}
 .nvx-treatment-process__inner{max-width:var(--nvx-shell);margin-inline:auto;padding-inline:var(--nvx-gutter)}
-.nvx-treatment-process__kicker{font-family:var(--nvx-sans);font-size:var(--nvx-type-small);font-weight:600;letter-spacing:var(--nvx-track-button);text-transform:uppercase;color:var(--nvx-accent-muted);margin:0 0 var(--nvx-space-2)}
-.nvx-treatment-process__title{font-family:var(--nvx-serif);font-size:var(--nvx-type-h2);font-weight:400;line-height:var(--nvx-lh-h2);color:var(--nvx-ink);margin:0 0 var(--nvx-space-4);max-width:28ch}
+.nvx-treatment-process__kicker{font-family:var(--nvx-sans);font-size:var(--nvx-type-small);font-weight:600;letter-spacing:var(--nvx-track-button);text-transform:uppercase;color:var(--nvx-accent-muted);margin:0 0 var(--nvx-space-1)}
+.nvx-treatment-process__title{font-family:var(--nvx-serif);font-size:var(--nvx-type-h2);font-weight:400;line-height:var(--nvx-lh-h2);color:var(--nvx-ink);margin:0 0 var(--nvx-space-2);max-width:22ch}
 .nvx-treatment-process__step{counter-increment:nvx-steps;display:grid;gap:var(--nvx-space-2);padding:var(--nvx-space-4);background:var(--nvx-light);border:var(--nvx-border-hairline) solid var(--nvx-color-line);border-radius:var(--nvx-radius-card)}
 .nvx-treatment-process__step::before{content:counter(nvx-steps,decimal-leading-zero);font-family:var(--nvx-serif);font-size:var(--nvx-type-h3);color:var(--nvx-accent-muted);line-height:1}
 .nvx-treatment-process__step-title{font-family:var(--nvx-sans);font-size:var(--nvx-type-body);font-weight:700;color:var(--nvx-ink);margin:0}
@@ -1472,4 +1472,97 @@ body.nvx-valoracion-modal-open{
   margin: 0;
   font-size: var(--nvx-type-body);
   color: var(--nvx-ink);
+}
+
+/* Bridal studio — route-owned editorial layout restored after component cleanup. */
+.nvx-bridal-studio {
+  overflow: hidden;
+}
+
+.nvx-bridal-studio__intro {
+  padding-bottom: var(--nvx-space-6);
+}
+
+.nvx-bridal-studio__plate {
+  margin: 0;
+  background: transparent;
+}
+
+.nvx-bridal-studio__plate figcaption {
+  margin-top: var(--nvx-space-2);
+  padding-inline: 0;
+  font-size: var(--nvx-type-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nvx-text-muted);
+}
+
+.nvx-bridal-studio img.nvx-bridal-studio__img,
+.nvx-bridal-studio img.nvx-media--body {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: cover;
+  border-radius: var(--nvx-radius-image);
+}
+
+.nvx-bridal-studio__spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--nvx-space-6);
+  align-items: center;
+  margin-bottom: var(--nvx-space-7);
+}
+
+.nvx-bridal-studio__copy {
+  max-width: 36rem;
+}
+
+.nvx-bridal-studio__plate--consult img,
+.nvx-bridal-studio__plate--brazos img,
+.nvx-bridal-studio__plate--espalda img {
+  aspect-ratio: 4 / 5;
+}
+
+.nvx-bridal-studio__plate--consult img {
+  object-position: center 45%;
+}
+
+.nvx-bridal-studio__plate--papada {
+  margin: 0 auto var(--nvx-space-7);
+}
+
+.nvx-bridal-studio__plate--papada img {
+  aspect-ratio: 2 / 1;
+  object-position: center;
+}
+
+.nvx-bridal-studio__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--nvx-space-6);
+  align-items: start;
+  padding-bottom: var(--nvx-space-4);
+}
+
+.nvx-bridal-studio__plate--brazos img {
+  object-position: center 14%;
+}
+
+.nvx-bridal-studio__plate--espalda img {
+  object-position: center 28%;
+}
+
+@media (max-width: 56rem) {
+  .nvx-bridal-studio__spread,
+  .nvx-bridal-studio__pair {
+    grid-template-columns: 1fr;
+    gap: var(--nvx-space-4);
+    margin-bottom: var(--nvx-space-6);
+  }
+
+  .nvx-bridal-studio__plate--papada {
+    margin-bottom: var(--nvx-space-6);
+  }
 }
