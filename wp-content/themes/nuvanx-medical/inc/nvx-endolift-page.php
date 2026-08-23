@@ -132,11 +132,12 @@ function nvx_endolift_editorial_body_markup(): string {
 	$data = nvx_catalog_json_resolved( 'endolift-page.json' );
 
 	$colegiado    = defined( 'NVX_DIRECTOR_COLEGIADO' ) ? NVX_DIRECTOR_COLEGIADO : '282864786';
-	$price_from   = function_exists( 'nvx_endolift_price_from_eur' ) ? nvx_endolift_price_from_eur() : 798.60;
+	$clinical_ssot = nvx_get_clinical_treatment( 'endolift_facial' );
+	$price_from   = $clinical_ssot['base_price'] ?? ( function_exists( 'nvx_endolift_price_from_eur' ) ? nvx_endolift_price_from_eur() : 798.60 );
 	$price_label  = function_exists( 'nvx_format_price_eur' ) ? nvx_format_price_eur( $price_from ) : number_format_i18n( $price_from, 2 );
-	$review_label = function_exists( 'nvx_clinical_review_month_label' )
-		? nvx_clinical_review_month_label()
-		: ( defined( 'NVX_ENDOLIFT_REVIEW_LABEL' ) ? NVX_ENDOLIFT_REVIEW_LABEL : 'agosto 2026' );
+	$review_label = ! empty( $clinical_ssot['scientific_review_date'] )
+		? wp_date( 'F Y', strtotime( $clinical_ssot['scientific_review_date'] ) )
+		: ( function_exists( 'nvx_clinical_review_month_label' ) ? nvx_clinical_review_month_label() : 'agosto 2026' );
 	$equipo_url   = home_url( '/equipo-medico/' );
 
 	$html = '<div class="nvx-endolift-editorial">';
@@ -153,6 +154,24 @@ function nvx_endolift_editorial_body_markup(): string {
 	);
 	$html .= ' <a class="nvx-brand-inline-link" href="' . esc_url( $equipo_url ) . '">' . esc_html( $data['review']['link'] ?? '' ) . '</a>';
 	$html .= '</p>';
+
+
+	// Ficha Clínica E-E-A-T (SSOT)
+	$clinical = nvx_get_clinical_treatment( 'endolift_facial' );
+	if ( $clinical ) {
+		$html .= '<aside class="nvx-clinical-factsheet" aria-label="Ficha clínica estructurada">';
+		$html .= '<h3 class="nvx-clinical-factsheet__title">Ficha Técnica: ' . esc_html( $clinical['name'] ) . '</h3>';
+		$html .= '<dl class="nvx-clinical-factsheet__list">';
+		
+		$html .= '<dt>Mecanismo</dt><dd>' . esc_html( $clinical['mechanism'] ) . '</dd>';
+		$html .= '<dt>Anestesia</dt><dd>' . esc_html( $clinical['anesthesia'] ) . '</dd>';
+		$html .= '<dt>Duración</dt><dd>' . esc_html( $clinical['duration'] ) . '</dd>';
+		$html .= '<dt>Recuperación</dt><dd>' . esc_html( $clinical['recovery'] ) . '</dd>';
+		$html .= '<dt>Sesiones</dt><dd>' . esc_html( $clinical['sessions'] ) . '</dd>';
+		
+		$html .= '</dl>';
+		$html .= '</aside>';
+	}
 
 	// A. Qué es (clinical framing; biophysics section keeps 1470 nm / formula detail).
 	$html .= nvx_page_brand_section_open_markup( 'nvx-endolift-what', 'nvx-endolift-what-title' );
@@ -415,3 +434,23 @@ function nvx_content_restructure_endolift_page( string $content ): string {
 	return '<div class="entry-content nvx-page__content">' . $hero . $body . '</div>';
 }
 add_filter( 'the_content', 'nvx_content_restructure_endolift_page', NVX_HOOK_PRIO_ENDOLIFT );
+
+
+/**
+ * Inyectar el schema MedicalProcedure basado en la Matriz Clínica (SSOT).
+ */
+function nvx_endolift_extend_yoast_schema( $graph ) {
+	if ( ! is_array( $graph ) || ! nvx_endolift_is_singular_context() ) {
+		return $graph;
+	}
+
+	$url = get_permalink( get_queried_object_id() );
+	$medical_schema = nvx_clinical_generate_schema( 'endolift_facial', $url );
+
+	if ( $medical_schema ) {
+		$graph[] = $medical_schema;
+	}
+
+	return $graph;
+}
+add_filter( 'wpseo_schema_graph', 'nvx_endolift_extend_yoast_schema', 50 );

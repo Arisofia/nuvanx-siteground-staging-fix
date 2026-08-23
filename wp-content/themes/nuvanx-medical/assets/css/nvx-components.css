@@ -1428,3 +1428,48 @@ body.nvx-valoracion-modal-open{
 
 .nvx-brand-btn, .nvx-btn, .nvx-button { will-change: transform; }
 
+
+/* Clinical Factsheet (SSOT Matrix) */
+.nvx-clinical-factsheet {
+  background: var(--nvx-surface-soft, #f7f9fa);
+  border: 1px solid var(--nvx-color-line, #e2e8f0);
+  border-radius: var(--nvx-radius-lg, 8px);
+  padding: var(--nvx-space-4, 24px);
+  margin-block: var(--nvx-space-5, 32px);
+}
+
+.nvx-clinical-factsheet__title {
+  font-family: var(--nvx-font-heading);
+  font-size: var(--nvx-type-h5);
+  font-weight: 600;
+  margin-bottom: var(--nvx-space-3, 16px);
+  color: var(--nvx-ink);
+}
+
+.nvx-clinical-factsheet__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--nvx-space-2, 12px);
+}
+
+@media (min-width: 640px) {
+  .nvx-clinical-factsheet__list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--nvx-space-3, 16px);
+  }
+}
+
+.nvx-clinical-factsheet__list dt {
+  font-weight: 600;
+  font-size: var(--nvx-type-small);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nvx-charcoal);
+  margin-bottom: 2px;
+}
+
+.nvx-clinical-factsheet__list dd {
+  margin: 0;
+  font-size: var(--nvx-type-body);
+  color: var(--nvx-ink);
+}
