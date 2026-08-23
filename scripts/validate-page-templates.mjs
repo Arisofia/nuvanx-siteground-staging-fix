@@ -450,8 +450,8 @@ async function validateTemplates() {
 
     console.log('\n🔍 Verifying expected template files exist...\n');
     for (const templateName of VALID_TEMPLATES) {
-      const templatePath = join(TEMPLATES_DIR, templateName);
-      if (!existsSync(templatePath)) {
+      const templatePath = resolve(TEMPLATES_DIR, templateName);
+      if (!templatePath.startsWith(resolve(TEMPLATES_DIR) + sep) || !fileExistsWithinRoot(templatePath, TEMPLATES_DIR)) {
         templateErrors.push(`Required template file missing: templates/${templateName}`);
       } else {
         console.log(`✅ ${templateName} exists`);
