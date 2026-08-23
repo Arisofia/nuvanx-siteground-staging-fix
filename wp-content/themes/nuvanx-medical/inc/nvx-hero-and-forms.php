@@ -330,7 +330,7 @@ if ( ! function_exists( 'nvx_valoracion_native_hubspot_is_target_page' ) ) {
 		if ( function_exists( 'nvx_is_valoracion_page_request' ) && nvx_is_valoracion_page_request() ) {
 			return true;
 		}
-		return is_page( 2636 ) || is_page( 'valoracion' );
+		return is_page( 'valoracion' ) || is_page( 'madrid/valoracion' );
 	}
 }
 

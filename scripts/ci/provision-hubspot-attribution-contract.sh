@@ -125,13 +125,13 @@ check_property() {
     if [[ "$name_ok" == '1' && "$type" == "$expected_type" && "$field_type" == "$expected_field_type" && "$hidden" == 'false' && "$form_field" == 'true' && "$options_ok" == '1' ]]; then
       return 0
     fi
-    echo "HUBSPOT_PROPERTY_CONTRACT=FAIL property=$name name_match=$name_ok type=${type:-missing} field_type=${field_type:-missing} hidden=$hidden form_field=$form_field options_ok=$options_ok expected_type=$expected_type expected_field_type=$expected_field_type" >&2
+    echo "HUBSPOT_PROPERTY_CONTRACT=FAIL property=\"$name\" name_match=\"$name_ok\" type=\"${type:-missing}\" field_type=\"${field_type:-missing}\" hidden=\"$hidden\" form_field=\"$form_field\" options_ok=\"$options_ok\" expected_type=\"$expected_type\" expected_field_type=\"$expected_field_type\"" >&2
     exit 1
   fi
   if [[ "$status" == '404' ]]; then
     return 1
   fi
-  echo "HUBSPOT_PROPERTY_CHECK=ERROR property=$name status=$status" >&2
+  echo "HUBSPOT_PROPERTY_CHECK=ERROR property=\"$name\" status=\"$status\"" >&2
   jq '{status,category,message,correlationId}' "$out" 2>/dev/null || true
   exit 1
 }
@@ -149,14 +149,14 @@ check_existing_string_property() {
     if [[ "$name_ok" == '1' && "$type" == 'string' && "$hidden" == 'false' ]]; then
       return 0
     fi
-    echo "HUBSPOT_PROPERTY_CONTRACT=FAIL property=$name name_match=$name_ok type=${type:-missing} hidden=$hidden" >&2
+    echo "HUBSPOT_PROPERTY_CONTRACT=FAIL property=\"$name\" name_match=\"$name_ok\" type=\"${type:-missing}\" hidden=\"$hidden\"" >&2
     exit 1
   fi
   if [[ "$status" == '404' ]]; then
-    echo "HUBSPOT_PROPERTY_CONTRACT=FAIL missing_existing_property=$name" >&2
+    echo "HUBSPOT_PROPERTY_CONTRACT=FAIL missing_existing_property=\"$name\"" >&2
     exit 1
   fi
-  echo "HUBSPOT_PROPERTY_CHECK=ERROR property=$name status=$status" >&2
+  echo "HUBSPOT_PROPERTY_CHECK=ERROR property=\"$name\" status=\"$status\"" >&2
   jq '{status,category,message,correlationId}' "$out" 2>/dev/null || true
   exit 1
 }
@@ -194,11 +194,11 @@ create_managed_property() {
   local status
   status="$(request POST "$API_BASE/crm/v3/properties/contacts" "$work/create-${name}-response.json" "$body")"
   [[ "$status" == '201' || "$status" == '200' ]] || {
-    echo "HUBSPOT_PROPERTY_CREATE=FAIL property=$name status=$status" >&2
+    echo "HUBSPOT_PROPERTY_CREATE=FAIL property=\"$name\" status=\"$status\"" >&2
     jq '{status,category,message,correlationId}' "$work/create-${name}-response.json" 2>/dev/null || true
     exit 1
   }
-  echo "HUBSPOT_PROPERTY_CREATE=PASS property=$name"
+  echo "HUBSPOT_PROPERTY_CREATE=PASS property=\"$name\""
 }
 
 form_max_group_fields() {
@@ -300,13 +300,13 @@ required_form_fields=("${required_existing_properties[@]}" "${managed_properties
 form="$work/form.json"
 status="$(request GET "$API_BASE/marketing/v3/forms/$FORM_ID" "$form")"
 [[ "$status" == '200' ]] || {
-  echo "HUBSPOT_FORM_CONTRACT=FAIL status=$status form_id=$FORM_ID" >&2
+  echo "HUBSPOT_FORM_CONTRACT=FAIL status=\"$status\" form_id=\"$FORM_ID\"" >&2
   jq '{status,category,message,correlationId}' "$form" 2>/dev/null || true
   exit 1
 }
 
 if ! jq -e --arg portal "$PORTAL_ID" '((.portalId // "") == "" or (.portalId|tostring) == $portal) and (.archived // false) == false' "$form" >/dev/null; then
-  echo "HUBSPOT_FORM_IDENTITY=FAIL form_id=$FORM_ID portal=$PORTAL_ID" >&2
+  echo "HUBSPOT_FORM_IDENTITY=FAIL form_id=\"$FORM_ID\" portal=\"$PORTAL_ID\"" >&2
   exit 1
 fi
 
@@ -327,7 +327,7 @@ if (( current_max_group_fields > FORM_MAX_FIELDS_PER_GROUP )); then
 fi
 
 if [[ "$MODE" == '--check' && "$needs_group_normalization" == '1' ]]; then
-  echo "HUBSPOT_FORM_GROUP_CONTRACT=FAIL max_fields=$current_max_group_fields allowed=$FORM_MAX_FIELDS_PER_GROUP" >&2
+  echo "HUBSPOT_FORM_GROUP_CONTRACT=FAIL max_fields=$current_max_group_fields allowed=\"$FORM_MAX_FIELDS_PER_GROUP\"" >&2
 fi
 if [[ "$MODE" == '--check' && ${#missing_form_fields[@]} -gt 0 ]]; then
   printf 'HUBSPOT_FORM_FIELD_CONTRACT=FAIL missing=%s\n' "${missing_form_fields[*]}" >&2
@@ -339,7 +339,7 @@ if (( ${#missing_form_fields[@]} > 0 || needs_group_normalization == 1 )); then
 
     normalized_max="$(form_max_group_fields "$work/form-working.json")"
     [[ "$normalized_max" =~ ^[0-9]+$ && "$normalized_max" -le "$FORM_MAX_FIELDS_PER_GROUP" ]] || {
-      echo "HUBSPOT_FORM_NORMALIZE=FAIL max_fields=${normalized_max:-invalid}" >&2
+      echo "HUBSPOT_FORM_NORMALIZE=FAIL max_fields=\"${normalized_max:-invalid}\"" >&2
       exit 1
     }
     verify_visible_form_baseline "$work/form-working.json"
@@ -376,7 +376,7 @@ if (( ${#missing_form_fields[@]} > 0 || needs_group_normalization == 1 )); then
 
     patch_max="$(form_max_group_fields "$work/form-working.json")"
     [[ "$patch_max" =~ ^[0-9]+$ && "$patch_max" -le "$FORM_MAX_FIELDS_PER_GROUP" ]] || {
-      echo "HUBSPOT_FORM_PATCH_CONTRACT=FAIL max_fields=${patch_max:-invalid}" >&2
+      echo "HUBSPOT_FORM_PATCH_CONTRACT=FAIL max_fields=\"${patch_max:-invalid}\"" >&2
       exit 1
     }
     verify_visible_form_baseline "$work/form-working.json"
@@ -384,11 +384,11 @@ if (( ${#missing_form_fields[@]} > 0 || needs_group_normalization == 1 )); then
     jq '{fieldGroups}' "$work/form-working.json" > "$work/form-patch.json"
     patch_status="$(request PATCH "$API_BASE/marketing/v3/forms/$FORM_ID" "$work/form-patch-response.json" "$work/form-patch.json")"
     [[ "$patch_status" == '200' ]] || {
-      echo "HUBSPOT_FORM_PATCH=FAIL status=$patch_status form_id=$FORM_ID" >&2
+      echo "HUBSPOT_FORM_PATCH=FAIL status=\"$patch_status\" form_id=\"$FORM_ID\"" >&2
       jq '{status,category,message,correlationId}' "$work/form-patch-response.json" 2>/dev/null || true
       exit 1
     }
-    echo "HUBSPOT_FORM_PATCH=PASS added=${#missing_form_fields[@]} normalized_legacy_groups=$needs_group_normalization max_fields_per_group=$FORM_MAX_FIELDS_PER_GROUP"
+    echo "HUBSPOT_FORM_PATCH=PASS added=\"${#missing_form_fields[@]}\" normalized_legacy_groups=\"$needs_group_normalization\" max_fields_per_group=\"$FORM_MAX_FIELDS_PER_GROUP\""
   fi
 fi
 
@@ -402,14 +402,14 @@ verify_status="$(request GET "$API_BASE/marketing/v3/forms/$FORM_ID" "$verify")"
 
 verify_max="$(form_max_group_fields "$verify")"
 [[ "$verify_max" =~ ^[0-9]+$ && "$verify_max" -le "$FORM_MAX_FIELDS_PER_GROUP" ]] || {
-  echo "HUBSPOT_FORM_VERIFY=FAIL max_fields=${verify_max:-invalid} allowed=$FORM_MAX_FIELDS_PER_GROUP" >&2
+  echo "HUBSPOT_FORM_VERIFY=FAIL max_fields=\"${verify_max:-invalid}\" allowed=\"$FORM_MAX_FIELDS_PER_GROUP\"" >&2
   exit 1
 }
 verify_visible_form_baseline "$verify"
 
 for original_field in "${existing_form_fields[@]}"; do
   jq -e --arg name "$original_field" '[.fieldGroups[]?.fields[]? | select(.name == $name)] | length >= 1' "$verify" >/dev/null || {
-    echo "HUBSPOT_FORM_VERIFY=FAIL lost_existing_field=$original_field" >&2
+    echo "HUBSPOT_FORM_VERIFY=FAIL lost_existing_field=\"$original_field\"" >&2
     exit 1
   }
 done
@@ -423,5 +423,5 @@ for property in "${managed_properties[@]}"; do
   }
 done
 
-echo "HUBSPOT_FORM_GROUP_CONTRACT=PASS max_fields=$verify_max allowed=$FORM_MAX_FIELDS_PER_GROUP"
-echo "HUBSPOT_ATTRIBUTION_CONTRACT=PASS mode=${MODE#--} form_id=$FORM_ID managed=${#managed_properties[@]} existing=${#required_existing_properties[@]} fields=${#required_form_fields[@]} schema=v2"
+echo "HUBSPOT_FORM_GROUP_CONTRACT=PASS max_fields=$verify_max allowed=\"$FORM_MAX_FIELDS_PER_GROUP\""
+echo "HUBSPOT_ATTRIBUTION_CONTRACT=PASS mode=${MODE#--} form_id=\"$FORM_ID\" managed=${#managed_properties[@]} existing=${#required_existing_properties[@]} fields=${#required_form_fields[@]} schema=v2"
