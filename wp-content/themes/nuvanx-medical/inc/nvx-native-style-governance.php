@@ -13,10 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/** Whether the current request is the treatments hub page by slug. */
-function nvx_theme_is_treatments_hub_page(): bool {
-	return is_page() && 'tratamientos' === get_post_field( 'post_name', get_queried_object_id() );
-}
+
 
 /** Public HTML gets one inline bundle — never a chain of theme CSS files. */
 function nvx_theme_public_delivers_inline_styles(): bool {
@@ -42,7 +39,7 @@ add_action( 'wp_enqueue_scripts', 'nvx_theme_register_inline_style_handles', 0 )
 
 /** Whether the theme owns the complete body markup for the current page. */
 function nvx_theme_owns_complete_page_markup(): bool {
-	return is_front_page() || nvx_theme_is_treatments_hub_page();
+	return is_front_page();
 }
 
 /**
@@ -114,9 +111,6 @@ function nvx_theme_critical_stylesheet_files(): array {
 		$files[] = 'assets/css/nvx-home-v3.css';
 	}
 
-	if ( nvx_theme_is_treatments_hub_page() ) {
-		$files[] = 'assets/css/nvx-portfolio-hub.css';
-	}
 
 	if ( function_exists( 'nvx_theme_is_blog_context' ) && nvx_theme_is_blog_context() ) {
 		$files[] = 'assets/css/nvx-posts.css';

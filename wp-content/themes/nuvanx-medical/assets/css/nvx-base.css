@@ -173,7 +173,7 @@ p, li, blockquote, dt, dd {
   }
   body {
     font-size: 12pt;
-    color: #000;
+    color: var(--nvx-ink);
   }
   a[href]::after {
     content: " (" attr(href) ")";

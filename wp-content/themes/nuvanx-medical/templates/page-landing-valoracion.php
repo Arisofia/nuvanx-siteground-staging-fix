@@ -66,7 +66,7 @@ if ( function_exists( 'nvx_is_valoracion_page_request' ) && nvx_is_valoracion_pa
 
 		<section class="nvx-brand-section" aria-label="<?php esc_attr_e( 'Proceso de valoración', 'nuvanx-medical' ); ?>">
 			<div class="nvx-brand-section__inner">
-				<p class="nvx-brand-kicker"><?php esc_html_e( 'NUESTRO MÉTODO', 'nuvanx-medical' ); ?></p>
+				<p class="nvx-brand-kicker" style="text-transform: uppercase;"><?php esc_html_e( 'Nuestro método', 'nuvanx-medical' ); ?></p>
 				<h2 class="nvx-brand-title"><?php esc_html_e( 'Cómo funciona la valoración', 'nuvanx-medical' ); ?></h2>
 				<p class="nvx-brand-lead">
 					<?php esc_html_e( 'Plan individualizado • Precisión clínica • Recuperación según tu caso', 'nuvanx-medical' ); ?>

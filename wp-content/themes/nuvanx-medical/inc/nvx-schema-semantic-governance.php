@@ -282,7 +282,7 @@ function nvx_schema_semantic_normalize_graph( $graph ) {
 	}
 	return array_values( $result );
 }
-nvx_add_filter_with_priority( 'wpseo_schema_graph', 'nvx_schema_semantic_normalize_graph' );
+add_filter( 'wpseo_schema_graph', 'nvx_schema_semantic_normalize_graph', PHP_INT_MAX - 2, 1 );
 
 /** Resolve a callback's source file without executing it. */
 function nvx_schema_runtime_callback_file( $callback ): string {

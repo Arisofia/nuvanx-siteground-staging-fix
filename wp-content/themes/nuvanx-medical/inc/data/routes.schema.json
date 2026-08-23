@@ -31,6 +31,10 @@
         "route_alias": {
           "type": "string",
           "description": "Alternative route path for this entry"
+        },
+        "breadcrumb": {
+          "type": "array",
+          "description": "Breadcrumb items for this route"
         }
       },
       "additionalProperties": false
