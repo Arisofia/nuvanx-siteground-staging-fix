@@ -148,6 +148,11 @@ console.log('Testing Schema Source Pattern Contract...\n');
 
 const phpFiles = [
   'inc/nvx-structured-data.php',
+  'inc/nvx-schema-foundation.php',
+  'inc/nvx-schema-faq.php',
+  'inc/nvx-schema-treatments.php',
+  'inc/nvx-schema-physicians.php',
+  'inc/nvx-schema-graph.php',
   'inc/nvx-aesthetic-treatment-schema.php',
   'inc/nvx-treatment-hub-schema.php',
   'inc/nvx-seo-production-readiness.php',
@@ -198,7 +203,7 @@ for (const file of phpFiles) {
       addViolation(file, 'duplicateIdentity', 'Treatment entities must use canonical #medical-procedure IDs', hubSpecificIds.length);
     }
 
-    if (file === 'inc/nvx-structured-data.php') {
+    if (file === 'inc/nvx-schema-graph.php') {
       const organizationBody = extractPhpFunctionBody(content, 'nvx_schema_enrich_organization');
       if (!organizationBody) {
         addViolation(file, 'organizationContract', 'Could not locate nvx_schema_enrich_organization() for source validation');

@@ -2,8 +2,10 @@
 /** Regression contract for the Endoláser approval gate. */
 import assert from 'node:assert/strict';
 import {
+
   ENDOLASER_APPROVAL_SCHEMA,
   ENDOLASER_PATHS,
+ENDOLASER_SCHEMA_FILES,
   ENDOLASER_REFERENCED_TARIFF_KEYS,
   evaluateEndolaserChanges,
   hasCompleteEndolaserApproval,
@@ -127,7 +129,7 @@ const baseFiles = {
   [ENDOLASER_PATHS.routes]: json(routes),
   [ENDOLASER_PATHS.seo]: json(seo),
   [ENDOLASER_PATHS.tariffs]: json(tariffs),
-  [ENDOLASER_PATHS.structuredData]: structuredData,
+  [ENDOLASER_SCHEMA_FILES[0]]: structuredData,
 };
 
 function decisionFor(path, nextSource) {
@@ -161,16 +163,16 @@ unrelatedSeo.co2.title = 'CO₂ fraccionado Madrid';
 assertPass('ENDOLASER_APPROVAL_UNRELATED_SEO', decisionFor(ENDOLASER_PATHS.seo, json(unrelatedSeo)));
 
 const unrelatedSchema = structuredData.replace("'CO₂ fraccionado'", "'CO₂ fraccionado facial'");
-assertPass('ENDOLASER_APPROVAL_UNRELATED_SCHEMA', decisionFor(ENDOLASER_PATHS.structuredData, unrelatedSchema));
+assertPass('ENDOLASER_APPROVAL_UNRELATED_SCHEMA', decisionFor(ENDOLASER_SCHEMA_FILES[0], unrelatedSchema));
 
 const unrelatedFaq = structuredData.replace('Respuesta postparto.', 'Respuesta postparto actualizada.');
-assertPass('ENDOLASER_APPROVAL_UNRELATED_FAQ', decisionFor(ENDOLASER_PATHS.structuredData, unrelatedFaq));
+assertPass('ENDOLASER_APPROVAL_UNRELATED_FAQ', decisionFor(ENDOLASER_SCHEMA_FILES[0], unrelatedFaq));
 
 const unrelatedEndoliftFaq = structuredData.replace('Respuesta Endolift vigente.', 'Respuesta Endolift actualizada.');
-assertPass('ENDOLASER_APPROVAL_UNRELATED_ENDOLIFT_FAQ', decisionFor(ENDOLASER_PATHS.structuredData, unrelatedEndoliftFaq));
+assertPass('ENDOLASER_APPROVAL_UNRELATED_ENDOLIFT_FAQ', decisionFor(ENDOLASER_SCHEMA_FILES[0], unrelatedEndoliftFaq));
 
 const unrelatedHelper = structuredData.replace('unrelated-v1', 'unrelated-v2');
-assertPass('ENDOLASER_APPROVAL_UNRELATED_SCHEMA_HELPER', decisionFor(ENDOLASER_PATHS.structuredData, unrelatedHelper));
+assertPass('ENDOLASER_APPROVAL_UNRELATED_SCHEMA_HELPER', decisionFor(ENDOLASER_SCHEMA_FILES[0], unrelatedHelper));
 
 assertExpectedFailure(
   'ENDOLASER_APPROVAL_CONTENT_CHANGE_WITHOUT_APPROVAL',
@@ -192,25 +194,25 @@ assertExpectedFailure(
 const changedSchema = structuredData.replace("'name' => 'Endoláser corporal'", "'name' => 'Endoláser corporal actualizado'");
 assertExpectedFailure(
   'ENDOLASER_APPROVAL_SCHEMA_CHANGE_WITHOUT_APPROVAL',
-  decisionFor(ENDOLASER_PATHS.structuredData, changedSchema),
+  decisionFor(ENDOLASER_SCHEMA_FILES[0], changedSchema),
 );
 
 const changedSharedDependency = structuredData.replace('shared-endolaser-v1', 'shared-endolaser-v2');
 assertExpectedFailure(
   'ENDOLASER_APPROVAL_SHARED_SCHEMA_DEPENDENCY_WITHOUT_APPROVAL',
-  decisionFor(ENDOLASER_PATHS.structuredData, changedSharedDependency),
+  decisionFor(ENDOLASER_SCHEMA_FILES[0], changedSharedDependency),
 );
 
 const changedCatalogDependency = structuredData.replace('shared-v1', 'shared-v2');
 assertExpectedFailure(
   'ENDOLASER_APPROVAL_SHARED_FAQ_LOADER_DEPENDENCY_WITHOUT_APPROVAL',
-  decisionFor(ENDOLASER_PATHS.structuredData, changedCatalogDependency),
+  decisionFor(ENDOLASER_SCHEMA_FILES[0], changedCatalogDependency),
 );
 
 const changedEndolaserFaq = structuredData.replace('Respuesta Endoláser.', 'Respuesta Endoláser actualizada.');
 assertExpectedFailure(
   'ENDOLASER_APPROVAL_ENDOLASER_FAQ_WITHOUT_APPROVAL',
-  decisionFor(ENDOLASER_PATHS.structuredData, changedEndolaserFaq),
+  decisionFor(ENDOLASER_SCHEMA_FILES[0], changedEndolaserFaq),
 );
 
 const unclassifiedAnchor = structuredData.replace(
@@ -219,7 +221,7 @@ const unclassifiedAnchor = structuredData.replace(
 );
 assertExpectedFailure(
   'ENDOLASER_APPROVAL_UNCLASSIFIED_SCHEMA_ANCHOR_FAIL_CLOSED',
-  decisionFor(ENDOLASER_PATHS.structuredData, unclassifiedAnchor),
+  decisionFor(ENDOLASER_SCHEMA_FILES[0], unclassifiedAnchor),
 );
 
 const changedTariff = clone(tariffs);
