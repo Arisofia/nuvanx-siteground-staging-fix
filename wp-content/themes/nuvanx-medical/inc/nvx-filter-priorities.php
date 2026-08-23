@@ -23,54 +23,58 @@ function nvx_get_filter_priority( $filter_name ): int {
 		return 10; // Fallback for closures or unknown types
 	}
 
-	$priorities = array(
+		$priorities = array(
 		// === 10-19: Managed Page ===
-		'nvx_contacto_resolve_legacy_template'         => 10, // page_template
-		'nvx_contacto_seo_title'                       => 11, // wpseo_title
-		'nvx_contacto_seo_metadesc'                    => 12, // wpseo_metadesc
-		'nvx_contacto_migrate_legacy_template_meta'    => 13, // template_redirect
-		'nvx_theme_disable_public_facebook_pixel'      => 14, // option_active_plugins
+		'nvx_contacto_resolve_legacy_template'         => 10,
+		'nvx_contacto_seo_title'                       => 11,
+		'nvx_contacto_seo_metadesc'                    => 12,
+		'nvx_contacto_migrate_legacy_template_meta'    => 13,
+		'nvx_theme_disable_public_facebook_pixel'      => 14,
 
 		// === 20-29: Structural Renderer ===
-		'nvx_contact_append_maps'                      => 20, // the_content
-		'nvx_content_presentation_enhance'             => 21, // the_content
-		'nvx_content_inject_global_treatment_sections' => 22, // the_content
-		'nvx_content_ensure_exion_investment'          => 23, // the_content
-		'nvxSedeStripLayoutInlineStyles'               => 24, // the_content
-		'nvx_clinics_hub_render_managed'               => 25, // the_content
-		'nvxClinicsHubEnhance'                         => 26, // the_content
-		'nvx_contacto_enhance_valoracion_page'         => 27, // the_content
-		'nvx_bridal_inject_media'                      => 29, // the_content
+		'nvx_contact_append_maps'                      => 20,
+		'nvx_content_presentation_enhance'             => 21,
+		'nvx_content_inject_global_treatment_sections' => 22,
+		'nvx_content_ensure_exion_investment'          => 23,
+		'nvxSedeStripLayoutInlineStyles'               => 24,
+		'nvx_clinics_hub_render_managed'               => 25,
+		'nvxClinicsHubEnhance'                         => 26,
+		'nvx_contacto_enhance_valoracion_page'         => 27,
+		'nvx_bridal_inject_media'                      => 28,
 
 		// === 30-39: Presentation ===
-		'nvx_filter_valoracion_document_title'         => 30, // wpseo_title
-		'nvx_filter_valoracion_metadesc'               => 31, // wpseo_metadesc
-		'nvx_filter_contacto_document_title'           => 32, // wpseo_title
-		'nvx_filter_contacto_metadesc'                 => 33, // wpseo_metadesc
-		'nvx_filter_contacto_social_image'             => 34, // wpseo_opengraph_image
-		'nvx_filter_contacto_social_title'             => 35, // wpseo_opengraph_title
-		'nvx_filter_contacto_social_description'       => 36, // wpseo_opengraph_desc
-		'nvx_contacto_add_yoast_opengraph_image'       => 37, // wpseo_add_opengraph_images
-		'nvx_content_strip_page_closing_ctas_late'     => 38, // the_content
+		'nvx_filter_valoracion_document_title'         => 30,
+		'nvx_filter_valoracion_metadesc'               => 31,
+		'nvx_filter_contacto_document_title'           => 32,
+		'nvx_filter_contacto_metadesc'                 => 33,
+		'nvx_filter_contacto_social_image'             => 34,
+		'nvx_filter_contacto_social_title'             => 35,
+		'nvx_filter_contacto_social_description'       => 36,
+		'nvx_contacto_add_yoast_opengraph_image'       => 37,
+		'nvx_content_strip_page_closing_ctas_late'     => 38,
 
 		// === 40-49: Business Rules ===
-		'nvx_seo_nonproduction_x_robots_headers'       => 40, // wp_headers
-		'nvx_theme_print_google_attribution_meta'      => 41, // wp_head
+		'nvx_seo_nonproduction_x_robots_headers'       => 40,
+		'nvx_theme_print_google_attribution_meta'      => 41,
 
-		// === 50-59: Schema/Content Normalization ===
-		'nvx_treatment_hub_extend_yoast_graph'         => 50, // wpseo_schema_graph
-		'nvx_aesthetic_treatment_extend_yoast_graph'   => 51, // wpseo_schema_graph
-		'nvx_extend_yoast_schema_graph'                => 52, // wpseo_schema_graph
-		'nvx_seo_production_readiness_schema_graph'    => 53, // wpseo_schema_graph
-		'nvx_filter_contacto_schema_graph'             => 54, // wpseo_schema_graph
-		'nvx_schema_semantic_normalize_graph'          => 55, // wpseo_schema_graph
+		// === 50-69: Schema/Content Normalization ===
+		'nvx_schema_merge_canonical_website_nodes'     => 50,
+		'nvx_extend_yoast_schema_graph'                => 51,
+		'nvx_papada_hub_schema_graph'                  => 52,
+		'nvx_valoracion_schema_graph'                  => 53,
+		'nvx_treatment_hub_extend_yoast_graph'         => 54,
+		'nvx_aesthetic_treatment_extend_yoast_graph'   => 55,
+		'nvx_filter_contacto_schema_graph'             => 56,
+		'nvx_medical_review_schema_graph'              => 57,
+		'nvx_seo_production_readiness_schema_graph'    => 58,
+		'nvx_schema_semantic_normalize_graph'          => 59,
 
-		// === 60-69: Final Hygiene ===
-		'nvx_schema_gate_faq_emission'                 => 60, // wpseo_schema_graph
-		'nvx_schema_deduplicate_ids'                   => 61, // wpseo_schema_graph
-		'nvx_schema_runtime_retire_legacy_emitters'    => 62, // wp_loaded
-		'nvx_render_deploy_stamp_meta'                 => 63, // wp_head
-		'nvx_render_deploy_stamp_jsonld'               => 64, // wp_head
+		// === 70-79: Final Hygiene ===
+		'nvx_schema_gate_faq_emission'                 => 70,
+		'nvx_schema_deduplicate_ids'                   => 71,
+		'nvx_schema_runtime_retire_legacy_emitters'    => 72,
+		'nvx_render_deploy_stamp_meta'                 => 73,
+		'nvx_render_deploy_stamp_jsonld'               => 74,
 	);
 
 	return $priorities[ $filter_name ] ?? 10;

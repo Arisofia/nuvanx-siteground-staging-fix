@@ -9,15 +9,9 @@ defined( 'ABSPATH' ) || exit;
 
 // Close nvx-brand-page wrapper only if it was opened in header.php, and do so
 // before </main> so the div nests correctly inside the main landmark.
-$has_standard_wrapper = false;
-if ( is_page() ) {
-	$post_id              = get_the_ID();
-	$content              = get_post_field( 'post_content', $post_id );
-	$has_standard_wrapper = (bool) preg_match( '/class=["\'][^"\']*entry-content[^"\']*nvx-prose/iu', $content );
-}
 ?>
 
-<?php if ( ! $has_standard_wrapper ) : ?>
+<?php if ( ! function_exists( 'nvx_page_has_standard_wrapper' ) || ! nvx_page_has_standard_wrapper() ) : ?>
 		</div><!-- .nvx-brand-page -->
 <?php endif; ?>
 
@@ -114,7 +108,7 @@ $nvx_col_two  = array_slice( $nvx_footer_treatments, $nvx_split_at );
 						<?php foreach ( $nvx_col_two as $nvx_treatment ) : ?>
 							<a href="<?php echo esc_url( (string) $nvx_treatment['url'] ); ?>"><?php echo esc_html( (string) $nvx_treatment['label'] ); ?></a>
 						<?php endforeach; ?>
-						<a href="<?php echo esc_url( home_url( '/tratamientos/' ) ); ?>"><?php esc_html_e( 'Ver todos →', 'nuvanx-medical' ); ?></a>
+						<a href="<?php echo esc_url( home_url( '/tratamientos/' ) ); ?>" aria-label="<?php esc_attr_e( 'Ver todos los tratamientos', 'nuvanx-medical' ); ?>"><?php esc_html_e( 'Ver todos →', 'nuvanx-medical' ); ?></a>
 					</div>
 				</div>
 			</details>

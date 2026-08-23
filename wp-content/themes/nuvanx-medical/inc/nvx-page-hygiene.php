@@ -765,3 +765,23 @@ function nvx_complianz_whitelist_hubspot_form_src( $whitelisted, $src ): bool {
 	return (bool) $whitelisted;
 }
 add_filter( 'cmplz_src_whitelisted', 'nvx_complianz_whitelist_hubspot_form_src', 10, 2 );
+
+/**
+ * Checks if the current page has a standard wrapper to avoid duplicate regex matching.
+ *
+ * @return bool True if it has the standard wrapper.
+ */
+function nvx_page_has_standard_wrapper(): bool {
+	static $has_wrapper = null;
+	if ( null !== $has_wrapper ) {
+		return $has_wrapper;
+	}
+
+	$has_wrapper = false;
+	if ( is_page() ) {
+		$post_id     = get_the_ID();
+		$content     = get_post_field( 'post_content', $post_id );
+		$has_wrapper = (bool) preg_match( '/class=["\'][^"\']*entry-content[^"\']*nvx-prose/iu', (string) $content );
+	}
+	return $has_wrapper;
+}

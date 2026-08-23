@@ -22,7 +22,7 @@ wp_head();
 <body <?php body_class(); ?>>
 <a class="nvx-skip-link" href="#nvx-main"><?php esc_html_e( 'Saltar al contenido principal', 'nuvanx-medical' ); ?></a>
 <?php wp_body_open(); ?>
-<svg xmlns="http://www.w3.org/2000/svg" hidden style="display:none">
+<svg xmlns="http://www.w3.org/2000/svg" hidden style="display:none" aria-hidden="true">
 	<symbol id="icon-location" viewBox="0 0 24 24">
 	<path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
 	</symbol>
@@ -101,16 +101,8 @@ wp_head();
 
 <main id="nvx-main" class="nvx-main" tabindex="-1">
 	<?php
-	// Check if current page has standard wrapper in post_content
-	$has_standard_wrapper = false;
-	if ( is_page() ) {
-		$post_id              = get_the_ID();
-		$content              = get_post_field( 'post_content', $post_id );
-		$has_standard_wrapper = (bool) preg_match( '/class=["\'][^"\']*entry-content[^"\']*nvx-prose/iu', $content );
-	}
-
 	// Only add nvx-brand-page wrapper if post_content doesn't have standard wrapper
-	if ( ! $has_standard_wrapper ) :
+	if ( ! function_exists( 'nvx_page_has_standard_wrapper' ) || ! nvx_page_has_standard_wrapper() ) :
 		?>
 		<div class="nvx-brand-page">
 	<?php endif; ?>
