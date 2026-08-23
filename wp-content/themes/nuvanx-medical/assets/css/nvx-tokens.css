@@ -146,9 +146,9 @@
   /* Home video stage: keep the upper frame open; scrim only under the bottom copy. */
   --nvx-home-hero-overlay: linear-gradient(
     180deg,
-    rgba(26, 26, 26, 0.16) 0%,
-    rgba(26, 26, 26, 0.12) 32%,
-    rgba(26, 26, 26, 0.28) 52%,
+    rgba(26, 26, 26, 0.35) 0%,
+    rgba(26, 26, 26, 0.28) 32%,
+    rgba(26, 26, 26, 0.35) 52%,
     rgba(26, 26, 26, 0.68) 70%,
     rgba(26, 26, 26, 0.86) 86%,
     rgba(26, 26, 26, 0.92) 100%
@@ -261,4 +261,24 @@
 --nvx-transition-normal: var(--nvx-duration-normal) var(--nvx-ease-standard);
 --nvx-transition-slow: var(--nvx-duration-slow) var(--nvx-ease-standard);
 
+  /* Alias para variables huérfanas (Audit 4.5) */
+  --nvx-color-soft: var(--nvx-surface-soft);
+  --nvx-edge: var(--nvx-color-line);
+  --nvx-fw-semibold: 600;
+  --nvx-lh-body-sm: 1.5;
+  --nvx-lh-heading: var(--nvx-lh-h2);
+  --nvx-type-body-sm: var(--nvx-type-small);
+
+}
+/* Z-index system (CSS-1) */
+:root {
+  --nvx-z-base: 1;
+  --nvx-z-raised: 10;
+  --nvx-z-dropdown: 100;
+  --nvx-z-sticky: 200;
+  --nvx-z-header: 1000;
+  --nvx-z-overlay: 2000;
+  --nvx-z-modal: 3000;
+  --nvx-z-toast: 4000;
+  --nvx-z-a11y: 10000;
 }

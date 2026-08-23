@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $valuation_url = home_url( '/madrid/valoracion/' );
-$contour_arch  = "Contour Architecture\u{2122}";
+$contour_arch  = "Contour Architecture™\u{2122}";
 
 // Start standard content wrapper
 echo '<div class="entry-content nvx-page__content">';

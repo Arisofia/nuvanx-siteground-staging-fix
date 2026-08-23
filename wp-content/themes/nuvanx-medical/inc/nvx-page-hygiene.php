@@ -602,10 +602,10 @@ function nvx_is_page_slug( $slugs ): bool {
 }
 
 /**
- * Applies production safeguards to legal and EXION-related page content.
+ * Applies production safeguards to legal and EXION®-related page content.
  *
  * @param string $content HTML content to process.
- * @return string The content with legal placeholders removed, regulatory context added to applicable pages, and Morpheus comparisons or unapproved EXION prices replaced.
+ * @return string The content with legal placeholders removed, regulatory context added to applicable pages, and Morpheus comparisons or unapproved EXION® prices replaced.
  */
 function nvx_apply_production_business_rules( $content ) {
 	if ( ! is_string( $content ) || '' === trim( $content ) ) {
@@ -620,10 +620,10 @@ function nvx_apply_production_business_rules( $content ) {
 		}
 	}
 
-	// EXION pages: strip unapproved Morpheus8 comparatives and bare euro prices in copy.
-	if ( false !== stripos( $content, 'EXION' ) || false !== stripos( $content, 'Morpheus' ) ) {
+	// EXION® pages: strip unapproved Morpheus8 comparatives and bare euro prices in copy.
+	if ( false !== stripos( $content, 'EXION®' ) || false !== stripos( $content, 'Morpheus' ) ) {
 		$content = preg_replace( '/<details[^>]*>.*?Morpheus.*?<\/details>/is', '', $content ) ?? $content;
-		$content = preg_replace( '/(EXION[^<]*?)\b\d{3,4}\s*€/i', '$1 (Presupuesto tras valoración)', $content ) ?? $content;
+		$content = preg_replace( '/(EXION®[^<]*?)\b\d{3,4}\s*€/i', '$1 (Presupuesto tras valoración)', $content ) ?? $content;
 	}
 
 	return $content;

@@ -52,7 +52,6 @@ function nvx_schema_semantic_allowed_medical_specialties(): array {
 		'Pediatric',
 		'PharmacySpecialty',
 		'Physiotherapy',
-		'PlasticSurgery',
 		'Podiatric',
 		'PrimaryCare',
 		'Psychiatric',
@@ -187,6 +186,11 @@ function nvx_schema_semantic_sanitize_object( array $node ): array {
 
 	if ( array_key_exists( 'priceRange', $node ) && ! array_intersect( $types, array( 'LocalBusiness', 'MedicalClinic' ) ) ) {
 		unset( $node['priceRange'] );
+	}
+
+	// 3.2 Audit: wordCount cannot be accurately determined for block themes at this phase.
+	if ( array_key_exists( 'wordCount', $node ) ) {
+		unset( $node['wordCount'] );
 	}
 
 	if ( array_key_exists( 'procedureType', $node ) ) {

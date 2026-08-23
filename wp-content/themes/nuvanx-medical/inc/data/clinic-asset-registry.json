@@ -11,7 +11,7 @@
     "sala_waiting": "chamberi-sala.jpg is Chamberí waiting room; same hash must not be used as Goya proof",
     "equipment_prep_only": {
       "chamberi": ["DEKA/SmartLipo", "Endolift/LaseMAR"],
-      "goya": ["EXION", "Endolift/LaseMAR"]
+      "goya": ["EXION®", "Endolift/LaseMAR"]
     },
     "gbp_live_upload": false,
     "wp_live_blocks_chamberi_goya": "keep"
@@ -19,7 +19,7 @@
   "notes": [
     "No ZIP/WebP from the local-SEO pack is loaded here. Theme JPEGs only.",
     "Hashes show most Goya files are copies of Chamberí/PMAX assets. Not location-verified.",
-    "BTL EXION promotional PNG and manufacturer packshots are rejected for GBP and sede landings.",
+    "BTL EXION® promotional PNG and manufacturer packshots are rejected for GBP and sede landings.",
     "GBP derivatives must be JPG sRGB; web may use WebP/AVIF later. Do not upload WebP to GBP."
   ],
   "rejected_for_gbp_and_local_landing": [

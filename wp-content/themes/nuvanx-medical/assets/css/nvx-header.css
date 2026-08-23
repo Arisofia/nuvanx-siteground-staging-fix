@@ -11,7 +11,7 @@
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: var(--nvx-z-header);
   min-height: var(--nvx-header-height-mobile);
   overflow: visible;
 }
@@ -130,7 +130,7 @@
   top: calc(100% + var(--nvx-space-1));
   left: 0;
   right: auto;
-  z-index: 1200;
+  z-index: var(--nvx-z-overlay);
   min-width: var(--nvx-submenu-min-width);
   max-width: min(var(--nvx-submenu-max-width), 70vw);
   margin: 0;
@@ -253,7 +253,7 @@
 .nvx-mobile-nav {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: var(--nvx-z-modal);
   display: none;
   box-sizing: border-box;
   width: 100%;
@@ -400,3 +400,4 @@
     padding-inline: calc(var(--nvx-space-1) * 0.35);
   }
 }
+.nvx-logo__img { mix-blend-mode: multiply; }

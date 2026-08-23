@@ -35,28 +35,6 @@
     return false;
   }
 
-  function loadHubSpotScript() {
-    const hubspotScriptId = 'nvx-hubspot-main-script';
-    const existing = document.getElementById(hubspotScriptId);
-    if (existing) return Promise.resolve();
-
-    const portalId = String(config.hubspotPortalId || '147416356').replace(/[^0-9]/g, '');
-    if (!portalId) return Promise.resolve();
-
-    return new Promise(function (resolve) {
-      const script = document.createElement('script');
-      script.id = hubspotScriptId;
-      script.src = 'https://js.hs-scripts.com/' + portalId + '.js';
-      script.async = true;
-      script.addEventListener('load', resolve, { once: true });
-      script.addEventListener('error', function () {
-        script.remove();
-        resolve();
-      }, { once: true });
-      document.head.appendChild(script);
-    });
-  }
-
   function loadHubSpotGlobalTracking() {
     const trackingScriptId = 'nvx-hubspot-tracking-runtime';
     const existing = document.getElementById(trackingScriptId);
@@ -252,7 +230,7 @@
       if (!modal) return;
       lastFocus = trigger || document.activeElement;
       closeMobileNav();
-      modal.showModal();
+      try { if (!modal.open) modal.showModal(); } catch (_e) { modal.setAttribute('open', 'open'); }
       document.body.classList.add('nvx-valoracion-modal-open');
       document.body.style.overflow = 'hidden';
 
@@ -343,6 +321,31 @@
       modal.addEventListener('close', function() {
          closeModal();
       });
+
+      modal.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeModal();
+          return;
+        }
+        if (e.key === 'Tab') {
+          const focusableElements = modal.querySelectorAll('a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])');
+          const first = focusableElements[0];
+          const last = focusableElements[focusableElements.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              last.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === last) {
+              first.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      });
+
     }
 
     window.nvxOpenValoracionModal = function () {
@@ -490,8 +493,7 @@
     removeLegacyHubSpotV2Scripts();
     normalizeNativeHubSpotMounts();
 
-    // Load HubSpot main script for form functionality (independent of tracking consent)
-    loadHubSpotScript();
+
 
     const scriptUrl = resolveHubSpotScriptUrl();
     if (!scriptUrl) return;
@@ -836,16 +838,12 @@
     window.addEventListener('message', function (event) {
       // Security: Verify message origin to prevent potential XSS attacks
       // Only accept messages from HubSpot's domains or same origin
-      const allowedOrigins = [
-        'https://js.hsforms.net',
-        'https://js.hs-scripts.com',
-        'https://forms.hsforms.com',
-        window.location.origin
-      ];
-
-      if (!event.origin || !allowedOrigins.includes(event.origin)) {
-        return; // Reject messages from untrusted origins
-      }
+      if (!event.origin) return;
+      try {
+        var host = new URL(event.origin).hostname.toLowerCase();
+        var isHubSpot = /(^|\.)((hubspot|hsforms|hs-scripts)\.com|hsforms\.net)$/.test(host) || event.origin === window.location.origin;
+        if (!isHubSpot) return;
+      } catch (_e) { return; }
 
       if (isHubSpotFormMessage(event && event.data)) markHubSpotReady();
     });

@@ -31,7 +31,7 @@ function nvx_theme_is_goya_page(): bool {
 	if ( is_admin() ) {
 		return false;
 	}
-	if ( is_page( 1537 ) ) { // Goya Sede page ID
+	if ( is_page( 'clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca' ) ) { // Goya Sede page ID
 		return true;
 	}
 	$path = nvx_theme_request_path();
@@ -369,78 +369,6 @@ add_filter(
 					if ( is_string( $cleaned ) ) {
 						$buffer = $cleaned;
 					}
-
-					// Implement Delay Script Execution for GTM container scripts to improve TBT.
-				// IMPORTANT: gtag.js (GT- / AW- loader) and Consent Mode scripts must NOT be
-				// delayed — Google Consent Mode v2 requires ad_storage/ad_user_data to be set
-				// synchronously on page load, before any user interaction. Delaying them causes
-				// conversion tags to miss users who bounce before scroll/click (5 s timeout).
-				// Only the GTM *container* script (gtm.js?id=GTM-) is safe to defer.
-				$has_delayed = false;
-				$buffer      = preg_replace_callback(
-					'/<script([^>]*)>(.*?)<\/script>/is',
-					function ( $matches ) use ( &$has_delayed ) {
-						$attrs   = $matches[1];
-						$content = $matches[2];
-
-						// Only target the GTM container loader (gtm.js?id=GTM-).
-						$is_gtm_container = (
-							strpos( $attrs, 'gtm.js' ) !== false ||
-							strpos( $content, 'gtm.js' ) !== false
-						);
-
-						// Never delay: gtag.js loader, dataLayer inits, Consent Mode scripts.
-						// These must execute synchronously for Consent Mode v2 compliance.
-						$is_consent_critical = (
-							strpos( $attrs, 'gtag/js' ) !== false ||
-							strpos( $content, 'gtag/js' ) !== false ||
-							strpos( $content, "gtag('consent'" ) !== false ||
-							strpos( $content, 'gtag("consent"' ) !== false ||
-							strpos( $content, 'cmplz_gcm' ) !== false ||
-							strpos( $content, 'dataLayer' ) !== false
-						);
-
-						if ( $is_gtm_container && ! $is_consent_critical ) {
-							$has_delayed = true;
-							if ( strpos( $attrs, 'type=' ) !== false ) {
-								$attrs = preg_replace( '/type=[\'"][^\'"]*[\'"]/', 'type="text/delayed"', $attrs );
-							} else {
-								$attrs .= ' type="text/delayed"';
-							}
-							$attrs = str_replace( ' src=', ' data-src=', $attrs );
-							return '<script' . $attrs . '>' . $content . '</script>';
-						}
-						return $matches[0];
-					},
-					$buffer
-				);
-
-				if ( $has_delayed ) {
-					$delay_script = '<script>
-(function() {
-    var fired = false;
-    var events = ["scroll", "mousemove", "touchstart", "click", "keydown"];
-    function loadDelayedScripts() {
-        if (fired) return;
-        fired = true;
-        document.querySelectorAll(\'script[type="text/delayed"]\').forEach(function(script) {
-            var newScript = document.createElement("script");
-            Array.from(script.attributes).forEach(function(attr) {
-                if (attr.name === "type") return;
-                if (attr.name === "data-src") newScript.src = attr.value;
-                else newScript.setAttribute(attr.name, attr.value);
-            });
-            if (script.innerHTML) newScript.innerHTML = script.innerHTML;
-            script.parentNode.replaceChild(newScript, script);
-        });
-        events.forEach(function(e) { window.removeEventListener(e, loadDelayedScripts, {passive: true}); });
-    }
-    events.forEach(function(e) { window.addEventListener(e, loadDelayedScripts, {passive: true}); });
-    setTimeout(loadDelayedScripts, 5000);
-})();
-</script>';
-					$buffer       = str_replace( '</body>', $delay_script . '</body>', $buffer );
-				}
 
 				return $buffer;
 			}

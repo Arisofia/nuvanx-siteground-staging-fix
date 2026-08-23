@@ -81,7 +81,7 @@ section.nvx-hero {
 figure.nvx-brand-hero__media,
 figure.nvx-page-hero__media,
 figure.nvx-hero__media {
-  display: none;
+  display: block; /* Eliminado: no ocultar globalmente sin documentar. La plantilla DEBE usar .nvx-brand-hero--has-media. */
 }
 
 /* Authorized CO₂ facial photo: unhide media only when the page opts in. */
@@ -1614,4 +1614,17 @@ body:not(.home) .nvx-page-hero__copy h1,
   .nvx-authentic-photo-grid__image {
     min-height: calc(var(--nvx-space-10) * 2.25);
   }
+}
+
+/* Fix for spacing between platform numbers and titles */
+.nvx-laser-platform__head,
+.nvx-aes-platform__head {
+  margin-bottom: var(--nvx-space-4);
+}
+
+.nvx-laser-platform__head,
+.nvx-aes-platform__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }

@@ -18,7 +18,7 @@
         },
         "product_family": {
           "type": "string",
-          "enum": ["endolift", "endolaser", "laser_co2", "exion", "labios_ha", "ojeras_ha", "rinomodelacion_ha", "bioestimuladores", "neuromoduladores", "btl_exilite", "emfusion"],
+          "enum": ["Endolift®", "endolaser", "laser_co2", "exion", "labios_ha", "ojeras_ha", "rinomodelacion_ha", "bioestimuladores", "neuromoduladores", "btl_exilite", "emfusion"],
           "description": "Product family category"
         },
         "product": {

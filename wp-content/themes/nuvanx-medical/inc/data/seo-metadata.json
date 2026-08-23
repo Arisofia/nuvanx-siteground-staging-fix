@@ -1,182 +1,182 @@
 {
-    "home": {
-        "title": "Medicina Estética Láser Madrid | Endolift y CO₂ | NUVANX",
-        "description": "Endolift® (desde 798,60 €), CO₂ fraccionado (desde 330 €) y EXION® BTL en Chamberí (CS20144) y Salamanca–Goya (CS20073). Equipo médico colegiado."
-    },
-    "madrid": {
-        "title": "Medicina Estética Láser Madrid | Clínicas Chamberí y Salamanca–Goya | NUVANX",
-        "description": "Clínicas de medicina estética láser en Madrid: Chamberí (CS20144) y Salamanca–Goya (CS20073). Endolift®, CO₂, EXION® BTL y valoración médica presencial."
-    },
-    "tratamientos": {
-        "title": "Tratamientos Madrid | Medicina Estética Láser | NUVANX",
-        "description": "Endolift®, CO₂, EXION® BTL, IPL y medicina facial en Madrid. Valoración clínica en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "clinicas": {
-        "title": "Clínicas NUVANX Madrid | Chamberí y Salamanca–Goya",
-        "description": "Clínicas de medicina estética láser NUVANX en Madrid: Chamberí (CS20144) y Salamanca–Goya (CS20073). Endolift®, CO₂, EXION® BTL, valoración médica y registros sanitarios."
-    },
-    "chamberi": {
-        "title": "Medicina Estética en Chamberí Madrid | Clínica NUVANX CS20144",
-        "description": "Clínica de medicina estética en Chamberí: Calle de Fernández de la Hoz, 4. Teléfono 669 319 836. Centro sanitario CS20144. Horario L–V 12:00–20:00 y sábados 10:00–18:00."
-    },
-    "goya": {
-        "title": "Medicina Estética Goya · Barrio Salamanca | NUVANX",
-        "description": "Clínica de medicina estética láser en Salamanca–Goya, Madrid. Equipo médico, registro sanitario CS20073 y valoración individualizada."
-    },
-    "endolift": {
-        "title": "Endolift® Facial Madrid | Papada y Mandíbula sin Cirugía | NUVANX",
-        "description": "Endolift® facial en Madrid para papada y mandíbula sin cirugía. Desde 798,60 €. Dr. Rivera Tejeda, médico estético (ICOMEM 282864786). Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "endolaser": {
-        "title": "Endoláser Corporal Madrid | Grasa y Firmeza | NUVANX",
-        "description": "Endoláser corporal en Madrid para grasa localizada y firmeza en abdomen, flancos, muslos y brazos. Valoración médica y presupuesto individualizado. Valoración presencial en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "co2": {
-        "title": "Láser CO₂ Fraccionado Madrid | NUVANX",
-        "description": "Láser CO₂ fraccionado en Madrid para cicatrices de acné, textura y fotodaño. Diagnóstico médico individualizado en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "exion": {
-        "title": "EXION® BTL Madrid | Face Body Fractional | NUVANX",
-        "description": "EXION® BTL Face, Body y Fractional RF en Madrid. Face desde 395 €, Body desde 445 €, Fractional desde 595 € según indicación. Valoración en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "exilite": {
-        "title": "BTL EXILITE™ IPL Madrid | Manchas y Rojeces | NUVANX",
-        "description": "IPL médica BTL EXILITE™ en Madrid para manchas y rojeces. Cara completa desde 295 €. Valoración y reserva en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "equipo": {
-        "title": "Equipo Médico NUVANX Madrid",
-        "description": "Dr. José Javier Rivera Tejeda (ICOMEM 282864786), Dra. Rivera Deras (FEA Hospital La Paz) y Dr. Quiñónez (PhD UAM, CIBERFES). Dirección médica en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "por_que_nuvanx": {
-        "title": "Por qué NUVANX | Criterio Médico en Medicina Estética",
-        "description": "NUVANX no realiza ningún tratamiento sin indicación médica previa. Centros sanitarios CS20144 y CS20073. Médicos colegiados con formación hospitalaria."
-    },
-    "inversion": {
-        "title": "Inversión en medicina estética | NUVANX Madrid",
-        "description": "Valoración médica individualizada en NUVANX Madrid. Diagnóstico clínico, indicación técnica y presupuesto transparente documentado antes de tratar."
-    },
-    "valoracion": {
-        "title": "Valoración Médica Madrid | Diagnóstico y Presupuesto | NUVANX",
-        "description": "Valoración médica Madrid 15–30 min. Sin Anestesia General. Recuperación en 48h (reincorporación habitual, según protocolo). Chamberí y Goya."
-    },
-    "contacto": {
-        "title": "Clínicas NUVANX Madrid: Contacto, Teléfonos y Sedes | Chamberí y Salamanca–Goya",
-        "description": "Contacto NUVANX Madrid: direcciones, teléfonos, WhatsApp y horarios de las clínicas Chamberí (CS20144) y Salamanca–Goya (CS20073). Valoración médica presencial para medicina estética láser."
-    },
-    "soluciones": {
-        "title": "Soluciones Médicas Madrid | NUVANX",
-        "description": "Soluciones médicas para rostro, piel y contorno en Madrid. El diagnóstico define el plan. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "blog": {
-        "title": "Blog NUVANX | Medicina Estética Madrid",
-        "description": "Artículos NUVANX sobre Endolift®, EXION®, IPL, well-aging y criterio médico. Clínicas en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "exion_face": {
-        "title": "EXION® Face Madrid | Tratamiento Facial y Cuello | NUVANX",
-        "description": "EXION® Face en NUVANX Madrid: RF y ultrasonido para calidad cutánea. Desde 395 €/sesión según valoración. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "exion_fractional": {
-        "title": "EXION® Fractional RF Madrid | Textura y Cicatrices | NUVANX",
-        "description": "EXION® Fractional RF en Madrid: microagujas con control de impedancia para textura, poro y cicatrices. Desde 595 €. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "exion_body": {
-        "title": "EXION® Body Madrid | Grasa Localizada y Laxitud | NUVANX",
-        "description": "EXION® Body en NUVANX Madrid: radiofrecuencia para grasa localizada y calidad cutánea. Desde 445 €/sesión según valoración. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "emfusion": {
-        "title": "EMFUSION™ Madrid | Microcanales Acústicos | NUVANX",
-        "description": "EMFUSION® en NUVANX Madrid: microcanales acústicos DYNAMiQ™ para hidratación y barrera cutánea. Desde 345 €/sesión. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "collagen_bio": {
-        "title": "Bioestimuladores Madrid | Radiesse® | NUVANX",
-        "description": "Bioestimuladores (PLLA, CaHA, polinucleótidos) para calidad cutánea y soporte. Indicación tras valoración en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "dark_circles_ha": {
-        "title": "Ojeras Madrid | Tratamiento | NUVANX",
-        "description": "Tratamiento de ojeras y surco lagrimal con ácido hialurónico en Madrid. Valoración anatómica en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "lips_ha": {
-        "title": "Labios Madrid | Ácido Hialurónico | NUVANX",
-        "description": "Perfilado, hidratación y volumen de labios con ácido hialurónico en Madrid. Criterio médico en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "body_contouring_laser": {
-        "title": "Remodelación Corporal Láser Madrid | Contorno por Zonas | NUVANX",
-        "description": "Contour Architecture™ en Madrid: abdomen, flancos, brazos, espalda, muslos y rodillas. Valoración de grasa y laxitud en Chamberí (CS20144) y Goya (CS20073)."
-    },
-    "postpartum": {
-        "title": "Tratamiento Postparto Abdomen Madrid | Contorno tras el Embarazo | NUVANX",
-        "description": "Post-Maternity Contour™ en Madrid: valoración de grasa, laxitud y pared abdominal tras el embarazo. Diástasis y lactancia se evalúan antes de indicar. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "double_chin": {
-        "title": "Papada y Definición Mandibular Madrid | NUVANX",
-        "description": "Papada y definición mandibular en Madrid: grasa, laxitud u hueso se diferencian antes de indicar. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "skin_quality": {
-        "title": "Calidad de Piel y Firmeza Madrid | Skin Architecture™ | NUVANX",
-        "description": "Skin Architecture™ en Madrid: firmeza, densidad y luminosidad con EXION®, EMFUSION® o bioestimulación según diagnóstico. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "acne_scars": {
-        "title": "Cicatrices de Acné y Poros Madrid | Surface Renewal™ | NUVANX",
-        "description": "Surface Renewal™ en Madrid: cicatrices, poros y textura con CO₂ fraccionado o EXION® Fractional según fototipo y downtime. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "pigmentation": {
-        "title": "Manchas, Rojeces y Fotodaño Madrid | Tone Correction™ | NUVANX",
-        "description": "Tone Correction™ en Madrid: IPL EXILITE™ solo tras diferenciar léntigos, rojeces, melasma y lesiones que requieren dermatología. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "local_fat_abdomen": {
-        "title": "Grasa Localizada Abdomen Madrid | NUVANX",
-        "description": "Grasa localizada en abdomen y flancos en Madrid. No trata grasa visceral ni sustituye pérdida de peso. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "arms_fat_laxity": {
-        "title": "Flacidez y Grasa Localizada en Brazos Madrid | NUVANX",
-        "description": "Brazos en Madrid: se separa grasa localizada y flacidez (alas de murciélago) antes de Endoláser, EXION® Body o derivación a braquioplastia. Brazos desde 1.300 €. Chamberí (CS20144) y Goya (CS20073)."
-    },
-    "back_fat": {
-        "title": "Grasa Espalda y Zona del Sujetador Madrid | Contour Architecture™ | NUVANX",
-        "description": "Espalda y pliegue del sujetador en Madrid: se diferencia grasa fibrosa, laxitud y efecto de la prenda antes de indicar Endoláser. Espalda/sujetador desde 1.400 €. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "inner_thighs": {
-        "title": "Flacidez Muslos Internos y Subglúteo Madrid | Contour Architecture™ | NUVANX",
-        "description": "Muslos y banana roll en Madrid: se separa grasa, flacidez y celulitis; el pliegue subglúteo se trata con criterio para no desestabilizar el glúteo. Muslos desde 1.600 €. Chamberí (CS20144) y Goya (CS20073)."
-    },
-    "knees": {
-        "title": "Grasa y Flacidez en Rodillas Madrid | Contour Architecture™ | NUVANX",
-        "description": "Rodillas en Madrid: se diferencia almohadilla grasa, piel arrugada, edema y causa articular antes de Endoláser o EXION®. Rodillas desde 1.100 €. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "male_body_contouring": {
-        "title": "Contorno Corporal Masculino Madrid | Contour Architecture™ | NUVANX",
-        "description": "Contorno masculino en Madrid: abdomen, pecho (grasa vs ginecomastia), espalda y perfil. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "neuromodulador": {
-        "title": "Neuromoduladores Faciales Madrid | Arrugas de Expresión | NUVANX",
-        "description": "Neuromoduladores faciales en Madrid para arrugas de expresión del tercio superior. Desde 198 €/zona. Dr. Rivera Tejeda (ICOMEM 282864786). Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "acido_hialuronico": {
-        "title": "Ácido Hialurónico Facial Madrid | Surcos y soporte | NUVANX",
-        "description": "Ácido hialurónico en Madrid para surcos, reposicionamiento y estructuración. Valoración en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "rinomodelacion": {
-        "title": "Rinomodelación Madrid | Sin Cirugía | NUVANX",
-        "description": "Rinomodelación sin cirugía en Madrid con ácido hialurónico. Armonización del perfil tras diagnóstico en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "laser_medicine": {
-        "title": "Medicina Láser Madrid | Endolift · CO₂ · EXION® | NUVANX",
-        "description": "Medicina estética láser en Madrid: Endolift®, CO₂, EXION® BTL e IPL. Valoración en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "aesthetic_medicine": {
-        "title": "Medicina Estética Madrid | NUVANX",
-        "description": "Medicina estética en Madrid: AH, neuromoduladores, bioestimuladores y láser. Valoración en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "signature_protocols": {
-        "title": "Signature Protocols Madrid | NUVANX",
-        "description": "Protocolos Signature NUVANX en Madrid: contorno, calidad de piel, textura, tono y perfil facial. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "advanced_aesthetics": {
-        "title": "Estética Avanzada Madrid | Protocolos de Cabina y Piel | NUVANX",
-        "description": "Protocolos de cabina, higiene facial y mantenimiento de la calidad cutánea en Madrid. Coordinación médica en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
-    },
-    "nosotros": {
-        "title": "Sobre NUVANX | Medicina Estética Láser en Madrid",
-        "description": "Centro médico fundado en 2020. Dos sedes en Madrid. Equipo: 3 médicos colegiados con formación hospitalaria. Registros CS20144 y CS20073."
-    }
+  "home": {
+    "title": "Medicina Estética Láser Madrid | Endolift® y CO₂ | NUVANX",
+    "description": "Endolift® (desde 798,60 €), CO₂ fraccionado (desde 330 €) y EXION® BTL en Chamberí (CS20144) y Salamanca–Goya (CS20073). Equipo médico colegiado. Clínic..."
+  },
+  "madrid": {
+    "title": "Medicina Estética Láser Madrid | Clínicas Chamberí y Salaman...",
+    "description": "Clínicas de medicina estética láser en Madrid: Chamberí (CS20144) y Salamanca–Goya (CS20073). Endolift®, CO₂, EXION® BTL y valoración médica presencial."
+  },
+  "tratamientos": {
+    "title": "Tratamientos Madrid | Medicina Estética Láser | NUVANX",
+    "description": "Endolift®, CO₂, EXION® BTL, IPL y medicina facial en Madrid. Valoración clínica en Chamberí (CS20144) y Salamanca–Goya (CS20073). Consulta con nuestros ..."
+  },
+  "clinicas": {
+    "title": "Clínicas NUVANX Madrid | Chamberí y Salamanca–Goya",
+    "description": "Clínicas de medicina estética láser NUVANX en Madrid: Chamberí (CS20144) y Salamanca–Goya (CS20073). Endolift®, CO₂, EXION® BTL, valoración médica y reg..."
+  },
+  "chamberi": {
+    "title": "Medicina Estética en Chamberí Madrid | Clínica NUVANX CS20144",
+    "description": "Clínica de medicina estética en Chamberí: Calle de Fernández de la Hoz, 4. Teléfono 669 319 836. Centro sanitario CS20144. Horario L–V 12:00–20:00 y sáb..."
+  },
+  "goya": {
+    "title": "Medicina Estética Goya · Barrio Salamanca | NUVANX",
+    "description": "Clínica de medicina estética láser en Salamanca–Goya, Madrid. Equipo médico, registro sanitario CS20073 y valoración individualizada."
+  },
+  "Endolift®": {
+    "title": "Endolift® Facial Madrid | Papada y Mandíbula sin Cirugía | NUVANX",
+    "description": "Endolift® facial en Madrid para papada y mandíbula sin cirugía. Desde 798,60 €. Dr. Rivera Tejeda, médico estético (ICOMEM 282864786). Chamberí (CS20144..."
+  },
+  "endolaser": {
+    "title": "Endoláser Corporal Madrid | Grasa y Firmeza | NUVANX",
+    "description": "Endoláser corporal en Madrid para grasa localizada y firmeza en abdomen, flancos, muslos y brazos. Valoración médica y presupuesto individualizado. Valo..."
+  },
+  "co2": {
+    "title": "Láser CO₂ Fraccionado Madrid | NUVANX",
+    "description": "Láser CO₂ fraccionado en Madrid para cicatrices de acné, textura y fotodaño. Diagnóstico médico individualizado en Chamberí (CS20144) y Salamanca–Goya (..."
+  },
+  "exion": {
+    "title": "EXION® BTL Madrid | Face Body Fractional | NUVANX",
+    "description": "EXION® BTL Face, Body y Fractional RF en Madrid. Face desde 395 €, Body desde 445 €, Fractional desde 595 € según indicación. Valoración en Chamberí (CS..."
+  },
+  "exilite": {
+    "title": "BTL EXILITE™ IPL Madrid | Manchas y Rojeces | NUVANX",
+    "description": "IPL médica BTL EXILITE™ en Madrid para manchas y rojeces. Cara completa desde 295 €. Valoración y reserva en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "equipo": {
+    "title": "Equipo Médico NUVANX Madrid",
+    "description": "Dr. José Javier Rivera Tejeda (ICOMEM 282864786), Dra. Rivera Deras (FEA Hospital La Paz) y Dr. Quiñónez (PhD UAM, CIBERFES). Dirección médica en Chambe..."
+  },
+  "por_que_nuvanx": {
+    "title": "Por qué NUVANX | Criterio Médico en Medicina Estética",
+    "description": "NUVANX no realiza ningún tratamiento sin indicación médica previa. Centros sanitarios CS20144 y CS20073. Médicos colegiados con formación hospitalaria. ..."
+  },
+  "inversion": {
+    "title": "Inversión en medicina estética | NUVANX Madrid",
+    "description": "Valoración médica individualizada en NUVANX Madrid. Diagnóstico clínico, indicación técnica y presupuesto transparente documentado antes de tratar."
+  },
+  "valoracion": {
+    "title": "Valoración Médica Madrid | Diagnóstico y Presupuesto | NUVANX",
+    "description": "Valoración médica Madrid 15–30 min. Sin Anestesia General. Recuperación en 48h (reincorporación habitual, según protocolo). Chamberí y Goya."
+  },
+  "contacto": {
+    "title": "Clínicas NUVANX Madrid: Contacto, Teléfonos y Sedes | Chambe...",
+    "description": "Contacto NUVANX Madrid: direcciones, teléfonos, WhatsApp y horarios de las clínicas Chamberí (CS20144) y Salamanca–Goya (CS20073). Valoración médica pre..."
+  },
+  "soluciones": {
+    "title": "Soluciones Médicas Madrid | NUVANX",
+    "description": "Soluciones médicas para rostro, piel y contorno en Madrid. El diagnóstico define el plan. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "blog": {
+    "title": "Blog NUVANX | Medicina Estética Madrid",
+    "description": "Artículos NUVANX sobre Endolift®, EXION®, IPL, well-aging y criterio médico. Clínicas en Chamberí (CS20144) y Salamanca–Goya (CS20073). Clínica en Madrid."
+  },
+  "exion_face": {
+    "title": "EXION® Face Madrid | Tratamiento Facial y Cuello | NUVANX",
+    "description": "EXION® Face en NUVANX Madrid: RF y ultrasonido para calidad cutánea. Desde 395 €/sesión según valoración. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "exion_fractional": {
+    "title": "EXION® Fractional RF Madrid | Textura y Cicatrices | NUVANX",
+    "description": "EXION® Fractional RF en Madrid: microagujas con control de impedancia para textura, poro y cicatrices. Desde 595 €. Chamberí (CS20144) y Salamanca–Goya ..."
+  },
+  "exion_body": {
+    "title": "EXION® Body Madrid | Grasa Localizada y Laxitud | NUVANX",
+    "description": "EXION® Body en NUVANX Madrid: radiofrecuencia para grasa localizada y calidad cutánea. Desde 445 €/sesión según valoración. Chamberí (CS20144) y Salaman..."
+  },
+  "emfusion": {
+    "title": "EMFUSION® Madrid | Microcanales Acústicos | NUVANX",
+    "description": "EMFUSION® en NUVANX Madrid: microcanales acústicos DYNAMiQ™ para hidratación y barrera cutánea. Desde 345 €/sesión. Chamberí (CS20144) y Salamanca–Goya ..."
+  },
+  "collagen_bio": {
+    "title": "Bioestimuladores Madrid | Radiesse® | NUVANX",
+    "description": "Bioestimuladores (PLLA, CaHA, polinucleótidos) para calidad cutánea y soporte. Indicación tras valoración en Chamberí (CS20144) y Salamanca–Goya (CS2007..."
+  },
+  "dark_circles_ha": {
+    "title": "Ojeras Madrid | Tratamiento | NUVANX",
+    "description": "Tratamiento de ojeras y surco lagrimal con ácido hialurónico en Madrid. Valoración anatómica en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "lips_ha": {
+    "title": "Labios Madrid | Ácido Hialurónico | NUVANX",
+    "description": "Perfilado, hidratación y volumen de labios con ácido hialurónico en Madrid. Criterio médico en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "body_contouring_laser": {
+    "title": "Remodelación Corporal Láser Madrid | Contorno por Zonas | NUVANX",
+    "description": "Contour Architecture™ en Madrid: abdomen, flancos, brazos, espalda, muslos y rodillas. Valoración de grasa y laxitud en Chamberí (CS20144) y Goya (CS200..."
+  },
+  "postpartum": {
+    "title": "Tratamiento Postparto Abdomen Madrid | Contorno tras el Emba...",
+    "description": "Post-Maternity Contour™ en Madrid: valoración de grasa, laxitud y pared abdominal tras el embarazo. Diástasis y lactancia se evalúan antes de indicar. C..."
+  },
+  "double_chin": {
+    "title": "Papada y Definición Mandibular Madrid | NUVANX",
+    "description": "Papada y definición mandibular en Madrid: grasa, laxitud u hueso se diferencian antes de indicar. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "skin_quality": {
+    "title": "Calidad de Piel y Firmeza Madrid | Skin Architecture™ | NUVANX",
+    "description": "Skin Architecture™ en Madrid: firmeza, densidad y luminosidad con EXION®, EMFUSION® o bioestimulación según diagnóstico. Chamberí (CS20144) y Salamanca–..."
+  },
+  "acne_scars": {
+    "title": "Cicatrices de Acné y Poros Madrid | Surface Renewal™ | NUVANX",
+    "description": "Surface Renewal™ en Madrid: cicatrices, poros y textura con CO₂ fraccionado o EXION® Fractional según fototipo y downtime. Chamberí (CS20144) y Salamanc..."
+  },
+  "pigmentation": {
+    "title": "Manchas, Rojeces y Fotodaño Madrid | Tone Correction™ | NUVANX",
+    "description": "Tone Correction™ en Madrid: IPL EXILITE™ solo tras diferenciar léntigos, rojeces, melasma y lesiones que requieren dermatología. Chamberí (CS20144) y Sa..."
+  },
+  "local_fat_abdomen": {
+    "title": "Grasa Localizada Abdomen Madrid | NUVANX",
+    "description": "Grasa localizada en abdomen y flancos en Madrid. No trata grasa visceral ni sustituye pérdida de peso. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "arms_fat_laxity": {
+    "title": "Flacidez y Grasa Localizada en Brazos Madrid | NUVANX",
+    "description": "Brazos en Madrid: se separa grasa localizada y flacidez (alas de murciélago) antes de Endoláser, EXION® Body o derivación a braquioplastia. Brazos desde..."
+  },
+  "back_fat": {
+    "title": "Grasa Espalda y Zona del Sujetador Madrid | Contour Architec...",
+    "description": "Espalda y pliegue del sujetador en Madrid: se diferencia grasa fibrosa, laxitud y efecto de la prenda antes de indicar Endoláser. Espalda/sujetador desd..."
+  },
+  "inner_thighs": {
+    "title": "Flacidez Muslos Internos y Subglúteo Madrid | Contour Archit...",
+    "description": "Muslos y banana roll en Madrid: se separa grasa, flacidez y celulitis; el pliegue subglúteo se trata con criterio para no desestabilizar el glúteo. Musl..."
+  },
+  "knees": {
+    "title": "Grasa y Flacidez en Rodillas Madrid | Contour Architecture™ ...",
+    "description": "Rodillas en Madrid: se diferencia almohadilla grasa, piel arrugada, edema y causa articular antes de Endoláser o EXION®. Rodillas desde 1.100 €. Chamber..."
+  },
+  "male_body_contouring": {
+    "title": "Contorno Corporal Masculino Madrid | Contour Architecture™ |...",
+    "description": "Contorno masculino en Madrid: abdomen, pecho (grasa vs ginecomastia), espalda y perfil. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "neuromodulador": {
+    "title": "Neuromoduladores Faciales Madrid | Arrugas de Expresión | NUVANX",
+    "description": "Neuromoduladores faciales en Madrid para arrugas de expresión del tercio superior. Desde 198 €/zona. Dr. Rivera Tejeda (ICOMEM 282864786). Chamberí (CS2..."
+  },
+  "acido_hialuronico": {
+    "title": "Ácido Hialurónico Facial Madrid | Surcos y soporte | NUVANX",
+    "description": "Ácido hialurónico en Madrid para surcos, reposicionamiento y estructuración. Valoración en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "rinomodelacion": {
+    "title": "Rinomodelación Madrid | Sin Cirugía | NUVANX",
+    "description": "Rinomodelación sin cirugía en Madrid con ácido hialurónico. Armonización del perfil tras diagnóstico en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "laser_medicine": {
+    "title": "Medicina Láser Madrid | Endolift® · CO₂ · EXION® | NUVANX",
+    "description": "Medicina estética láser en Madrid: Endolift®, CO₂, EXION® BTL e IPL. Valoración en Chamberí (CS20144) y Salamanca–Goya (CS20073). Consulta con nuestros ..."
+  },
+  "aesthetic_medicine": {
+    "title": "Medicina Estética Madrid | NUVANX",
+    "description": "Medicina estética en Madrid: AH, neuromoduladores, bioestimuladores y láser. Valoración en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "signature_protocols": {
+    "title": "Signature Protocols Madrid | NUVANX",
+    "description": "Protocolos Signature NUVANX en Madrid: contorno, calidad de piel, textura, tono y perfil facial. Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "advanced_aesthetics": {
+    "title": "Estética Avanzada Madrid | Protocolos de Cabina y Piel | NUVANX",
+    "description": "Protocolos de cabina, higiene facial y mantenimiento de la calidad cutánea en Madrid. Coordinación médica en Chamberí (CS20144) y Salamanca–Goya (CS20073)."
+  },
+  "nosotros": {
+    "title": "Sobre NUVANX | Medicina Estética Láser en Madrid",
+    "description": "Centro médico fundado en 2020. Dos sedes en Madrid. Equipo: 3 médicos colegiados con formación hospitalaria. Registros CS20144 y CS20073."
+  }
 }

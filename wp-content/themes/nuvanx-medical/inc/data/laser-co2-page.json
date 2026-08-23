@@ -2,7 +2,7 @@
     "hero": {
         "kicker": "@nvx-t:NUVANX · Medicina estética láser",
         "h1": "@nvx-t:Láser CO₂ fraccionado en Madrid: qué esperar tras el tratamiento de resurfacing",
-        "byline_author": "@nvx-t:Escrito y revisado por Dr. Javier Rivera Tejeda",
+        "byline_author": "@nvx-t:Escrito y revisado por Dr. José Javier Rivera Tejeda",
         "byline_title": "@nvx-t:Director médico NUVANX · Fecha de última revisión: julio 2026",
         "lead": "@nvx-t:Protocolo de resurfacing ablativo fraccionado para cicatrices de acné, poros dilatados y textura irregular. Indicación médica y presupuesto cerrado tras la primera valoración en Chamberí o Salamanca.",
         "description": "@nvx-t:Valoración por el Dr. José Javier Rivera Tejeda (Nº Col. ICOMEM %s). Parámetros de potencia, profundidad y densidad ajustados por el equipo médico. Downtime realista antes de decidir.",
@@ -45,8 +45,8 @@
         "rows": [
             { "param": "@nvx-t:Naturaleza", "co2": "@nvx-t:Ablativo fraccionado (vaporización tisular)", "peel": "@nvx-t:Exfoliación química superficial (ácidos)" },
             { "param": "@nvx-t:Profundidad", "co2": "@nvx-t:Actúa en dermis reticular (remodelación profunda)", "peel": "@nvx-t:Limitado a epidermis (efecto cosmético)" },
-            { "param": "@nvx-t:Estimulo colágeno", "co2": "@nvx-t:Neocolagénesis estructural tipo I y III", "peel": "@nvx-t:Estimulo transitorio y superficial" },
-            { "param": "@nvx-t:Downtime", "co2": "@nvx-t:7–10 días de eritema y descamación", "peel": "@nvx-t:1–3 días de descamación leve" },
+            { "param": "@nvx-t:Estímulo colágeno", "co2": "@nvx-t:Neocolagénesis estructural tipo I y III", "peel": "@nvx-t:Estímulo transitorio y superficial" },
+            { "param": "@nvx-t:Downtime", "co2": "@nvx-t:7 días de eritema y descamación", "peel": "@nvx-t:1–3 días de descamación leve" },
             { "param": "@nvx-t:Duración efecto", "co2": "@nvx-t:12–24 meses con protocolo de mantenimiento", "peel": "@nvx-t:3–6 meses (requiere sesiones muy frecuentes)" },
             { "param": "@nvx-t:Resultados", "co2": "@nvx-t:Progresivos; consolidación 3–6 meses", "peel": "@nvx-t:Inmediatos pero temporales" }
         ]
@@ -56,17 +56,17 @@
         "title": "@nvx-t:Ablación fraccionada: microhaces térmicos",
         "body1": "@nvx-t:El láser CO₂ emite a 10.600 nm, longitud de onda con alto coeficiente de absorción en agua. El fraccionamiento divide el haz en microcolumnas que vaporizan tejido en puntos específicos, dejando puentes de piel sana que aceleran la curación.",
         "caption": "@nvx-t:Combinación de vaporización y coagulación según profundidad calibrada.",
-        "body2": "@nvx-t:En rango térmico de 60–80 °C en dermis, se produce desnaturalización del colágeno con estimulo de fibroblastos. El resultado es piel remodelada, con cicatrices elevadas, poros visiblemente reducidos y textura más uniforme."
+        "body2": "@nvx-t:En rango térmico de 60–80 °C en dermis, se produce desnaturalización del colágeno con estímulo de fibroblastos. El resultado es piel remodelada, con cicatrices elevadas, poros visiblemente reducidos y textura más uniforme."
     },
     "process": {
         "kicker": "@nvx-t:El procedimiento en NUVANX",
         "title": "@nvx-t:Ejecución paso a paso",
-        "body": "@nvx-t:Duración habitual 30–60 minutos según zonas. El procedimiento se realiza de forma ambulatoria. La evolución clínica y el tiempo de recuperación (7–10 días) se detallan en la sección de downtime.",
+        "body": "@nvx-t:Duración habitual 30–60 minutos según zonas. El procedimiento se realiza de forma ambulatoria. La evolución clínica y el tiempo de recuperación (7 días) se detallan en la sección de downtime.",
         "steps": [
             { "icon": "assess", "n": "01", "title": "@nvx-t:Valoración anatómica", "body": "@nvx-t:Diagnóstico de fototipo, profundidad de cicatrices y objetivos. Definición de parámetros CO₂." },
             { "icon": "anesthesia", "n": "02", "title": "@nvx-t:Anestesia tópica", "body": "@nvx-t:Aplicación de crema anestésica 30–60 minutos antes del procedimiento." },
             { "icon": "procedure", "n": "03", "title": "@nvx-t:Láser CO₂ fraccionado", "body": "@nvx-t:Pasos del láser según mapa anatómico. Sensación de calor y pinchazos controlados." },
-            { "icon": "recover", "n": "04", "title": "@nvx-t:Post-tratamiento inmediato", "body": "@nvx-t:Aplicación de crema regeneradora y fotoprotector. Alta ambulatoria con protocolo de cuidados y downtime controlado (7–10 días de evolución)." }
+            { "icon": "recover", "n": "04", "title": "@nvx-t:Post-tratamiento inmediato", "body": "@nvx-t:Aplicación de crema regeneradora y fotoprotector. Alta ambulatoria con protocolo de cuidados y downtime controlado (7 días de evolución)." }
         ]
     },
     "postop": {
@@ -108,7 +108,7 @@
             },
             {
                 "q": "@nvx-t:¿Cuántas sesiones requieren?",
-                "a": "@nvx-t:Depende del objetivo. Textura y poros: 1–2 sesiones. Cicatrices complejas: 3–5 sesiones espaciadas de 8–12 semanas. El protocolo definitivo se define tras valoración médica."
+                "a": "@nvx-t:Depende del objetivo. Textura y poros: 1–2 sesiones. Cicatrices complejas: 4 sesiones espaciadas de 8–12 semanas. El protocolo definitivo se define tras valoración médica."
             },
             {
                 "q": "@nvx-t:¿Cuánto dura el efecto?",
@@ -116,7 +116,7 @@
             },
             {
                 "q": "@nvx-t:¿Cuál es el tiempo de recuperación?",
-                "a": "@nvx-t:7–10 días de eritema y descamación. Sin baja laboral, pero con compromiso de evitar exposición solar y seguir protocolo de cuidados. Días 1–3: eritema intenso. Días 4–7: descamación activa."
+                "a": "@nvx-t:7 días de eritema y descamación. Sin baja laboral, pero con compromiso de evitar exposición solar y seguir protocolo de cuidados. Días 1–3: eritema intenso. Días 4–7: descamación activa."
             },
             {
                 "q": "@nvx-t:¿Cuáles son las contraindicaciones?",

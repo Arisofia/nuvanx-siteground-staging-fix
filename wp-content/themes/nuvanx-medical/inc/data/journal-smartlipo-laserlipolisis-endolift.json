@@ -1,9 +1,9 @@
 {
   "slug": "smartlipo-laserlipolisis-endolift",
-  "title": "Smartlipo, laserlipólisis y Endolift®: qué diferencia a cada uno",
-  "excerpt": "Smartlipo describe la laserlipólisis Nd:YAG de 1064 nm. En NUVANX el protocolo corporal es Endoláser (DEKA) y el facial es Endolift® a 1470 nm. No son intercambiables.",
+  "title": "Smartlipo®, laserlipólisis y Endolift®: qué diferencia a cada uno",
+  "excerpt": "Smartlipo® describe la laserlipólisis Nd:YAG de 1064 nm. En NUVANX el protocolo corporal es Endoláser (DEKA) y el facial es Endolift® a 1470 nm. No son intercambiables.",
   "kicker": "NUVANX Journal · Tecnologías",
-  "lead": "Laserlipólisis, Smartlipo y Endolift® se confunden porque todos usan una fibra láser bajo la piel. No son el mismo protocolo: cambian la longitud de onda, la zona y el objetivo. En NUVANX el corporal es Endoláser con plataforma DEKA; el facial es Endolift®.",
+  "lead": "Laserlipólisis, Smartlipo® y Endolift® se confunden porque todos usan una fibra láser bajo la piel. No son el mismo protocolo: cambian la longitud de onda, la zona y el objetivo. En NUVANX el corporal es Endoláser con plataforma DEKA; el facial es Endolift®.",
   "sections": [
     {
       "h2": "Qué es la laserlipólisis",
@@ -13,10 +13,10 @@
       ]
     },
     {
-      "h2": "Qué es Smartlipo",
+      "h2": "Qué es Smartlipo®",
       "paragraphs": [
-        "Smartlipo es el nombre con el que la literatura y el mercado describen la laserlipólisis asistida por láser Nd:YAG de 1064 nm. La fibra actúa en el depósito graso: lipólisis, menor traumatismo que una extracción mecánica amplia en casos seleccionados, y un efecto térmico sobre el colágeno.",
-        "En NUVANX esa familia técnica se aplica al contorno corporal como Endoláser, con plataforma DEKA. No presentamos Smartlipo como un segundo tratamiento comercial ni como un protocolo facial."
+        "Smartlipo® es el nombre con el que la literatura y el mercado describen la laserlipólisis asistida por láser Nd:YAG de 1064 nm. La fibra actúa en el depósito graso: lipólisis, menor traumatismo que una extracción mecánica amplia en casos seleccionados, y un efecto térmico sobre el colágeno.",
+        "En NUVANX esa familia técnica se aplica al contorno corporal como Endoláser, con plataforma DEKA. No presentamos Smartlipo® como un segundo tratamiento comercial ni como un protocolo facial."
       ]
     },
     {
@@ -72,7 +72,7 @@
   ],
   "compare": {
     "caption": "Comparativa orientativa. La indicación la cierra el médico, no el nombre comercial.",
-    "headers": ["Aspecto", "Smartlipo / laserlipólisis 1064 nm", "Endoláser corporal DEKA", "Endolift® facial"],
+    "headers": ["Aspecto", "Smartlipo® / laserlipólisis 1064 nm", "Endoláser corporal DEKA", "Endolift® facial"],
     "rows": [
       ["Qué es", "Nombre publicado de la laserlipólisis Nd:YAG 1064 nm", "Protocolo corporal de NUVANX con plataforma DEKA", "Protocolo facial a 1470 nm"],
       ["Zona habitual", "Focos de grasa localizada", "Abdomen, flancos, brazos, muslos, rodillas", "Papada, mandíbula, cuello"],
@@ -83,11 +83,11 @@
   },
   "faq": [
     {
-      "q": "¿Smartlipo y Endoláser son lo mismo?",
-      "a": "Pertenecen a la misma familia (laserlipólisis intersticial). Smartlipo es el nombre de la técnica Nd:YAG 1064 nm en la literatura. En NUVANX el servicio corporal se llama Endoláser y se realiza con DEKA."
+      "q": "¿Smartlipo® y Endoláser son lo mismo?",
+      "a": "Pertenecen a la misma familia (laserlipólisis intersticial). Smartlipo® es el nombre de la técnica Nd:YAG 1064 nm en la literatura. En NUVANX el servicio corporal se llama Endoláser y se realiza con DEKA."
     },
     {
-      "q": "¿Smartlipo sustituye a Endolift®?",
+      "q": "¿Smartlipo® sustituye a Endolift®?",
       "a": "No. Endolift® es el protocolo facial a 1470 nm. La papada se valora en la ficha de Endolift®, no como un Endoláser de abdomen."
     },
     {

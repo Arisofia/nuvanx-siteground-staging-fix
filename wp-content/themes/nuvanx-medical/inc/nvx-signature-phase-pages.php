@@ -24,14 +24,14 @@ if ( ! defined( 'NVX_VALORACION_PATH' ) ) {
 }
 
 /**
- * Public Contour Architecture display name (full brand form).
+ * Public Contour Architecture™ display name (full brand form).
  */
 function nvx_signature_contour_label(): string {
 	return NVX_CONTOUR_ARCHITECTURE;
 }
 
 /**
- * Public Contour Architecture short label (without NUVANX prefix).
+ * Public Contour Architecture™ short label (without NUVANX prefix).
  */
 function nvx_signature_contour_label_short(): string {
 	return NVX_CONTOUR_ARCHITECTURE_SHORT;
@@ -55,7 +55,7 @@ function nvx_signature_phase_catalog_specs(): array {
 }
 
 /**
- * Resolve catalogue tokens for Contour Architecture naming variants.
+ * Resolve catalogue tokens for Contour Architecture™ naming variants.
  *
  * @param mixed $value
  * @return mixed
@@ -253,7 +253,7 @@ function nvx_signature_phase_markup( array $page ): string {
 	$related      = is_array( $page['related_fichas'] ?? null ) ? $page['related_fichas'] : array();
 	$price_range  = (string) ( $page['price_range'] ?? '' );
 	if ( 'papada-definicion-mandibular-madrid' === $slug && function_exists( 'nvx_tariff_price_label' ) ) {
-		$from = nvx_tariff_price_label( 'endolift', 'papada' );
+		$from = nvx_tariff_price_label( 'Endolift®', 'papada' );
 		if ( '' !== $from ) {
 			$price_range = sprintf(
 				/* translators: %s: canonical papada tariff */
@@ -515,7 +515,7 @@ function nvx_signature_hub_phase1_cards(): array {
 }
 
 /**
- * Cards for Contour Architecture body zones (Phase 2 catalog + nav labels).
+ * Cards for Contour Architecture™ body zones (Phase 2 catalog + nav labels).
  *
  * @return array<int, array{kicker:string,title:string,body:string,url:string,cta:string,price?:string}>
  */
@@ -804,7 +804,7 @@ add_filter(
 add_filter( 'the_content', 'nvx_signature_phase_inject_markup', 20 );
 
 /**
- * Contour Architecture child routes for the primary navigation mega-menu.
+ * Contour Architecture™ child routes for the primary navigation mega-menu.
  *
  * @return array<int, array{label:string,slugs:array<int,string>}>
  */
@@ -845,7 +845,7 @@ function nvx_signature_contour_nav_children(): array {
  */
 function nvx_signature_apply_contour_children( array $child ): array {
 	$child_label = isset( $child['label'] ) ? (string) $child['label'] : '';
-	$is_contour  = false !== stripos( $child_label, 'Contour Architecture' )
+	$is_contour  = false !== stripos( $child_label, 'Contour Architecture™' )
 		|| false !== stripos( $child_label, 'Contour Sculpt' )
 		|| false !== stripos( $child_label, 'Couture Sculpt' );
 
@@ -964,7 +964,7 @@ add_filter( 'wpseo_twitter_title', 'nvx_signature_phase_seo_title', 90 );
 add_filter( 'wpseo_twitter_description', 'nvx_signature_phase_seo_description', 90 );
 
 /**
- * Papada hub is a decision page, not the Endolift procedure.
+ * Papada hub is a decision page, not the Endolift® procedure.
  *
  * Types the WebPage as MedicalWebPage and points relatedLink at the ficha.
  *

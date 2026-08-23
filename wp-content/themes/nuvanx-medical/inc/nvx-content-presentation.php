@@ -9,9 +9,9 @@
  * - treatment card blurbs
  * - home specialized protocols block (with orientative “desde €” when tariff known)
  * - homepage team strip + well-aging pillar
- * - EXION hub investment transparency (presupuesto tras valoración)
+ * - EXION® hub investment transparency (presupuesto tras valoración)
  * - director E-E-A-T (colegiado)
- * - FAQ framing (EXION vs Morpheus8)
+ * - FAQ framing (EXION® vs Morpheus8)
  *
  * @package nuvanx-medical
  */
@@ -553,7 +553,7 @@ function nvx_content_is_exion_hub(): bool {
 }
 
 /**
- * EXION hub investment transparency — no invented retail PVP (tariff sheet not yet locked).
+ * EXION® hub investment transparency — no invented retail PVP (tariff sheet not yet locked).
  */
 function nvx_exion_investment_markup(): string {
 	$html  = '<section class="nvx-brand-section nvx-exion-investment" id="inversion-exion" aria-labelledby="nvx-exion-investment-title" data-nvx-block="exion-investment">';
@@ -570,7 +570,7 @@ function nvx_exion_investment_markup(): string {
 	$html .= '<li>' . esc_html__( 'Plan de sesiones habitual (a menudo 2–4) y posibles combinaciones médicas.', 'nuvanx-medical' ) . '</li>';
 	$html .= '</ul>';
 	$html .= '<p class="nvx-brand-lead">' . esc_html__(
-		'Si buscas “EXION BTL precio Madrid”, la respuesta honesta es: sin exploración no hay cifra fiable. En la consulta cerramos indicación, plan y PVP con IVA incluido antes de cualquier decisión.',
+		'Si buscas “EXION® BTL precio Madrid”, la respuesta honesta es: sin exploración no hay cifra fiable. En la consulta cerramos indicación, plan y PVP con IVA incluido antes de cualquier decisión.',
 		'nuvanx-medical'
 	) . '</p>';
 	$html .= '<p class="nvx-exion-investment__cta">' . nvx_cta_pair_markup( 'nvx-exion-investment__actions' ) . '</p>';
@@ -579,7 +579,7 @@ function nvx_exion_investment_markup(): string {
 }
 
 /**
- * Inject / refresh EXION investment block on the hub page.
+ * Inject / refresh EXION® investment block on the hub page.
  */
 function nvx_content_ensure_exion_investment( string $content ): string {
 	if ( ! nvx_content_is_exion_hub() ) {
@@ -869,7 +869,7 @@ function nvx_content_normalize_interior_hero_shells( string $content ): string {
 					}
 				}
 				// Drop page-specific hero skins and copy modifiers.
-				if ( preg_match( '/^nvx-(?:endolift|endolaser|co2|aes|equipo|nosotros|ipl|btl|exilite|laser)(?:-hero(?:-copy)?|--copy-only)?$/u', $token ) ) {
+				if ( preg_match( '/^nvx-(?:Endolift®|endolaser|co2|aes|equipo|nosotros|ipl|btl|exilite|laser)(?:-hero(?:-copy)?|--copy-only)?$/u', $token ) ) {
 					continue;
 				}
 				if ( preg_match( '/-hero(?:-copy)?$/u', $token ) && 'nvx-brand-hero' !== $token && ! preg_match( '/^nvx-brand-hero__/u', $token ) ) {
@@ -892,7 +892,7 @@ function nvx_content_normalize_interior_hero_shells( string $content ): string {
 					$token = 'nvx-brand-hero__inner';
 				}
 				// Skin copy suffixes like nvx-endolift-hero-copy already dropped above.
-				if ( preg_match( '/^nvx-(?:endolift|aes|equipo|co2|endolaser)-hero-copy$/u', $token ) ) {
+				if ( preg_match( '/^nvx-(?:Endolift®|aes|equipo|co2|endolaser)-hero-copy$/u', $token ) ) {
 					continue;
 				}
 				$keep[] = $token;
@@ -1242,7 +1242,7 @@ function nvx_generic_faq_markup(): string {
 /**
  * Whether the current request is a real treatment detail/hub page.
  *
- * Must not match equipo/nosotros: those reuse endolift editorial layout classes
+ * Must not match equipo/nosotros: those reuse Endolift® editorial layout classes
  * (nvx-endolift-editorial, nvx-endolift-hero) but are not treatments.
  */
 function nvx_content_is_treatment_injection_target( string $content ): bool {
@@ -1287,8 +1287,8 @@ function nvx_content_is_treatment_injection_target( string $content ): bool {
 		"id='nvx-laser-h1'",
 		'id="nvx-med-h1"',
 		"id='nvx-med-h1'",
-		'aria-label="Endolift facial NUVANX"',
-		"aria-label='Endolift facial NUVANX'",
+		'aria-label="Endolift® facial NUVANX"',
+		"aria-label='Endolift® facial NUVANX'",
 		'aria-label="Medicina estética láser NUVANX"',
 		"aria-label='Medicina estética láser NUVANX'",
 	);
@@ -1299,14 +1299,14 @@ function nvx_content_is_treatment_injection_target( string $content ): bool {
 		}
 	}
 
-	// Endolift facial detail: hero + editorial without equipo prefix.
+	// Endolift® facial detail: hero + editorial without equipo prefix.
 	if (
 		false !== strpos( $content, 'nvx-endolift-hero' )
 		&& false === strpos( $content, 'nvx-equipo-' )
 		&& (
 			false !== strpos( $content, 'nvx-endolift-process' )
 			|| false !== strpos( $content, 'nvx-brand-section' )
-			|| false !== strpos( $content, 'Endolift' )
+			|| false !== strpos( $content, 'Endolift®' )
 		)
 	) {
 		return true;

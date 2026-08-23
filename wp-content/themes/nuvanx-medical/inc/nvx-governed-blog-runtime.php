@@ -325,7 +325,7 @@ function nvx_governed_blog_runtime_opengraph_url( $url ) {
 		return $url;
 	}
 	if ( function_exists( 'nvx_seo_is_nonproduction_environment' ) && nvx_seo_is_nonproduction_environment() ) {
-		return 'https://nuvanx.com' . $context['path'];
+		return home_url( $context['path'] );
 	}
 	return home_url( $context['path'] );
 }

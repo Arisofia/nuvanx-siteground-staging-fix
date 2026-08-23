@@ -26,7 +26,7 @@ if ( ! empty( $shell_content ) ) {
 	rewind_posts();
 }
 
-// Header.php already provides <main id="nvx-main" class="nvx-main" role="main"> and .nvx-brand-page wrapper
+// Header.php already provides <main id="nvx-main" class="nvx-main"> and .nvx-brand-page wrapper
 // Content renders directly without additional wrapper for consistency with custom templates
 // Only add nvx-main-shell wrapper when nvx_shell_with_wrapper is set (for home page only)
 if ( ! empty( $shell_with_wrap ) ) {
@@ -45,7 +45,7 @@ while ( have_posts() ) :
 	$has_content_hero = (bool) preg_match( '/nvx-[a-z0-9\-]+-hero/i', $content );
 
 	// Modules that inject a canonical hero + H1 via the_content even when CMS body is empty.
-	// Without this, the shell prints a second H1 (e.g. EXION Body / Face / EMFUSION).
+	// Without this, the shell prints a second H1 (e.g. EXION® Body / Face / EMFUSION).
 	$has_managed_editorial = false;
 	if ( function_exists( 'nvx_get_page_owner' ) ) {
 		$owner = nvx_get_page_owner();

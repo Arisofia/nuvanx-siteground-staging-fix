@@ -42,7 +42,7 @@ if ( ! defined( 'NVX_CONTACT_EMAIL' ) ) {
 	define( 'NVX_CONTACT_EMAIL', $config['contact']['email'] ?? 'info@nuvanx.com' );
 }
 /**
- * Editorial review month label for Endolift byline (update with clinical review).
+ * Editorial review month label for Endolift® byline (update with clinical review).
  */
 if ( ! defined( 'NVX_ENDOLIFT_REVIEW_LABEL' ) ) {
 	define( 'NVX_ENDOLIFT_REVIEW_LABEL', 'agosto 2026' );
@@ -84,7 +84,7 @@ function nvx_get_tariff_catalog() {
  * Now loaded from JSON tariff-catalog.json for single source of truth.
  *
  * @return array{
- *   endolift: array<string, array{label:string,pvp:float,group:string}>,
+ *   Endolift®: array<string, array{label:string,pvp:float,group:string}>,
  *   endolift_combo: array<string, array{label:string,pvp:float,group:string}>,
  *   laser_co2: array<string, array{label:string,pvp:float,group:string}>
  * }
@@ -114,7 +114,7 @@ function nvx_tariff_catalog() {
  * @return float
  */
 function nvx_endolift_price_from_eur() {
-	$pvp = function_exists( 'nvx_tariff_pvp' ) ? nvx_tariff_pvp( 'endolift', 'ojeras' ) : null;
+	$pvp = function_exists( 'nvx_tariff_pvp' ) ? nvx_tariff_pvp( 'Endolift®', 'ojeras' ) : null;
 	return null !== $pvp ? $pvp : 798.60;
 }
 
@@ -124,7 +124,7 @@ function nvx_endolift_price_from_eur() {
  * @return float
  */
 function nvx_endolift_price_papada_eur() {
-	$pvp = function_exists( 'nvx_tariff_pvp' ) ? nvx_tariff_pvp( 'endolift', 'papada' ) : null;
+	$pvp = function_exists( 'nvx_tariff_pvp' ) ? nvx_tariff_pvp( 'Endolift®', 'papada' ) : null;
 	return null !== $pvp ? $pvp : 1064.80;
 }
 
@@ -794,7 +794,7 @@ function nvx_schema_faq_catalog() {
 		$catalog = array_merge( $catalog, $signature_faqs );
 	}
 
-	// Replace hardcoded Endolift prices with dynamic tariff constants in FAQ answers
+	// Replace hardcoded Endolift® prices with dynamic tariff constants in FAQ answers
 	if ( ! empty( $catalog['endolift_facial'] ) && function_exists( 'nvx_endolift_price_from_eur' ) && function_exists( 'nvx_endolift_price_papada_eur' ) ) {
 		$from   = function_exists( 'nvx_format_price_eur' ) ? nvx_format_price_eur( nvx_endolift_price_from_eur() ) : number_format_i18n( nvx_endolift_price_from_eur(), 2 );
 		$papada = function_exists( 'nvx_format_price_eur' ) ? nvx_format_price_eur( nvx_endolift_price_papada_eur() ) : number_format_i18n( nvx_endolift_price_papada_eur(), 2 );
@@ -990,7 +990,7 @@ function nvx_schema_treatment_node_laser( string $key, string $permalink, string
 			'@type'             => array( 'MedicalProcedure', 'Service' ),
 			'@id'               => $permalink . NVX_SD_ID_MEDICAL_PROCEDURE,
 			'name'              => 'Endolift® facial para papada y línea mandibular',
-			'alternateName'     => array( NVX_SD_ENDOLIFT_FACIAL, 'Láser intersticial facial', 'Endolift Chamberí Madrid', 'Endolift Goya Madrid' ),
+			'alternateName'     => array( NVX_SD_ENDOLIFT_FACIAL, 'Láser intersticial facial', 'Endolift® Chamberí Madrid', 'Endolift® Goya Madrid' ),
 			'url'               => $permalink,
 			'mainEntityOfPage'  => array( '@id' => $permalink ),
 			'provider'          => array( '@id' => $organization_id ),
@@ -1200,7 +1200,7 @@ function nvx_schema_physician_director( $organization_id ) {
 		'jobTitle'         => 'Director médico e investigador clínico aplicado · NUVANX Madrid',
 		'description'      => 'Dirección médica de NUVANX. Láser intersticial (Endolift®, laserlipólisis), CO₂ fraccionado, geometría facial con inductores y tricología. ' . NVX_SD_LABEL_COLEGIADO_PREFIX . $colegiado . '. Perfil público en Doctoralia.',
 		'url'              => $equipo . '#physician-rivera-tejeda',
-		'knowsAbout'       => array( 'Medicina estética', 'Medicina estética láser', 'Endolift', 'Láser CO₂', 'Tricología' ),
+		'knowsAbout'       => array( 'Medicina estética', 'Medicina estética láser', 'Endolift®', 'Láser CO₂', 'Tricología' ),
 		'worksFor'         => array( '@id' => $organization_id ),
 		'hasCredential'    => array(
 			array(
@@ -1765,12 +1765,12 @@ function nvx_schema_attach_publications( array &$graph, int $page_id, array $phy
 		if ( empty( $person['@id'] ) ) {
 			continue;
 		}
-		if ( false !== strpos( $person['@id'], 'rivera-deras' ) ) {
+		if ( false !== strpos( $person['name'] ?? '', 'Ivon' ) ) {
 			foreach ( nvx_schema_ivon_publications( $person['@id'] ) as $work ) {
 				$graph[] = $work;
 			}
 		}
-		if ( false !== strpos( $person['@id'], 'quinonez-bareiro' ) ) {
+		if ( false !== strpos( $person['name'] ?? '', 'Fabio' ) ) {
 			foreach ( nvx_schema_fabio_publications( $person['@id'] ) as $work ) {
 				$graph[] = $work;
 			}
@@ -1788,7 +1788,7 @@ function nvx_schema_attach_publications( array &$graph, int $page_id, array $phy
  * @param string $entityId  Entity node @id.
  * @return array Updated schema graph.
  */
-function nvxSchemaLinkWebpageMainEntity( array $graph, string $pageUrl, string $entityId ): array {
+function nvx_schema_link_webpage_main_entity( array $graph, string $pageUrl, string $entityId ): array {
 	if ( '' === $pageUrl || '' === $entityId ) {
 		return $graph;
 	}
@@ -1819,7 +1819,7 @@ function nvx_schema_attach_treatment_and_faq( array &$graph, int $page_id, strin
 	if ( null !== $treatment ) {
 		$graph[] = $treatment;
 		if ( ! empty( $treatment['@id'] ) && ! empty( $treatment['url'] ) ) {
-			$graph = nvxSchemaLinkWebpageMainEntity( $graph, (string) $treatment['url'], (string) $treatment['@id'] );
+			$graph = nvx_schema_link_webpage_main_entity( $graph, (string) $treatment['url'], (string) $treatment['@id'] );
 		}
 	}
 
@@ -1827,6 +1827,91 @@ function nvx_schema_attach_treatment_and_faq( array &$graph, int $page_id, strin
 	if ( null !== $faq ) {
 		$graph[] = $faq;
 	}
+}
+
+
+/**
+ * Emits BreadcrumbList schema based on routes.json
+ */
+function nvx_schema_breadcrumb_node( $page_id ) {
+	$path = nvx_schema_current_path( $page_id );
+	if ( function_exists( 'nvx_catalog_json_resolved' ) ) {
+		$routes = nvx_catalog_json_resolved( 'routes.json' );
+		if ( ! empty( $routes[ $path ]['breadcrumb'] ) && is_array( $routes[ $path ]['breadcrumb'] ) ) {
+			$items = array();
+			$position = 1;
+			foreach ( $routes[ $path ]['breadcrumb'] as $b ) {
+				if ( ! empty( $b['name'] ) && ! empty( $b['url'] ) ) {
+					$items[] = array(
+						'@type'    => 'ListItem',
+						'position' => $position++,
+						'name'     => $b['name'],
+						'item'     => home_url( $b['url'] ),
+					);
+				}
+			}
+			if ( ! empty( $items ) ) {
+				return array(
+					'@type'           => 'BreadcrumbList',
+					'@id'             => home_url( $path . '#breadcrumb' ),
+					'itemListElement' => $items,
+				);
+			}
+		}
+	}
+	return null;
+}
+
+/**
+ * Emits VideoObject schema for the homepage hero video.
+ */
+function nvx_schema_video_object_node() {
+	if ( ! is_front_page() ) {
+		return null;
+	}
+	return array(
+		'@type'        => 'VideoObject',
+		'@id'          => home_url( '/#video' ),
+		'name'         => 'NUVANX Medicina Estética Láser - Presentación',
+		'description'  => 'Conoce NUVANX Medicina Estética Láser en Madrid. Tratamientos médicos con criterio, tecnología avanzada y resultados naturales.',
+		'thumbnailUrl' => home_url( '/wp-content/themes/nuvanx-medical/assets/images/responsive/nvx-home-hero-poster-1920-1080.webp' ),
+		'uploadDate'   => '2023-01-01T00:00:00Z',
+		'contentUrl'   => home_url( '/wp-content/themes/nuvanx-medical/assets/video/nvx-home-hero-1080p.mp4' ),
+	);
+}
+
+/**
+ * Emits HowTo schema for treatment pages.
+ */
+function nvx_schema_howto_node( $page_id ) {
+	// A simple heuristic for now: emit a standard HowTo for clinical assessment if it's a treatment page
+	if ( nvx_schema_resolve_treatment_key( $page_id ) ) {
+		$path = nvx_schema_current_path( $page_id );
+		return array(
+			'@type'       => 'HowTo',
+			'@id'         => home_url( $path . '#howto' ),
+			'name'        => 'Proceso de Valoración y Tratamiento',
+			'description' => 'Pasos desde el diagnóstico hasta el tratamiento en NUVANX.',
+			'step'        => array(
+				array(
+					'@type' => 'HowToStep',
+					'name'  => 'Diagnóstico Clínico',
+					'text'  => 'Evaluación médica integral, ecografía cutánea y diagnóstico diferencial para determinar la viabilidad.',
+				),
+				array(
+					'@type' => 'HowToStep',
+					'name'  => 'Planificación del Protocolo',
+					'text'  => 'Definición de sesiones, parámetros y combinación tecnológica según el estado anatómico.',
+				),
+				array(
+					'@type' => 'HowToStep',
+					'name'  => 'Ejecución y Seguimiento',
+					'text'  => 'Realización del procedimiento médico y pautas de recuperación guiadas por el equipo clínico.',
+				),
+			),
+		);
+	}
+	return null;
 }
 
 /**
@@ -1872,7 +1957,7 @@ function nvx_extend_yoast_schema_graph( $graph ) {
 				'@id'         => $website_id,
 				'url'         => home_url( '/' ),
 				'name'        => 'NUVANX Medicina Estética Láser Madrid',
-				'description' => 'Medicina estética láser en Madrid: Endolift, EXION, BTL, láser CO₂. Valoración presencial en Chamberí y Salamanca–Goya. Protocolos médicos basados en evidencia.',
+				'description' => 'Medicina estética láser en Madrid: Endolift®, EXION®, BTL, láser CO₂. Valoración presencial en Chamberí y Salamanca–Goya. Protocolos médicos basados en evidencia.',
 				'publisher'   => array( '@id' => $organization['id'] ),
 			);
 		}
@@ -1893,6 +1978,21 @@ function nvx_extend_yoast_schema_graph( $graph ) {
 
 	nvx_schema_attach_publications( $graph, $page_id, $physicians );
 	nvx_schema_attach_treatment_and_faq( $graph, $page_id, $organization['id'], $physician );
+
+	$breadcrumb = nvx_schema_breadcrumb_node( $page_id );
+	if ( $breadcrumb ) {
+		$graph[] = $breadcrumb;
+	}
+
+	$video = nvx_schema_video_object_node();
+	if ( $video ) {
+		$graph[] = $video;
+	}
+
+	$howto = nvx_schema_howto_node( $page_id );
+	if ( $howto ) {
+		$graph[] = $howto;
+	}
 
 	return $graph;
 }

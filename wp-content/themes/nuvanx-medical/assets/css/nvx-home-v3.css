@@ -717,3 +717,11 @@
 	border-color: var(--nvx-light);
 	transform: translateY(-2px);
 }
+
+/* Core Web Vitals optimization: defer below-the-fold rendering (CSS-4) */
+.nvx-home-locations,
+.nvx-home-team,
+.nvx-home-portfolio {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px;
+}

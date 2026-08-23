@@ -860,8 +860,10 @@ function nvx_render_generic_brand_treatment_page_body( array $data, string $pref
 
 		$html .= nvx_page_brand_section_open_markup( $prefix . '-compare', $prefix . '-compare-title' );
 		$html .= nvx_page_brand_section_heading_markup( esc_html( $data['compare']['kicker'] ?? '' ), $prefix . '-compare-title', esc_html( $data['compare']['title'] ?? '' ) );
-		$html .= '<div class="' . esc_attr( $prefix ) . '-compare-wrap">';
+		$wrapper_label = ! empty( $data['compare']['title'] ) ? esc_attr( $data['compare']['title'] ) : esc_attr__( 'Tabla comparativa', 'nuvanx-medical' );
+		$html .= '<div class="' . esc_attr( $prefix ) . '-compare-wrap" role="region" tabindex="0" aria-label="' . $wrapper_label . '">';
 		$html .= '<table class="' . esc_attr( $prefix ) . '-compare-table">';
+		$html .= '<caption>' . ( ! empty( $data['compare']['title'] ) ? esc_html( $data['compare']['title'] ) : esc_html__( 'Comparativa', 'nuvanx-medical' ) ) . '</caption>';
 		$html .= '<thead><tr>';
 		$html .= '<th scope="col">' . esc_html( $data['compare']['col_param'] ?? '' ) . '</th>';
 		foreach ( $col_keys as $ckey ) {
@@ -872,7 +874,8 @@ function nvx_render_generic_brand_treatment_page_body( array $data, string $pref
 			$html .= '<tr>';
 			$html .= '<th scope="row">' . esc_html( $row['param'] ?? '' ) . '</th>';
 			foreach ( $col_keys as $ckey ) {
-				$html .= '<td>' . esc_html( $row[ $ckey ] ?? '' ) . '</td>';
+				$label = isset( $data['compare'][ 'col_' . $ckey ] ) ? $data['compare'][ 'col_' . $ckey ] : '';
+				$html .= '<td data-label="' . esc_attr( $label ) . '">' . esc_html( $row[ $ckey ] ?? '' ) . '</td>';
 			}
 			$html .= '</tr>';
 		}

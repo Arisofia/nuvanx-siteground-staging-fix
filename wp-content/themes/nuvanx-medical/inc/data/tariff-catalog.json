@@ -1,177 +1,177 @@
 {
-  "endolift": {
+  "Endolift®": {
     "ojeras": {
       "label": "Endolift® ojeras",
-      "pvp": 798.60,
+      "pvp": 798.6,
       "group": "facial"
     },
     "papada": {
       "label": "Endolift® papada",
-      "pvp": 1064.80,
+      "pvp": 1064.8,
       "group": "facial"
     },
     "marcacion_mandibular": {
       "label": "Endolift® marcación mandibular",
-      "pvp": 1064.80,
+      "pvp": 1064.8,
       "group": "facial"
     },
     "pomulos": {
       "label": "Endolift® pómulos",
-      "pvp": 1064.80,
+      "pvp": 1064.8,
       "group": "facial"
     },
     "cuello": {
       "label": "Cuello",
-      "pvp": 1197.90,
+      "pvp": 1197.9,
       "group": "facial"
     },
     "abdomen": {
       "label": "Endolift® zona abdomen",
-      "pvp": 1694.00,
+      "pvp": 1694.0,
       "group": "corporal"
     },
     "flancos": {
       "label": "Endolift® flancos",
-      "pvp": 1573.00,
+      "pvp": 1573.0,
       "group": "corporal"
     },
     "subescapular": {
       "label": "Endolift® subescapular / sujetador",
-      "pvp": 1391.50,
+      "pvp": 1391.5,
       "group": "corporal"
     },
     "brazos": {
       "label": "Endolift® brazos",
-      "pvp": 1331.00,
+      "pvp": 1331.0,
       "group": "corporal"
     },
     "rodillas": {
       "label": "Endolift® rodillas",
-      "pvp": 1197.90,
+      "pvp": 1197.9,
       "group": "corporal"
     },
     "muslos_internos": {
       "label": "Endolift® cara interna muslos",
-      "pvp": 1331.00,
+      "pvp": 1331.0,
       "group": "corporal"
     },
     "subgluteos": {
       "label": "Subglúteos (bananitos)",
-      "pvp": 1331.00,
+      "pvp": 1331.0,
       "group": "corporal"
     },
     "cartucheras": {
       "label": "Endolift® cartucheras",
-      "pvp": 1331.00,
+      "pvp": 1331.0,
       "group": "corporal"
     }
   },
   "endolift_combo": {
     "papada_cuello": {
       "label": "Papada y cuello",
-      "pvp": 1331.00,
+      "pvp": 1331.0,
       "group": "facial"
     },
     "marcacion_papada": {
       "label": "Marcación mandibular y papada",
-      "pvp": 1452.00,
+      "pvp": 1452.0,
       "group": "facial"
     },
     "full_face": {
       "label": "Endolift® Full Face (tercio medio, inferior y cuello)",
-      "pvp": 1694.00,
+      "pvp": 1694.0,
       "group": "facial"
     },
     "abdomen_flancos": {
       "label": "Abdomen y flancos",
-      "pvp": 2395.80,
+      "pvp": 2395.8,
       "group": "corporal"
     },
     "subgluteos_cartucheras": {
       "label": "Subglúteos y cartucheras",
-      "pvp": 1633.50,
+      "pvp": 1633.5,
       "group": "corporal"
     },
     "muslos_rodilla": {
       "label": "Cara interna de muslos y rodilla",
-      "pvp": 1573.00,
+      "pvp": 1573.0,
       "group": "corporal"
     },
     "sujetador_brazos": {
       "label": "Zona sujetador y brazos",
-      "pvp": 1694.00,
+      "pvp": 1694.0,
       "group": "corporal"
     },
     "cartucheras_muslos": {
       "label": "Cartucheras y cara interna de muslos",
-      "pvp": 1815.00,
+      "pvp": 1815.0,
       "group": "corporal"
     },
     "cartucheras_subgluteos_muslos": {
       "label": "Cartucheras, subglúteos y cara interna de muslos",
-      "pvp": 2286.90,
+      "pvp": 2286.9,
       "group": "corporal"
     }
   },
   "laser_co2": {
     "facial": {
       "label": "Sesión Láser CO₂ facial",
-      "pvp": 330.00,
+      "pvp": 330.0,
       "group": "facial"
     },
     "corporal": {
       "label": "Sesión Láser CO₂ corporal",
-      "pvp": 450.00,
+      "pvp": 450.0,
       "group": "corporal"
     }
   },
   "labios_ha": {
     "hidratacion": {
       "label": "AH labios — hidratación",
-      "pvp": 290.00,
+      "pvp": 290.0,
       "group": "facial"
     },
     "perfilado_leve": {
       "label": "AH labios — perfilado leve",
-      "pvp": 498.00,
+      "pvp": 498.0,
       "group": "facial"
     },
     "correccion_asimetria": {
       "label": "AH labios — corrección asimetría",
-      "pvp": 498.00,
+      "pvp": 498.0,
       "group": "facial"
     }
   },
   "ojeras_ha": {
     "surco_lagrimal": {
       "label": "AH surco lagrimal / ojeras",
-      "pvp": 448.00,
+      "pvp": 448.0,
       "group": "facial"
     }
   },
   "rinomodelacion_ha": {
     "rinomodelacion": {
       "label": "Rinomodelación sin cirugía",
-      "pvp": 598.00,
+      "pvp": 598.0,
       "group": "facial"
     }
   },
   "bioestimuladores": {
     "polynucleotides_cara": {
       "label": "Bioestimulador — cara",
-      "pvp": 348.00,
+      "pvp": 348.0,
       "group": "facial",
       "sessions_recommended": 3
     },
     "polynucleotides_cuello": {
       "label": "Bioestimulador — cuello",
-      "pvp": 298.00,
+      "pvp": 298.0,
       "group": "facial",
       "sessions_recommended": 3
     },
     "polynucleotides_manos": {
       "label": "Bioestimulador — manos",
-      "pvp": 248.00,
+      "pvp": 248.0,
       "group": "corporal",
       "sessions_recommended": 3
     }
@@ -179,31 +179,31 @@
   "neuromoduladores": {
     "frontal": {
       "label": "Neuromodulador — frontal",
-      "pvp": 248.00,
+      "pvp": 248.0,
       "group": "facial",
       "sessions_recommended": 1
     },
     "entrecejo": {
       "label": "Neuromodulador — entrecejo",
-      "pvp": 198.00,
+      "pvp": 198.0,
       "group": "facial",
       "sessions_recommended": 1
     },
     "patas_gallo": {
       "label": "Neuromodulador — patas de gallo",
-      "pvp": 198.00,
+      "pvp": 198.0,
       "group": "facial",
       "sessions_recommended": 1
     },
     "dos_tercios": {
       "label": "Neuromodulador — 2 tercios (frontal + entrecejo)",
-      "pvp": 348.00,
+      "pvp": 348.0,
       "group": "facial",
       "sessions_recommended": 1
     },
     "tres_tercios": {
       "label": "Neuromodulador — 3 tercios completos",
-      "pvp": 348.00,
+      "pvp": 348.0,
       "group": "facial",
       "sessions_recommended": 1
     }
@@ -211,30 +211,30 @@
   "exion": {
     "exion_face_sesion": {
       "label": "EXION® Face — sesión única",
-      "pvp": 395.00,
+      "pvp": 395.0,
       "group": "facial",
       "sessions_recommended": 4
     },
     "exion_face_pack4": {
       "label": "EXION® Face — pack 4 sesiones",
-      "pvp": 1395.00,
+      "pvp": 1395.0,
       "group": "facial"
     },
     "exion_body_sesion": {
       "label": "EXION® Body — sesión única",
-      "pvp": 445.00,
+      "pvp": 445.0,
       "group": "corporal",
       "sessions_recommended": 4
     },
     "exion_fractional_cara": {
       "label": "EXION® Fractional — cara completa",
-      "pvp": 595.00,
+      "pvp": 595.0,
       "group": "facial",
       "sessions_recommended": 3
     },
     "emfusion_sesion": {
       "label": "EMFUSION® — sesión única",
-      "pvp": 345.00,
+      "pvp": 345.0,
       "group": "facial",
       "sessions_recommended": 4
     }
@@ -242,21 +242,24 @@
   "btl_exilite": {
     "cara_completa": {
       "label": "BTL EXILITE™ IPL — cara completa",
-      "pvp": 295.00,
+      "pvp": 295.0,
       "group": "facial",
       "sessions_recommended": 4
     },
     "escote": {
       "label": "BTL EXILITE™ IPL — escote",
-      "pvp": 245.00,
+      "pvp": 245.0,
       "group": "corporal",
       "sessions_recommended": 4
     },
     "manos": {
       "label": "BTL EXILITE™ IPL — manos",
-      "pvp": 195.00,
+      "pvp": 195.0,
       "group": "corporal",
       "sessions_recommended": 4
     }
+  },
+  "_metadata": {
+    "iva_note": "Precios orientativos sin IVA. Presupuesto definitivo tras valoración médica."
   }
 }

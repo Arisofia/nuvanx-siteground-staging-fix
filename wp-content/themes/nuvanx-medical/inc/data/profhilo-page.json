@@ -2,7 +2,7 @@
     "hero": {
         "kicker": "@nvx-t:NUVANX · Medicina estética bioremodeladora",
         "h1": "@nvx-t:Profhilo en Madrid: qué esperar tras el tratamiento bioremodelador",
-        "byline_author": "@nvx-t:Escrito y revisado por Dr. Javier Rivera Tejeda",
+        "byline_author": "@nvx-t:Escrito y revisado por Dr. José Javier Rivera Tejeda",
         "byline_title": "@nvx-t:Director médico NUVANX · Fecha de última revisión: julio 2026",
         "lead": "@nvx-t:Tratamiento bioremodelador de ácido hialurónico para flacidez cutánea y calidad de piel. Indicación médica y presupuesto cerrado tras la primera valoración en Chamberí o Salamanca.",
         "description": "@nvx-t:Valoración por el Dr. José Javier Rivera Tejeda (Nº Col. ICOMEM %s). Protocolo BAP (Bio Aesthetic Point) según anatomía facial. Resultados progresivos sin relleno volumétrico.",
@@ -43,7 +43,7 @@
         "col_profhilo": "@nvx-t:Profhilo",
         "col_filler": "@nvx-t:Rellenos AH",
         "rows": [
-            { "param": "@nvx-t:Naturaleza", "profhilo": "@nvx-t:Bioremodelador difusivo (estimulo tisular)", "filler": "@nvx-t:Relleno volumétrico (aporte de volumen)" },
+            { "param": "@nvx-t:Naturaleza", "profhilo": "@nvx-t:Bioremodelador difusivo (estímulo tisular)", "filler": "@nvx-t:Relleno volumétrico (aporte de volumen)" },
             { "param": "@nvx-t:Concentración AH", "profhilo": "@nvx-t:32 mg en 2 ml (alta concentración)", "filler": "@nvx-t:Variable según producto (20–24 mg/ml)" },
             { "param": "@nvx-t:Objetivo", "profhilo": "@nvx-t:Calidad de piel, firmeza, luminosidad", "filler": "@nvx-t:Volumen, contorno, líneas de expresión" },
             { "param": "@nvx-t:Resultado", "profhilo": "@nvx-t:Progresivo; consolidación 4–8 semanas", "filler": "@nvx-t:Inmediato; duración 6–12 meses" },
@@ -55,7 +55,7 @@
         "kicker": "@nvx-t:La biofísica",
         "title": "@nvx-t:NAHYCO® Hybrid Complex: tecnología de liberación prolongada",
         "body1": "@nvx-t:Profhilo utiliza tecnología NAHYCO® que combina ácido hialurónico de alto peso molecular (largo plazo) y bajo peso molecular (acción inmediata). Esto crea un depósito tisular que libera el producto de forma prolongada durante 4 semanas.",
-        "caption": "@nvx-t:Estimulo de fibroblastos y producción de colágeno/elastina endógena.",
+        "caption": "@nvx-t:Estímulo de fibroblastos y producción de colágeno/elastina endógena.",
         "body2": "@nvx-t:El resultado es una bioremodelación profunda que mejora la arquitectura de la piel desde la dermis reticular. No es un efecto cosmético superficial: es una regeneración tisular estructural con resultados duraderos."
     },
     "process": {

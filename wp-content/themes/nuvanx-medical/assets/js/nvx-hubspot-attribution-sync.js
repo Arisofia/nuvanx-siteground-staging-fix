@@ -2,7 +2,7 @@
 	'use strict';
 
 	var config = window.nvxConversionEvents || {};
-	var FORM_ID = String((config.forms || {}).valoracion || '').toLowerCase();
+	var FORM_ID = String((config.forms || {}).valoracion || '5042522a-0bc5-4381-ac3e-5aee8649b69c').toLowerCase();
 	var FIRST_PARTY_FIELDS = new Set([
 		'nvx_lead_id',
 		'nvx_is_test_lead',
@@ -42,10 +42,10 @@
 
 	function hasMarketingConsent() {
 		try {
-			return typeof window.wp_has_consent === 'function' && window.wp_has_consent('marketing') === true;
-		} catch (_error) {
-			return false;
-		}
+			if (typeof window.cmplz_has_consent === 'function') return window.cmplz_has_consent('marketing') === true;
+			if (typeof window.wp_has_consent === 'function') return window.wp_has_consent('marketing') === true;
+		} catch (_error) { return false; }
+		return false;
 	}
 
 	function canonicalPropertyName(fieldName) {

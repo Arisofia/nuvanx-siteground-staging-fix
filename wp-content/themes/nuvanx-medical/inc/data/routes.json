@@ -2,44 +2,169 @@
   "/": {
     "seo_id": "home"
   },
-  "/madrid/": {},
+  "/madrid/": {
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Madrid",
+        "url": "/madrid/"
+      }
+    ]
+  },
   "/madrid/valoracion/": {
-    "seo_id": "valoracion"
+    "seo_id": "valoracion",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Madrid",
+        "url": "/madrid/"
+      },
+      {
+        "name": "Valoracion",
+        "url": "/madrid/valoracion/"
+      }
+    ]
   },
   "/soluciones-medicas/": {
-    "seo_id": "soluciones"
+    "seo_id": "soluciones",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      }
+    ]
   },
   "/protocolos-signature/": {
-    "seo_id": "signature_protocols"
+    "seo_id": "signature_protocols",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Protocolos Signature",
+        "url": "/protocolos-signature/"
+      }
+    ]
   },
   "/por-que-nuvanx/": {
-    "seo_id": "por_que_nuvanx"
+    "seo_id": "por_que_nuvanx",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Por Que Nuvanx",
+        "url": "/por-que-nuvanx/"
+      }
+    ]
   },
   "/inversion-medicina-estetica/": {
-    "seo_id": "inversion"
+    "seo_id": "inversion",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Inversion Medicina Estetica",
+        "url": "/inversion-medicina-estetica/"
+      }
+    ]
   },
   "/nosotros/": {
-    "seo_id": "nosotros"
+    "seo_id": "nosotros",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Nosotros",
+        "url": "/nosotros/"
+      }
+    ]
   },
   "/equipo-medico/": {
-    "seo_id": "equipo"
+    "seo_id": "equipo",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Equipo Medico",
+        "url": "/equipo-medico/"
+      }
+    ]
   },
   "/contacto/": {
-    "seo_id": "contacto"
+    "seo_id": "contacto",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Contacto",
+        "url": "/contacto/"
+      }
+    ]
   },
   "/blog/": {
-    "seo_id": "blog"
+    "seo_id": "blog",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Blog",
+        "url": "/blog/"
+      }
+    ]
   },
   "/clinicas-de-medicina-estetica-nuvanx/": {
     "seo_id": "clinicas",
     "schema_group": "clinic_hub",
-    "post_id": 1399
+    "post_id": 1399,
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Clinicas De Medicina Estetica Nuvanx",
+        "url": "/clinicas-de-medicina-estetica-nuvanx/"
+      }
+    ]
   },
   "/medicina-estetica-chamberi/": {
     "seo_id": "chamberi",
     "schema_group": "clinics",
     "schema_id": "chamberi",
-    "post_id": 1543
+    "post_id": 1543,
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Medicina Estetica Chamberi",
+        "url": "/medicina-estetica-chamberi/"
+      }
+    ]
   },
   "/medicina-estetica-goya/": {
     "route_alias": "/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/"
@@ -51,77 +176,219 @@
     "seo_id": "goya",
     "schema_group": "clinics",
     "schema_id": "goya",
-    "post_id": 1537
+    "post_id": 1537,
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Clinicas De Medicina Estetica Nuvanx",
+        "url": "/clinicas-de-medicina-estetica-nuvanx/"
+      },
+      {
+        "name": "Medicina Estetica Goya Barrio Salamanca",
+        "url": "/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/"
+      }
+    ]
   },
   "/endolift-facial-papada-mandibula/": {
-    "seo_id": "endolift",
+    "seo_id": "Endolift®",
     "schema_group": "treatments",
     "schema_id": "endolift_facial",
     "post_id": 1241,
-    "schema_type": "MedicalProcedure"
+    "schema_type": "MedicalProcedure",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "Endolift® Facial Papada Mandibula",
+        "url": "/endolift-facial-papada-mandibula/"
+      }
+    ]
   },
   "/endolaser-corporal-grasa-localizada/": {
     "seo_id": "endolaser",
     "schema_group": "treatments",
     "schema_id": "endolaser_corporal",
     "post_id": 0,
-    "schema_type": "MedicalProcedure"
+    "schema_type": "MedicalProcedure",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Endolaser Corporal Grasa Localizada",
+        "url": "/endolaser-corporal-grasa-localizada/"
+      }
+    ]
   },
   "/laser-co2-fraccionado-madrid-textura-cicatrices-poro/": {
     "seo_id": "co2",
     "schema_group": "treatments",
     "schema_id": "laser_co2",
     "post_id": 0,
-    "schema_type": "MedicalProcedure"
+    "schema_type": "MedicalProcedure",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Laser Co2 Fraccionado Madrid Textura Cicatrices Poro",
+        "url": "/laser-co2-fraccionado-madrid-textura-cicatrices-poro/"
+      }
+    ]
   },
   "/exion-btl/": {
     "seo_id": "exion",
     "schema_group": "treatments",
     "schema_id": "exion_btl",
     "post_id": 2906,
-    "schema_type": "Service"
+    "schema_type": "Service",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "EXION® BTL",
+        "url": "/exion-btl/"
+      }
+    ]
   },
   "/exion-face/": {
     "seo_id": "exion_face",
     "schema_group": "treatments",
     "schema_id": "exion_face",
     "post_id": 0,
-    "schema_type": "Service"
+    "schema_type": "Service",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "EXION® Face",
+        "url": "/exion-face/"
+      }
+    ]
   },
   "/exion-fractional/": {
     "seo_id": "exion_fractional",
     "schema_group": "treatments",
     "schema_id": "exion_fractional",
     "post_id": 0,
-    "schema_type": "Service"
+    "schema_type": "Service",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "EXION® Fractional",
+        "url": "/exion-fractional/"
+      }
+    ]
   },
   "/exion-body/": {
     "seo_id": "exion_body",
     "schema_group": "treatments",
     "schema_id": "exion_body",
     "post_id": 0,
-    "schema_type": "Service"
+    "schema_type": "Service",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "EXION® Body",
+        "url": "/exion-body/"
+      }
+    ]
   },
   "/emfusion/": {
     "seo_id": "emfusion",
     "schema_group": "treatments",
     "schema_id": "emfusion",
     "post_id": 0,
-    "schema_type": "Service"
+    "schema_type": "Service",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Emfusion",
+        "url": "/emfusion/"
+      }
+    ]
   },
   "/btl-exilite-ipl-madrid/": {
     "seo_id": "exilite",
     "schema_group": "treatments",
     "schema_id": "exilite_btl",
     "post_id": 0,
-    "schema_type": "Service"
+    "schema_type": "Service",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "BTL Exilite Ipl Madrid",
+        "url": "/btl-exilite-ipl-madrid/"
+      }
+    ]
   },
   "/neuromoduladores-faciales-madrid/": {
     "seo_id": "neuromodulador",
     "schema_group": "treatments",
     "schema_id": "neuromodulador",
     "post_id": 3508,
-    "schema_type": "MedicalProcedure"
+    "schema_type": "MedicalProcedure",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
+        "name": "Neuromoduladores Faciales Madrid",
+        "url": "/neuromoduladores-faciales-madrid/"
+      }
+    ]
   },
   "/neuromoduladores-madrid/": {
     "route_alias": "/neuromoduladores-faciales-madrid/"
@@ -137,111 +404,489 @@
     "schema_group": "treatments",
     "schema_id": "acido_hialuronico",
     "post_id": 3602,
-    "schema_type": "MedicalProcedure"
+    "schema_type": "MedicalProcedure",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
+        "name": "Ácido Hialurónico Relleno Madrid",
+        "url": "/acido-hialuronico-relleno-madrid/"
+      }
+    ]
   },
   "/rinomodelacion-sin-cirugia-madrid/": {
     "seo_id": "rinomodelacion",
     "schema_group": "treatments",
     "schema_id": "rinomodelacion",
     "post_id": 3319,
-    "schema_type": "MedicalProcedure"
+    "schema_type": "MedicalProcedure",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
+        "name": "Rinomodelación Sin Cirugia Madrid",
+        "url": "/rinomodelacion-sin-cirugia-madrid/"
+      }
+    ]
   },
   "/medicina-estetica-laser/": {
-    "seo_id": "laser_medicine"
+    "seo_id": "laser_medicine",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Medicina Láser",
+        "url": "/medicina-estetica-laser/"
+      }
+    ]
   },
   "/medicina-estetica/": {
-    "seo_id": "aesthetic_medicine"
+    "seo_id": "aesthetic_medicine",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Medicina Estetica",
+        "url": "/medicina-estetica/"
+      }
+    ]
   },
   "/estetica-avanzada/": {
-    "seo_id": "advanced_aesthetics"
+    "seo_id": "advanced_aesthetics",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Estetica Avanzada",
+        "url": "/estetica-avanzada/"
+      }
+    ]
   },
   "/bioestimuladores-colageno-madrid/": {
     "seo_id": "collagen_bio",
     "schema_group": "treatments",
-    "schema_id": "collagen_bio"
+    "schema_id": "collagen_bio",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
+        "name": "Bioestimuladores Colageno Madrid",
+        "url": "/bioestimuladores-colageno-madrid/"
+      }
+    ]
   },
   "/ojeras-surco-lagrimal-madrid/": {
     "seo_id": "dark_circles_ha",
     "schema_group": "treatments",
-    "schema_id": "dark_circles_ha"
+    "schema_id": "dark_circles_ha",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
+        "name": "Ojeras Surco Lagrimal Madrid",
+        "url": "/ojeras-surco-lagrimal-madrid/"
+      }
+    ]
   },
   "/labios-acido-hialuronico-madrid/": {
     "seo_id": "lips_ha",
     "schema_group": "treatments",
-    "schema_id": "lips_ha"
+    "schema_id": "lips_ha",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
+        "name": "Labios Ácido Hialurónico Madrid",
+        "url": "/labios-acido-hialuronico-madrid/"
+      }
+    ]
   },
   "/remodelacion-corporal-laser-madrid/": {
     "seo_id": "body_contouring_laser",
     "schema_group": "treatments",
-    "schema_id": "body_contouring_laser"
+    "schema_id": "body_contouring_laser",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Remodelacion Corporal Laser Madrid",
+        "url": "/remodelacion-corporal-laser-madrid/"
+      }
+    ]
   },
   "/tratamiento-postparto-abdomen-contorno-corporal-madrid/": {
     "seo_id": "postpartum",
     "schema_group": "treatments",
-    "schema_id": "postpartum"
+    "schema_id": "postpartum",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Tratamiento Postparto Abdomen Contorno Corporal Madrid",
+        "url": "/tratamiento-postparto-abdomen-contorno-corporal-madrid/"
+      }
+    ]
   },
   "/papada-definicion-mandibular-madrid/": {
     "seo_id": "double_chin",
     "schema_group": "treatments",
-    "schema_id": "double_chin"
+    "schema_id": "double_chin",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Papada Definicion Mandibular Madrid",
+        "url": "/papada-definicion-mandibular-madrid/"
+      }
+    ]
   },
   "/calidad-piel-firmeza-luminosidad-madrid/": {
     "seo_id": "skin_quality",
     "schema_group": "treatments",
-    "schema_id": "skin_quality"
+    "schema_id": "skin_quality",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Calidad Piel Firmeza Luminosidad Madrid",
+        "url": "/calidad-piel-firmeza-luminosidad-madrid/"
+      }
+    ]
   },
   "/cicatrices-acne-poros-textura-madrid/": {
     "seo_id": "acne_scars",
     "schema_group": "treatments",
-    "schema_id": "acne_scars"
+    "schema_id": "acne_scars",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Cicatrices Acne Poros Textura Madrid",
+        "url": "/cicatrices-acne-poros-textura-madrid/"
+      }
+    ]
   },
   "/manchas-rojeces-fotorejuvenecimiento-ipl-madrid/": {
     "seo_id": "pigmentation",
     "schema_group": "treatments",
-    "schema_id": "pigmentation"
+    "schema_id": "pigmentation",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Manchas Rojeces Fotorejuvenecimiento Ipl Madrid",
+        "url": "/manchas-rojeces-fotorejuvenecimiento-ipl-madrid/"
+      }
+    ]
   },
   "/grasa-localizada-abdomen-flancos-madrid/": {
     "seo_id": "local_fat_abdomen",
     "schema_group": "treatments",
-    "schema_id": "local_fat_abdomen"
+    "schema_id": "local_fat_abdomen",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Grasa Localizada Abdomen Flancos Madrid",
+        "url": "/grasa-localizada-abdomen-flancos-madrid/"
+      }
+    ]
   },
   "/flacidez-grasa-localizada-brazos-madrid/": {
     "seo_id": "arms_fat_laxity",
     "schema_group": "treatments",
-    "schema_id": "arms_fat_laxity"
+    "schema_id": "arms_fat_laxity",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Flacidez Grasa Localizada Brazos Madrid",
+        "url": "/flacidez-grasa-localizada-brazos-madrid/"
+      }
+    ]
   },
   "/grasa-espalda-zona-sujetador-madrid/": {
     "seo_id": "back_fat",
     "schema_group": "treatments",
-    "schema_id": "back_fat"
+    "schema_id": "back_fat",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Grasa Espalda Zona Sujetador Madrid",
+        "url": "/grasa-espalda-zona-sujetador-madrid/"
+      }
+    ]
   },
   "/flacidez-muslos-internos-subgluteo-madrid/": {
     "seo_id": "inner_thighs",
     "schema_group": "treatments",
-    "schema_id": "inner_thighs"
+    "schema_id": "inner_thighs",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Flacidez Muslos Internos Subgluteo Madrid",
+        "url": "/flacidez-muslos-internos-subgluteo-madrid/"
+      }
+    ]
   },
   "/tratamiento-rodillas-grasa-flacidez-madrid/": {
     "seo_id": "knees",
     "schema_group": "treatments",
-    "schema_id": "knees"
+    "schema_id": "knees",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Tratamiento Rodillas Grasa Flacidez Madrid",
+        "url": "/tratamiento-rodillas-grasa-flacidez-madrid/"
+      }
+    ]
   },
   "/contorno-corporal-masculino-madrid/": {
     "seo_id": "male_body_contouring",
     "schema_group": "treatments",
-    "schema_id": "male_body_contouring"
+    "schema_id": "male_body_contouring",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
+        "name": "Contorno Corporal Masculino Madrid",
+        "url": "/contorno-corporal-masculino-madrid/"
+      }
+    ]
   },
-  "/gracias/": {},
-  "/politica-de-cookies-ue/": {},
-  "/politica-privacidad/": {},
-  "/aviso-legal/": {},
-  "/politica-de-cookies/": {},
-  "/mas-informacion-sobre-las-cookies/": {},
-  "/casos-de-pacientes/": {},
+  "/gracias/": {
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Gracias",
+        "url": "/gracias/"
+      }
+    ]
+  },
+  "/politica-de-cookies-ue/": {
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Politica De Cookies Ue",
+        "url": "/politica-de-cookies-ue/"
+      }
+    ]
+  },
+  "/politica-privacidad/": {
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Politica Privacidad",
+        "url": "/politica-privacidad/"
+      }
+    ]
+  },
+  "/aviso-legal/": {
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Aviso Legal",
+        "url": "/aviso-legal/"
+      }
+    ]
+  },
+  "/politica-de-cookies/": {
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Politica De Cookies",
+        "url": "/politica-de-cookies/"
+      }
+    ]
+  },
+  "/mas-informacion-sobre-las-cookies/": {
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Mas Informacion Sobre Las Cookies",
+        "url": "/mas-informacion-sobre-las-cookies/"
+      }
+    ]
+  },
+  "/casos-de-pacientes/": {
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Casos De Pacientes",
+        "url": "/casos-de-pacientes/"
+      }
+    ]
+  },
   "/tratamientos/": {
-    "seo_id": "tratamientos"
+    "seo_id": "tratamientos",
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      }
+    ]
   },
-  "/precio-neuromoduladores-madrid/": {},
+  "/precio-neuromoduladores-madrid/": {
+    "breadcrumb": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Precio Neuromoduladores Madrid",
+        "url": "/precio-neuromoduladores-madrid/"
+      }
+    ]
+  },
   "/botox-madrid-precio-neuromoduladores/": {
     "route_alias": "/precio-neuromoduladores-madrid/"
+  },
+  "/emfusion/": {
+    "route_alias": "/emfusion/"
+  },
+  "/endolift-ciencia-laser-subdermico/": {
+    "route_alias": "/endolift-ciencia-laser-subdermico/"
+  },
+  "/rinomodelacion-sin-cirugia-madrid-guia/": {
+    "route_alias": "/rinomodelacion-sin-cirugia-madrid-guia/"
+  },
+  "/laserlipolisis-vs-liposuccion/": {
+    "route_alias": "/laserlipolisis-vs-liposuccion/"
   }
 }

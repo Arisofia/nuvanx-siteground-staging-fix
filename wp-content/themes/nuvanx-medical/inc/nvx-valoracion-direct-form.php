@@ -37,7 +37,7 @@ function nvx_valoracion_direct_form_markup(): string {
 	$html .= '<div class="nvx-hp" aria-hidden="true"><label>' . esc_html__( 'Empresa', 'nuvanx-medical' ) . '<input type="text" name="nvx_company" tabindex="-1" autocomplete="off"></label></div>';
 
 	if ( $error ) {
-		$html .= '<p class="nvx-valoracion-direct-form__error" role="alert" tabindex="-1">' . esc_html__( 'No se envió la solicitud. Revisa que hayas completado nombre, apellidos, teléfono, email, el motivo de consulta y la aceptación de privacidad.', 'nuvanx-medical' ) . '</p>';
+		$html .= '<p class="nvx-valoracion-direct-form__error" id="nvx-valoracion-error" role="alert" tabindex="-1">' . esc_html__( 'No se envió la solicitud. Revisa que hayas completado nombre, apellidos, teléfono, email, el motivo de consulta y la aceptación de privacidad.', 'nuvanx-medical' ) . '</p>';
 	}
 
 	$identity_fields = array(
@@ -58,28 +58,28 @@ function nvx_valoracion_direct_form_markup(): string {
 	foreach ( $identity_fields as $field ) {
 		$html .= '<p class="nvx-valoracion-direct-form__field">';
 		$html .= '<label for="nvx-valoracion-' . $field['id'] . '">' . $field['label'] . '</label>';
-		$html .= '<input class="hs-input" id="nvx-valoracion-' . $field['id'] . '" name="' . $field['id'] . '" type="text" autocomplete="' . $field['autocomplete'] . '" minlength="2" maxlength="' . $field['maxlength'] . '" required>';
+		$html .= '<input class="hs-input" id="nvx-valoracion-' . $field['id'] . '" name="' . $field['id'] . '" type="text" autocomplete="' . $field['autocomplete'] . '" minlength="2" maxlength="' . $field['maxlength'] . '" required' . ( $error ? ' aria-invalid="true" aria-describedby="nvx-valoracion-error"' : '' ) . '>';
 		$html .= '</p>';
 	}
 
 	$html .= '<p class="nvx-valoracion-direct-form__field">';
 	$html .= '<label for="nvx-valoracion-phone">' . esc_html__( 'Teléfono', 'nuvanx-medical' ) . '</label>';
-	$html .= '<input class="hs-input" id="nvx-valoracion-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" minlength="7" maxlength="20" required>';
+	$html .= '<input class="hs-input" id="nvx-valoracion-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" minlength="7" maxlength="20" required' . ( $error ? ' aria-invalid="true" aria-describedby="nvx-valoracion-error"' : '' ) . '>';
 	$html .= '</p>';
 
 	$html .= '<p class="nvx-valoracion-direct-form__field">';
 	$html .= '<label for="nvx-valoracion-email">' . esc_html__( 'Email', 'nuvanx-medical' ) . '</label>';
-	$html .= '<input class="hs-input" id="nvx-valoracion-email" name="email" type="email" autocomplete="email" maxlength="120" required>';
+	$html .= '<input class="hs-input" id="nvx-valoracion-email" name="email" type="email" autocomplete="email" maxlength="120" required' . ( $error ? ' aria-invalid="true" aria-describedby="nvx-valoracion-error"' : '' ) . '>';
 	$html .= '</p>';
 
 	$html .= '<p class="nvx-valoracion-direct-form__field">';
 	$html .= '<label for="nvx-valoracion-message">' . esc_html__( 'Qué quieres valorar', 'nuvanx-medical' ) . '</label>';
-	$html .= '<textarea class="hs-input" id="nvx-valoracion-message" name="message" rows="4" minlength="10" maxlength="2000" required></textarea>';
+	$html .= '<textarea class="hs-input" id="nvx-valoracion-message" name="message" rows="4" minlength="10" maxlength="2000" required' . ( $error ? ' aria-invalid="true" aria-describedby="nvx-valoracion-error"' : '' ) . '></textarea>';
 	$html .= '</p>';
 
 	$html .= '<p class="nvx-valoracion-direct-form__consent">';
 	$html .= '<label for="nvx-valoracion-privacy">';
-	$html .= '<input id="nvx-valoracion-privacy" name="privacy" type="checkbox" value="1" required> ';
+	$html .= '<input id="nvx-valoracion-privacy" name="privacy" type="checkbox" value="1" required' . ( $error ? ' aria-invalid="true" aria-describedby="nvx-valoracion-error"' : '' ) . '> ';
 	$html .= sprintf(
 		/* translators: %s: privacy policy link */
 		esc_html__( 'Acepto la %s y el tratamiento de mis datos para gestionar esta solicitud.', 'nuvanx-medical' ),

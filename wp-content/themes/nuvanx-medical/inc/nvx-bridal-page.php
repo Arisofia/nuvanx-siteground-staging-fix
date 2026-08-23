@@ -2,7 +2,7 @@
 /**
  * Protocolo de novias — editorial photography.
  *
- * CMS page 3544 (/protocolo-novias-madrid/) has no dedicated template.
+ * CMS page (/protocolo-novias-madrid/) has no dedicated template.
  * Injects a magazine-style studio of theme-hosted WebP plates after the
  * philosophy block. Marker class: nvx-bridal-studio.
  *
@@ -21,7 +21,7 @@ function nvx_is_bridal_protocol_page( string $content = '' ): bool {
 		return false;
 	}
 
-	if ( is_page( 'protocolo-novias-madrid' ) || is_page( 3544 ) ) {
+	if ( is_page( 'protocolo-novias-madrid' ) ) {
 		return true;
 	}
 

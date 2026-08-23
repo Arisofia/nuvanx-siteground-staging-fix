@@ -84,7 +84,7 @@ const NVX_HOOK_PRIO_BTL_GOVERNANCE  = 99;
 // Late Hijacks & Enforcements
 const NVX_HOOK_PRIO_DR_RIVERA        = 121;
 const NVX_HOOK_PRIO_QUE_EXIGIR       = 122;
-const NVX_HOOK_PRIO_EXION_INVESTMENT = 126;
+const NVX_HOOK_PRIO_EXION®_INVESTMENT = 126;
 const NVX_HOOK_PRIO_MEDICAL_REVIEW   = 144;
 
 // Extreme Late Normalization

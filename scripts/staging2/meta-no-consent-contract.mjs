@@ -1,10 +1,16 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { EX_TEMPFAIL, isSiteGroundTransientResponse } from './siteground-transient-classifier.mjs';
+
+const execFileAsync = promisify(execFile);
 
 const baseUrl = (process.env.BASE_URL || 'https://staging2.nuvanx.com').replace(/\/$/, '');
 const expectedHost = (process.env.EXPECTED_HOST || new URL(baseUrl).hostname).trim().toLowerCase();
 const expectedSha = (process.env.EXPECTED_SHA || '').trim();
+const originSshAlias = String(process.env.ORIGIN_SSH_ALIAS || 'nvx-staging2').trim();
+const originFallbackAllowed = baseUrl === 'https://staging2.nuvanx.com';
 const requestTimeoutMs = Number.parseInt(process.env.META_NO_CONSENT_REQUEST_TIMEOUT_MS || '15000', 10);
 const routes = [
   '/',
@@ -63,6 +69,55 @@ const report = {
 };
 let transient = false;
 
+async function fetchOriginAfterChallenge(url) {
+  const remoteCommand = [
+    'curl -kSs --max-time 30 -L -D __nvx_headers.txt',
+    `--resolve ${expectedHost}:443:127.0.0.1`,
+    "-H 'Cache-Control: no-cache'",
+    "-H 'Pragma: no-cache'",
+    "-b 'wpSGCacheBypass=1'",
+    "-A 'NUVANX-Meta-No-Consent-Contract/1.0'",
+    "-H 'Accept: text/html,application/xhtml+xml'",
+    `-w '\\n__NVX_HTTP_STATUS__:%{http_code}\\n__NVX_FINAL_URL__:%{url_effective}\\n'`,
+    `'${url.toString()}'`,
+    `&& echo '__NVX_SEP__'`,
+    `&& cat __nvx_headers.txt`,
+    `&& rm -f __nvx_headers.txt`
+  ].join(' ');
+
+  if (!new Set(['nvx-staging2', 'nvx-staging2-pr']).has(originSshAlias)) {
+    throw new Error(`ORIGIN_SSH_ALIAS must be one of: nvx-staging2, nvx-staging2-pr.`);
+  }
+  const { stdout } = await execFileAsync('ssh', ['-n', '--', originSshAlias, remoteCommand], {
+    encoding: 'utf8',
+    maxBuffer: 8 * 1024 * 1024,
+    timeout: 45000,
+  });
+
+  const sepIndex = stdout.indexOf('\n__NVX_SEP__\n');
+  if (sepIndex === -1) throw new Error('origin_fallback_missing_separator');
+
+  const htmlAndStatus = stdout.substring(0, sepIndex);
+  const headersStr = stdout.substring(sepIndex + 13);
+
+  const statusMatch = htmlAndStatus.match(/\n__NVX_HTTP_STATUS__:(\d{3})\n__NVX_FINAL_URL__:(.+)\s*$/);
+  if (!statusMatch) throw new Error('origin_fallback_missing_status');
+
+  const status = Number(statusMatch[1]);
+  const finalUrl = statusMatch[2].trim();
+  const html = htmlAndStatus.slice(0, statusMatch.index);
+
+  const cookies = [];
+  for (const line of headersStr.split('\n')) {
+    const lower = line.toLowerCase();
+    if (lower.startsWith('set-cookie:')) {
+      cookies.push(line.substring(11).trim());
+    }
+  }
+
+  return { status, finalUrl, html, cookies };
+}
+
 for (const route of routes) {
   const url = new URL(route, `${baseUrl}/`);
   url.searchParams.set('nvx_meta_no_consent', `${Date.now()}-${report.routes.length + 1}`);
@@ -72,6 +127,8 @@ for (const route of routes) {
     if (url.protocol !== 'https:' || url.hostname !== expectedHost) {
       throw new Error(`refusing host ${url.hostname}`);
     }
+
+    let responseStatus, responseFinalUrl, html, cookies;
 
     const response = await fetch(url, {
       redirect: 'follow',
@@ -85,22 +142,46 @@ for (const route of routes) {
     });
 
     if (isSiteGroundTransientResponse(response.status, Object.fromEntries(response.headers.entries()))) {
-      transient = true;
-      row.issues.push(`siteground_transient status=${response.status} sg-captcha=${response.headers.get('sg-captcha') || ''}`);
-      report.routes.push(row);
-      continue;
+      if (!originFallbackAllowed) {
+        transient = true;
+        row.issues.push(`siteground_transient status=${response.status} sg-captcha=${response.headers.get('sg-captcha') || ''}`);
+        report.routes.push(row);
+        continue;
+      }
+      row.issues.push(`origin_fallback_edge_status=${response.status}`);
+      try {
+        const fallback = await fetchOriginAfterChallenge(url);
+        if (fallback.status === 408 || fallback.status === 429 || fallback.status >= 500) {
+          transient = true;
+          row.issues.push(`origin_fallback_transient status=${fallback.status}`);
+          report.routes.push(row);
+          continue;
+        }
+        responseStatus = fallback.status;
+        responseFinalUrl = fallback.finalUrl;
+        html = fallback.html;
+        cookies = fallback.cookies;
+      } catch (err) {
+        transient = true;
+        row.issues.push(`origin_fallback_error error="${err.message.replace(/\n/g, ' ')}"`);
+        report.routes.push(row);
+        continue;
+      }
+    } else {
+      responseStatus = response.status;
+      responseFinalUrl = response.url;
+      html = await response.text();
+      cookies = setCookieValues(response.headers);
     }
 
-    const html = await response.text();
-    const cookies = setCookieValues(response.headers);
-    row.status = response.status;
-    row.finalUrl = response.url;
+    row.status = responseStatus;
+    row.finalUrl = responseFinalUrl;
     row.bytes = new TextEncoder().encode(html).byteLength;
     row.setCookieCount = cookies.length;
     row.deploySha = extractDeploySha(html);
 
-    if (response.status !== 200) row.issues.push(`http_${response.status}`);
-    if (new URL(response.url).hostname !== expectedHost) row.issues.push(`cross_host:${new URL(response.url).hostname}`);
+    if (responseStatus !== 200) row.issues.push(`http_${responseStatus}`);
+    if (new URL(responseFinalUrl).hostname !== expectedHost) row.issues.push(`cross_host:${new URL(responseFinalUrl).hostname}`);
     if (metaCookiePresent(cookies)) row.issues.push('pre_consent_meta_cookie');
     if (/\bfbq\s*\(/i.test(html)) row.issues.push('browser_fbq_present');
     if (/(?:document\.cookie|cookie\s*=)[\s\S]{0,500}(?:_fbp|_fbc)/i.test(html)) row.issues.push('browser_meta_cookie_writer_present');

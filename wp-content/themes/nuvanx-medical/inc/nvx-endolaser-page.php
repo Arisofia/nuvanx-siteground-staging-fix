@@ -3,7 +3,7 @@
  * Endoláser corporal page — laserlipólisis + retracción cutánea.
  *
  * Wire-frame: Hero → Mecanismo dual → Zonas → Exclusión → Planificación → CTA.
- * Does not repeat Endolift facial encyclopedia (formula 1470 / papada focus).
+ * Does not repeat Endolift® facial encyclopedia (formula 1470 / papada focus).
  *
  * @package nuvanx-medical
  */

@@ -140,7 +140,7 @@
   position: absolute;
   top: calc(var(--nvx-header-height, 80px) * -0.75);
   left: var(--nvx-space-1, 8px);
-  z-index: 10001;
+  z-index: var(--nvx-z-a11y);
   padding: var(--nvx-space-1) var(--nvx-space-2);
   background: var(--nvx-light);
   color: var(--nvx-ink);
@@ -153,9 +153,29 @@
   top: var(--nvx-space-1, 8px);
   outline: 3px solid var(--nvx-ink);
   outline-offset: 2px;
-  z-index: 10002;
+  z-index: calc(var(--nvx-z-a11y) + 1);
   box-shadow: 0 0 0 2px var(--nvx-light);
 }
 @media (prefers-reduced-motion: reduce) {
   .nvx-skip-link { transition: none; }
+}
+
+/* Global prefers-reduced-motion override (CSS-2) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .nvx-brand-btn:hover,
+  .nvx-brand-btn:focus-visible,
+  .nvx-btn:hover,
+  .nvx-btn:focus-visible,
+  .nvx-home-feature:hover,
+  .nvx-home-feature:focus-within,
+  .nvx-brand-card:hover,
+  .nvx-brand-card:focus-within {
+    transform: none !important;
+  }
 }

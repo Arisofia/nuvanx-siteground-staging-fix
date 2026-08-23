@@ -3,7 +3,7 @@
  * EXION® BTL treatment page — editorial high-authority structure.
  *
  * Wire-frame: Hero → Qué es → Indicaciones → vs tratamientos superficiales → Biofísica → Proceso → Postoperatorio → Tarifas → FAQ → CTA.
- * Pattern-based (EXION markers), not page-ID gated.
+ * Pattern-based (EXION® markers), not page-ID gated.
  *
  * @package nuvanx-medical
  */
@@ -43,17 +43,17 @@ function nvx_content_is_exion_page( string $content ): bool {
 		: '';
 
 	$is_exion = false;
-	// Only claim the EXION BTL hub page (/exion-btl/), not the applicator-specific pages
+	// Only claim the EXION® BTL hub page (/exion-btl/), not the applicator-specific pages
 	// which are owned by nvx-btl-detail-pages.php (exion-face, exion-body, exion-fractional).
 	if ( is_string( $path ) && '/exion-btl/' === $path ) {
 		$is_exion = true;
 	} elseif ( preg_match(
-		'/aria-label=["\']EXION BTL NUVANX["\']|id=["\']nvx-exion-h1["\']|class=["\'][^"\']*nvx-exion-hero/iu',
+		'/aria-label=["\']EXION® BTL NUVANX["\']|id=["\']nvx-exion-h1["\']|class=["\'][^"\']*nvx-exion-hero/iu',
 		$content
 	) ) {
 		$is_exion = true;
 	} elseif ( preg_match(
-		'/nvx-brand-hero[\s\S]{0,1200}EXION[\s\S]{0,400}(Face|Body|Fractional)/iu',
+		'/nvx-brand-hero[\s\S]{0,1200}EXION®[\s\S]{0,400}(Face|Body|Fractional)/iu',
 		$content
 	) ) {
 		$is_exion = true;
@@ -130,7 +130,7 @@ function nvx_exion_editorial_body_markup(): string {
 	$data = nvx_catalog_json_resolved( 'exion-page.json' );
 
 	$colegiado    = defined( 'NVX_DIRECTOR_COLEGIADO' ) ? NVX_DIRECTOR_COLEGIADO : '282864786';
-	$review_label = defined( 'NVX_EXION_REVIEW_LABEL' ) ? NVX_EXION_REVIEW_LABEL : 'julio 2026';
+	$review_label = defined( 'NVX_EXION®_REVIEW_LABEL' ) ? NVX_EXION®_REVIEW_LABEL : 'julio 2026';
 	$equipo_url   = home_url( '/equipo-medico/' );
 
 	$html = '<div class="nvx-exion-editorial">';

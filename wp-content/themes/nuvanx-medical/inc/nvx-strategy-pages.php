@@ -184,15 +184,15 @@ function nvx_strategy_verified_investment_groups(): array {
 	$catalog = nvx_tariff_catalog();
 	$groups  = array();
 
-	// Endolift facial (individual zones)
+	// Endolift® facial (individual zones)
 	$groups = nvx_strategy_append_investment_rows(
 		$groups,
-		(array) ( $catalog['endolift'] ?? array() ),
+		(array) ( $catalog['Endolift®'] ?? array() ),
 		array( 'ojeras', 'papada', 'marcacion_mandibular', 'pomulos', 'cuello' ),
 		'endolift_facial'
 	);
 
-	// Endolift facial combos
+	// Endolift® facial combos
 	$groups = nvx_strategy_append_investment_rows(
 		$groups,
 		(array) ( $catalog['endolift_combo'] ?? array() ),
@@ -201,15 +201,15 @@ function nvx_strategy_verified_investment_groups(): array {
 		' (zona combinada)'
 	);
 
-	// Endolift corporal (individual zones)
+	// Endolift® corporal (individual zones)
 	$groups = nvx_strategy_append_investment_rows(
 		$groups,
-		(array) ( $catalog['endolift'] ?? array() ),
+		(array) ( $catalog['Endolift®'] ?? array() ),
 		array( 'abdomen', 'flancos', 'brazos', 'cartucheras', 'subgluteos', 'muslos_internos', 'subescapular', 'rodillas' ),
 		'endolift_corporal'
 	);
 
-	// Endolift corporal combos
+	// Endolift® corporal combos
 	$groups = nvx_strategy_append_investment_rows(
 		$groups,
 		(array) ( $catalog['endolift_combo'] ?? array() ),
