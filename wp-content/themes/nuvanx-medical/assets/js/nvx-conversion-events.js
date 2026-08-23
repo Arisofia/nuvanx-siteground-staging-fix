@@ -7,7 +7,7 @@
 	var recentSubmissions = new Map();
 	var recentFallbackConversionIds = new Map();
 	var configuredCanonicalForm = String((config.forms || {}).valoracion || '').toLowerCase();
-	var canonicalForm = configuredCanonicalForm || '5042522a-0bc5-4381-ac3e-5aee8649b69c';
+	var canonicalForm = configuredCanonicalForm || '';
 
 	function cleanToken(value, fallback) {
 		var token = String(value || '')
@@ -253,7 +253,7 @@
 
 	var attributionConfig = window.nvxConversionEvents || {};
 	var forms = attributionConfig.forms || {};
-	var FORM_ID = String(forms.valoracion || '5042522a-0bc5-4381-ac3e-5aee8649b69c').toLowerCase();
+	var FORM_ID = String(forms.valoracion || '').toLowerCase();
 	var configEndpoint = String(attributionConfig.googleAttributionEndpoint || '');
 	var ENDPOINT = /^https:\/\/[a-z0-9]+\.supabase\.co\/functions\/v1\//.test(configEndpoint)
 		? configEndpoint
