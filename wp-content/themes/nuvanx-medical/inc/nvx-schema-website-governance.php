@@ -172,3 +172,30 @@ function nvx_schema_merge_canonical_website_nodes( $graph ) {
 	return array_values( $graph );
 }
 add_filter( 'wpseo_schema_graph', 'nvx_schema_merge_canonical_website_nodes', 21, 1 );
+
+/**
+ * Add SiteLinksSearchBox to the canonical WebSite schema.
+ */
+
+/**
+ * Add SiteLinksSearchBox to the canonical WebSite schema.
+ */
+function nvx_schema_add_sitelinks_searchbox( array $data ): array {
+	$new_action = array(
+		'@type'       => 'SearchAction',
+		'target'      => array(
+			'@type'       => 'EntryPoint',
+			'urlTemplate' => home_url( '/?s={search_term_string}' )
+		),
+		'query-input' => 'required name=search_term_string',
+	);
+
+	if ( ! isset( $data['potentialAction'] ) ) {
+		$data['potentialAction'] = array( $new_action );
+	} else {
+		$data['potentialAction'] = nvx_schema_merge_actions( $data['potentialAction'], $new_action );
+	}
+
+	return $data;
+}
+add_filter( 'wpseo_schema_website', 'nvx_schema_add_sitelinks_searchbox', 11 );

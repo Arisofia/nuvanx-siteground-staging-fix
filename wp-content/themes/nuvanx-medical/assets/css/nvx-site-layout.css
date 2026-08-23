@@ -413,7 +413,7 @@
   }
 
   .nvx-legal-page > .nvx-legal-card {
-    padding: 22px 20px;
+    padding: var(--nvx-space-3) var(--nvx-space-2);
     border-radius: 16px;
   }
 }

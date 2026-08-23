@@ -98,6 +98,8 @@
 	font-weight: 300;
 	opacity: 0.85;
 	white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Hero scroll cue — guaranteed 48px touch target */
@@ -341,7 +343,7 @@
 	transition: background-color var(--nvx-transition-fast);
 }
 
-.nvx-home-portfolio__link:hover .nvx-home-portfolio__name {
+.nvx-home-portfolio__link:hover .nvx-home-portfolio__name, .nvx-home-portfolio__link:focus-visible .nvx-home-portfolio__name {
 	color: var(--nvx-accent-gold-text);
 }
 
@@ -652,7 +654,7 @@
 	transition: color var(--nvx-transition-fast);
 }
 
-.nvx-home-location__link:hover {
+.nvx-home-location__link:hover, .nvx-home-location__link:focus-visible {
 	color: var(--nvx-ink);
 }
 

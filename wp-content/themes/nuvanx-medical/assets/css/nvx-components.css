@@ -191,52 +191,52 @@ svg, .icon-whatsapp, .nvx-laser-icon, .nvx-endolift-step__icon, .nvx-icon {
 }
 
 /* WhatsApp floating plugin containment (creame-whatsapp-me / Joinchat) */
-.joinchat {
+body .joinchat {
   --joinchat-button-size: 60px;
 }
 
-.joinchat__button {
-  width: var(--joinchat-button-size) !important;
-  height: var(--joinchat-button-size) !important;
-  max-width: var(--joinchat-button-size) !important;
-  max-height: var(--joinchat-button-size) !important;
-  position: fixed !important;
-  bottom: 20px !important;
-  right: 20px !important;
-  z-index: var(--nvx-z-header) !important;
+body .joinchat__button {
+  width: var(--joinchat-button-size) ;
+  height: var(--joinchat-button-size) ;
+  max-width: var(--joinchat-button-size) ;
+  max-height: var(--joinchat-button-size) ;
+  position: fixed ;
+  bottom: 20px ;
+  right: 20px ;
+  z-index: var(--nvx-z-header) ;
 }
 
-.joinchat__button svg,
-.joinchat__button img,
-.joinchat__button__open svg,
-.joinchat__button__open img,
-.joinchat__icon svg,
-.joinchat__icon img {
-  width: 100% !important;
-  height: 100% !important;
-  max-width: var(--joinchat-button-size) !important;
-  max-height: var(--joinchat-button-size) !important;
-  display: block !important;
+body .joinchat__button svg,
+body .joinchat__button img,
+body .joinchat__button__open svg,
+body .joinchat__button__open img,
+body .joinchat__icon svg,
+body .joinchat__icon img {
+  width: 100% ;
+  height: 100% ;
+  max-width: var(--joinchat-button-size) ;
+  max-height: var(--joinchat-button-size) ;
+  display: block ;
 }
 
-.joinchat__wa {
-  width: 120px !important;
-  height: 28px !important;
-  max-width: 120px !important;
-  max-height: 28px !important;
+body .joinchat__wa {
+  width: 120px ;
+  height: 28px ;
+  max-width: 120px ;
+  max-height: 28px ;
 }
 
-.joinchat__open__icon {
-  width: 60px !important;
-  height: 60px !important;
-  max-width: 60px !important;
-  max-height: 60px !important;
+body .joinchat__open__icon {
+  width: 60px ;
+  height: 60px ;
+  max-width: 60px ;
+  max-height: 60px ;
 }
 
-.joinchat__qr img,
-.joinchat__qr canvas {
-  max-width: 200px !important;
-  height: auto !important;
+body .joinchat__qr img,
+body .joinchat__qr canvas {
+  max-width: 200px ;
+  height: auto ;
 }
 
 /* Footer padding to avoid WhatsApp button overlap */
@@ -1000,6 +1000,8 @@ svg, .icon-whatsapp, .nvx-laser-icon, .nvx-endolift-step__icon, .nvx-icon {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border: 0;
 }
 
@@ -1423,3 +1425,6 @@ body.nvx-valoracion-modal-open{
 .nvx-valoracion-direct-form__submit {
   width: 100%;
 }
+
+.nvx-brand-btn, .nvx-btn, .nvx-button { will-change: transform; }
+
