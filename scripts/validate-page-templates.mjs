@@ -22,7 +22,7 @@
  */
 
 import { execFile } from 'node:child_process';
-import { readFileSync, writeFileSync, renameSync, existsSync, statSync } from 'fs';
+import { readFileSync, writeFileSync, renameSync, existsSync, statSync, realpathSync } from 'fs';
 import { join, dirname, basename, resolve, sep } from 'path';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'url';
@@ -152,14 +152,18 @@ function templateExists(templatePath) {
   }
   
   const inTemplatesDir = resolve(TEMPLATES_DIR, templateName);
-  if (inTemplatesDir.startsWith(resolve(TEMPLATES_DIR) + sep)) {
-    if (existsSync(inTemplatesDir) && statSync(inTemplatesDir).isFile()) return true;
+  if (existsSync(inTemplatesDir)) {
+    const realPath = realpathSync(inTemplatesDir);
+    const realTemplatesDir = realpathSync(TEMPLATES_DIR);
+    if (realPath.startsWith(realTemplatesDir + sep) && statSync(realPath).isFile()) return true;
   }
   
   if (!hasTemplatesPrefix) {
     const inThemeRoot = resolve(THEME_ROOT, templateName);
-    if (inThemeRoot.startsWith(resolve(THEME_ROOT) + sep)) {
-      if (existsSync(inThemeRoot) && statSync(inThemeRoot).isFile()) return true;
+    if (existsSync(inThemeRoot)) {
+      const realRootPath = realpathSync(inThemeRoot);
+      const realThemeRoot = realpathSync(THEME_ROOT);
+      if (realRootPath.startsWith(realThemeRoot + sep) && statSync(realRootPath).isFile()) return true;
     }
   }
   
