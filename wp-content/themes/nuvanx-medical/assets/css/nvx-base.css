@@ -160,6 +160,185 @@ p, li, blockquote, dt, dd {
   text-wrap: pretty;
 }
 
+/*
+ * Approved NUVANX responsive layout contract — August 2026.
+ * Exact breakpoint values replace fluid spacing aliases without creating a
+ * parallel component system. html:root intentionally outranks older :root
+ * aliases declared later in the concatenated critical bundle.
+ */
+html:root {
+  --nvx-section-py: 48px;
+  --nvx-section-compact-py: 32px;
+  --nvx-subblock-gap: 24px;
+  --nvx-heading-to-grid: 24px;
+  --nvx-card-grid-gap: 1px;
+  --nvx-card-padding: 20px;
+  --nvx-gutter-inner: 24px;
+  --nvx-gutter-inline: 24px;
+  --nvx-pad-section: var(--nvx-section-py);
+  --nvx-pad-section-tight: var(--nvx-section-compact-py);
+  --nvx-gap-section: var(--nvx-subblock-gap);
+  --nvx-pad-card: var(--nvx-card-padding);
+}
+
+@media (min-width: 768px) {
+  html:root {
+    --nvx-section-py: 64px;
+    --nvx-section-compact-py: 48px;
+    --nvx-subblock-gap: 32px;
+    --nvx-heading-to-grid: 32px;
+    --nvx-card-padding: 24px;
+    --nvx-gutter-inner: 40px;
+    --nvx-gutter-inline: 40px;
+  }
+}
+
+@media (min-width: 1240px) {
+  html:root {
+    --nvx-section-py: 96px;
+    --nvx-section-compact-py: 64px;
+    --nvx-subblock-gap: 48px;
+    --nvx-heading-to-grid: 40px;
+    --nvx-card-padding: 32px;
+    --nvx-gutter-inner: 48px;
+    --nvx-gutter-inline: 48px;
+  }
+}
+
+/* Hero copy owns one gutter only; avoid reduced shell + inner padding stacking. */
+body:not(.home) .nvx-brand-hero__copy {
+  width: 100%;
+  max-width: 1240px;
+  padding-inline: var(--nvx-gutter-inner);
+}
+
+/* Authentic photography follows the same single-gutter container contract. */
+.nvx-main .nvx-authentic-photo-grid {
+  padding-block: var(--nvx-section-py);
+}
+
+.nvx-main .nvx-authentic-photo-grid__inner {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: var(--nvx-gutter-inner);
+  box-sizing: border-box;
+}
+
+.nvx-main .nvx-authentic-photo-grid__header {
+  margin-bottom: var(--nvx-heading-to-grid);
+}
+
+/* Editorial image spread: hierarchy by proportion, never a uniform box wall. */
+.nvx-main .nvx-authentic-photo-grid__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--nvx-card-grid-gap);
+  padding: var(--nvx-card-grid-gap);
+  background: var(--nvx-color-line);
+  border: var(--nvx-border-hairline) solid var(--nvx-color-line);
+}
+
+.nvx-main .nvx-authentic-photo-grid__item {
+  grid-column: span 4;
+  min-width: 0;
+  border-radius: 0;
+  background: var(--nvx-surface-base);
+  overflow: hidden;
+}
+
+.nvx-main .nvx-authentic-photo-grid__item:first-child:last-child {
+  grid-column: 1 / -1;
+}
+
+.nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(2) {
+  grid-column: span 7;
+}
+
+.nvx-main .nvx-authentic-photo-grid__item:nth-child(2):last-child {
+  grid-column: span 5;
+}
+
+.nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(3) {
+  grid-column: span 7;
+  grid-row: span 2;
+}
+
+.nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(3) ~ .nvx-authentic-photo-grid__item {
+  grid-column: span 5;
+}
+
+.nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(n + 4) {
+  grid-column: span 7;
+}
+
+.nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(n + 4) + .nvx-authentic-photo-grid__item {
+  grid-column: span 5;
+}
+
+.nvx-main .nvx-authentic-photo-grid__item:nth-child(n + 3) {
+  grid-column: span 6;
+}
+
+.nvx-main .nvx-authentic-photo-grid__image {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+}
+
+.nvx-main .nvx-authentic-photo-grid__item:first-child .nvx-authentic-photo-grid__image {
+  aspect-ratio: 3 / 2;
+}
+
+.nvx-main .nvx-authentic-photo-grid__caption {
+  padding: var(--nvx-card-padding);
+}
+
+@media (min-width: 768px) and (max-width: 1239px) {
+  .nvx-main .nvx-authentic-photo-grid__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nvx-main .nvx-authentic-photo-grid__item,
+  .nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(2),
+  .nvx-main .nvx-authentic-photo-grid__item:nth-child(2):last-child,
+  .nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(3),
+  .nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(3) ~ .nvx-authentic-photo-grid__item,
+  .nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(n + 4),
+  .nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(n + 4) + .nvx-authentic-photo-grid__item,
+  .nvx-main .nvx-authentic-photo-grid__item:nth-child(n + 3) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .nvx-main .nvx-authentic-photo-grid__item:first-child:last-child,
+  .nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(3) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .nvx-main .nvx-authentic-photo-grid__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nvx-main .nvx-authentic-photo-grid__item,
+  .nvx-main .nvx-authentic-photo-grid__item:first-child:last-child,
+  .nvx-main .nvx-authentic-photo-grid__item:first-child:nth-last-child(3) {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .nvx-main .nvx-authentic-photo-grid__image,
+  .nvx-main .nvx-authentic-photo-grid__item:first-child .nvx-authentic-photo-grid__image {
+    aspect-ratio: 4 / 3;
+  }
+}
+
 /* Print styles for clinical environments (CSS-3) */
 @media print {
   .nvx-header,
