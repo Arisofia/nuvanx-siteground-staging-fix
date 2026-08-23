@@ -19,15 +19,15 @@
   color: var(--nvx-on-dark);
 }
 
-/* ── Inner: desktop 2fr 4fr 2fr 2fr (brand + 3 sections) ─ */
+/* ── Inner: desktop 25/33/22/20 (brand + treatments + clinics + NUVANX) ─ */
 .nvx-footer__inner {
-  width: var(--nvx-shell);
-  max-width: 100%;
+  width: 100%;
+  max-width: 1240px;
   margin-inline: auto;
-  padding: var(--nvx-space-8) var(--nvx-gutter-inner) 0;
+  padding: var(--nvx-space-7) var(--nvx-gutter-inner) 0;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 2fr 4fr 2fr 2fr;
+  grid-template-columns: 25fr 33fr 22fr 20fr;
   column-gap: var(--nvx-space-6);
   row-gap: 0;
   align-items: start;
@@ -144,7 +144,7 @@
 .nvx-footer__links a,
 .nvx-footer__links-compact a {
   font-family: var(--nvx-sans);
-  font-size: var(--nvx-type-caption2);
+  font-size: var(--nvx-type-small);
   font-weight: var(--nvx-fw-regular);
   line-height: var(--nvx-lh-body);
   color: var(--nvx-on-dark-72);
@@ -187,10 +187,10 @@
 
 .nvx-footer__clinic-phone {
   font-family: var(--nvx-sans);
-  font-size: var(--nvx-type-small);
+  font-size: var(--nvx-type-caption);
   font-weight: var(--nvx-fw-medium);
   color: var(--nvx-on-dark-88);
-  line-height: 1.35;
+  line-height: var(--nvx-lh-caption);
   text-decoration: none;
 }
 
@@ -202,10 +202,10 @@
   display: block;
   margin: 0.15rem 0 0 0;
   font-family: var(--nvx-sans);
-  font-size: var(--nvx-type-small);
+  font-size: var(--nvx-type-caption);
   font-weight: var(--nvx-fw-regular);
   font-style: normal;
-  line-height: 1.45;
+  line-height: var(--nvx-lh-caption);
   color: var(--nvx-on-dark-72);
   max-width: 26ch;
 }
@@ -255,8 +255,8 @@
 }
 
 .nvx-footer__bottom-inner {
-  width: var(--nvx-shell);
-  max-width: 100%;
+  width: 100%;
+  max-width: 1240px;
   margin-inline: auto;
   padding: var(--nvx-space-6) var(--nvx-gutter-inner);
   box-sizing: border-box;
@@ -270,7 +270,7 @@
 .nvx-footer__copyright {
   margin: 0;
   font-family: var(--nvx-sans);
-  font-size: var(--nvx-type-caption);
+  font-size: var(--nvx-type-micro);
   color: var(--nvx-on-dark-50);
 }
 
@@ -282,13 +282,13 @@
 
 .nvx-footer__legal-nav a {
   font-family: var(--nvx-sans);
-  font-size: var(--nvx-type-caption);
+  font-size: var(--nvx-type-micro);
   color: var(--nvx-on-dark-50);
 }
 
 .nvx-footer__registrations {
   font-family: var(--nvx-sans);
-  font-size: var(--nvx-type-caption);
+  font-size: var(--nvx-type-micro);
   letter-spacing: var(--nvx-track-caption);
   color: var(--nvx-on-dark-50);
   margin: 0;
