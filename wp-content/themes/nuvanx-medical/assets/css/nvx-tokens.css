@@ -243,23 +243,13 @@
 --nvx-outline-offset: 2px;
 --nvx-catalog-width: 900px;
 --nvx-section-tight-width: 800px;
---nvx-modal-min-height: 120px;
 
 /* ========== MOTION & TRANSITIONS ========== */
---nvx-duration-instant: 80ms;
 --nvx-duration-fast: 160ms;
---nvx-duration-normal: 240ms;
---nvx-duration-slow: 320ms;
---nvx-duration-slower: 480ms;
 
 --nvx-ease-standard: cubic-bezier(0.2, 0, 0, 1);
---nvx-ease-in: cubic-bezier(0.3, 0, 1, 1);
---nvx-ease-out: cubic-bezier(0, 0, 0.2, 1);
---nvx-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
 --nvx-transition-fast: var(--nvx-duration-fast) var(--nvx-ease-standard);
---nvx-transition-normal: var(--nvx-duration-normal) var(--nvx-ease-standard);
---nvx-transition-slow: var(--nvx-duration-slow) var(--nvx-ease-standard);
 
   /* Alias para variables huérfanas (Audit 4.5) */
   --nvx-color-soft: var(--nvx-surface-soft);
