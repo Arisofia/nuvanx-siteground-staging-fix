@@ -158,8 +158,14 @@ function nvx_theme_show_cta_banner(): bool {
  * @return string Asset version.
  */
 function nvx_asset_version( string $relative_path ): string {
+	static $cache = array();
+	if ( isset( $cache[ $relative_path ] ) ) {
+		return $cache[ $relative_path ];
+	}
 	$path = get_template_directory() . '/' . ltrim( $relative_path, '/' );
-	return is_readable( $path ) ? (string) filemtime( $path ) : NVX_THEME_VERSION;
+	$version = is_readable( $path ) ? (string) filemtime( $path ) : NVX_THEME_VERSION;
+	$cache[ $relative_path ] = $version;
+	return $version;
 }
 
 /** Enqueue the canonical design-system stack and page-owned assets. */
