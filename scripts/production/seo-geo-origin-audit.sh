@@ -177,7 +177,7 @@ if fetch_url "$BASE_URL/robots.txt" robots; then
     fail "ROBOTS_HTTP status=$HTTP_CODE"
   else
     if robots_root_blocked '*' "$BODY"; then fail 'ROBOTS_PUBLIC_ROOT_BLOCKED'; else pass 'ROBOTS_PUBLIC_CRAWL'; fi
-    if grep -Eiq '^Sitemap:[[:space:]]*https://nuvanx\.com/sitemap_index\.xml' "$BODY"; then pass 'ROBOTS_SITEMAP_DISCOVERY'; else warn 'ROBOTS_SITEMAP_DIRECTIVE_MISSING'; fi
+    if grep -Eiq "^Sitemap:[[:space:]]*${BASE_URL}/sitemap_index\\.xml" "$BODY"; then pass 'ROBOTS_SITEMAP_DISCOVERY'; else warn 'ROBOTS_SITEMAP_DIRECTIVE_MISSING'; fi
     for bot in OAI-SearchBot ChatGPT-User PerplexityBot; do
       if robots_root_blocked "$bot" "$BODY"; then fail "AI_SEARCH_CRAWLER_BLOCKED bot=$bot"; else pass "AI_SEARCH_CRAWLER_OPEN bot=$bot"; fi
     done
@@ -203,7 +203,7 @@ if ! fetch_url "$BASE_URL/sitemap_index.xml" sitemap-index; then echo 'SITEMAP_I
 if [[ "$HTTP_CODE" != '200' ]]; then echo "SITEMAP_INDEX_HTTP=FAIL status=$HTTP_CODE" >&2; exit 1; fi
 child_file="$tmpdir/child-sitemaps.txt"
 grep -oE '<loc>[^<]+</loc>' "$BODY" | sed -E 's#</?loc>##g' | sed 's/&amp;/\&/g' | sort -u > "$child_file" || true
-child_count="$(grep -c '^https://nuvanx\.com' "$child_file" || true)"
+child_count="$(grep -c "^${BASE_URL}" "$child_file" || true)"
 if [[ "$child_count" -lt 1 ]]; then echo 'SITEMAP_CHILDREN=0' >&2; exit 1; fi
 if grep -Eiq '/(category|post_tag|tag)-sitemap\.xml' "$child_file"; then fail 'THIN_TAXONOMY_SITEMAP_PRESENT'; else pass 'THIN_TAXONOMY_SITEMAP_ABSENT'; fi
 
@@ -220,7 +220,7 @@ while IFS= read -r sitemap; do
   pass "SITEMAP_CHILD url=$sitemap"
 done < "$child_file"
 sort -u "$urls_file" -o "$urls_file"
-sitemap_urls="$(grep -c '^https://nuvanx\.com' "$urls_file" || true)"
+sitemap_urls="$(grep -c "^${BASE_URL}" "$urls_file" || true)"
 if [[ "$sitemap_urls" -lt 40 ]]; then fail "SITEMAP_URL_COUNT count=$sitemap_urls"; else pass "SITEMAP_URL_COUNT count=$sitemap_urls"; fi
 
 critical_paths=(
