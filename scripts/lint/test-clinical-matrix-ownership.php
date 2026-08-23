@@ -31,7 +31,7 @@ $required_fields = array(
 $errors = 0;
 foreach ( $treatments as $id => $t ) {
     foreach ( $required_fields as $field ) {
-        if ( empty( $t[ $field ] ) && $t[ $field ] !== 0 && $t[ $field ] !== false ) {
+        if ( ! array_key_exists( $field, $t ) ) {
             echo "ERROR: Treatment '{$id}' is missing required field '{$field}'.\n";
             $errors++;
         }

@@ -34,4 +34,4 @@ function nvx_add_security_headers( $headers ) {
 	
 	return $headers;
 }
-nvx_add_filter_with_priority( 'wp_headers', 'nvx_add_security_headers' );
+add_filter( 'wp_headers', 'nvx_add_security_headers' );

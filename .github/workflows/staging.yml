@@ -142,6 +142,8 @@ jobs:
           set -euo pipefail
           find wp-content/themes/nuvanx-medical -path '*/vendor' -prune -o -name '*.php' -type f -print0 | xargs -0 -n1 php -l >/dev/null
           find tools/migrations lib -name '*.php' -type f -print0 | xargs -0 -r -n1 php -l >/dev/null
+          php scripts/lint/test-clinical-matrix-ownership.php
+          php scripts/lint/test-seo-catalog-ownership.php
           php scripts/lint/test-seo-governed-metadata.php
           php scripts/lint/test-publication-robots-reconciliation.php
           php scripts/lint/test-governed-blog-request-contract.php
