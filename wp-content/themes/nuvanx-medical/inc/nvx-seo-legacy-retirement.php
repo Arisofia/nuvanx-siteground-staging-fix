@@ -78,7 +78,7 @@ function nvx_seo_retirement_block_divergent_canonical_persistence( $check, $post
 	return true;
 }
 add_filter( 'add_post_metadata', 'nvx_seo_retirement_block_divergent_canonical_persistence', PHP_INT_MAX, 4 );
-add_filter( 'update_post_metadata', 'nvx_seo_retirement_block_divergent_canonical_persistence', PHP_INT_MAX, 5 );
+add_filter( 'update_post_metadata', 'nvx_seo_retirement_block_divergent_canonical_persistence', PHP_INT_MAX, 4 );
 
 /** Remove legacy text-metadata filters once every theme module is registered. */
 add_action(
