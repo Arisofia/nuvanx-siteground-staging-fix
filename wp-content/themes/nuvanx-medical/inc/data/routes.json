@@ -204,6 +204,10 @@
         "url": "/"
       },
       {
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
         "name": "Endolift® Facial Papada Mandibula",
         "url": "/endolift-facial-papada-mandibula/"
       }
@@ -255,7 +259,11 @@
         "url": "/"
       },
       {
-        "name": "Exion Btl",
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "EXION® BTL",
         "url": "/exion-btl/"
       }
     ]
@@ -272,7 +280,11 @@
         "url": "/"
       },
       {
-        "name": "Exion Face",
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "EXION® Face",
         "url": "/exion-face/"
       }
     ]
@@ -289,7 +301,11 @@
         "url": "/"
       },
       {
-        "name": "Exion Fractional",
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "EXION® Fractional",
         "url": "/exion-fractional/"
       }
     ]
@@ -306,7 +322,11 @@
         "url": "/"
       },
       {
-        "name": "Exion Body",
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "EXION® Body",
         "url": "/exion-body/"
       }
     ]
@@ -340,7 +360,11 @@
         "url": "/"
       },
       {
-        "name": "Btl Exilite Ipl Madrid",
+        "name": "Tratamientos",
+        "url": "/tratamientos/"
+      },
+      {
+        "name": "BTL Exilite Ipl Madrid",
         "url": "/btl-exilite-ipl-madrid/"
       }
     ]
@@ -355,6 +379,10 @@
       {
         "name": "Inicio",
         "url": "/"
+      },
+      {
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
       },
       {
         "name": "Neuromoduladores Faciales Madrid",
@@ -383,7 +411,11 @@
         "url": "/"
       },
       {
-        "name": "Acido Hialuronico Relleno Madrid",
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
+        "name": "Ácido Hialurónico Relleno Madrid",
         "url": "/acido-hialuronico-relleno-madrid/"
       }
     ]
@@ -400,7 +432,11 @@
         "url": "/"
       },
       {
-        "name": "Rinomodelacion Sin Cirugia Madrid",
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
+        "name": "Rinomodelación Sin Cirugia Madrid",
         "url": "/rinomodelacion-sin-cirugia-madrid/"
       }
     ]
@@ -454,6 +490,10 @@
         "url": "/"
       },
       {
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
         "name": "Bioestimuladores Colageno Madrid",
         "url": "/bioestimuladores-colageno-madrid/"
       }
@@ -467,6 +507,10 @@
       {
         "name": "Inicio",
         "url": "/"
+      },
+      {
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
       },
       {
         "name": "Ojeras Surco Lagrimal Madrid",
@@ -484,7 +528,11 @@
         "url": "/"
       },
       {
-        "name": "Labios Acido Hialuronico Madrid",
+        "name": "Medicina Estética",
+        "url": "/medicina-estetica/"
+      },
+      {
+        "name": "Labios Ácido Hialurónico Madrid",
         "url": "/labios-acido-hialuronico-madrid/"
       }
     ]
@@ -497,6 +545,10 @@
       {
         "name": "Inicio",
         "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
       },
       {
         "name": "Remodelacion Corporal Laser Madrid",
@@ -514,6 +566,10 @@
         "url": "/"
       },
       {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
         "name": "Tratamiento Postparto Abdomen Contorno Corporal Madrid",
         "url": "/tratamiento-postparto-abdomen-contorno-corporal-madrid/"
       }
@@ -527,6 +583,10 @@
       {
         "name": "Inicio",
         "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
       },
       {
         "name": "Papada Definicion Mandibular Madrid",
@@ -544,6 +604,10 @@
         "url": "/"
       },
       {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
         "name": "Calidad Piel Firmeza Luminosidad Madrid",
         "url": "/calidad-piel-firmeza-luminosidad-madrid/"
       }
@@ -557,6 +621,10 @@
       {
         "name": "Inicio",
         "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
       },
       {
         "name": "Cicatrices Acne Poros Textura Madrid",
@@ -574,6 +642,10 @@
         "url": "/"
       },
       {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
         "name": "Manchas Rojeces Fotorejuvenecimiento Ipl Madrid",
         "url": "/manchas-rojeces-fotorejuvenecimiento-ipl-madrid/"
       }
@@ -587,6 +659,10 @@
       {
         "name": "Inicio",
         "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
       },
       {
         "name": "Grasa Localizada Abdomen Flancos Madrid",
@@ -604,6 +680,10 @@
         "url": "/"
       },
       {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
         "name": "Flacidez Grasa Localizada Brazos Madrid",
         "url": "/flacidez-grasa-localizada-brazos-madrid/"
       }
@@ -617,6 +697,10 @@
       {
         "name": "Inicio",
         "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
       },
       {
         "name": "Grasa Espalda Zona Sujetador Madrid",
@@ -634,6 +718,10 @@
         "url": "/"
       },
       {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
         "name": "Flacidez Muslos Internos Subgluteo Madrid",
         "url": "/flacidez-muslos-internos-subgluteo-madrid/"
       }
@@ -649,6 +737,10 @@
         "url": "/"
       },
       {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
+      },
+      {
         "name": "Tratamiento Rodillas Grasa Flacidez Madrid",
         "url": "/tratamiento-rodillas-grasa-flacidez-madrid/"
       }
@@ -662,6 +754,10 @@
       {
         "name": "Inicio",
         "url": "/"
+      },
+      {
+        "name": "Soluciones Médicas",
+        "url": "/soluciones-medicas/"
       },
       {
         "name": "Contorno Corporal Masculino Madrid",
@@ -781,7 +877,16 @@
   "/botox-madrid-precio-neuromoduladores/": {
     "route_alias": "/precio-neuromoduladores-madrid/"
   },
-  "/emfusion-limpieza-profunda-microneedling-diferencias/": {
+  "/emfusion/": {
     "route_alias": "/emfusion/"
+  },
+  "/endolift-ciencia-laser-subdermico/": {
+    "route_alias": "/endolift-ciencia-laser-subdermico/"
+  },
+  "/rinomodelacion-sin-cirugia-madrid-guia/": {
+    "route_alias": "/rinomodelacion-sin-cirugia-madrid-guia/"
+  },
+  "/laserlipolisis-vs-liposuccion/": {
+    "route_alias": "/laserlipolisis-vs-liposuccion/"
   }
 }

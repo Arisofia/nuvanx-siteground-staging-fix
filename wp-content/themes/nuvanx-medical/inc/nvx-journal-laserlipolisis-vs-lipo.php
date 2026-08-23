@@ -165,9 +165,15 @@ function nvx_journal_tech_article_markup( string $slug ): string {
 				continue;
 			}
 			$html .= '<tr>';
-			foreach ( array_values( $row ) as $index => $cell ) {
-				$tag   = 0 === $index ? 'th' : 'td';
-				$html .= '<' . $tag . ( 0 === $index ? ' scope="row"' : '' ) . '>' . esc_html( (string) $cell ) . '</' . $tag . '>';
+			$row_values = array_values( $row );
+			foreach ( $row_values as $index => $cell ) {
+				$tag = 0 === $index ? 'th' : 'td';
+				if ( 0 === $index ) {
+					$html .= '<th scope="row">' . esc_html( (string) $cell ) . '</th>';
+				} else {
+					$header_text = isset( $headers[ $index ] ) ? $headers[ $index ] : '';
+					$html .= '<td data-label="' . esc_attr( (string) $header_text ) . '">' . esc_html( (string) $cell ) . '</td>';
+				}
 			}
 			$html .= '</tr>';
 		}
