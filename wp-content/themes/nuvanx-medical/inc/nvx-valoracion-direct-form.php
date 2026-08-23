@@ -253,7 +253,15 @@ function nvx_valoracion_maybe_handle_direct_submit(): void {
 		exit;
 	}
 
-	$ip       = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( (string) $_SERVER['REMOTE_ADDR'] ) ) : '0';
+	if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+		$ip = $_SERVER['HTTP_CLIENT_IP'];
+	} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+		$ips = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+		$ip  = trim( $ips[0] );
+	} else {
+		$ip = $_SERVER['REMOTE_ADDR'] ?? '0';
+	}
+	$ip = sanitize_text_field( wp_unslash( (string) $ip ) );
 	$rate_key = 'nvx_val_rl_' . hash( 'sha256', $ip );
 	$hits     = (int) get_transient( $rate_key );
 	if ( $hits >= 5 ) {
