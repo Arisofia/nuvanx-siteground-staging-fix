@@ -1,80 +1,53 @@
 # NUVANX Medicina Estética Láser
 
-## Site Overview
-NUVANX is a medical aesthetics clinic in Madrid, Spain, specializing in laser treatments and personalized medical aesthetic procedures with clinical criteria.
+## Sobre NUVANX
+NUVANX es un centro de medicina estética láser en Madrid. La información clínica del sitio se presenta con criterio médico y la indicación final de cualquier tratamiento depende de una valoración individual.
 
-## Purpose
-This file provides structured information for AI agents to understand the site's content, structure, and purpose.
+## Dirección médica
+- **Director médico**: Dr. José Javier Rivera Tejeda
+- **Número de colegiado ICOMEM**: 282864786
+- **Áreas publicadas**: medicina estética láser, láser intersticial, Endolift®, laserlipólisis/endoláser corporal, láser CO₂ fraccionado, contorno facial, inductores de colágeno, tricología y medicina regenerativa.
 
-## Core Information
-- **Business Type**: Medical aesthetics clinic
-- **Location**: Madrid, Spain (Chamberí and Goya clinics)
-- **Specialty**: Laser medicine, facial treatments, body contouring
-- **Philosophy**: Evidence-based medicine with individualized treatment plans
+## Centros NUVANX en Madrid
+### NUVANX Chamberí
+- **Nombre**: Centro Clínico NUVANX Chamberí
+- **Dirección**: Calle de Fernández de la Hoz, 4, Bajo Derecha, 28010 Madrid
+- **Teléfono**: +34 669 319 836
+- **Registro sanitario**: CS20144
+- **Página canónica**: https://nuvanx.com/medicina-estetica-chamberi/
 
-## Key Services
-- Endolift facial treatments
-- Laser medicine procedures
-- Medical consultations and evaluations
-- Personalized treatment planning
-- Facial rejuvenation
-- Body contouring
+### NUVANX Salamanca–Goya
+- **Nombre**: Centro Clínico NUVANX Salamanca–Goya
+- **Dirección**: Calle de Fernán González, 26, 28009 Madrid
+- **Teléfono**: +34 647 505 107
+- **Registro sanitario**: CS20073
+- **Página canónica**: https://nuvanx.com/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/
 
-## Site Structure
-- **Home**: Overview of philosophy and services
-- **Treatments**: Detailed treatment information
-- **Medical Team**: Professional profiles
-- **Patient Cases**: Clinical evidence (when published)
-- **Contact**: Clinic locations and contact methods
-- **Blog**: Educational content
+## Áreas de tratamiento
+- **Endolift® facial**: tratamiento médico con tecnología láser intersticial; la zona, indicación y plan se determinan tras valoración médica.
+- **Endoláser corporal / laserlipólisis**: protocolos médicos para contorno corporal en zonas seleccionadas según valoración.
+- **Láser CO₂ fraccionado**: tratamiento láser fraccionado utilizado dentro de protocolos de renovación cutánea según diagnóstico e indicación médica.
+- **Contorno facial**: protocolos médicos que pueden integrar tecnología láser e inductores de colágeno según anatomía e indicación.
+- **Tricología médica**: valoración y protocolos médicos orientados a alteraciones capilares.
+- **Medicina regenerativa y well aging**: estrategias individualizadas dentro de la cartera médica publicada por NUVANX.
 
-## Content Guidelines
-- All medical content is evidence-based
-- Treatment recommendations require medical evaluation
-- No guarantees of outcomes are made
-- Individual results may vary
-- Professional medical oversight is emphasized
+## Precios y valoración médica
+Los importes publicados por NUVANX se gobiernan desde su catálogo tarifario canónico y pueden depender de zona, extensión, protocolo e indicación médica. El presupuesto definitivo se determina tras valoración médica. Este archivo no replica importes para evitar divergencias con la fuente tarifaria vigente.
 
-## Contact Information
-- **Main Phone**: +34 669 319 836 (Chamberí)
-- **Goya Phone**: +34 647 505 107
-- **WhatsApp**: Available for quick inquiries
-- **Locations**: Chamberí and Goya, Madrid
+## Información clínica
+- La información del sitio es general y no sustituye una consulta médica.
+- La indicación, técnica, número de sesiones, recuperación esperada y presupuesto dependen del diagnóstico y del plan individual.
+- Los resultados varían entre pacientes y no se garantizan resultados concretos.
 
-## Accessibility Notes
-- Site follows WCAG AA standards
-- Forms include proper labels and error handling
-- Color contrast meets accessibility requirements
-- Responsive design for all devices
+## URLs canónicas principales
+- [Inicio](https://nuvanx.com/)
+- [Valoración médica en Madrid](https://nuvanx.com/madrid/valoracion/)
+- [NUVANX Chamberí](https://nuvanx.com/medicina-estetica-chamberi/)
+- [NUVANX Salamanca–Goya](https://nuvanx.com/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/)
+- [Equipo médico](https://nuvanx.com/equipo-medico/)
+- [Endolift® y ciencia del láser subdérmico](https://nuvanx.com/endolift-ciencia-laser-subdermico/)
+- [Well Aging](https://nuvanx.com/well-aging-estrategia-medica-global/)
+- [Blog / Journal](https://nuvanx.com/blog/)
 
-## Content Authority
-- Medical content is reviewed by qualified professionals
-- Treatment protocols are clinically validated
-- Professional medical licensing information is provided
-
-## Technical Notes
-- WordPress-based CMS
-- Custom theme with medical aesthetics focus
-- HubSpot forms for lead generation
-- Google Analytics for performance tracking
-- SEO-optimized for medical aesthetics terms
-
-## Language
-- Primary: Spanish (es)
-- Secondary: English (en) for some content
-- Medical terminology uses standard Spanish medical terms
-
-## Legal & Compliance
-- Compliant with Spanish medical advertising regulations
-- Patient data protection follows GDPR
-- Professional medical licensing displayed
-- Clear pricing and treatment information
-
-## Important Links
-- [Main Website](https://nuvanx.com)
-- [Medical Evaluation](https://nuvanx.com/madrid/valoracion/)
-- [Chamberí Clinic](https://nuvanx.com/chamberi/)
-- [Goya Clinic](https://nuvanx.com/goya/)
-- [Medical Team](https://nuvanx.com/equipo-medico/)
-- [Patient Cases](https://nuvanx.com/casos-de-pacientes/)
-- [Blog](https://nuvanx.com/blog/)
+## Uso de este archivo
+Este documento resume información pública y canónica del sitio para sistemas automatizados que decidan consultarlo. Las páginas canónicas enlazadas y los datos estructurados del sitio prevalecen ante cualquier discrepancia.
