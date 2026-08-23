@@ -80,6 +80,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Papada y línea mandibular: la zona correcta, en contexto',
 			'images'  => array(
 				array( 'id' => 3362, 'alt' => 'Papada y línea mandibular como zona de valoración para definición del tercio inferior facial en NUVANX Madrid', 'caption' => 'Papada y línea mandibular' ),
+				array( 'id' => 3303, 'alt' => 'Caso clínico consentido de papada y contorno mandibular tratado con Endolift en NUVANX Madrid', 'caption' => 'Caso clínico consentido · Papada y contorno mandibular' ),
 			),
 		),
 		'calidad-piel-firmeza-luminosidad-madrid' => array(
@@ -135,6 +136,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Abdomen y flancos: la zona se muestra antes de hablar de tecnología',
 			'images'  => array(
 				array( 'id' => 3358, 'alt' => 'Grasa localizada en abdomen y flancos como zona de valoración para remodelación corporal en NUVANX Madrid', 'caption' => 'Abdomen y flancos' ),
+				array( 'id' => 3298, 'alt' => 'Caso clínico consentido de abdomen tratado con Endolift en NUVANX Madrid', 'caption' => 'Caso clínico consentido · Abdomen' ),
 			),
 		),
 		'flacidez-grasa-localizada-brazos-madrid' => array(
@@ -142,6 +144,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Brazos: firmeza y grasa localizada en su propia zona anatómica',
 			'images'  => array(
 				array( 'id' => 3357, 'alt' => 'Flacidez y grasa localizada en brazos como zona de valoración para remodelación corporal en NUVANX Madrid', 'caption' => 'Brazos' ),
+				array( 'id' => 3301, 'alt' => 'Caso clínico consentido de brazos tratado con Endolift en NUVANX Madrid', 'caption' => 'Caso clínico consentido · Brazos' ),
 				array( 'id' => 3351, 'alt' => 'Secuencia visual de evolución del contorno de brazos dentro de un protocolo corporal en NUVANX Madrid', 'caption' => 'Evolución del contorno de brazos' ),
 			),
 		),
@@ -149,6 +152,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'eyebrow' => 'Contorno de espalda',
 			'title'   => 'Espalda y zona del sujetador con una imagen específica de la región',
 			'images'  => array(
+				array( 'id' => 3296, 'alt' => 'Caso clínico consentido de espalda y zona del sujetador tratado con Endolift en NUVANX Madrid', 'caption' => 'Caso clínico consentido · Espalda y zona del sujetador' ),
 				array( 'id' => 3348, 'alt' => 'Secuencia visual de evolución de espalda y zona del sujetador dentro de un protocolo corporal en NUVANX Madrid', 'caption' => 'Espalda y zona del sujetador' ),
 			),
 		),
