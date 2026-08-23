@@ -16,6 +16,10 @@ defined( 'ABSPATH' ) || exit;
 function nvx_add_security_headers( $headers ) {
 	$headers = is_array( $headers ) ? $headers : array();
 	
+	// NOTE: Strict-Transport-Security (HSTS) is intentionally omitted here.
+	// It is managed exclusively by the SiteGround edge reverse proxy to prevent
+	// duplicate headers and conflicting max-age policies.
+
 	// Prevent MIME-sniffing
 	$headers['X-Content-Type-Options'] = 'nosniff';
 	
