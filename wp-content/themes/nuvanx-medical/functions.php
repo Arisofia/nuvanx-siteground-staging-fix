@@ -271,6 +271,7 @@ require_once get_template_directory() . '/inc/nvx-authentic-page-photography.php
 require_once get_template_directory() . '/inc/nvx-document-governance.php';
 require_once get_template_directory() . '/inc/nvx-native-style-governance.php';
 require_once get_template_directory() . '/inc/nvx-page-hygiene.php';
+require_once get_template_directory() . '/inc/nvx-security-headers.php';
 require_once get_template_directory() . '/inc/nvx-retired-strategy-redirects.php';
 require_once get_template_directory() . '/inc/nvx-integrations.php';
 require_once get_template_directory() . '/inc/nvx-gtm-integration.php';
@@ -326,3 +327,4 @@ require_once get_template_directory() . '/inc/nvx-aesthetic-medicine-page.php';
 require_once get_template_directory() . '/inc/nvx-clinics-hub.php';
 require_once get_template_directory() . '/inc/nvx-dr-rivera-page.php';
 require_once get_template_directory() . '/inc/nvx-que-exigir-page.php';
+require_once get_template_directory() . '/inc/nvx-clinical-governance.php';

@@ -56,6 +56,7 @@ function nvx_get_filter_priority( $filter_name ): int {
 		// === 40-49: Business Rules ===
 		'nvx_seo_nonproduction_x_robots_headers'       => 40,
 		'nvx_theme_print_google_attribution_meta'      => 41,
+		'nvx_add_security_headers'                     => 42,
 
 		// === 50-69: Schema/Content Normalization ===
 		'nvx_schema_merge_canonical_website_nodes'     => 50,
