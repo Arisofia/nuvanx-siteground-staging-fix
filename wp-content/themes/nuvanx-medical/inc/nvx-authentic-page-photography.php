@@ -80,7 +80,6 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Papada y línea mandibular: la zona correcta, en contexto',
 			'images'  => array(
 				array( 'id' => 3362, 'alt' => 'Papada y línea mandibular como zona de valoración para definición del tercio inferior facial en NUVANX Madrid', 'caption' => 'Papada y línea mandibular' ),
-				array( 'id' => 3303, 'alt' => 'Endolift en papada como apoyo visual de un protocolo de definición facial en NUVANX Madrid', 'caption' => 'Tecnología aplicada a la zona' ),
 			),
 		),
 		'calidad-piel-firmeza-luminosidad-madrid' => array(
@@ -88,6 +87,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Firmeza y luminosidad con una imagen coherente con el objetivo',
 			'images'  => array(
 				array( 'id' => 3361, 'alt' => 'Calidad, firmeza y luminosidad de la piel como objetivos de un protocolo facial personalizado en NUVANX Madrid', 'caption' => 'Calidad, firmeza y luminosidad' ),
+				array( 'id' => 3355, 'alt' => 'Protocolo Skin Architecture para mejorar calidad, firmeza y luminosidad de la piel en NUVANX Madrid', 'caption' => 'Skin Architecture™' ),
 			),
 		),
 		'cicatrices-acne-poros-textura-madrid' => array(
@@ -95,6 +95,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Textura, poros y cicatrices en el mismo contexto clínico',
 			'images'  => array(
 				array( 'id' => 3360, 'alt' => 'Cicatrices de acné, poros y textura irregular de la piel dentro de un protocolo de renovación cutánea en NUVANX Madrid', 'caption' => 'Textura, poros y cicatrices' ),
+				array( 'id' => 3354, 'alt' => 'Protocolo Surface Renewal para mejorar cicatrices de acné, poros y textura cutánea en NUVANX Madrid', 'caption' => 'Surface Renewal™' ),
 			),
 		),
 		'manchas-rojeces-fotorejuvenecimiento-ipl-madrid' => array(
@@ -102,6 +103,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'IPL para manchas, rojeces y tono irregular',
 			'images'  => array(
 				array( 'id' => 3611, 'alt' => 'Fotorejuvenecimiento con IPL para manchas, rojeces y tono irregular de la piel en NUVANX Madrid', 'caption' => 'Fotorejuvenecimiento IPL' ),
+				array( 'id' => 3353, 'alt' => 'Protocolo Tone Correction para manchas, rojeces y tono irregular de la piel en NUVANX Madrid', 'caption' => 'Tone Correction™' ),
 			),
 		),
 		'endolaser-corporal-grasa-localizada' => array(
@@ -125,7 +127,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'eyebrow' => 'Post-Maternity Contour™',
 			'title'   => 'Abdomen y contorno después del embarazo, sin imágenes genéricas',
 			'images'  => array(
-				array( 'id' => 3359, 'alt' => 'Abdomen tras el embarazo dentro de una valoración personalizada de recuperación del contorno corporal en NUVANX Madrid', 'caption' => 'Valoración posgestacional del contorno' ),
+				array( 'id' => 3359, 'alt' => 'Mujer embarazada como imagen contextual de planificación del contorno corporal tras el embarazo en NUVANX Madrid', 'caption' => 'Planificación posgestacional' ),
 			),
 		),
 		'grasa-localizada-abdomen-flancos-madrid' => array(
@@ -133,7 +135,6 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Abdomen y flancos: la zona se muestra antes de hablar de tecnología',
 			'images'  => array(
 				array( 'id' => 3358, 'alt' => 'Grasa localizada en abdomen y flancos como zona de valoración para remodelación corporal en NUVANX Madrid', 'caption' => 'Abdomen y flancos' ),
-				array( 'id' => 3298, 'alt' => 'Tratamiento corporal de abdomen dentro de un plan médico-estético personalizado en NUVANX Madrid', 'caption' => 'Tratamiento por zona' ),
 			),
 		),
 		'flacidez-grasa-localizada-brazos-madrid' => array(
@@ -141,14 +142,14 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Brazos: firmeza y grasa localizada en su propia zona anatómica',
 			'images'  => array(
 				array( 'id' => 3357, 'alt' => 'Flacidez y grasa localizada en brazos como zona de valoración para remodelación corporal en NUVANX Madrid', 'caption' => 'Brazos' ),
-				array( 'id' => 3301, 'alt' => 'Tratamiento Endolift en brazos dentro de un protocolo corporal personalizado en NUVANX Madrid', 'caption' => 'Procedimiento en brazos' ),
+				array( 'id' => 3351, 'alt' => 'Secuencia visual de evolución del contorno de brazos dentro de un protocolo corporal en NUVANX Madrid', 'caption' => 'Evolución del contorno de brazos' ),
 			),
 		),
 		'grasa-espalda-zona-sujetador-madrid' => array(
 			'eyebrow' => 'Contorno de espalda',
 			'title'   => 'Espalda y zona del sujetador con una imagen específica de la región',
 			'images'  => array(
-				array( 'id' => 3296, 'alt' => 'Espalda y zona del sujetador dentro de un protocolo de remodelación corporal en NUVANX Madrid', 'caption' => 'Espalda y zona del sujetador' ),
+				array( 'id' => 3348, 'alt' => 'Secuencia visual de evolución de espalda y zona del sujetador dentro de un protocolo corporal en NUVANX Madrid', 'caption' => 'Espalda y zona del sujetador' ),
 			),
 		),
 		'contacto' => array(
