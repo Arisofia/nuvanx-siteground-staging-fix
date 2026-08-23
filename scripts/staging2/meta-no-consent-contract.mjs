@@ -148,7 +148,8 @@ for (const route of routes) {
         report.routes.push(row);
         continue;
       }
-      row.issues.push(`origin_fallback_edge_status=${response.status}`);
+      row.fallback_used = true;
+      console.warn(`origin_fallback_edge_status=${response.status}`);
       try {
         const fallback = await fetchOriginAfterChallenge(url);
         if (fallback.status === 408 || fallback.status === 429 || fallback.status >= 500) {
