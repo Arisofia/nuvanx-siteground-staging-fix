@@ -173,7 +173,7 @@ if (( dependency_gate == 1 )); then
     composer audit --locked --format=summary
     composer install --no-interaction --no-progress --prefer-dist
     ./vendor/bin/phpcs --standard=phpcs.xml.dist
-    ./vendor/bin/phpstan analyse --memory-limit=1G
+    ./vendor/bin/phpstan analyse --memory-limit=2G
   ) || fail 'weekly_theme_dependency_quality'
   pass_assert 'weekly-dependency-security-and-quality'
 fi
