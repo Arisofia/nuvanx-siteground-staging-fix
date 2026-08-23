@@ -10,7 +10,7 @@
  * @package nuvanx-medical
  */
 
-const NVX_AUTHENTIC_PHOTO_ALT_CONSULTATION = 'Consulta médica personalizada en NUVANX';
+const NVX_AUTHENTIC_PHOTO_ALT_CONSULTATION = 'Consulta médica y valoración personalizada en NUVANX Madrid';
 const NVX_AUTHENTIC_PHOTO_CAPTION_VALORACION = 'Valoración médica';
 
 /**
@@ -31,7 +31,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'La tecnología forma parte del acto médico',
 			'images'  => array(
 				array( 'id' => 2472, 'alt' => 'Tecnología de energía en una sesión clínica NUVANX', 'caption' => 'Tecnología facial' ),
-				array( 'id' => 2892, 'alt' => NVX_AUTHENTIC_PHOTO_ALT_CONSULTATION, 'caption' => NVX_AUTHENTIC_PHOTO_CAPTION_VALORACION ),
+				array( 'id' => 2877, 'alt' => NVX_AUTHENTIC_PHOTO_ALT_CONSULTATION, 'caption' => NVX_AUTHENTIC_PHOTO_CAPTION_VALORACION ),
 			),
 		),
 		'medicina-estetica-laser' => array(
@@ -39,15 +39,15 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Tecnología real, indicada de forma individual',
 			'images'  => array(
 				array( 'id' => 2472, 'alt' => 'Procedimiento facial con tecnología de energía NUVANX', 'caption' => 'Láser y energía' ),
-				array( 'id' => 2892, 'alt' => NVX_AUTHENTIC_PHOTO_ALT_CONSULTATION, 'caption' => NVX_AUTHENTIC_PHOTO_CAPTION_VALORACION ),
+				array( 'id' => 2877, 'alt' => NVX_AUTHENTIC_PHOTO_ALT_CONSULTATION, 'caption' => NVX_AUTHENTIC_PHOTO_CAPTION_VALORACION ),
 			),
 		),
 		'medicina-estetica' => array(
 			'eyebrow' => 'Consulta NUVANX',
 			'title'   => 'Una indicación empieza por escuchar y valorar',
 			'images'  => array(
-				array( 'id' => 2896, 'alt' => 'Retrato del equipo médico de NUVANX', 'caption' => 'Dirección médica' ),
-				array( 'id' => 2381, 'alt' => 'Consulta entre profesional y paciente en NUVANX', 'caption' => 'Valoración personalizada' ),
+				array( 'id' => 2896, 'alt' => 'Dr. José Javier Rivera — dirección médica NUVANX Madrid', 'caption' => 'Dirección médica' ),
+				array( 'id' => 2381, 'alt' => 'Dr. José Javier Rivera durante una valoración médica en NUVANX Madrid', 'caption' => 'Valoración personalizada' ),
 				array( 'id' => 1630, 'alt' => 'Box de tratamiento real de NUVANX', 'caption' => 'Entorno clínico' ),
 			),
 		),
@@ -55,7 +55,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'eyebrow' => 'NUVANX',
 			'title'   => 'Equipo, método y lugar',
 			'images'  => array(
-				array( 'id' => 2896, 'alt' => 'Dirección médica de NUVANX', 'caption' => 'Dirección médica' ),
+				array( 'id' => 2896, 'alt' => 'Dr. José Javier Rivera — dirección médica NUVANX Madrid', 'caption' => 'Dirección médica' ),
 				array( 'id' => 1632, 'alt' => 'Recepción real de NUVANX', 'caption' => 'La clínica' ),
 				array( 'id' => 2796, 'alt' => 'Fachada de NUVANX Chamberí', 'caption' => 'Chamberí' ),
 			),
@@ -64,7 +64,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'eyebrow' => 'Protocolos',
 			'title'   => 'La secuencia se decide en consulta',
 			'images'  => array(
-				array( 'id' => 2892, 'alt' => 'Valoración médica en NUVANX', 'caption' => 'Consulta' ),
+				array( 'id' => 2877, 'alt' => NVX_AUTHENTIC_PHOTO_ALT_CONSULTATION, 'caption' => 'Consulta' ),
 				array( 'id' => 2471, 'alt' => 'Valoración corporal individualizada en NUVANX', 'caption' => 'Criterio corporal' ),
 			),
 		),
@@ -72,7 +72,7 @@ function nvx_authentic_page_photo_registry(): array {
 			'eyebrow' => 'Planificación',
 			'title'   => 'La planificación es tan importante como la tecnología',
 			'images'  => array(
-				array( 'id' => 2892, 'alt' => NVX_AUTHENTIC_PHOTO_ALT_CONSULTATION, 'caption' => 'Valoración previa' ),
+				array( 'id' => 2877, 'alt' => NVX_AUTHENTIC_PHOTO_ALT_CONSULTATION, 'caption' => 'Valoración previa' ),
 			),
 		),
 		'papada-definicion-mandibular-madrid' => array(
@@ -111,8 +111,8 @@ function nvx_authentic_page_photo_registry(): array {
 			'eyebrow' => 'Endoláser corporal',
 			'title'   => 'Tratamiento corporal con indicación médica',
 			'images'  => array(
-				array( 'id' => 2115, 'alt' => 'Procedimiento corporal láser realizado en NUVANX', 'caption' => 'Procedimiento corporal' ),
-				array( 'id' => 2109, 'alt' => 'Tecnología corporal utilizada en una sesión NUVANX', 'caption' => 'Tecnología en uso' ),
+				array( 'id' => 3068, 'alt' => 'Endoláser corporal para grasa localizada en NUVANX Madrid', 'caption' => 'Endoláser corporal' ),
+				array( 'id' => 2093, 'alt' => 'Resultado clínico de laserlipólisis y endoláser corporal en NUVANX Madrid', 'caption' => 'Resultado clínico' ),
 				array( 'id' => 2471, 'alt' => 'Valoración corporal personalizada previa a un tratamiento', 'caption' => NVX_AUTHENTIC_PHOTO_CAPTION_VALORACION ),
 			),
 		),
@@ -120,8 +120,8 @@ function nvx_authentic_page_photo_registry(): array {
 			'eyebrow' => 'Remodelación corporal',
 			'title'   => 'Tratamos una indicación, no una imagen genérica',
 			'images'  => array(
-				array( 'id' => 2115, 'alt' => 'Tratamiento corporal con láser en NUVANX', 'caption' => 'Procedimiento corporal' ),
-				array( 'id' => 2109, 'alt' => 'Tecnología corporal NUVANX durante una sesión', 'caption' => 'Tecnología aplicada' ),
+				array( 'id' => 2446, 'alt' => 'Remodelación corporal personalizada en NUVANX Madrid', 'caption' => 'Remodelación corporal' ),
+				array( 'id' => 2894, 'alt' => 'Tratamiento facial y corporal en consulta NUVANX Madrid', 'caption' => 'Tratamiento integral' ),
 			),
 		),
 		'tratamiento-postparto-abdomen-contorno-corporal-madrid' => array(
@@ -180,27 +180,27 @@ function nvx_authentic_page_photo_registry(): array {
 			'title'   => 'Espacios creados para la consulta y el seguimiento',
 			'images'  => array(
 				array( 'id' => 2796, 'alt' => 'Fachada de NUVANX Chamberí', 'caption' => 'Chamberí' ),
-				array( 'id' => 2071, 'alt' => 'Fachada de NUVANX Goya', 'caption' => 'Salamanca–Goya' ),
-				array( 'id' => 1632, 'alt' => 'Recepción de NUVANX', 'caption' => 'Recepción' ),
-				array( 'id' => 1630, 'alt' => 'Box clínico de NUVANX', 'caption' => 'Entorno clínico' ),
+				array( 'id' => 2071, 'alt' => 'Fachada de NUVANX Salamanca–Goya', 'caption' => 'Salamanca–Goya' ),
+				array( 'id' => 1632, 'alt' => 'Recepción de NUVANX Chamberí', 'caption' => 'Recepción' ),
+				array( 'id' => 1630, 'alt' => 'Box clínico de NUVANX Chamberí', 'caption' => 'Entorno clínico' ),
 			),
 		),
 		'equipo-medico' => array(
 			'eyebrow' => 'Equipo médico',
 			'title'   => 'Profesionales que acompañan cada decisión',
 			'images'  => array(
-				array( 'id' => 2381, 'alt' => 'Javier Rivera — valoración médica NUVANX', 'caption' => 'Dirección médica' ),
-				array( 'id' => 1840, 'alt' => 'Retrato de la Dra. Ivon en NUVANX', 'caption' => 'Medicina preventiva' ),
-				array( 'id' => 2897, 'alt' => 'Retrato de un profesional del equipo NUVANX', 'caption' => 'Equipo NUVANX' ),
+				array( 'id' => 2381, 'alt' => 'Dr. José Javier Rivera durante una valoración médica en NUVANX Madrid', 'caption' => 'Dirección médica' ),
+				array( 'id' => 1840, 'alt' => 'Dra. Ivon Rivera Deras — equipo médico NUVANX Madrid', 'caption' => 'Medicina preventiva' ),
+				array( 'id' => 2897, 'alt' => 'Francisco Geraldo — coordinación NUVANX Madrid', 'caption' => 'Coordinación NUVANX' ),
 			),
 		),
 		'nosotros' => array(
 			'eyebrow' => 'Nosotros',
 			'title'   => 'Una práctica médica de personas y espacios reales',
 			'images'  => array(
-				array( 'id' => 2896, 'alt' => 'Dirección médica de NUVANX', 'caption' => 'Equipo médico' ),
-				array( 'id' => 1632, 'alt' => 'Interior de NUVANX', 'caption' => 'La clínica' ),
-				array( 'id' => 2796, 'alt' => 'Fachada de NUVANX Chamberí', 'caption' => 'Chamberí' ),
+				array( 'id' => 2896, 'alt' => 'Dr. José Javier Rivera — dirección médica NUVANX Madrid', 'caption' => 'Equipo médico' ),
+				array( 'id' => 1632, 'alt' => 'Interior de NUVANX Chamberí, Madrid', 'caption' => 'La clínica' ),
+				array( 'id' => 2796, 'alt' => 'Fachada de NUVANX Chamberí, Madrid', 'caption' => 'Chamberí' ),
 			),
 		),
 	);
@@ -223,18 +223,19 @@ function nvx_authentic_page_photo_markup( array $data ): string {
 			continue;
 		}
 
-		// Use the available source attachment rather than a historic WordPress
-		// derivative, which may no longer exist on the media filesystem.
+		// Request WordPress' governed large derivative instead of forcing the
+		// multi-megabyte source. Runtime acceptance measures currentSrc so a
+		// missing historic derivative cannot silently reintroduce transfer debt.
 		$markup = wp_get_attachment_image(
 			$attachment_id,
-			'full',
+			'large',
 			false,
 			array(
 				'class'    => 'nvx-authentic-photo-grid__image',
 				'loading'  => 'lazy',
 				'decoding' => 'async',
 				'alt'      => $image['alt'],
-				'sizes'    => '(min-width: 1024px) 33vw, (min-width: 641px) 50vw, 100vw',
+				'sizes'    => '(min-width: 1320px) 400px, (min-width: 1024px) 30vw, (min-width: 641px) 46vw, 92vw',
 			)
 		);
 
@@ -286,3 +287,122 @@ function nvx_append_authentic_page_photography( string $content ): string {
 	return $content . nvx_authentic_page_photo_markup( $data );
 }
 add_filter( 'the_content', 'nvx_append_authentic_page_photography', 175 );
+
+/**
+ * Attachment IDs used by NUVANX public editorial photography.
+ *
+ * The list is derived at runtime from the canonical registry so new approved
+ * page photography automatically inherits the responsive delivery contract.
+ * Clinic-only and Goya-team IDs are included explicitly because those renderers
+ * live outside this registry.
+ *
+ * @return int[]
+ */
+function nvx_governed_public_image_ids(): array {
+	$ids = array( 2892, 2877, 3100, 3101 );
+
+	foreach ( nvx_authentic_page_photo_registry() as $entry ) {
+		foreach ( $entry['images'] ?? array() as $image ) {
+			$id = (int) ( $image['id'] ?? 0 );
+			if ( $id > 0 ) {
+				$ids[] = $id;
+			}
+		}
+	}
+
+	return array_values( array_unique( $ids ) );
+}
+
+/** Maximum responsive candidate width for a governed attachment. */
+function nvx_governed_public_srcset_cap( int $attachment_id ): int {
+	if ( 2381 === $attachment_id ) {
+		return 768;
+	}
+	if ( in_array( $attachment_id, array( 1630, 1632, 1840 ), true ) ) {
+		return 1024;
+	}
+	return 1280;
+}
+
+/**
+ * Never use a multi-megabyte source as the fallback `src` when a governed
+ * editorial renderer asks WordPress for `full`.
+ *
+ * Legacy attachment 2892 is served from the verified optimized equivalent 2877
+ * so the rendered fallback and its metadata come from the same attachment.
+ *
+ * @param mixed        $downsize Existing short-circuit value.
+ * @param int          $attachment_id Attachment ID.
+ * @param string|int[] $size Requested image size.
+ * @return mixed
+ */
+function nvx_governed_public_image_downsize( $downsize, int $attachment_id, $size ) {
+	if ( false !== $downsize || ( function_exists( 'is_admin' ) && is_admin() ) || 'full' !== $size ) {
+		return $downsize;
+	}
+	if ( ! in_array( $attachment_id, nvx_governed_public_image_ids(), true ) ) {
+		return $downsize;
+	}
+
+	$resolved_id = 2892 === $attachment_id ? 2877 : $attachment_id;
+	$large       = wp_get_attachment_image_src( $resolved_id, 'large' );
+	if ( ! is_array( $large ) || empty( $large[0] ) ) {
+		return $downsize;
+	}
+
+	return array( $large[0], (int) $large[1], (int) $large[2], true );
+}
+add_filter( 'image_downsize', 'nvx_governed_public_image_downsize', 10, 3 );
+
+/**
+ * Remove oversized srcset candidates so high-DPR clients cannot silently pick
+ * the original 1.8–7 MB source for a 1/2/3-column editorial slot.
+ *
+ * @param array<int,array{url:string,descriptor:string,value:int}> $sources Sources.
+ * @return array<int,array{url:string,descriptor:string,value:int}>
+ */
+function nvx_governed_public_srcset_sources( array $sources, array $size_array, string $image_src, array $image_meta, int $attachment_id ): array {
+	unset( $size_array, $image_src, $image_meta );
+	if ( ( function_exists( 'is_admin' ) && is_admin() ) || ! in_array( $attachment_id, nvx_governed_public_image_ids(), true ) ) {
+		return $sources;
+	}
+
+	$cap      = nvx_governed_public_srcset_cap( $attachment_id );
+	$filtered = $sources;
+	foreach ( array_keys( $filtered ) as $width ) {
+		if ( (int) $width > $cap ) {
+			unset( $filtered[ $width ] );
+		}
+	}
+
+	return ! empty( $filtered ) ? $filtered : $sources;
+}
+add_filter( 'wp_calculate_image_srcset', 'nvx_governed_public_srcset_sources', 10, 5 );
+
+/**
+ * Match the real CSS width of the director portrait instead of the historic
+ * 28vw hint, which could make browsers select the 1.9 MB 2381 source.
+ */
+function nvx_governed_public_image_attributes( array $attr, $attachment, $size ): array {
+	unset( $size );
+	$attachment_id = isset( $attachment->ID ) ? (int) $attachment->ID : 0;
+	if ( 2381 === $attachment_id ) {
+		$attr['sizes'] = '(min-width: 769px) 224px, 92vw';
+	}
+	return $attr;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'nvx_governed_public_image_attributes', 10, 3 );
+
+/**
+ * Front-end/Schema alias for the legacy 2 MB consultation original. The Media
+ * Library object remains untouched for rollback; public references resolve to
+ * the verified 214 KB equivalent (attachment 2877, same 1672×941 composition).
+ */
+function nvx_governed_public_attachment_url( string $url, int $attachment_id ): string {
+	if ( 2892 !== $attachment_id || ( function_exists( 'is_admin' ) && is_admin() ) ) {
+		return $url;
+	}
+	$replacement = wp_get_attachment_url( 2877 );
+	return is_string( $replacement ) && '' !== $replacement ? $replacement : $url;
+}
+add_filter( 'wp_get_attachment_url', 'nvx_governed_public_attachment_url', 10, 2 );
