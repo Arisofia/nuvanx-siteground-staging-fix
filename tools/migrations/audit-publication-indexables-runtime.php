@@ -106,16 +106,25 @@ foreach ( $manifest['routes'] as $route => $config ) {
 	$drift[] = "{$route}:" . implode( ',', $reasons );
 }
 
-printf(
-	"PUBLICATION_INDEXABLE_RUNTIME_AUDIT=%s routes=%d indexable=%d matching=%d drift=%d environment=%s\n",
-	empty( $drift ) ? 'PASS' : 'FAIL',
-	count( $manifest['routes'] ),
-	$indexable,
-	$matching,
-	count( $drift ),
-	function_exists( 'nvx_seo_is_nonproduction_environment' ) && nvx_seo_is_nonproduction_environment() ? 'nonproduction' : 'production'
-);
+$environment = function_exists( 'nvx_seo_is_nonproduction_environment' ) && nvx_seo_is_nonproduction_environment() ? 'nonproduction' : 'production';
+
 if ( ! empty( $drift ) ) {
+	printf(
+		"PUBLICATION_INDEXABLE_RUNTIME_AUDIT=FAIL routes=%d indexable=%d matching=%d drift=%d environment=%s\n",
+		count( $manifest['routes'] ),
+		$indexable,
+		$matching,
+		count( $drift ),
+		$environment
+	);
 	printf( "PUBLICATION_INDEXABLE_RUNTIME_DRIFT=%s\n", implode( '|', $drift ) );
 	exit( 1 );
 }
+
+printf(
+	"PUBLICATION_INDEXABLE_RUNTIME_AUDIT=PASS routes=%d indexable=%d matching=%d drift=0 environment=%s\n",
+	count( $manifest['routes'] ),
+	$indexable,
+	$matching,
+	$environment
+);
