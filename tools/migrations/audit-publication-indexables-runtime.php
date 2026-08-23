@@ -72,7 +72,12 @@ foreach ( $manifest['routes'] as $route => $config ) {
 	}
 
 	++$indexable;
-	$actual = $repository->find_by_id_and_type( $post_id, 'post', false );
+	try {
+		$actual = $repository->find_by_id_and_type( $post_id, 'post', false );
+	} catch ( Throwable $error ) {
+		$drift[] = "{$route}:repository_lookup_failed";
+		continue;
+	}
 	if ( ! is_object( $actual ) ) {
 		$drift[] = "{$route}:missing_indexable";
 		continue;
