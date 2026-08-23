@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <ruleset name="Nuvanx Medical Theme">
     <description>WordPress Coding Standards for Nuvanx Medical Theme</description>
+
+    <!-- WPCS 2.3.0 is intentionally retained without the Composer installer plugin. -->
+    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs"/>
     
     <!-- What to scan -->
     <file>.</file>
@@ -47,9 +50,8 @@
         <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed"/>
         <!-- Allow Yoda conditions for WordPress compatibility -->
         <exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
-        <!-- Allow short ternary operators -->
+        <!-- These exclusions are no-ops on WPCS 2.3.0 but retained for forward-compatible policy. -->
         <exclude name="Universal.Operators.DisallowShortTernary.Found"/>
-        <!-- Allow reserved keyword parameters for WP callbacks -->
         <exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.classFound"/>
         <exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.matchFound"/>
         <exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound"/>
