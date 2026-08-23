@@ -107,7 +107,8 @@ foreach ( $manifest['routes'] as $route => $config ) {
 }
 
 printf(
-	"PUBLICATION_INDEXABLE_RUNTIME_AUDIT=PASS routes=%d indexable=%d matching=%d drift=%d environment=%s\n",
+	"PUBLICATION_INDEXABLE_RUNTIME_AUDIT=%s routes=%d indexable=%d matching=%d drift=%d environment=%s\n",
+	empty( $drift ) ? 'PASS' : 'FAIL',
 	count( $manifest['routes'] ),
 	$indexable,
 	$matching,
@@ -116,4 +117,5 @@ printf(
 );
 if ( ! empty( $drift ) ) {
 	printf( "PUBLICATION_INDEXABLE_RUNTIME_DRIFT=%s\n", implode( '|', $drift ) );
+	exit( 1 );
 }
