@@ -24,7 +24,7 @@ SEO_OWNERSHIP_CONTRACT="$ROOT/scripts/lint/test-seo-catalog-ownership.php"
 SEO_TOOLING_DIR="$ROOT/scripts/seo"
 THEME_DIR="$ROOT/wp-content/themes/nuvanx-medical"
 
-for required in "$BRIDAL" "$IDENTITY_CONTRACT" "$DEPLOY" "$WORKFLOW" "$BOUNDARY" "$VALORACION_FORM_CONTRACT" "$VALORACION_FORM_CONTRACT_TEST" "$ENV_FLAGS" "$DEPLOY_STAMP" "$LCP_CSS_CONTRACT" "$META_BROWSER_OWNER_CONTRACT" "$SEO_OWNERSHIP_CONTRACT" "$SEO_TOOLING_DIR/package-lock.json" "$THEME_DIR/composer.lock"; do
+for required in "$BRIDAL" "$IDENTITY_CONTRACT" "$DEPLOY" "$WORKFLOW" "$BOUNDARY" "$VALORACION_FORM_CONTRACT" "$VALORACION_FORM_CONTRACT_TEST" "$ENV_FLAGS" "$DEPLOY_STAMP" "$LCP_CSS_CONTRACT" "$META_BROWSER_OWNER_CONTRACT" "$SEO_OWNERSHIP_CONTRACT" "$SEO_TOOLING_DIR/package-lock.json" "$THEME_DIR/composer.lock" "$THEME_DIR/composer.json" "$THEME_DIR/phpcs.xml.dist"; do
   [[ -s "$required" ]] || fail "missing_file:$required"
 done
 
@@ -145,9 +145,10 @@ while IFS= read -r -d '' seo_script; do
 done < <(find "$SEO_TOOLING_DIR" -maxdepth 1 -type f -name '*.js' -print0)
 pass_assert 'seo-tooling-syntax'
 
-# The canonical weekly schedule already executes this release contract. Audit
-# the two lockfiles that actually carry dependencies without creating a third
-# workflow or adding registry-sensitive audits to every pull request.
+# The canonical weekly schedule executes this release contract. When dependency
+# locks change, validate the exact resolved graph immediately as part of the PR
+# static gate: audit, install from lock, then run PHPCS and PHPStan. This keeps a
+# dependency-only PR from going green while the deep-quality job is skipped.
 if [[ "${GITHUB_EVENT_NAME:-}" == 'schedule' ]] || git diff --name-only HEAD~1 2>/dev/null | grep -qE 'package-lock\.json|composer\.lock'; then
   (
     cd "$SEO_TOOLING_DIR"
@@ -155,9 +156,13 @@ if [[ "${GITHUB_EVENT_NAME:-}" == 'schedule' ]] || git diff --name-only HEAD~1 2
   ) || fail 'weekly_seo_npm_audit'
   (
     cd "$THEME_DIR"
+    composer validate --no-check-publish
     composer audit --locked --format=summary
-  ) || fail 'weekly_theme_composer_audit'
-  pass_assert 'weekly-dependency-security-audit'
+    composer install --no-interaction --no-progress --prefer-dist
+    ./vendor/bin/phpcs --standard=phpcs.xml.dist
+    ./vendor/bin/phpstan analyse --memory-limit=1G
+  ) || fail 'weekly_theme_dependency_quality'
+  pass_assert 'weekly-dependency-security-and-quality'
 fi
 
 echo "RELEASE_REGRESSION_CONTRACT=PASS assertions=$assertion_count"
