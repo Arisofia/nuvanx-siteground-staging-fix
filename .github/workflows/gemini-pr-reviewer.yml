@@ -22,7 +22,7 @@ jobs:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.2.2
         with:
           fetch-depth: 0
 
@@ -35,7 +35,7 @@ jobs:
           fi
       - name: Gemini AI Code Reviewer
         if: ${{ env.GEMINI_API_KEY != '' }}
-        uses: truongnh1992/gemini-ai-code-reviewer@v9.2.1
+        uses: truongnh1992/gemini-ai-code-reviewer@7c4b01afa073e48a44c72cdc1d010f9e3b95686f # v9.2.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ env.GEMINI_API_KEY }}
