@@ -1,6 +1,6 @@
 {
   "primary_category": "Clínica de medicina estética",
-  "primary_category_status": "proposed_pending_gbp_admin_inspection",
+  "primary_category_status": "confirmed_via_gbp_api_2026-08-24",
   "secondary_categories": ["Médico", "Centro de láser"],
   "phones": {
     "chamberi_nap": "669 319 836",
@@ -18,7 +18,7 @@
       "name": "Centro Clínico NUVANX Chamberí",
       "reg": "CS20144",
       "neighborhood_keywords": ["Chamberí", "Madrid"],
-      "place_id": "",
+      "place_id": "ChIJ6R9LvsQpQg0Rj9Ioei_Xwsg",
       "maps_query": "NUVANX Medicina Estética Láser Calle de Fernández de la Hoz 4 28010 Madrid",
       "description": "NUVANX Medicina Estética Láser Chamberí es un centro sanitario autorizado en Calle de Fernández de la Hoz 4, Bajo Derecha, Madrid. Realizamos valoración médica individualizada y tratamientos de medicina estética láser facial y corporal según indicación profesional. Atención con cita previa. Registro sanitario CS20144.",
       "missing_photo_capture": ["fachada frontal", "fachada segundo ángulo", "portal o acceso", "recepción o sala", "consulta vacía", "señalética interior", "placa sanitaria CS20144", "equipo real en sede"]
@@ -27,7 +27,7 @@
       "name": "Centro Clínico NUVANX Salamanca–Goya",
       "reg": "CS20073",
       "neighborhood_keywords": ["Salamanca", "Goya", "Madrid"],
-      "place_id": "",
+      "place_id": "ChIJlZAA78cpQg0RXFxu-B2lgQI",
       "maps_query": "NUVANX Medicina Estética Láser Calle de Fernán González 26 28009 Madrid",
       "description": "NUVANX Medicina Estética Láser Salamanca–Goya es un centro sanitario autorizado en Calle de Fernán González 26, Madrid. Realizamos valoración médica individualizada y tratamientos de medicina estética láser facial y corporal según indicación profesional. Atención con cita previa. Registro sanitario CS20073.",
       "missing_photo_capture": ["fachada segundo ángulo", "portal o acceso", "recepción o sala verificada en Goya", "consulta vacía", "señalética interior", "placa sanitaria CS20073", "EXION® real en sede si está", "equipo Endolift® real en sede"]
