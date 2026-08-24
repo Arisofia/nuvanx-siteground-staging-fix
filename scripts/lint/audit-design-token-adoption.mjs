@@ -2,9 +2,11 @@
 /**
  * Report design-system literals that should be reviewed for token adoption.
  *
- * This audit is intentionally report-only by default while the legacy baseline
- * is being classified. Pass --strict only after the governed categories have
- * been migrated or explicitly marked with `nvx-token-exception`.
+ * The legacy baseline is still being classified, so most categories remain
+ * report-only by default. Categories that have reached zero are ratcheted here
+ * so they cannot regress while the remaining debt is migrated. Pass --strict
+ * only after every governed category has been migrated or explicitly marked
+ * with `nvx-token-exception`.
  */
 
 import fs from 'node:fs/promises';
@@ -28,9 +30,14 @@ const STRICT_CATEGORIES = new Set([
   'typography-metric',
 ]);
 
+// Closed categories become default blocking ratchets even while the broader
+// adoption audit remains report-only. Add a category here only after CI has
+// demonstrated a zero baseline on protected master.
+const DEFAULT_BLOCKING_CATEGORIES = new Set(['motion']);
+
 const SPACING_PROPERTIES = /^(?:margin(?:-(?:top|right|bottom|left|inline|inline-start|inline-end|block|block-start|block-end))?|padding(?:-(?:top|right|bottom|left|inline|inline-start|inline-end|block|block-start|block-end))?|gap|row-gap|column-gap)$/;
 const DIMENSION_PROPERTIES = /^(?:width|height|min-width|max-width|min-height|max-height)$/;
-const MOTION_PROPERTIES = /^(?:transition(?:-duration)?|animation(?:-duration)?)$/;
+const MOTION_PROPERTIES = /^(?:transition(?:-duration)?|animation|animation-duration)$/;
 const TYPOGRAPHY_PROPERTIES = /^(?:line-height|letter-spacing|font-weight)$/;
 const POSITION_PROPERTIES = /^(?:top|right|bottom|left|inset|inset-inline|inset-block)$/;
 const DECLARATION_PATTERN = /([a-zA-Z-]+)\s*:\s*([^;{}]+)(?:;|(?=}|$))/g;
@@ -247,20 +254,19 @@ async function main() {
     return acc;
   }, {});
 
-  console.log(`DESIGN_TOKEN_ADOPTION_AUDIT=REPORT files=${files.length} findings=${findings.length} strict=${strict}`);
+  console.log(`DESIGN_TOKEN_ADOPTION_AUDIT=REPORT files=${files.length} findings=${findings.length} strict=${strict} ratchet=${[...DEFAULT_BLOCKING_CATEGORIES].join(',')}`);
   console.log(`DESIGN_TOKEN_ADOPTION_COUNTS=${JSON.stringify(counts)}`);
   for (const finding of findings.slice(0, MAX_PRINT)) console.log(`DESIGN_TOKEN_FINDING=${JSON.stringify(finding)}`);
   if (findings.length > MAX_PRINT) console.log(`DESIGN_TOKEN_ADOPTION_TRUNCATED shown=${MAX_PRINT} total=${findings.length}`);
 
-  if (strict) {
-    const blocking = findings.filter((finding) => STRICT_CATEGORIES.has(finding.category));
-    if (blocking.length > 0) {
-      console.error(`DESIGN_TOKEN_ADOPTION_AUDIT=FAIL blocking=${blocking.length}`);
-      process.exit(1);
-    }
+  const blockingCategories = strict ? STRICT_CATEGORIES : DEFAULT_BLOCKING_CATEGORIES;
+  const blocking = findings.filter((finding) => blockingCategories.has(finding.category));
+  if (blocking.length > 0) {
+    console.error(`DESIGN_TOKEN_ADOPTION_AUDIT=FAIL blocking=${blocking.length} categories=${[...blockingCategories].join(',')}`);
+    process.exit(1);
   }
 
-  console.log('DESIGN_TOKEN_ADOPTION_AUDIT=PASS mode=report');
+  console.log(`DESIGN_TOKEN_ADOPTION_AUDIT=PASS mode=${strict ? 'strict' : 'ratchet'}`);
 }
 
 main().catch((error) => {
