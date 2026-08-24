@@ -73,6 +73,23 @@
   z-index: var(--nvx-z-local-base);
 }
 
+/* The governance layer is concatenated after nvx-patterns-editorial.css.
+ * Keep the effective interior-hero stack on semantic tokens without rewriting
+ * the large legacy pattern source solely for its two local stacking constants. */
+.nvx-brand-hero__copy,
+.nvx-editorial-hero__copy,
+.nvx-page-hero__copy,
+.nvx-hero__copy {
+  z-index: var(--nvx-z-local-overlay);
+}
+
+.nvx-brand-hero__copy > *,
+.nvx-editorial-hero__copy > *,
+.nvx-page-hero__copy > *,
+.nvx-hero__copy > * {
+  z-index: var(--nvx-z-local-base);
+}
+
 /* Compact navigation contract: use the hamburger until a true wide desktop can fit the full menu. */
 @media (max-width: 119.999rem) {
   .nvx-header .nvx-nav,
