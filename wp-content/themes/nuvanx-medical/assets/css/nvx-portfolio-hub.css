@@ -57,7 +57,7 @@
 .nvx-hub-region__name {
   font-family: var(--nvx-sans);
   font-size: var(--nvx-type-body);
-  font-weight: 600;
+  font-weight: var(--nvx-fw-medium);
   color: var(--nvx-ink);
   padding-bottom: var(--nvx-space-2);
   border-bottom: var(--nvx-border-hairline) solid var(--nvx-color-line);
@@ -137,7 +137,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--nvx-ink);
-  font-weight: 600;
+  font-weight: var(--nvx-fw-medium);
   margin-bottom: var(--nvx-space-4);
 }
 
@@ -194,7 +194,7 @@
 .nvx-hub-trust__logo-text {
   font-family: var(--nvx-sans);
   font-size: var(--nvx-type-small);
-  font-weight: 600;
+  font-weight: var(--nvx-fw-medium);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
