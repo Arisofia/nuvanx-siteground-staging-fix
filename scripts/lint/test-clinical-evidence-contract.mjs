@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
+import { dirname, extname, join, resolve } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '../..');
-const matrixPath = resolve(root, 'wp-content/themes/nuvanx-medical/inc/data/clinical-matrix.json');
-const governancePath = resolve(root, 'wp-content/themes/nuvanx-medical/inc/nvx-clinical-governance.php');
-const constantsPath = resolve(root, 'wp-content/themes/nuvanx-medical/inc/nvx-constants.php');
+const themeRoot = resolve(root, 'wp-content/themes/nuvanx-medical');
+const matrixPath = resolve(themeRoot, 'inc/data/clinical-matrix.json');
+const governancePath = resolve(themeRoot, 'inc/nvx-clinical-governance.php');
+const constantsPath = resolve(themeRoot, 'inc/nvx-constants.php');
 
 const [matrixRaw, governance, constants] = await Promise.all([
   readFile(matrixPath, 'utf8'),
@@ -22,6 +23,21 @@ const treatments = matrix?.treatments ?? {};
 function fail(reason) {
   console.error(`CLINICAL_EVIDENCE_CONTRACT=FAIL reason=${reason}`);
   process.exit(1);
+}
+
+async function collectPublicCopyFiles(dir) {
+  const out = [];
+  const entries = await readdir(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.name === 'vendor' || entry.name === 'node_modules' || entry.name.startsWith('.git')) continue;
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...await collectPublicCopyFiles(path));
+      continue;
+    }
+    if (entry.isFile() && ['.php', '.json'].includes(extname(entry.name).toLowerCase())) out.push(path);
+  }
+  return out;
 }
 
 const required = {
@@ -62,9 +78,13 @@ const forbidden = [
   /EXION[^\n]{0,120}37\s*%[^\n]{0,80}col[aá]geno/iu,
   /94\s*%[^\n]{0,100}n\s*=\s*47/iu,
 ];
-for (const pattern of forbidden) {
-  if (pattern.test(matrixRaw) || pattern.test(governance)) {
-    fail(`forbidden_unqualified_claim:${pattern.source}`);
+const publicCopyFiles = await collectPublicCopyFiles(themeRoot);
+for (const file of publicCopyFiles) {
+  const content = await readFile(file, 'utf8');
+  for (const pattern of forbidden) {
+    if (pattern.test(content)) {
+      fail(`forbidden_unqualified_claim:${file.slice(themeRoot.length + 1)}:${pattern.source}`);
+    }
   }
 }
 
@@ -75,6 +95,10 @@ for (const marker of [
   "NVX_HOOK_PRIO_CLINICAL_EVIDENCE",
 ]) {
   if (!governance.includes(marker)) fail(`render_contract_missing:${marker}`);
+}
+
+if (!governance.includes("if ( ! is_array( $treatment ) )")) {
+  fail('missing_treatment_null_guard');
 }
 
 if (!constants.includes('const NVX_HOOK_PRIO_CLINICAL_EVIDENCE = 98;')) {
@@ -94,4 +118,4 @@ if (!/6,15 a 3,89/.test(co2Rct?.summary ?? '') || !/5,72 a 3,56/.test(co2Rct?.su
   fail('co2_rct_endpoint_values_missing');
 }
 
-console.log('CLINICAL_EVIDENCE_CONTRACT=PASS treatments=3 sources=5 forbidden_claims=absent');
+console.log(`CLINICAL_EVIDENCE_CONTRACT=PASS treatments=3 sources=5 public_copy_files=${publicCopyFiles.length} forbidden_claims=absent`);
