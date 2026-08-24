@@ -83,7 +83,7 @@
 	background: var(--nvx-light);
 	color: var(--nvx-ink);
 	border: var(--nvx-border-hairline) solid var(--nvx-light);
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+	box-shadow: var(--nvx-shadow-button-on-dark);
 }
 
 .nvx-home-hero .nvx-brand-btn.nvx-btn--primary:hover {
@@ -91,7 +91,7 @@
 	color: var(--nvx-ink);
 	border-color: var(--nvx-surface-soft);
 	transform: translateY(-2px);
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+	box-shadow: var(--nvx-shadow-button-on-dark-hover);
 }
 
 .nvx-hero-title-location {
@@ -696,7 +696,7 @@
 	background: var(--nvx-light);
 	color: var(--nvx-ink);
 	border: var(--nvx-border-hairline) solid var(--nvx-light);
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+	box-shadow: var(--nvx-shadow-button-on-dark);
 }
 
 .nvx-home-closure .nvx-brand-btn.nvx-btn--primary:hover {
@@ -704,7 +704,7 @@
 	color: var(--nvx-ink);
 	border-color: var(--nvx-surface-soft);
 	transform: translateY(-2px);
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+	box-shadow: var(--nvx-shadow-button-on-dark-hover);
 }
 
 .nvx-home-closure .nvx-brand-btn.nvx-btn--secondary-on-dark {

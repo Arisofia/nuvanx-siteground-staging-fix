@@ -90,6 +90,20 @@
   z-index: var(--nvx-z-local-base);
 }
 
+/* Later governance owns reusable focus elevation and the mobile legal-card
+ * radius while preserving the exact values emitted by their legacy sources. */
+.nvx-hubspot-form-section .hs-input:focus,
+.nvx-hs-lead-form .hs-input:focus,
+.nvx-hubspot-form-section input:focus-visible {
+  box-shadow: var(--nvx-shadow-focus-glow);
+}
+
+@media (max-width: 600px) {
+  .nvx-legal-page > .nvx-legal-card {
+    border-radius: var(--nvx-radius-legal-card-mobile);
+  }
+}
+
 /* Compact navigation contract: use the hamburger until a true wide desktop can fit the full menu. */
 @media (max-width: 119.999rem) {
   .nvx-header .nvx-nav,
@@ -171,7 +185,7 @@
   outline: 3px solid var(--nvx-ink);
   outline-offset: 2px;
   z-index: calc(var(--nvx-z-a11y) + 1);
-  box-shadow: 0 0 0 2px var(--nvx-light);
+  box-shadow: var(--nvx-shadow-focus-light);
 }
 @media (prefers-reduced-motion: reduce) {
   .nvx-skip-link { transition: none; }
