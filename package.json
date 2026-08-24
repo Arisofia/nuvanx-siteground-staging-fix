@@ -12,7 +12,8 @@
     "lint:complianz": "node scripts/lint/test-complianz-a11y-sanitizer.mjs",
     "lint:schema": "node scripts/lint/test-schema-semantic-contract.mjs",
     "lint:endolaser-approval": "node scripts/lint/test-endolaser-claim-approval.mjs",
-    "lint": "npm run lint:colors && npm run lint:fontsize && npm run lint:styles && npm run lint:routes && npm run lint:contrast && npm run lint:complianz && npm run lint:schema && npm run lint:endolaser-approval"
+    "lint:clinical-evidence": "node scripts/lint/test-clinical-evidence-contract.mjs",
+    "lint": "npm run lint:colors && npm run lint:fontsize && npm run lint:styles && npm run lint:routes && npm run lint:contrast && npm run lint:complianz && npm run lint:schema && npm run lint:endolaser-approval && npm run lint:clinical-evidence"
   },
   "engines": {
     "node": ">=18"

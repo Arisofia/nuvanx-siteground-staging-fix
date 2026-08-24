@@ -33,9 +33,89 @@
       "follow_up": "Revisión a las 2 semanas, 3 meses y 6 meses.",
       "medical_responsible": "Dr. José Javier Rivera Tejeda (Col. 282864786)",
       "scientific_review_date": "2026-08-01",
+      "evidence": [
+        {
+          "study_type": "Revisión sistemática",
+          "sample_size": "23 estudios incluidos",
+          "title": "Endolift® / láser intralesional de 1470 nm: revisión sistemática 2024",
+          "summary": "La revisión localizó 339 artículos e incluyó 23 estudios relevantes. Encontró resultados favorables en rejuvenecimiento, laxitud de cara/cuello y un perfil de seguridad favorable; también describe resultados prometedores sobre tejido adiposo en varias zonas.",
+          "limitation": "La revisión agrupa estudios heterogéneos. No establece un porcentaje universal de reducción de grasa ni predice el resultado de un paciente concreto.",
+          "source_label": "PubMed · PMID 38886198",
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/38886198/",
+          "pmid": "38886198"
+        },
+        {
+          "study_type": "Estudio clínico prospectivo pequeño",
+          "sample_size": "n=9",
+          "title": "Tratamiento de jowl con Endolift®",
+          "summary": "En nueve pacientes con grasa pinzable en la línea mandibular, la satisfacción de los pacientes y la valoración ciega de dermatólogos calificaron la mejoría como buena o muy buena en aproximadamente el 90% de los casos.",
+          "limitation": "Muestra muy pequeña y sin grupo control; el 90% es una valoración dentro de ese estudio, no una tasa esperable ni garantizada en NUVANX.",
+          "source_label": "PubMed · PMID 35083532",
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/35083532/",
+          "pmid": "35083532"
+        }
+      ],
       "clinical_sources": [
-        "PubMed: Clinical applications of 1470 nm interstitial laser",
+        "PubMed PMID 38886198 — systematic review of 1470 nm intralesional laser",
+        "PubMed PMID 35083532 — jowl fat clinical evaluation and biometric measurement",
         "Protocolo clínico oficial LASEmaR 1500 (Eufoton)"
+      ]
+    },
+    "laser_co2": {
+      "name": "Láser CO₂ fraccionado",
+      "indications": [
+        "Cicatrices atróficas de acné",
+        "Textura irregular y poro visible",
+        "Fotodaño seleccionado tras valoración médica"
+      ],
+      "contraindications": [
+        "Infección cutánea activa",
+        "Tendencia a cicatrización queloidea",
+        "Fototipo o antecedentes que requieran una estrategia alternativa tras evaluación médica"
+      ],
+      "mechanism": "Resurfacing ablativo fraccionado con microcolumnas térmicas de CO₂ y remodelado dérmico progresivo.",
+      "applicators": [
+        "Sistema de láser CO₂ fraccionado"
+      ],
+      "published_parameters": "Longitud de onda CO₂ 10.600 nm; potencia, energía por pulso y densidad se individualizan según indicación y fototipo.",
+      "anesthesia": "Anestesia tópica según protocolo y zona",
+      "duration": "30–60 minutos según zonas",
+      "recovery": "Eritema y descamación esperables; duración variable según parámetros y respuesta individual.",
+      "sessions": "Número de sesiones individualizado según indicación y profundidad de la lesión.",
+      "risks": [
+        "Eritema prolongado",
+        "Hiperpigmentación postinflamatoria",
+        "Infección",
+        "Alteraciones transitorias de la pigmentación"
+      ],
+      "follow_up": "Seguimiento clínico según intensidad del resurfacing y evolución de la piel.",
+      "medical_responsible": "Dr. José Javier Rivera Tejeda (Col. 282864786)",
+      "scientific_review_date": "2026-08-24",
+      "evidence": [
+        {
+          "study_type": "Ensayo clínico aleatorizado con evaluación ciega",
+          "sample_size": "n=13",
+          "title": "CO₂ fraccionado frente a zona no tratada en cicatrices atróficas de acné",
+          "summary": "Tras tres sesiones mensuales, la puntuación media de textura bajó de 6,15 a 3,89 y la de atrofia de 5,72 a 3,56 a los 6 meses (en esta escala, menor puntuación indica menor severidad; p<0,0001).",
+          "limitation": "Ensayo pequeño y con un protocolo concreto. Las cifras no deben trasladarse como porcentaje de mejoría esperado para cualquier paciente o configuración de láser.",
+          "source_label": "PubMed · PMID 22766970",
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/22766970/",
+          "pmid": "22766970"
+        },
+        {
+          "study_type": "Revisión sistemática y metaanálisis comparativo",
+          "sample_size": "17 estudios",
+          "title": "CO₂ fraccionado frente a modalidades basadas en needling para cicatrices atróficas",
+          "summary": "Un metaanálisis de 17 estudios publicado en 2026 no encontró superioridad estadísticamente significativa del CO₂ fraccionado en la reducción media de puntuación de cicatriz ni en la reducción cuantitativa frente a modalidades basadas en needling; la heterogeneidad fue alta.",
+          "limitation": "La conclusión es comparativa y no implica equivalencia para todos los dispositivos, fototipos o tipos de cicatriz. Refuerza la necesidad de seleccionar técnica y parámetros por diagnóstico.",
+          "source_label": "PubMed · PMID 42334669",
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/42334669/",
+          "pmid": "42334669"
+        }
+      ],
+      "clinical_sources": [
+        "PubMed PMID 22766970 — randomized controlled trial",
+        "PubMed PMID 42334669 — systematic review and meta-analysis"
       ]
     },
     "exion_face": {
@@ -55,21 +135,33 @@
         "Aplicador EXION Face"
       ],
       "published_parameters": "Radiofrecuencia monopolar sincronizada con energía ultrasónica",
-      "anesthesia": "Sin anestesia (procedimiento indoloro)",
+      "anesthesia": "Habitualmente sin anestesia; tolerancia individual variable",
       "duration": "20–30 minutos por zona",
-      "recovery": "Inmediata (ligero eritema transitorio)",
-      "sessions": "Protocolo base de 4 sesiones (1 por semana)",
+      "recovery": "Inmediata en muchos protocolos; puede aparecer eritema transitorio",
+      "sessions": "El número y separación de sesiones se individualizan según indicación, respuesta y protocolo.",
       "risks": [
         "Eritema transitorio",
         "Sensación de calor local",
-        "Molestia leve durante la aplicación"
+        "Molestia durante la aplicación"
       ],
-      "follow_up": "Mantenimiento 1 sesión cada 3–6 meses según evolución.",
+      "follow_up": "Seguimiento y mantenimiento según evolución individual.",
       "medical_responsible": "Dr. José Javier Rivera Tejeda (Col. 282864786)",
-      "scientific_review_date": "2026-08-01",
+      "scientific_review_date": "2026-08-24",
+      "evidence": [
+        {
+          "study_type": "Estudio piloto de histología humana",
+          "sample_size": "n=7 total; RF+TUS n=3",
+          "title": "EXION® RF + ultrasonido dirigido y ácido hialurónico dérmico",
+          "summary": "En el subgrupo de tres sujetos tratado con RF+TUS, el área teñida para ácido hialurónico aumentó un 48,65% al mes y un 67,69% a los 3 meses frente al basal; el estudio identificó la tecnología utilizada como EXION®.",
+          "limitation": "Es un estudio piloto con solo tres sujetos en el grupo RF+TUS y un endpoint histológico. No equivale a un 67,69% de mejoría estética ni predice un resultado clínico individual. El trabajo fue financiado por BTL Industries.",
+          "source_label": "PubMed · PMID 40243133",
+          "source_url": "https://pubmed.ncbi.nlm.nih.gov/40243133/",
+          "pmid": "40243133"
+        }
+      ],
       "clinical_sources": [
-        "Estudios clínicos BTL Aesthetics",
-        "Protocolos de estímulo de ácido hialurónico endógeno"
+        "PubMed PMID 40243133 — human histology study of EXION RF+TUS",
+        "ClinicalTrials.gov NCT05987917"
       ]
     }
   }
