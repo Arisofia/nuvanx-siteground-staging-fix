@@ -267,10 +267,17 @@
 }
 /* Z-index system (CSS-1) */
 :root {
+  /* Reusable layers inside an isolated/local stacking context. */
+  --nvx-z-local-base: 1;
+  --nvx-z-local-overlay: 2;
+  --nvx-z-local-content: 3;
+  --nvx-z-local-control: 4;
+
   --nvx-z-base: 1;
   --nvx-z-raised: 10;
   --nvx-z-dropdown: 100;
   --nvx-z-sticky: 200;
+  --nvx-z-sticky-cta: 900;
   --nvx-z-header: 1000;
   --nvx-z-overlay: 2000;
   --nvx-z-modal: 3000;

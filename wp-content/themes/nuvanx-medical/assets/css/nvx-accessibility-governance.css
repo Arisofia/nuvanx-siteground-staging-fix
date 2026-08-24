@@ -70,7 +70,7 @@
 /* Conversion-stage content must paint above its decorative background layers. */
 .nvx-form-stage > .nvx-brand-section__inner {
   position: relative;
-  z-index: 1;
+  z-index: var(--nvx-z-local-base);
 }
 
 /* Compact navigation contract: use the hamburger until a true wide desktop can fit the full menu. */
