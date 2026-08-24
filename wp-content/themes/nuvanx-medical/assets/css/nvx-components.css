@@ -262,7 +262,7 @@ body .joinchat__qr canvas {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 900;
+    z-index: var(--nvx-z-sticky-cta);
     padding: var(--nvx-space-2) var(--nvx-space-3);
     background: var(--nvx-ink);
     border-top: var(--nvx-border-hairline) solid var(--nvx-border-on-dark-45);
@@ -1051,7 +1051,7 @@ body .joinchat__qr canvas {
 .nvx-valoracion-modal {
   position: fixed;
   inset: 0;
-  z-index: 3000;
+  z-index: var(--nvx-z-modal);
   align-items: flex-end;
   justify-content: center;
   padding: 0;
@@ -1141,7 +1141,6 @@ body .joinchat__qr canvas {
 body.nvx-valoracion-modal-open{
   overflow:hidden;
 }
-
 
 
 
