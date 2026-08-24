@@ -119,9 +119,9 @@ function nvx_clinical_evidence_current_treatment_id(): string {
 		: (string) get_post_field( 'post_name', get_queried_object_id() );
 
 	$routes = array(
-		'endolift-facial-papada-mandibula'                  => 'endolift_facial',
+		'endolift-facial-papada-mandibula'                     => 'endolift_facial',
 		'laser-co2-fraccionado-madrid-textura-cicatrices-poro' => 'laser_co2',
-		'exion-face'                                        => 'exion_face',
+		'exion-face'                                           => 'exion_face',
 	);
 
 	return $routes[ $slug ] ?? '';
@@ -133,7 +133,11 @@ function nvx_clinical_evidence_current_treatment_id(): string {
  */
 function nvx_clinical_evidence_markup( string $treatment_id ): string {
 	$treatment = nvx_get_clinical_treatment( $treatment_id );
-	$evidence  = is_array( $treatment['evidence'] ?? null ) ? $treatment['evidence'] : array();
+	if ( ! is_array( $treatment ) ) {
+		return '';
+	}
+
+	$evidence = is_array( $treatment['evidence'] ?? null ) ? $treatment['evidence'] : array();
 	if ( array() === $evidence ) {
 		return '';
 	}
