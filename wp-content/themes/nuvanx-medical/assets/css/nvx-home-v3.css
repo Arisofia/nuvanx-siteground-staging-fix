@@ -175,7 +175,7 @@
    ========================================================= */
 .nvx-home-philosophy {
 	background: var(--nvx-light);
-	padding-block: clamp(90px, 8vw, 140px);
+	padding-block: var(--nvx-home-philosophy-py);
 	text-align: center;
 }
 
@@ -403,7 +403,7 @@
 }
 
 .nvx-home-evidence__text-col {
-	padding: clamp(64px, 10vw, 120px) var(--nvx-gutter-inner);
+	padding: var(--nvx-home-evidence-py) var(--nvx-gutter-inner);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -662,7 +662,7 @@
    SECCIÓN 09: CIERRE / FOOTER-PRE
    ========================================================= */
 .nvx-home-closure {
-	padding-block: clamp(70px, 7vw, 110px);
+	padding-block: var(--nvx-home-closure-py);
 	background-color: var(--nvx-ink);
 	color: var(--nvx-light);
 	text-align: center;
