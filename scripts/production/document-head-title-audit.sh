@@ -25,7 +25,9 @@ urls="$tmpdir/urls.txt"
 : > "$urls"
 while IFS= read -r sitemap; do
   [[ -n "$sitemap" ]] || continue
-  fetch "$sitemap" | grep -oE '<loc>[^<]+</loc>' | sed -E 's#</?loc>##g' >> "$urls"
+  if ! fetch "$sitemap" | grep -oE '<loc>[^<]+</loc>' | sed -E 's#</?loc>##g' >> "$urls"; then
+    echo "FAIL SITEMAP_CHILD url=$sitemap detail=invalid" >&2
+  fi
 done < "$children"
 sort -u "$urls" -o "$urls"
 
