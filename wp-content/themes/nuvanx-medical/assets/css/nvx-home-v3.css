@@ -247,6 +247,7 @@
 	margin: 0 auto;
 	padding-inline: var(--nvx-gutter-inner);
 }
+
 @media (min-width: 768px) {
 	.nvx-home-standard__grid {
 		grid-template-columns: repeat(2, 1fr);
