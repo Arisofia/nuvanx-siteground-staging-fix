@@ -81,6 +81,7 @@
   --nvx-nav-gap: 2px;
   --nvx-nav-gap-compact: 1px;
   --nvx-factsheet-term-gap: 2px;
+  --nvx-visually-hidden-offset: -1px;
   --nvx-home-philosophy-py: clamp(90px, 8vw, 140px);
   --nvx-home-evidence-py: clamp(64px, 10vw, 120px);
   --nvx-home-closure-py: clamp(70px, 7vw, 110px);
