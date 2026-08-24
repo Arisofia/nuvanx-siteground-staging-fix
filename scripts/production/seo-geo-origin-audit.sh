@@ -160,7 +160,7 @@ if (!is_array($data) || count($data) !== 1) {
         if (trim((string)($seo['title'] ?? '')) === '') $issues[] = 'empty-title';
         if (trim((string)($seo['description'] ?? '')) === '') $issues[] = 'empty-description';
         $restCanonical = trim((string)($seo['canonical'] ?? ''));
-        if ($restCanonical !== '' && $norm($restCanonical) !== $norm($expected)) {
+        if ($restCanonical === '' || $norm($restCanonical) !== $norm($expected)) {
             $issues[] = 'canonical-mismatch:' . $restCanonical;
         }
         if ($norm($seo['og_url'] ?? '') !== $norm($expected)) $issues[] = 'og-url-mismatch:' . ($seo['og_url'] ?? 'missing');
