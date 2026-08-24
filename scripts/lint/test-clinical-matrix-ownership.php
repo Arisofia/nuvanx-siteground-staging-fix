@@ -93,7 +93,7 @@ foreach ( $evidence_contract as $treatment_id => $required_pmids ) {
     }
 }
 
-// Unsupported marketing-style figures must not enter the clinical SSOT.
+// Fast SSOT-local guard. The Node contract below performs the broader theme-wide scan.
 $forbidden_patterns = array(
     '/Endolift[^\n]{0,120}20\s*[%–-]\s*40\s*%/iu',
     '/EXION[^\n]{0,120}37\s*%[^\n]{0,80}col[aá]geno/iu',
@@ -101,7 +101,7 @@ $forbidden_patterns = array(
 );
 foreach ( $forbidden_patterns as $pattern ) {
     if ( preg_match( $pattern, $raw ) ) {
-        echo "ERROR: Unsupported/unqualified public outcome claim detected: {$pattern}.\n";
+        echo "ERROR: Unsupported/unqualified clinical SSOT claim detected: {$pattern}.\n";
         $errors++;
     }
 }
@@ -143,6 +143,21 @@ $co2_summary = is_array( $co2_rct ) ? (string) ( $co2_rct['summary'] ?? '' ) : '
 if ( false === strpos( $co2_summary, '6,15 a 3,89' ) || false === strpos( $co2_summary, '5,72 a 3,56' ) ) {
     echo "ERROR: CO2 RCT must retain its exact published endpoint values.\n";
     $errors++;
+}
+
+// This PHP linter is part of the canonical required workflow, so invoking the
+// focused Node contract here makes its theme-wide public-copy scan blocking CI.
+$node_contract = __DIR__ . '/test-clinical-evidence-contract.mjs';
+if ( ! is_file( $node_contract ) ) {
+    echo "ERROR: Clinical evidence Node contract is missing.\n";
+    $errors++;
+} else {
+    $command = 'node ' . escapeshellarg( $node_contract );
+    passthru( $command, $node_status );
+    if ( 0 !== $node_status ) {
+        echo "ERROR: Theme-wide clinical evidence contract failed with exit {$node_status}.\n";
+        $errors++;
+    }
 }
 
 if ( $errors > 0 ) {
