@@ -37,7 +37,7 @@ const DEFAULT_BLOCKING_CATEGORIES = new Set(['motion']);
 
 const SPACING_PROPERTIES = /^(?:margin(?:-(?:top|right|bottom|left|inline|inline-start|inline-end|block|block-start|block-end))?|padding(?:-(?:top|right|bottom|left|inline|inline-start|inline-end|block|block-start|block-end))?|gap|row-gap|column-gap)$/;
 const DIMENSION_PROPERTIES = /^(?:width|height|min-width|max-width|min-height|max-height)$/;
-const MOTION_PROPERTIES = /^(?:transition(?:-duration)?|animation(?:-duration)?)$/;
+const MOTION_PROPERTIES = /^(?:transition(?:-duration)?|animation|animation-duration)$/;
 const TYPOGRAPHY_PROPERTIES = /^(?:line-height|letter-spacing|font-weight)$/;
 const POSITION_PROPERTIES = /^(?:top|right|bottom|left|inset|inset-inline|inset-block)$/;
 const DECLARATION_PATTERN = /([a-zA-Z-]+)\s*:\s*([^;{}]+)(?:;|(?=}|$))/g;
