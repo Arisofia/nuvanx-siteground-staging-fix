@@ -79,7 +79,7 @@
   flex: 0 1 auto;
   min-width: 0;
   align-items: center;
-  gap: 2px;
+  gap: var(--nvx-nav-gap);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -389,7 +389,7 @@
   }
   
   .nvx-nav__list {
-    gap: 1px;
+    gap: var(--nvx-nav-gap-compact);
   }
 }
 
