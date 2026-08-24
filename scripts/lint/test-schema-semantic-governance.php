@@ -130,6 +130,28 @@ nvx_test_assert( ! isset( $result[6]['recognizingAuthority'] ), 'any recognizing
 nvx_test_assert( ! isset( $result[7]['recognizingAuthority'] ), 'AEMPS recognizingAuthority must be removed from MedicalProcedure' );
 nvx_test_assert( isset( $result[8]['recognizingAuthority'] ), 'recognizingAuthority outside governed MedicalProcedure and Service nodes must remain untouched' );
 
+$endolift_source_file = $repo_root . '/wp-content/themes/nuvanx-medical/inc/nvx-endolift-page.php';
+$endolift_source      = is_file( $endolift_source_file ) ? (string) file_get_contents( $endolift_source_file ) : '';
+$endolift_start       = strpos( $endolift_source, 'function nvx_endolift_extend_yoast_schema' );
+$endolift_filter      = false === $endolift_start
+	? false
+	: strpos( $endolift_source, "add_filter( 'wpseo_schema_graph', 'nvx_endolift_extend_yoast_schema'", $endolift_start );
+
+nvx_test_assert( false !== $endolift_start && false !== $endolift_filter, 'Endolift schema emitter function must be present and registered' );
+$endolift_emitter = substr( $endolift_source, (int) $endolift_start, (int) $endolift_filter - (int) $endolift_start );
+
+nvx_test_assert( false !== strpos( $endolift_emitter, 'nvx_content_is_endolift_page( $content )' ), 'Endolift schema emitter must fail closed on the canonical Endolift page predicate' );
+nvx_test_assert( false !== strpos( $endolift_emitter, "nvx_clinical_generate_schema( 'endolift_facial', \$url )" ), 'Endolift schema emitter must source MedicalProcedure data from the governed clinical generator' );
+nvx_test_assert( false !== strpos( $endolift_emitter, "\$medical_schema['@id']" ), 'Endolift schema emitter must key reconciliation on the generated canonical @id' );
+nvx_test_assert( false !== strpos( $endolift_emitter, "\$node['@id'] === \$procedure_id" ), 'Endolift schema emitter must detect an existing node with the same canonical @id' );
+$replace_position = strpos( $endolift_emitter, '$graph[ $existing_index ] = $medical_schema;' );
+$append_position  = strpos( $endolift_emitter, '$graph[] = $medical_schema;' );
+nvx_test_assert( false !== $replace_position && false !== $append_position && $replace_position < $append_position, 'Endolift schema emitter must replace a matching node before using append as the no-match fallback' );
+nvx_test_assert( 1 === substr_count( $endolift_emitter, '$graph[] = $medical_schema;' ), 'Endolift schema emitter must have exactly one append fallback' );
+nvx_test_assert( 0 === preg_match( "/['\"](?:description|followup|study)['\"]\s*=>/", $endolift_emitter ), 'Endolift schema emitter must not hardcode clinical claims outside the SSOT generator' );
+
+echo "ENDOLIFT_SCHEMA_SCOPE_UPSERT_CONTRACT=PASS\n";
+
 $jsonld_rule = null;
 foreach ( nvx_hygiene_regex_reps() as $rule ) {
 	if ( false !== strpos( $rule['pattern'], 'application\\/ld\\+json' ) ) {
