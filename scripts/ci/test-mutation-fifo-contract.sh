@@ -198,6 +198,6 @@ bash "$ROOT/scripts/ci/test-sonar-project-contract.sh"
 # aggregation point until the workflow exposes a dedicated release-test step.
 bash "$ROOT/scripts/ci/test-release-regression-contract.sh"
 
-# Design-token adoption is report-only while the existing CSS baseline is
-# classified. The script becomes blocking only when invoked with --strict.
+# Design-token adoption blocks the zero-baseline ratcheted categories by
+# default; --strict additionally blocks every category in STRICT_CATEGORIES.
 node "$ROOT/scripts/lint/audit-design-token-adoption.mjs"
