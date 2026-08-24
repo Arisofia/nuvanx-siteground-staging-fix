@@ -59,7 +59,7 @@
   font-size: 0.56rem;
   font-weight: var(--nvx-fw-regular);
   line-height: var(--nvx-lh-kicker);
-  letter-spacing: 0.2em;
+  letter-spacing: var(--nvx-track-kicker);
   color: var(--nvx-text-muted);
 }
 
