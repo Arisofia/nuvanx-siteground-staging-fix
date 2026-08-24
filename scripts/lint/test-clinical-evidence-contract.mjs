@@ -10,15 +10,20 @@ const themeRoot = resolve(root, 'wp-content/themes/nuvanx-medical');
 const matrixPath = resolve(themeRoot, 'inc/data/clinical-matrix.json');
 const governancePath = resolve(themeRoot, 'inc/nvx-clinical-governance.php');
 const constantsPath = resolve(themeRoot, 'inc/nvx-constants.php');
+const authorityGraphPath = resolve(themeRoot, 'inc/nvx-endolift-authority-graph.php');
+const signatureCatalogPath = resolve(themeRoot, 'inc/data/nvx-signature-phase-catalog.json');
 
-const [matrixRaw, governance, constants] = await Promise.all([
+const [matrixRaw, governance, constants, authorityGraph, signatureCatalogRaw] = await Promise.all([
   readFile(matrixPath, 'utf8'),
   readFile(governancePath, 'utf8'),
   readFile(constantsPath, 'utf8'),
+  readFile(authorityGraphPath, 'utf8'),
+  readFile(signatureCatalogPath, 'utf8'),
 ]);
 
 const matrix = JSON.parse(matrixRaw);
 const treatments = matrix?.treatments ?? {};
+const signatureCatalog = JSON.parse(signatureCatalogRaw);
 
 function fail(reason) {
   console.error(`CLINICAL_EVIDENCE_CONTRACT=FAIL reason=${reason}`);
@@ -101,7 +106,7 @@ if (!governance.includes("if ( ! is_array( $treatment ) )")) {
   fail('missing_treatment_null_guard');
 }
 
-if (!constants.includes('const NVX_HOOK_PRIO_CLINICAL_EVIDENCE = 98;')) {
+if (!constants.includes('const NVX_HOOK_PRIO_CLINICAL_EVIDENCE        = 98;')) {
   fail('clinical_evidence_priority_missing');
 }
 
@@ -130,4 +135,37 @@ if (!/RR 3,04/.test(co2Meta?.summary ?? '')) fail('co2_meta_pih_risk_missing');
 if (!/frente a RF microneedling, el dolor fue menor con CO₂/iu.test(co2Meta?.summary ?? '')) fail('co2_meta_pain_comparison_missing');
 if (!/I² 97% y 92%/.test(co2Meta?.limitation ?? '')) fail('co2_meta_heterogeneity_missing');
 
-console.log(`CLINICAL_EVIDENCE_CONTRACT=PASS treatments=3 sources=6 balanced_evidence=1 public_copy_files=${publicCopyFiles.length} forbidden_claims=absent`);
+// Endolift authority graph: exact canonical owners only. The problem hub already
+// owns the reciprocal Endolift link in the Signature catalogue; keep both sides.
+const canonicalAuthorityPaths = [
+  '/papada-definicion-mandibular-madrid/',
+  '/inversion-medicina-estetica/',
+  '/medicina-estetica-chamberi/',
+  '/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/',
+];
+for (const path of canonicalAuthorityPaths) {
+  if (!authorityGraph.includes(`home_url( '${path}' )`)) fail(`endolift_authority_path_missing:${path}`);
+}
+for (const forbiddenPath of [
+  "home_url( '/medicina-estetica-goya/' )",
+  "home_url( '/medicina-estetica-goya-barrio-salamanca/' )",
+  "home_url( '/journal/' )",
+]) {
+  if (authorityGraph.includes(forbiddenPath)) fail(`endolift_authority_alias_forbidden:${forbiddenPath}`);
+}
+if (!authorityGraph.includes('data-nvx-endolift-authority-graph="1"')) fail('endolift_authority_marker_missing');
+if (!authorityGraph.includes('nvx-endolift-faq')) fail('endolift_authority_insert_boundary_missing');
+if (authorityGraph.includes('nvx-brand-btn')) fail('endolift_authority_competing_cta_forbidden');
+if (!constants.includes('const NVX_HOOK_PRIO_ENDOLIFT_AUTHORITY_GRAPH = 97;')) fail('endolift_authority_priority_missing');
+if (!governance.includes("require_once __DIR__ . '/nvx-endolift-authority-graph.php';")) fail('endolift_authority_bootstrap_missing');
+
+const profileDefinition = signatureCatalog?.['profile-definition'];
+const reciprocalLinks = [
+  ...(Array.isArray(profileDefinition?.ficha_links) ? profileDefinition.ficha_links : []),
+  ...(Array.isArray(profileDefinition?.related_fichas) ? profileDefinition.related_fichas : []),
+];
+if (!reciprocalLinks.some((row) => row?.path === '/endolift-facial-papada-mandibula/')) {
+  fail('papada_to_endolift_reciprocal_link_missing');
+}
+
+console.log(`CLINICAL_EVIDENCE_CONTRACT=PASS treatments=3 sources=6 balanced_evidence=1 public_copy_files=${publicCopyFiles.length} forbidden_claims=absent endolift_authority_graph=canonical`);
