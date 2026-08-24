@@ -423,7 +423,7 @@ body .joinchat__qr canvas {
 }
 
 /* Media e imágenes - diseño elegante */
-.nvx-media{display:block;width:100%;height:auto;border-radius:var(--nvx-radius-image);transition:transform 300ms ease, box-shadow 300ms ease}
+.nvx-media{display:block;width:100%;height:auto;border-radius:var(--nvx-radius-image);transition:transform var(--nvx-duration-slow) ease, box-shadow var(--nvx-duration-slow) ease}
 .nvx-media:hover{transform:scale(1.02);box-shadow:var(--nvx-shadow-soft)}
 .nvx-media--hero{height:100%;object-fit:cover;border-radius:0}
 .nvx-media--doctor{aspect-ratio:5/6;object-fit:cover;max-height:600px;min-height:400px;object-position:center top}
@@ -545,7 +545,7 @@ body .joinchat__qr canvas {
   margin: 0;
   border-bottom: var(--nvx-border-hairline) solid var(--nvx-color-line);
   background: transparent;
-  transition: background-color 180ms ease;
+  transition: background-color var(--nvx-duration-fast) ease;
 }
 
 .nvx-faq details[open],
