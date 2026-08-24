@@ -437,17 +437,43 @@ add_filter( 'the_content', 'nvx_content_restructure_endolift_page', NVX_HOOK_PRI
 
 
 /**
- * Inyectar el schema MedicalProcedure basado en la Matriz Clínica (SSOT).
+ * Inyectar el schema MedicalProcedure basado en la evidencia clínica de NUVANX.
  */
 function nvx_endolift_extend_yoast_schema( $graph ) {
 	if ( ! is_array( $graph ) || ! nvx_endolift_is_singular_context() ) {
 		return $graph;
 	}
 
+	global $post;
+	$content = $post ? $post->post_content : '';
+	if ( ! function_exists( 'nvx_content_is_endolift_page' ) || ! nvx_content_is_endolift_page( $content ) ) {
+		return $graph;
+	}
+
 	$url = get_permalink( get_queried_object_id() );
 	$medical_schema = nvx_clinical_generate_schema( 'endolift_facial', $url );
 
-	if ( $medical_schema ) {
+	if ( ! $medical_schema ) {
+		return $graph;
+	}
+
+	// Check if a node with the same @id already exists to avoid duplicates
+	$procedure_id = $medical_schema['@id'] ?? '';
+	$existing_index = null;
+
+	if ( $procedure_id && is_array( $graph ) ) {
+		foreach ( $graph as $index => $node ) {
+			if ( isset( $node['@id'] ) && $node['@id'] === $procedure_id ) {
+				$existing_index = $index;
+				break;
+			}
+		}
+	}
+
+	// Upsert: replace existing node or append new one
+	if ( null !== $existing_index ) {
+		$graph[ $existing_index ] = $medical_schema;
+	} else {
 		$graph[] = $medical_schema;
 	}
 
