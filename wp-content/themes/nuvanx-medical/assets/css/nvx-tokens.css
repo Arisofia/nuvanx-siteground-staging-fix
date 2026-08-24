@@ -58,6 +58,10 @@
   --nvx-shadow-button: 0 8px 24px rgba(26, 26, 26, 0.12);
   --nvx-shadow-button-hover: 0 16px 32px rgba(26, 26, 26, 0.14);
   --nvx-accent-glow: rgba(252, 251, 248, 0.18);
+  --nvx-shadow-focus-light: 0 0 0 2px var(--nvx-light);
+  --nvx-shadow-focus-glow: 0 0 0 3px var(--nvx-accent-glow);
+  --nvx-shadow-button-on-dark: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --nvx-shadow-button-on-dark-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
 
   /* Escala de 8px */
   --nvx-space-1: 8px;
@@ -133,6 +137,7 @@
   --nvx-radius-button: var(--nvx-radius-pill);
   --nvx-radius-card: 0;
   --nvx-radius-image: 0;
+  --nvx-radius-legal-card-mobile: 16px;
 
 
   --nvx-media-overlay: linear-gradient(
