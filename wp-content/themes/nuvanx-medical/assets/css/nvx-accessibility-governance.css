@@ -112,7 +112,7 @@
 }
 
 .nvx-hp {
-  margin: calc(var(--nvx-border-hairline) * -1);
+  margin: var(--nvx-visually-hidden-offset);
 }
 
 .nvx-clinical-factsheet__list dt {
