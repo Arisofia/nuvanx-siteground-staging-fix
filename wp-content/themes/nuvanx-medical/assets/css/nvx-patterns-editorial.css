@@ -180,7 +180,7 @@ figure.nvx-hero__media {
   padding-block: var(--nvx-space-8);
   padding-inline: var(--nvx-gutter-inner);
   color: var(--nvx-light);
-  animation: fadeInUp 600ms ease;
+  animation: fadeInUp var(--nvx-duration-slower) ease;
 }
 
 @keyframes fadeInUp {
