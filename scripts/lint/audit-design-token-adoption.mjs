@@ -35,6 +35,16 @@ const STRICT_CATEGORIES = new Set([
 // demonstrated a zero baseline on protected master.
 const DEFAULT_BLOCKING_CATEGORIES = new Set(['motion']);
 
+// Two legacy local-stack constants remain in the large editorial source, but
+// the later accessibility-governance layer owns their effective runtime values
+// with semantic z-index tokens. Keep this exception exact and line-bound so any
+// source drift or additional literal reopens the finding instead of widening an
+// allowlist silently.
+const GOVERNED_LEGACY_LITERAL_EXCEPTIONS = new Set([
+  'wp-content/themes/nuvanx-medical/assets/css/nvx-patterns-editorial.css:170:z-index:2',
+  'wp-content/themes/nuvanx-medical/assets/css/nvx-patterns-editorial.css:209:z-index:1',
+]);
+
 const SPACING_PROPERTIES = /^(?:margin(?:-(?:top|right|bottom|left|inline|inline-start|inline-end|block|block-start|block-end))?|padding(?:-(?:top|right|bottom|left|inline|inline-start|inline-end|block|block-start|block-end))?|gap|row-gap|column-gap)$/;
 const DIMENSION_PROPERTIES = /^(?:width|height|min-width|max-width|min-height|max-height)$/;
 const MOTION_PROPERTIES = /^(?:transition(?:-duration)?|animation|animation-duration)$/;
@@ -52,6 +62,12 @@ function lineNumberAt(source, index) {
     if (source.charCodeAt(i) === 10) line += 1;
   }
   return line;
+}
+
+function isGovernedLegacyLiteralException(file, line, property, value) {
+  const relativeFile = path.relative(ROOT, file);
+  const key = `${relativeFile}:${line}:${property}:${value.trim()}`;
+  return GOVERNED_LEGACY_LITERAL_EXCEPTIONS.has(key);
 }
 
 /**
@@ -216,6 +232,11 @@ function auditParserSelfTest() {
   if (classifyDeclaration(width.property, width.value).length !== 0) throw new Error('parser_self_test_adopted_dimension_reported');
   if (!classifyDeclaration(transition.property, transition.value).some((item) => item.category === 'motion' && item.literal === '.15s')) throw new Error('parser_self_test_seconds_motion_not_reported');
   if (!classifyDeclaration(animation.property, animation.value).some((item) => item.category === 'motion' && item.literal === '300ms')) throw new Error('parser_self_test_animation_shorthand_not_reported');
+
+  const governedLegacyFile = path.join(CSS_DIR, 'nvx-patterns-editorial.css');
+  if (!isGovernedLegacyLiteralException(governedLegacyFile, 170, 'z-index', '2')) throw new Error('parser_self_test_governed_legacy_z_overlay_missing');
+  if (!isGovernedLegacyLiteralException(governedLegacyFile, 209, 'z-index', '1')) throw new Error('parser_self_test_governed_legacy_z_base_missing');
+  if (isGovernedLegacyLiteralException(governedLegacyFile, 171, 'z-index', '2')) throw new Error('parser_self_test_governed_legacy_z_exception_too_broad');
 }
 
 async function cssFiles() {
@@ -241,6 +262,7 @@ async function main() {
       const line = lineNumberAt(source, match.index ?? 0);
       const originalLine = originalLines[line - 1] ?? '';
       if (originalLine.includes('nvx-token-exception')) continue;
+      if (isGovernedLegacyLiteralException(file, line, property, value)) continue;
 
       for (const finding of classifyDeclaration(property, value)) {
         const candidates = tokenCandidatesForLiteral(definitions, finding.literal);
