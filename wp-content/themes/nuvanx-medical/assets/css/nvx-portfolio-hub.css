@@ -8,7 +8,7 @@
    SECCIÓN 02: MAPA ANATÓMICO (SEO)
    ========================================================= */
 .nvx-hub-map {
-  padding-block: clamp(120px, 12vw, 200px);
+  padding-block: var(--nvx-portfolio-stage-py);
   background: var(--nvx-surface-base);
 }
 
@@ -105,7 +105,7 @@
   padding-inline: var(--nvx-gutter-inner);
   display: flex;
   flex-direction: column;
-  gap: clamp(96px, 12vw, 160px); /* Aún más espacio entre items */
+  gap: var(--nvx-portfolio-item-gap); /* Aún más espacio entre items */
 }
 
 .nvx-hub-catalog__item {
@@ -203,7 +203,7 @@
    SECCIÓN 05: LLAMADA A LA ACCIÓN (FINAL)
    ========================================================= */
 .nvx-hub-cta {
-  padding-block: clamp(120px, 12vw, 200px);
+  padding-block: var(--nvx-portfolio-stage-py);
   background: var(--nvx-ink);
   color: var(--nvx-light);
   text-align: center;

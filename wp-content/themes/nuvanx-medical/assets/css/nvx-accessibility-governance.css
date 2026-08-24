@@ -104,6 +104,27 @@
   }
 }
 
+/* Large legacy components remain byte-stable; this later layer owns their
+ * effective spacing with semantic tokens while exact source literals stay
+ * fail-closed in the adoption auditor. */
+.nvx-footer {
+  padding-bottom: var(--nvx-space-10);
+}
+
+.nvx-hp {
+  margin: var(--nvx-visually-hidden-offset);
+}
+
+.nvx-clinical-factsheet__list dt {
+  margin-bottom: var(--nvx-factsheet-term-gap);
+}
+
+@media (min-width: 768px) {
+  .nvx-footer {
+    padding-bottom: 0;
+  }
+}
+
 /* Compact navigation contract: use the hamburger until a true wide desktop can fit the full menu. */
 @media (max-width: 119.999rem) {
   .nvx-header .nvx-nav,
@@ -122,7 +143,7 @@
   }
 
   .nvx-mobile-nav__list a {
-    padding-block: max(var(--nvx-space-2, 16px), 12px);
+    padding-block: max(var(--nvx-space-2, 16px), var(--nvx-nav-mobile-pad-y));
   }
 }
 

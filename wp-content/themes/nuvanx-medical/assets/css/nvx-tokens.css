@@ -76,6 +76,20 @@
   --nvx-space-10: 80px;
   --nvx-space-12: 96px;
 
+  /* Semantic spacing owners for non-scale responsive/layout values. */
+  --nvx-nav-mobile-pad-y: 12px;
+  --nvx-nav-gap: 2px;
+  --nvx-nav-gap-compact: 1px;
+  --nvx-factsheet-term-gap: 2px;
+  --nvx-visually-hidden-offset: -1px;
+  --nvx-home-philosophy-py: clamp(90px, 8vw, 140px);
+  --nvx-home-evidence-py: clamp(64px, 10vw, 120px);
+  --nvx-home-closure-py: clamp(70px, 7vw, 110px);
+  --nvx-portfolio-stage-py: clamp(120px, 12vw, 200px);
+  --nvx-portfolio-item-gap: clamp(96px, 12vw, 160px);
+  --nvx-legal-page-pad-start: clamp(48px, 6vw, 88px);
+  --nvx-legal-card-pad: clamp(28px, 4vw, 52px);
+
   --nvx-gap-base: clamp(16px, 2.5vw, 24px);
   --nvx-gap-wide: clamp(24px, 3vw, 40px);
   --nvx-gap-section: clamp(24px, 4vw, 48px);
