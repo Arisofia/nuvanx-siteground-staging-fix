@@ -172,22 +172,40 @@ ob_start();
 				<div class="nvx-clinic-gallery__grid">
 					<?php foreach ( $clinic_photos as $photo ) : ?>
 						<?php
-						$attachment_id = (int) ( $photo['id'] ?? 0 );
-						if ( $attachment_id < 1 ) {
-							continue;
-						}
-						$image = wp_get_attachment_image(
-							$attachment_id,
-							'full',
-							false,
-							array(
-								'class'    => 'nvx-clinic-gallery__image',
-								'alt'      => (string) ( $photo['alt'] ?? '' ),
-								'loading'  => 'lazy',
-								'decoding' => 'async',
-								'sizes'    => '(min-width: 1024px) 50vw, (min-width: 641px) 50vw, 100vw',
-							)
-						);
+							$attachment_id = (int) ( $photo['id'] ?? 0 );
+							$alt           = (string) ( $photo['alt'] ?? '' );
+							$sizes         = '(min-width: 1024px) 50vw, (min-width: 641px) 50vw, 100vw';
+							if ( $attachment_id > 0 ) {
+								$image = wp_get_attachment_image(
+									$attachment_id,
+									'full',
+									false,
+									array(
+										'class'    => 'nvx-clinic-gallery__image',
+										'alt'      => $alt,
+										'loading'  => 'lazy',
+										'decoding' => 'async',
+										'sizes'    => $sizes,
+									)
+								);
+							} else {
+								$src    = isset( $photo['file'] ) ? (string) $photo['file'] : '';
+								$srcset = isset( $photo['srcset'] ) ? (string) $photo['srcset'] : '';
+								$width  = isset( $photo['width'] ) ? (int) $photo['width'] : 0;
+								$height = isset( $photo['height'] ) ? (int) $photo['height'] : 0;
+								$image  = '';
+								if ( '' !== $src && '' !== $srcset && $width > 0 && $height > 0 ) {
+									$image = sprintf(
+										'<img class="nvx-clinic-gallery__image" src="%1$s" srcset="%2$s" sizes="%3$s" width="%4$d" height="%5$d" alt="%6$s" loading="lazy" decoding="async">',
+										esc_url( $src ),
+										esc_attr( $srcset ),
+										esc_attr( $sizes ),
+										$width,
+										$height,
+										esc_attr( $alt )
+									);
+								}
+							}
 						if ( '' === $image ) {
 							continue;
 						}
