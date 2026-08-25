@@ -12,6 +12,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Whether the current request is the canonical treatments hub page by slug.
+ *
+ * The schema graph and theme bootstrap both consume this predicate. Keep the
+ * definition next to the hub schema owner so removing unrelated presentation
+ * compatibility code cannot silently disable the ItemList at runtime.
+ */
+if ( ! function_exists( 'nvx_theme_is_treatments_hub_page' ) ) {
+	function nvx_theme_is_treatments_hub_page(): bool {
+		return is_page() && 'tratamientos' === get_post_field( 'post_name', get_queried_object_id() );
+	}
+}
+
 /** Replace a graph node by @id or append it. */
 function nvx_treatment_hub_schema_upsert_node( array $graph, array $node ): array {
 	$id = isset( $node['@id'] ) ? (string) $node['@id'] : '';
