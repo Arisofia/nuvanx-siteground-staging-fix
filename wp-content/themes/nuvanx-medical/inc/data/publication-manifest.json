@@ -1,7 +1,7 @@
 {
   "schema": "nuvanx-publication-manifest",
-  "version": "1.0.0",
-  "generated_at": "2026-08-15T21:45:00Z",
+  "version": "1.0.1",
+  "generated_at": "2026-08-25T10:42:00Z",
   "source": "https://nuvanx.com/",
   "routes": {
     "/": {"post_id":9,"post_type":"page","slug":"inicio","status":"publish","robots":{"index":true,"follow":true}},
@@ -18,6 +18,7 @@
     "/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/": {"post_id":1537,"post_type":"page","slug":"medicina-estetica-goya-barrio-salamanca","status":"publish","robots":{"index":true,"follow":true}},
     "/contacto/": {"post_id":14,"post_type":"page","slug":"contacto","status":"publish","robots":{"index":true,"follow":true}},
     "/contorno-corporal-masculino-madrid/": {"post_id":3381,"post_type":"page","slug":"contorno-corporal-masculino-madrid","status":"publish","robots":{"index":true,"follow":true}},
+    "/eliminacion-datos-meta/": {"post_id":3631,"post_type":"page","slug":"eliminacion-datos-meta","status":"publish","robots":{"index":false,"follow":true}},
     "/emfusion/": {"post_id":3487,"post_type":"page","slug":"emfusion","status":"publish","robots":{"index":true,"follow":true}},
     "/endolaser-corporal-grasa-localizada/": {"post_id":1200,"post_type":"page","slug":"endolaser-corporal-grasa-localizada","status":"publish","robots":{"index":true,"follow":true}},
     "/endolaser-corporal-vs-no-invasivos-grasa-localizada/": {"post_id":3330,"post_type":"post","slug":"endolaser-corporal-vs-no-invasivos-grasa-localizada","status":"publish","robots":{"index":true,"follow":true},"schema":{"group":"blog","type":"none","context":"https://schema.org"}},
