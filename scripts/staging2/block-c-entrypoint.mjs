@@ -63,6 +63,20 @@ class ProcessSignalError extends Error {
   }
 }
 
+
+const activeChildren = new Set();
+['SIGTERM', 'SIGINT'].forEach((sig) => {
+  process.once(sig, () => {
+    console.error(`BLOCK_C_ORCHESTRATOR=TERMINATED signal=${sig} active_children=${activeChildren.size}`);
+    for (const child of activeChildren) {
+      if (child.exitCode === null && child.signalCode === null) {
+        child.kill('SIGKILL');
+      }
+    }
+    process.exit(sig === 'SIGINT' ? 130 : 143);
+  });
+});
+
 function runProcess(script, env = process.env, timeoutMs = SUBPROCESS_CONFIG.coreTimeoutMs) {
   if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
     return Promise.reject(new RangeError(`Invalid Block C subprocess timeout for ${path.basename(script)}: ${timeoutMs}`));
@@ -72,6 +86,7 @@ function runProcess(script, env = process.env, timeoutMs = SUBPROCESS_CONFIG.cor
     let timedOut = false;
     let hardKillTimer = null;
     const child = spawn(process.execPath, [script], { env, stdio: 'inherit' });
+    activeChildren.add(child);
 
     const timeoutTimer = setTimeout(() => {
       timedOut = true;
@@ -90,10 +105,12 @@ function runProcess(script, env = process.env, timeoutMs = SUBPROCESS_CONFIG.cor
     };
 
     child.once('error', (error) => {
+      activeChildren.delete(child);
       cleanupTimers();
       reject(error);
     });
     child.once('exit', (code, signal) => {
+      activeChildren.delete(child);
       cleanupTimers();
       if (timedOut) {
         resolve(EX_TEMPFAIL);

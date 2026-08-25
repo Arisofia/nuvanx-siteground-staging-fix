@@ -4,6 +4,20 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
 import { EX_TEMPFAIL } from './siteground-transient-classifier.mjs';
 
+
+const activeChildren = new Set();
+['SIGTERM', 'SIGINT'].forEach((sig) => {
+  process.once(sig, () => {
+    console.error(`VALORACION_ORCHESTRATOR=TERMINATED signal=${sig} active_children=${activeChildren.size}`);
+    for (const child of activeChildren) {
+      if (child.exitCode === null && child.signalCode === null) {
+        child.kill('SIGKILL');
+      }
+    }
+    process.exit(sig === 'SIGINT' ? 130 : 143);
+  });
+});
+
 function runProcess(moduleUrl) {
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [fileURLToPath(moduleUrl)], {
@@ -11,8 +25,13 @@ function runProcess(moduleUrl) {
       stdio: 'inherit',
     });
 
-    child.once('error', reject);
+    activeChildren.add(child);
+    child.once('error', (err) => {
+      activeChildren.delete(child);
+      reject(err);
+    });
     child.once('exit', (code, signal) => {
+      activeChildren.delete(child);
       if (signal) {
         reject(new Error(`Terminated by signal ${signal}`));
         return;
