@@ -23,9 +23,13 @@ function nvx_public_media_upload_url_is_readable( string $url ): bool {
 		return false;
 	}
 
-	$url_path  = (string) wp_parse_url( $url, PHP_URL_PATH );
-	$base_path = rtrim( (string) wp_parse_url( $baseurl, PHP_URL_PATH ), '/' );
-	if ( '' === $url_path || '' === $base_path || 0 !== strpos( $url_path, $base_path . '/' ) ) {
+	$url_path    = (string) wp_parse_url( $url, PHP_URL_PATH );
+	$base_path   = rtrim( (string) wp_parse_url( $baseurl, PHP_URL_PATH ), '/' );
+	$url_host    = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
+	$base_host   = strtolower( (string) wp_parse_url( $baseurl, PHP_URL_HOST ) );
+	$url_scheme  = strtolower( (string) wp_parse_url( $url, PHP_URL_SCHEME ) );
+	$base_scheme = strtolower( (string) wp_parse_url( $baseurl, PHP_URL_SCHEME ) );
+	if ( '' === $url_path || '' === $base_path || '' === $url_host || '' === $base_host || '' === $url_scheme || '' === $base_scheme || $url_host !== $base_host || $url_scheme !== $base_scheme || 0 !== strpos( $url_path, $base_path . '/' ) ) {
 		// This guard owns local WordPress uploads only. Leave external/CDN URLs to
 		// their own delivery boundary rather than deleting them speculatively.
 		return true;
