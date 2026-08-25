@@ -278,6 +278,15 @@ function nvx_public_media_runtime_attributes( array $attr, $attachment, $size ):
 		}
 	}
 
+	// WordPress legitimately returns false when every metadata candidate is
+	// absent. Keep a responsive-image contract for governed gallery markup by
+	// advertising the already verified primary source as its sole candidate.
+	// This preserves `srcset` without resurrecting a missing derivative.
+	$primary_width = isset( $attr['width'] ) ? (int) $attr['width'] : 0;
+	if ( ! isset( $attr['srcset'] ) && $primary_width > 0 && isset( $attr['src'] ) && is_string( $attr['src'] ) && nvx_public_media_upload_url_is_readable( $attr['src'] ) ) {
+		$attr['srcset'] = $attr['src'] . ' ' . $primary_width . 'w';
+	}
+
 	return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'nvx_public_media_runtime_attributes', PHP_INT_MAX, 3 );
