@@ -163,7 +163,7 @@ while ( have_posts() ) :
 	if ( $has_standard_wrapper && strpos( $content, '<div class="entry-content nvx-page__content nvx-prose">' ) === 0 ) {
 		the_content();
 	} else {
-		$no_prose_wrap = empty( $shell_with_wrap ) || $has_managed_editorial || $has_standard_wrapper;
+		$no_prose_wrap = ! empty( $shell_with_wrap ) || $has_managed_editorial || $has_standard_wrapper;
 
 		if ( ! $no_prose_wrap ) {
 			?>
