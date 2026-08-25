@@ -97,6 +97,43 @@ purge_siteground_cache_if_available() {
   echo 'siteground_wp_cli_purge=PASS mode=transient-activation-restored-inactive'
 }
 
+sync_publication_topology() {
+  local snapshot report
+  snapshot="$(mktemp)"
+  report="$(mktemp)"
+
+  cleanup_publication_sync() {
+    rm -f "$snapshot" "$report"
+  }
+  trap cleanup_publication_sync RETURN
+
+  echo '== Synchronize publication topology from production read-only source =='
+  (
+    cd "$PROD_ROOT"
+    PUBLICATION_MANIFEST_FILE="$SOURCE_THEME/inc/data/publication-manifest.json" \
+      wp eval-file "$SCRIPT_DIR/tools/migrations/export-production-publication-snapshot.php" --allow-root > "$snapshot"
+  )
+  [[ -s "$snapshot" ]] || fail 'production publication snapshot is empty'
+  jq -e '.schema == "nuvanx-production-publication-snapshot" and (.routes | type == "object")' "$snapshot" >/dev/null \
+    || fail 'production publication snapshot is invalid'
+
+  (
+    cd "$WP_ROOT"
+    PUBLICATION_SNAPSHOT_FILE="$snapshot" \
+      wp eval-file "$SCRIPT_DIR/tools/migrations/prepare-staging-publication-collisions.php" --allow-root >&2
+    PUBLICATION_SNAPSHOT_FILE="$snapshot" \
+      wp eval-file "$SCRIPT_DIR/tools/migrations/sync-staging-publication-parity.php" --allow-root > "$report"
+  )
+  [[ -s "$report" ]] || fail 'staging publication parity report is empty'
+  jq -e --argjson expected "$(jq '.routes | length' "$snapshot")" \
+    '.schema == "nuvanx-staging-publication-parity" and .route_count == $expected' "$report" >/dev/null \
+    || fail 'staging publication parity report does not match production snapshot'
+
+  echo "STAGING_PUBLICATION_TOPOLOGY=PASS routes=$(jq -r '.route_count' "$report") created=$(jq -r '.created' "$report") updated=$(jq -r '.updated' "$report") drafted=$(jq -r '.drafted_surplus' "$report")"
+  cleanup_publication_sync
+  trap - RETURN
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --wp-root) WP_ROOT="${2:-}"; shift 2 ;;
@@ -114,7 +151,7 @@ done
 [[ -n "$SOURCE_THEME" ]] || fail 'source theme path is required'
 [[ "$SOURCE_THEME" == "$WP_ROOT"/wp-content/.nuvanx-deployments/*/theme ]] || fail 'source theme must be inside the staging2 deployment area'
 
-for command_name in wp rsync tar php find mktemp sha256sum awk; do
+for command_name in wp rsync tar php find mktemp sha256sum awk jq; do
   command -v "$command_name" >/dev/null 2>&1 || fail "required command is unavailable: $command_name"
 done
 
@@ -122,6 +159,9 @@ done
 [[ -f "$WP_ROOT/wp-config.php" ]] || fail 'wp-config.php not found in staging2 root'
 [[ -d "$SOURCE_THEME" ]] || fail "source theme does not exist: $SOURCE_THEME"
 [[ -f "$SCRIPT_DIR/tools/migrations/ensure-governed-blog-parity.php" ]] || fail 'governed blog parity migration is missing from immutable release tooling'
+for migration_file in export-production-publication-snapshot.php prepare-staging-publication-collisions.php sync-staging-publication-parity.php; do
+  [[ -f "$SCRIPT_DIR/tools/migrations/$migration_file" ]] || fail "publication parity migration is missing: $migration_file"
+done
 
 SOURCE_REQUIRED_FILES=(
   style.css
@@ -146,6 +186,7 @@ SOURCE_REQUIRED_FILES=(
   inc/nvx-solutions-page.php
   inc/nvx-clinics-hub.php
   inc/nvx-valoracion-modal.php
+  inc/data/publication-manifest.json
 )
 
 for required_file in "${SOURCE_REQUIRED_FILES[@]}"; do
@@ -214,6 +255,9 @@ if ! find "$SOURCE_THEME" -type f -name '*.php' -print0 | xargs -0 -n1 php -l >"
   fail 'source theme PHP lint failed'
 fi
 php -l "$SCRIPT_DIR/tools/migrations/ensure-governed-blog-parity.php" >/dev/null
+php -l "$SCRIPT_DIR/tools/migrations/export-production-publication-snapshot.php" >/dev/null
+php -l "$SCRIPT_DIR/tools/migrations/prepare-staging-publication-collisions.php" >/dev/null
+php -l "$SCRIPT_DIR/tools/migrations/sync-staging-publication-parity.php" >/dev/null
 rm -f "$PHP_LINT_LOG"
 
 DATE="$(date +%Y%m%d-%H%M%S)"
@@ -252,6 +296,8 @@ grep -Fq 'nvx-patterns-editorial.css' "$LIVE_THEME/functions.php" || fail 'funct
 grep -Fq 'nvx-document-governance.php' "$LIVE_THEME/functions.php" || fail 'functions.php does not load document governance'
 grep -Fq 'nvx_document_governance_print_head_contract' "$LIVE_THEME/inc/nvx-document-governance.php" || fail 'document governance missing head contract emitter'
 grep -Fq 'window.nvxValoracionModal' "$LIVE_THEME/inc/nvx-valoracion-modal.php" || fail 'valoracion modal boot config is missing'
+
+sync_publication_topology
 
 echo '== Synchronize governed matrix post identity from production read-only source =='
 PROD_POST_JSON="$(mktemp)"
