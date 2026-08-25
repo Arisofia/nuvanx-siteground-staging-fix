@@ -1188,8 +1188,8 @@ jobs:
           run_acceptance_component playwright-install 300s ./node_modules/.bin/playwright install --with-deps chromium
           cd ../..
           mkdir -p scripts/staging2/block-c-artifacts scripts/staging2/valoracion-artifacts
-          # Two complete 228-route passes plus clinic-media-runtime need a bounded 30-minute budget when SiteGround antibot forces a transient retry.
-          run_acceptance_component block-c 1800s node scripts/staging2/block-c-entrypoint.mjs
+          # Two complete 228-route passes plus clinic-media-runtime need a bounded 20-minute budget when SiteGround antibot forces a transient retry.
+          run_acceptance_component block-c 1200s node scripts/staging2/block-c-entrypoint.mjs
           run_acceptance_component valoracion-placement 420s node scripts/staging2/valoracion-placement.mjs
           echo 'PR_BLOCK_C=PASS'
 
