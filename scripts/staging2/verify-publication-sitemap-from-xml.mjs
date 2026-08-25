@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Verifies that the Yoast sitemap exactly respects the versioned publication
+ * Verifies that the Yoast sitemap exactly respects the canonical publication
  * manifest. Unlike verify-publication-sitemap.mjs, this script does NOT make
  * outbound HTTP requests. Instead it reads the combined XML content from the
  * SITEMAP_XML_CONTENT environment variable (all child sitemaps concatenated)
@@ -21,10 +21,20 @@ if (!xmlContent.trim()) {
   process.exit(1);
 }
 
-const manifestUrl = new URL('./published-pages-manifest.json', import.meta.url);
-const manifest = JSON.parse(readFileSync(manifestUrl, 'utf8'));
-if (!Array.isArray(manifest) || manifest.length === 0) {
-  throw new Error('Published-pages manifest is empty or invalid');
+// Publication governance has one SSOT: the theme manifest consumed by the
+// WordPress robots/indexable reconciliation. Do not validate sitemap coverage
+// against the legacy Block C snapshot, which can lag new governed noindex routes.
+const manifestUrl = new URL('../../wp-content/themes/nuvanx-medical/inc/data/publication-manifest.json', import.meta.url);
+const manifestPayload = JSON.parse(readFileSync(manifestUrl, 'utf8'));
+if (!manifestPayload || manifestPayload.schema !== 'nuvanx-publication-manifest' || !manifestPayload.routes || Array.isArray(manifestPayload.routes)) {
+  throw new Error('Canonical publication manifest is empty or invalid');
+}
+const manifest = Object.entries(manifestPayload.routes).map(([path, entry]) => ({
+  path,
+  robots: entry?.robots,
+}));
+if (manifest.length === 0) {
+  throw new Error('Canonical publication manifest contains no routes');
 }
 
 function decodeXml(value) {
@@ -51,13 +61,13 @@ const expectedIndexable = new Set();
 const expectedNoindex = new Set();
 for (const entry of manifest) {
   if (!entry || typeof entry.path !== 'string' || typeof entry.robots?.index !== 'boolean') {
-    throw new Error('Published-pages manifest contains an invalid robots record');
+    throw new Error('Canonical publication manifest contains an invalid robots record');
   }
   if (entry.robots.index) expectedIndexable.add(entry.path);
   else expectedNoindex.add(entry.path);
 }
 if (expectedIndexable.size + expectedNoindex.size !== manifest.length) {
-  throw new Error('Published-pages manifest contains duplicate paths');
+  throw new Error('Canonical publication manifest contains duplicate paths');
 }
 
 const sitemapPaths = new Set();
