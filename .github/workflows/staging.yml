@@ -941,7 +941,10 @@ jobs:
       github.event.pull_request.base.ref == 'master' &&
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    timeout-minutes: 100
+    # The acceptance step invokes network-bound npm, Playwright and browser work.
+    # Keep a job-level ceiling as a final guard so a stalled hosted runner cannot
+    # retain the Staging2 mutation lease indefinitely.
+    timeout-minutes: 40
     env:
       PR_NUMBER: ${{ github.event.pull_request.number }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
@@ -1165,13 +1168,28 @@ jobs:
           export EXPECTED_SHA="$PR_PREVIEW_SHA"
           ssh nvx-staging2-pr "cd '$STAGING_ROOT' && test \"\$(tr -d '\\r\\n' < wp-content/themes/nuvanx-medical/.nvx-deploy-sha)\" = '$PR_PREVIEW_SHA'"
           pass=0; for attempt in {1..12}; do if node scripts/staging2/verify-staging-boundary.mjs; then pass=1; break; fi; sleep 10; done; test "$pass" = 1
+          run_acceptance_component() {
+            local component="$1"
+            local limit="$2"
+            shift 2
+            set +e
+            timeout --signal=TERM --kill-after=30s "$limit" "$@"
+            local rc=$?
+            set -e
+            if [[ "$rc" -eq 124 || "$rc" -eq 137 ]]; then
+              echo "PR_ACCEPTANCE_TIMEOUT component=$component limit=$limit exit=$rc" >&2
+              exit 75
+            fi
+            return "$rc"
+          }
+
           cd scripts/staging2
-          npm ci --ignore-scripts
-          ./node_modules/.bin/playwright install --with-deps chromium
+          run_acceptance_component npm-ci 300s npm ci --ignore-scripts
+          run_acceptance_component playwright-install 300s ./node_modules/.bin/playwright install --with-deps chromium
           cd ../..
           mkdir -p scripts/staging2/block-c-artifacts scripts/staging2/valoracion-artifacts
-          node scripts/staging2/block-c-entrypoint.mjs
-          node scripts/staging2/valoracion-placement.mjs
+          run_acceptance_component block-c 1200s node scripts/staging2/block-c-entrypoint.mjs
+          run_acceptance_component valoracion-placement 420s node scripts/staging2/valoracion-placement.mjs
           echo 'PR_BLOCK_C=PASS'
 
       - name: Verify production unchanged
