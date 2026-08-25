@@ -2,7 +2,7 @@
 
 This directory contains the repository-owned Google/Search support package. It is **not website runtime code** and it does not own an additional GitHub Actions workflow.
 
-The repository currently keeps exactly three canonical workflows: `gemini-pr-reviewer.yml`, `staging.yml`, and `production.yml`. SEO/Search tooling is consumed through those existing contracts rather than through a separate workflow.
+The repository currently keeps exactly two canonical workflows: `staging.yml` and `production.yml`. SEO/Search tooling is consumed through those existing contracts rather than through a separate workflow.
 
 ## Package and CI boundary
 
@@ -15,7 +15,7 @@ Current contract:
 - dependency changes to this package must update `scripts/seo/package-lock.json` with npm;
 - credentialed mutating Google/GTM helpers are never run automatically;
 - `index-pages.js` is different: Production separately syntax-checks it, installs the `scripts/seo` package with `npm ci --ignore-scripts`, and owns its execution for Search Console URL Inspection when the production post-audit path and GSC authentication are enabled;
-- no SEO-specific GitHub Actions workflow should be added while repository hygiene requires the three canonical workflows above.
+- no SEO-specific GitHub Actions workflow should be added while repository hygiene requires the two canonical workflows above.
 
 ## Current ownership inventory
 
