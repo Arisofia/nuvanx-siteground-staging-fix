@@ -275,6 +275,9 @@ require_once get_template_directory() . '/inc/nvx-clinical-governance.php';
 require_once get_template_directory() . '/inc/nvx-environment-flags.php';
 require_once get_template_directory() . '/inc/nvx-page-render-helpers.php';
 require_once get_template_directory() . '/inc/nvx-authentic-page-photography.php';
+// Some templates build image markup before get_header(); the public-media
+// callbacks must therefore be registered during theme bootstrap, not in header.php.
+require_once get_template_directory() . '/inc/nvx-public-media-runtime-governance.php';
 require_once get_template_directory() . '/inc/nvx-document-governance.php';
 require_once get_template_directory() . '/inc/nvx-native-style-governance.php';
 require_once get_template_directory() . '/inc/nvx-page-hygiene.php';
