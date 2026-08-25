@@ -158,14 +158,14 @@ jobs:
           bash scripts/ci/test-mutation-fifo-contract.sh
           node scripts/production/test-deploy-identity-contract.mjs
           mapfile -t workflows < <(find .github/workflows -maxdepth 1 -type f \( -name '*.yml' -o -name '*.yaml' \) -printf '%f\n' | sort)
-          [[ "${workflows[*]}" == 'gemini-pr-reviewer.yml production.yml staging.yml' ]] || { printf 'Expected exactly three canonical workflows; found: %s\n' "${workflows[*]}" >&2; exit 1; }
+          [[ "${workflows[*]}" == 'production.yml staging.yml' ]] || { printf 'Expected exactly two canonical workflows; found: %s\n' "${workflows[*]}" >&2; exit 1; }
           ! grep -Fq 'StrictHostKeyChecking=no' .github/workflows/production.yml
           bash -n scripts/production/compensating-rollback.sh
           bash -n scripts/production/configure-siteground-ssh.sh
           bash -n scripts/production/test-configure-siteground-ssh.sh
           bash scripts/production/test-configure-siteground-ssh.sh
           grep -Fq 'PRODUCTION_COMPENSATING_ROLLBACK=PASS' scripts/production/compensating-rollback.sh
-          echo 'PRODUCTION_CONTROL_PLANE=PASS workflows=3 compensating_rollback=enforced identity_contract=pass'
+          echo 'PRODUCTION_CONTROL_PLANE=PASS workflows=2 compensating_rollback=enforced identity_contract=pass'
 
       - name: Resolve immutable requested candidate
         id: candidate
