@@ -16,6 +16,43 @@
     "gbp_live_upload": false,
     "wp_live_blocks_chamberi_goya": "keep"
   },
+  "approved_editorial_overrides": {
+    "approved_at": "2026-08-26",
+    "source": "operator_explicit",
+    "clinic_landing_galleries": {
+      "goya": [
+        {"role": "box", "uploads_path": "2026/03/nuvanx-medicina-estetica1.webp"},
+        {"role": "facade", "uploads_path": "2026/06/nvx-fachada-goya-900.webp"},
+        {"role": "team_member", "uploads_path": "2026/07/gosia-1.webp"},
+        {"role": "team_member", "uploads_path": "2026/07/WhatsApp-Image-2026-07-04-at-1.39.33-PM.webp"}
+      ],
+      "chamberi": [
+        {"role": "box", "uploads_path": "2026/03/nuvanx-medicina-estetica7.webp"},
+        {"role": "facade", "uploads_path": "2026/06/nvx-fachada-chamberi-final-760.webp"},
+        {"role": "waiting_room", "uploads_path": "2026/06/Sala-Nuvanx.webp"},
+        {"role": "consultation_office", "uploads_path": "2025/04/despacho-nuvanx.webp"}
+      ]
+    },
+    "clinics_hub_equipment_section": {
+      "scope": "educational equipment section on /clinicas-de-medicina-estetica-nuvanx/ only",
+      "marker": "clinic-hub-v1",
+      "allowed_uploads_paths": [
+        "2026/08/endolift-lasemar-1500-eufoton.webp",
+        "2026/08/BTL-Exion-Mobile-Version-1024x956-1.png",
+        "2026/08/Endolift-ISO9001-Laser.webp",
+        "2026/08/SmartLipo-for-Laserlipolysis-DEKA-1.png",
+        "2026/08/ipl-exilite-luz-pulsada.webp",
+        "2026/08/Emfusion-btl-lentigo-aranitas-vasculares-punto-de-rubi-marcas-de-acne.png",
+        "2026/08/SMARTXIDE-DOT_EQUIPO-TOUCH-DEKA-LASER-CO2-FRACCIONAL.png"
+      ],
+      "prohibited_uses": [
+        "GBP",
+        "individual sede landing galleries",
+        "proof of physical availability at a specific sede",
+        "unverified clinical efficacy claims"
+      ]
+    }
+  },
   "deduplication": {
     "verified_at": "2026-08-23",
     "verification": "git_blob_sha_identity",
@@ -38,7 +75,7 @@
   "notes": [
     "No ZIP/WebP from the local-SEO pack is loaded here. Theme JPEGs only.",
     "Hashes show most former Goya files were copies of Chamberí/PMAX assets. Duplicate physical files are retired; only canonical Chamberí files and goya/01-fachada.jpg remain in the governed theme set.",
-    "BTL EXION® promotional PNG and manufacturer packshots are rejected for GBP and sede landings.",
+    "BTL EXION® promotional PNG and manufacturer packshots are rejected for GBP and sede landings. The explicit clinic-hub-v1 educational exception is limited to the seven named uploads paths and must not be generalized.",
     "GBP derivatives must be JPG sRGB; web may use WebP/AVIF later. Do not upload WebP to GBP."
   ],
   "rejected_for_gbp_and_local_landing": [

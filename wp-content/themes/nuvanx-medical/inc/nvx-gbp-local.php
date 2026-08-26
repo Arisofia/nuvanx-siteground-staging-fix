@@ -64,34 +64,71 @@ function nvx_gbp_review_url( string $clinic_key ): string {
  * Missing files are skipped rather than replaced with vendor packshots or
  * unverified theme JPEGs.
  *
- * @return array<int,array{id:int,alt:string,caption:string}>
+ * The approved paths are resolved locally from WordPress uploads. A missing
+ * file is omitted: it must never fall back to a photo from another sede or a
+ * historic asset with an unverified source.
+ *
+ * @return array<int,array{id:int,uploads_path:string,alt:string,caption:string}>
  */
 function nvx_clinic_editorial_photo_map( string $clinic_key ): array {
-	$is_goya = 'goya' === $clinic_key;
-	$facade  = $is_goya ? array( 2071, __( 'Fachada de NUVANX Salamanca–Goya, Madrid', 'nuvanx-medical' ) ) : array( 2796, __( 'Fachada de NUVANX Chamberí, Madrid', 'nuvanx-medical' ) );
-	$waiting = $is_goya ? array( 1077, __( 'Sala clínica NUVANX — Salamanca–Goya, Madrid', 'nuvanx-medical' ), __( 'Sala clínica', 'nuvanx-medical' ) ) : array( 1632, __( 'Sala de espera de NUVANX Chamberí', 'nuvanx-medical' ), __( 'Sala', 'nuvanx-medical' ) );
-	$box     = $is_goya ? array( 1078, __( 'Box clínico de NUVANX Salamanca–Goya', 'nuvanx-medical' ) ) : array( 1630, __( 'Sala clínica NUVANX — Chamberí, Madrid', 'nuvanx-medical' ) );
+	$clinic_key = 'goya' === $clinic_key ? 'goya' : 'chamberi';
 
-	return array(
-		array( 'id' => $facade[0], 'alt' => $facade[1], 'caption' => __( 'Fachada', 'nuvanx-medical' ) ),
-		array( 'id' => $waiting[0], 'alt' => $waiting[1], 'caption' => $waiting[2] ),
-		array( 'id' => $box[0], 'alt' => $box[1], 'caption' => __( 'Box clínico', 'nuvanx-medical' ) ),
-		array(
-			// Attachment 2892 and its historical alias 2877 have no physical
-			// source in Staging2. Use the versioned responsive render of the same
-			// approved consultation photo instead of advertising a stale upload.
-			'id'           => 0,
-			'asset_sources' => array(
-				array( 'file' => 'assets/images/responsive/consulta-medica-personalizada-nuvanx-madrid-480.webp', 'width' => 480 ),
-				array( 'file' => 'assets/images/responsive/consulta-medica-personalizada-nuvanx-madrid-768.webp', 'width' => 768 ),
-				array( 'file' => 'assets/images/responsive/consulta-medica-personalizada-nuvanx-madrid-960.webp', 'width' => 960 ),
+	$photos = array(
+		'goya' => array(
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/03/nuvanx-medicina-estetica1.webp',
+				'alt'          => __( 'Box clínico de NUVANX Salamanca–Goya, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Box clínico', 'nuvanx-medical' ),
 			),
-			'width'        => 960,
-			'height'       => 540,
-			'alt'          => __( 'Consulta médica y valoración en NUVANX', 'nuvanx-medical' ),
-			'caption'      => __( 'Valoración médica', 'nuvanx-medical' ),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/06/nvx-fachada-goya-900.webp',
+				'alt'          => __( 'Fachada de NUVANX Salamanca–Goya, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Fachada', 'nuvanx-medical' ),
+			),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/07/gosia-1.webp',
+				'alt'          => __( 'Gosia, equipo clínico de NUVANX Salamanca–Goya', 'nuvanx-medical' ),
+				'caption'      => __( 'Gosia', 'nuvanx-medical' ),
+			),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/07/WhatsApp-Image-2026-07-04-at-1.39.33-PM.webp',
+				'alt'          => __( 'Eva, equipo clínico de NUVANX Salamanca–Goya', 'nuvanx-medical' ),
+				'caption'      => __( 'Eva', 'nuvanx-medical' ),
+			),
+		),
+		'chamberi' => array(
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/03/nuvanx-medicina-estetica7.webp',
+				'alt'          => __( 'Box clínico de NUVANX Chamberí, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Box clínico', 'nuvanx-medical' ),
+			),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/06/nvx-fachada-chamberi-final-760.webp',
+				'alt'          => __( 'Fachada de NUVANX Chamberí, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Fachada', 'nuvanx-medical' ),
+			),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/06/Sala-Nuvanx.webp',
+				'alt'          => __( 'Sala de espera de NUVANX Chamberí, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Sala de espera', 'nuvanx-medical' ),
+			),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2025/04/despacho-nuvanx.webp',
+				'alt'          => __( 'Despacho de consulta de NUVANX Chamberí, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Despacho de consulta', 'nuvanx-medical' ),
+			),
 		),
 	);
+
+	return $photos[ $clinic_key ];
 }
 
 /**
@@ -106,6 +143,30 @@ function nvx_clinic_landing_photos( string $clinic_key ): array {
 	$photos     = array();
 
 	foreach ( nvx_clinic_editorial_photo_map( $clinic_key ) as $item ) {
+		$uploads_path = isset( $item['uploads_path'] ) ? ltrim( (string) $item['uploads_path'], '/' ) : '';
+		if ( '' !== $uploads_path ) {
+			if ( str_contains( $uploads_path, '../' ) ) {
+				continue;
+			}
+			$uploads     = wp_get_upload_dir();
+			$source_path = trailingslashit( (string) $uploads['basedir'] ) . $uploads_path;
+			$image_size  = is_readable( $source_path ) ? wp_getimagesize( $source_path ) : false;
+			if ( ! is_array( $image_size ) || empty( $image_size[0] ) || empty( $image_size[1] ) ) {
+				continue;
+			}
+			$url = trailingslashit( (string) $uploads['baseurl'] ) . $uploads_path;
+			$photos[] = array(
+				'id'      => 0,
+				'file'    => $url,
+				'srcset'  => $url . ' ' . (int) $image_size[0] . 'w',
+				'width'   => (int) $image_size[0],
+				'height'  => (int) $image_size[1],
+				'alt'     => (string) $item['alt'],
+				'caption' => (string) $item['caption'],
+			);
+			continue;
+		}
+
 		$asset_sources = isset( $item['asset_sources'] ) && is_array( $item['asset_sources'] ) ? $item['asset_sources'] : array();
 		if ( array() !== $asset_sources ) {
 			$asset_candidates = array();
@@ -162,6 +223,15 @@ function nvx_clinic_landing_photos( string $clinic_key ): array {
 	}
 
 	return $photos;
+}
+
+/**
+ * A sede gallery is valid only when all four approved editorial assets render.
+ *
+ * @param array<int,array{id:int,file:string,alt:string,caption:string}> $photos Resolved photos.
+ */
+function nvx_clinic_landing_gallery_is_complete( array $photos ): bool {
+	return 4 === count( $photos );
 }
 
 /**
@@ -438,7 +508,8 @@ function nvx_chamberi_landing_photos(): array {
 function nvx_clinic_schema_image_urls( string $clinic_key ): array {
 	$urls = array();
 	foreach ( nvx_clinic_landing_photos( $clinic_key ) as $photo ) {
-		$url = isset( $photo['id'] ) ? wp_get_attachment_url( (int) $photo['id'] ) : '';
+		$attachment_id = (int) ( $photo['id'] ?? 0 );
+		$url           = $attachment_id > 0 ? wp_get_attachment_url( $attachment_id ) : (string) ( $photo['file'] ?? '' );
 		if ( is_string( $url ) && '' !== $url ) {
 			$urls[] = $url;
 		}
