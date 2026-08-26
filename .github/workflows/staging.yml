@@ -556,77 +556,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Reads the sitemap XML from inside the server via SSH to bypass
-          # SiteGround Antibot, which blocks external HTTP from CI runners.
-          # All curl calls use HTTPS with --resolve staging2.nuvanx.com:443:127.0.0.1
-          # to hit the exact WordPress vhost on origin over TLS.
-          pass=0
-          ssh_fallback_pass=0
-          for attempt in {1..12}; do
-            http_status=$(ssh nvx-staging2 \
-              "curl -4 -k -sS -o /dev/null -w '%{http_code}' \
-               --connect-timeout 10 --max-time 30 \
-               --resolve 'staging2.nuvanx.com:443:127.0.0.1' \
-               -H 'Accept: application/xml,text/xml,*/*' \
-               -H 'Cache-Control: no-cache' \
-               -A 'NUVANX-Staging-Sitemap-Contract/1.0' \
-               'https://staging2.nuvanx.com/sitemap_index.xml'" 2>/dev/null || echo "000")
-            sitemap_index=$(ssh nvx-staging2 \
-              "curl -4 -k -sS --connect-timeout 10 --max-time 30 \
-               --resolve 'staging2.nuvanx.com:443:127.0.0.1' \
-               -H 'Accept: application/xml,text/xml,*/*' \
-               -H 'Cache-Control: no-cache' \
-               -A 'NUVANX-Staging-Sitemap-Contract/1.0' \
-               'https://staging2.nuvanx.com/sitemap_index.xml'" 2>/dev/null || true)
-            if echo "$sitemap_index" | grep -qE '<sitemapindex|<urlset'; then
-              combined_xml="$sitemap_index"
-              child_paths=$(echo "$sitemap_index" \
-                | grep -oE 'https://staging2\.nuvanx\.com/[^<]+\.xml' \
-                | sed 's|https://staging2\.nuvanx\.com||' || true)
-              for child_path in $child_paths; do
-                child_xml=$(ssh nvx-staging2 \
-                  "curl -4 -k -sS --connect-timeout 10 --max-time 30 \
-                   --resolve 'staging2.nuvanx.com:443:127.0.0.1' \
-                   -H 'Accept: application/xml,text/xml,*/*' \
-                   -H 'Cache-Control: no-cache' \
-                   -A 'NUVANX-Staging-Sitemap-Contract/1.0' \
-                   'https://staging2.nuvanx.com${child_path}'" 2>/dev/null || true)
-                combined_xml="${combined_xml}${child_xml}"
-              done
-              url_count=$(echo "$combined_xml" | grep -oE '<loc>[^<]+' | grep -vc '\.xml$' || true)
-              echo "SITEMAP_URLS_FROM_SERVER=$url_count"
-              if SITEMAP_XML_CONTENT="$combined_xml" \
-                 EXPECTED_HOST=staging2.nuvanx.com \
-                 node scripts/staging2/verify-publication-sitemap-from-xml.mjs; then
-                pass=1
-                break
-              fi
-            else
-              echo "SITEMAP_HTTP_STATUS_attempt_${attempt}=${http_status}" >&2
-              echo "SITEMAP_RESPONSE_PREVIEW_attempt_${attempt}=$(echo "$sitemap_index" | head -c 500 | tr '\n' ' ')" >&2
-              if [[ "$attempt" -ge 6 && "$ssh_fallback_pass" -eq 0 ]]; then
-                echo "SITEMAP_SSH_FALLBACK_attempt=${attempt}: Validating via WP-CLI at origin." >&2
-                indexable_count=$(ssh nvx-staging2 "cd '$STAGING_ROOT' && wp eval 'global \$wpdb; echo (int)\$wpdb->get_var(\"SELECT COUNT(*) FROM {\$wpdb->prefix}yoast_indexable WHERE object_type IN (\\\"post\\\",\\\"page\\\") AND is_public=1 AND post_status=\\\"publish\\\"\");' --allow-root 2>/dev/null || echo 0" 2>/dev/null || echo 0)
-                echo "SITEMAP_INDEXABLE_COUNT_SSH=${indexable_count}" >&2
-                if [[ "${indexable_count:-0}" -ge 1 ]]; then
-                  echo "SITEMAP_SSH_FALLBACK=PASS indexable=${indexable_count}"
-                  pass=1
-                  ssh_fallback_pass=1
-                  break
-                fi
-              fi
-            fi
-            echo "Sitemap not ready on attempt $attempt/12, retrying in 15s…"
-            sleep 15
-          done
-          if [[ "$pass" -eq 1 ]]; then
-            if [[ "$ssh_fallback_pass" -eq 1 ]]; then
-              echo 'STAGING_SITEMAP_MANIFEST_COVERAGE=PASS source=ssh-origin-fallback'
-            else
-              echo 'STAGING_SITEMAP_MANIFEST_COVERAGE=PASS source=origin-vhost-https'
-            fi
+          # Fetches the canonical sitemap XML generated directly from the WordPress
+          # runtime at origin via WP-CLI. This is immune to both external Antibot
+          # challenges and closed local HTTP loopback interfaces.
+          sitemap_xml=$(ssh nvx-staging2 "cd '$STAGING_ROOT' && wp eval-file '$REMOTE_RELEASE/tools/migrations/dump-publication-sitemap-xml.php' --allow-root 2>/dev/null" || true)
+          if [[ -z "$sitemap_xml" ]]; then
+            sitemap_xml=$(ssh nvx-staging2 "cd '$STAGING_ROOT' && wp eval-file tools/migrations/dump-publication-sitemap-xml.php --allow-root 2>/dev/null" || true)
+          fi
+          if echo "$sitemap_xml" | grep -qE '<sitemapindex|<urlset'; then
+            url_count=$(echo "$sitemap_xml" | grep -oE '<loc>[^<]+' | grep -vc '\.xml$' || true)
+            echo "SITEMAP_URLS_FROM_SERVER=$url_count"
+            SITEMAP_XML_CONTENT="$sitemap_xml" \
+            EXPECTED_HOST=staging2.nuvanx.com \
+            node scripts/staging2/verify-publication-sitemap-from-xml.mjs
+            echo 'STAGING_SITEMAP_MANIFEST_COVERAGE=PASS source=origin-wpcli-runtime'
           else
-            echo 'STAGING_SITEMAP_MANIFEST_COVERAGE=FAIL: all 12 attempts returned non-XML; sitemap not reachable at origin.' >&2
+            echo 'STAGING_SITEMAP_MANIFEST_COVERAGE=FAIL: unable to generate sitemap XML from origin WordPress runtime.' >&2
             exit 1
           fi
 
