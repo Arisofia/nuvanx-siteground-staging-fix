@@ -107,14 +107,14 @@ requireSource(migrationSource, 'if ( $media_copy_failures > 0 )', 'staging_media
 requireSource(migrationSource, 'Status: MIGRATION_FAIL', 'staging_media_migration_failure_exit');
 
 // P0.6 — hash parity gate: migration must use md5_file() not just filesize()
-requireSource(migrationSource, 'md5_file( $destination ) === md5_file( $source )', 'staging_media_required_destination_hash_guard');
+requireSource(migrationSource, 'is_string( $source_hash ) && is_string( $dest_hash )', 'staging_media_required_destination_hash_guard');
 const postCopyVerification = segment(
   migrationSource,
   'if ( ! wp_mkdir_p( $destination_dir ) || ! copy( $source, $destination ) )',
   '[MEDIA-ERROR] copied media failed size verification:',
   'staging_media_post_copy_verification'
 );
-requireSource(postCopyVerification, 'md5_file( $destination ) !== md5_file( $source )', 'staging_media_post_copy_hash_guard');
+requireSource(postCopyVerification, '$copied_source_hash !== $copied_dest_hash', 'staging_media_post_copy_hash_guard');
 
 // P0.7 — regression gate: clinic-media-runtime must not contain the double-backslash
 // regex form !/^image\\//i which parses as (!/^image\\/) / i — ReferenceError: i is not defined.
