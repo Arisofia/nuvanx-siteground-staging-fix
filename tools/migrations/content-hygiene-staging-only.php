@@ -375,8 +375,7 @@ if (
             if ( is_file( $destination ) && filesize( $destination ) > 0 ) {
                 if ( ! $is_required ) {
                     $media_already_present++;
-                    continue;
-                }
+            if ( is_file( $destination ) && filesize( $destination ) > 0 ) {
 
                 $destination_matches_source = filesize( $destination ) === filesize( $source )
             && md5_file( $destination ) === md5_file( $source );
