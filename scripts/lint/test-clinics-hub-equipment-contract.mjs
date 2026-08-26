@@ -7,9 +7,11 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const gbpPath = path.join(root, 'wp-content/themes/nuvanx-medical/inc/nvx-gbp-local.php');
 const hubPath = path.join(root, 'wp-content/themes/nuvanx-medical/inc/nvx-clinics-hub.php');
 const registryPath = path.join(root, 'wp-content/themes/nuvanx-medical/inc/data/clinic-asset-registry.json');
+const runtimePath = path.join(root, 'scripts/staging2/clinic-media-runtime.mjs');
 
 const gbp = fs.readFileSync(gbpPath, 'utf8');
 const hub = fs.readFileSync(hubPath, 'utf8');
+const runtime = fs.readFileSync(runtimePath, 'utf8');
 const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 
 const fail = (reason) => {
@@ -55,8 +57,21 @@ requireExact(galleryMap, "'uploads_path'", 8, 'gallery_path_count');
 for (const retiredId of ['1077', '1078', '1630', '1632']) {
   if (galleryMap.includes(`'id'           => ${retiredId}`)) fail(`retired_gallery_attachment:${retiredId}`);
 }
-for (const token of ['wp_getimagesize( $source_path )', "'srcset'  => $url . ' ' . (int) $image_size[0] . 'w'"]) {
+for (const token of [
+  'wp_getimagesize( $source_path )',
+  "'srcset'  => $url . ' ' . (int) $image_size[0] . 'w'",
+  'function nvx_clinic_landing_gallery_is_complete',
+  'return 4 === count( $photos );',
+]) {
   if (!gbp.includes(token)) fail(`gallery_runtime_contract_missing:${token}`);
+}
+const sedeTemplate = fs.readFileSync(path.join(root, 'wp-content/themes/nuvanx-medical/templates/page-sede.php'), 'utf8');
+for (const token of [
+  'data-nvx-gallery-contract="incomplete"',
+  'Galería de la sede temporalmente no disponible',
+  'if ( $clinic_gallery_complete )',
+]) {
+  if (!sedeTemplate.includes(token)) fail(`gallery_visible_failure_state_missing:${token}`);
 }
 
 const catalogStart = hub.indexOf('function nvx_clinics_hub_equipment_catalog');
@@ -73,8 +88,21 @@ for (const token of [
   'NVX_APPROVED_EQUIPMENT_SECTION:clinic-hub-v1',
   'function nvx_clinics_hub_append_approved_equipment',
   "add_filter( 'the_content', 'nvx_clinics_hub_append_approved_equipment', 220 );",
+  'return nvx_clinics_hub_equipment_unavailable_markup();',
+  'function nvx_clinics_hub_equipment_unavailable_markup',
+  'data-nvx-approved-equipment-section="incomplete"',
 ]) {
   if (!hub.includes(token)) fail(`equipment_scope_hook_missing:${token}`);
+}
+for (const token of [
+  'async function inspectEquipmentSection',
+  'equipment_section_incomplete:',
+  'equipment_card_count:',
+  'equipment_selected_resource_invalid:',
+  'equipment_current_src_cross_origin:',
+  "if (initial.gallery.imageCount !== 4)",
+]) {
+  if (!runtime.includes(token)) fail(`runtime_acceptance_contract_missing:${token}`);
 }
 
 const override = registry.approved_editorial_overrides;

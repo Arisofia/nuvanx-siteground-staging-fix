@@ -226,6 +226,15 @@ function nvx_clinic_landing_photos( string $clinic_key ): array {
 }
 
 /**
+ * A sede gallery is valid only when all four approved editorial assets render.
+ *
+ * @param array<int,array{id:int,file:string,alt:string,caption:string}> $photos Resolved photos.
+ */
+function nvx_clinic_landing_gallery_is_complete( array $photos ): bool {
+	return 4 === count( $photos );
+}
+
+/**
  * Vendor packshot stems that must not appear on sede landings.
  *
  * Tech copy and Chamberí YouTube links stay; only product-shot files go.

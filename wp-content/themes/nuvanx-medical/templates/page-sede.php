@@ -160,10 +160,14 @@ ob_start();
 		</section>
 
 		<?php
-		$clinic_photos = function_exists( 'nvx_clinic_landing_photos' )
-			? nvx_clinic_landing_photos( $clinic_key )
-			: array();
-		if ( ! empty( $clinic_photos ) ) :
+					$clinic_photos = function_exists( 'nvx_clinic_landing_photos' )
+				? nvx_clinic_landing_photos( $clinic_key )
+				: array();
+			$clinic_gallery_complete = function_exists( 'nvx_clinic_landing_gallery_is_complete' )
+				? nvx_clinic_landing_gallery_is_complete( $clinic_photos )
+				: 4 === count( $clinic_photos );
+			if ( $clinic_gallery_complete ) :
+
 			?>
 		<section class="nvx-brand-section nvx-clinic-gallery" aria-labelledby="nvx-clinic-gallery-title">
 			<div class="nvx-brand-section__inner">
@@ -229,9 +233,20 @@ ob_start();
 			</div>
 		</section>
 			<?php
-		endif;
+					endif;
+			if ( ! $clinic_gallery_complete ) :
+				?>
+				<section class="nvx-brand-section nvx-clinic-gallery" data-nvx-gallery-contract="incomplete" aria-labelledby="nvx-clinic-gallery-title">
+					<div class="nvx-brand-section__inner">
+						<h2 id="nvx-clinic-gallery-title" class="nvx-brand-title"><?php esc_html_e( 'Galería de la sede temporalmente no disponible', 'nuvanx-medical' ); ?></h2>
+						<p class="nvx-brand-lead"><?php esc_html_e( 'Estamos actualizando las imágenes verificadas de esta sede. La galería se publicará de nuevo cuando estén disponibles las cuatro fotografías editoriales aprobadas.', 'nuvanx-medical' ); ?></p>
+					</div>
+				</section>
+				<?php
+			endif;
 
-		if ( 'goya' === $clinic_key && function_exists( 'nvx_goya_clinical_team_markup' ) ) {
+			if ( 'goya' === $clinic_key && function_exists( 'nvx_goya_clinical_team_markup' ) ) {
+
 			echo nvx_goya_clinical_team_markup(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper escapes.
 		}
 		?>

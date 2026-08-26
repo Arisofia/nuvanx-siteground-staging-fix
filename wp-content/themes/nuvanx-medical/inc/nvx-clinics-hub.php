@@ -124,21 +124,25 @@ function nvx_clinics_hub_equipment_image_markup( array $equipment ): string {
 
 /** Render the narrow, approved educational equipment section for the hub. */
 function nvx_clinics_hub_equipment_section_markup(): string {
-	$cards = '';
-	foreach ( nvx_clinics_hub_equipment_catalog() as $equipment ) {
+	$catalog = nvx_clinics_hub_equipment_catalog();
+	$cards   = array();
+
+	foreach ( $catalog as $equipment ) {
 		$image = nvx_clinics_hub_equipment_image_markup( $equipment );
 		if ( '' === $image ) {
-			continue;
+			// Never conceal a missing governed asset with a shortened equipment grid.
+			return nvx_clinics_hub_equipment_unavailable_markup();
 		}
-		$cards .= '<article class="nvx-brand-card nvx-clinics-equipment__card">';
-		$cards .= '<figure class="nvx-brand-card__media nvx-clinics-equipment__media">' . $image . '</figure>';
-		$cards .= '<h3 class="nvx-brand-card__title">' . esc_html( (string) $equipment['title'] ) . '</h3>';
-		$cards .= '<p class="nvx-brand-card__body">' . esc_html( (string) $equipment['description'] ) . '</p>';
-		$cards .= '</article>';
+		$card  = '<article class="nvx-brand-card nvx-clinics-equipment__card">';
+		$card .= '<figure class="nvx-brand-card__media nvx-clinics-equipment__media">' . $image . '</figure>';
+		$card .= '<h3 class="nvx-brand-card__title">' . esc_html( (string) $equipment['title'] ) . '</h3>';
+		$card .= '<p class="nvx-brand-card__body">' . esc_html( (string) $equipment['description'] ) . '</p>';
+		$card .= '</article>';
+		$cards[] = $card;
 	}
 
-	if ( '' === $cards ) {
-		return '';
+	if ( 7 !== count( $catalog ) || 7 !== count( $cards ) ) {
+		return nvx_clinics_hub_equipment_unavailable_markup();
 	}
 
 	$html  = '<section class="nvx-brand-section nvx-clinics-equipment" data-nvx-approved-equipment-section="clinic-hub-v1" aria-labelledby="nvx-clinics-equipment-title">';
@@ -146,7 +150,17 @@ function nvx_clinics_hub_equipment_section_markup(): string {
 	$html .= '<p class="nvx-brand-kicker">' . esc_html__( 'Tecnología clínica', 'nuvanx-medical' ) . '</p>';
 	$html .= '<h2 id="nvx-clinics-equipment-title" class="nvx-brand-title">' . esc_html__( 'Equipos con los que trabajamos', 'nuvanx-medical' ) . '</h2>';
 	$html .= '<p class="nvx-brand-lead">' . esc_html__( 'Esta selección identifica plataformas tecnológicas utilizadas en nuestra práctica. No asigna un equipo concreto a una sede; la disponibilidad y la indicación se confirman siempre durante la valoración médica.', 'nuvanx-medical' ) . '</p>';
-	$html .= '<div class="nvx-brand-grid nvx-clinics-equipment__grid">' . $cards . '</div>';
+	$html .= '<div class="nvx-brand-grid nvx-clinics-equipment__grid">' . implode( '', $cards ) . '</div>';
+	$html .= '</div></section>';
+	return $html;
+}
+
+/** Render a visible state when the governed seven-equipment contract is incomplete. */
+function nvx_clinics_hub_equipment_unavailable_markup(): string {
+	$html  = '<section class="nvx-brand-section nvx-clinics-equipment" data-nvx-approved-equipment-section="incomplete" aria-labelledby="nvx-clinics-equipment-title">';
+	$html .= '<div class="nvx-brand-section__inner">';
+	$html .= '<h2 id="nvx-clinics-equipment-title" class="nvx-brand-title">' . esc_html__( 'Información de equipos temporalmente no disponible', 'nuvanx-medical' ) . '</h2>';
+	$html .= '<p class="nvx-brand-lead">' . esc_html__( 'Estamos verificando los recursos de esta sección. La selección completa se publicará de nuevo cuando estén disponibles las siete fichas aprobadas.', 'nuvanx-medical' ) . '</p>';
 	$html .= '</div></section>';
 	return $html;
 }

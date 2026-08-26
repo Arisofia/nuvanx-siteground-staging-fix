@@ -155,6 +155,64 @@ async function loadSelectedBodyBytes(page, url) {
   }, url);
 }
 
+async function inspectEquipmentSection(page, route, viewport) {
+  if (route.key !== 'clinics-hub') return null;
+
+  const section = page.locator('section[data-nvx-approved-equipment-section]');
+  if (await section.count() !== 1) fail(`equipment_section_count:${route.key}:${viewport.key}`);
+  if (await section.getAttribute('data-nvx-approved-equipment-section') !== 'clinic-hub-v1') {
+    fail(`equipment_section_incomplete:${route.key}:${viewport.key}`);
+  }
+
+  const cards = section.locator('article.nvx-clinics-equipment__card');
+  if (await cards.count() !== 7) fail(`equipment_card_count:${route.key}:${viewport.key}:${await cards.count()}`);
+
+  await section.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1200);
+
+  const equipment = await cards.evaluateAll((nodes) => nodes.map((card) => {
+    const image = card.querySelector('img.nvx-clinics-equipment__image');
+    const title = card.querySelector('h3')?.textContent?.trim() || '';
+    const description = card.querySelector('p')?.textContent?.trim() || '';
+    return {
+      title,
+      description,
+      alt: image?.getAttribute('alt') || '',
+      loading: image?.getAttribute('loading') || '',
+      decoding: image?.getAttribute('decoding') || '',
+      widthAttr: Number.parseInt(image?.getAttribute('width') || '0', 10) || 0,
+      heightAttr: Number.parseInt(image?.getAttribute('height') || '0', 10) || 0,
+      currentSrc: image?.currentSrc || '',
+      naturalWidth: image?.naturalWidth || 0,
+      naturalHeight: image?.naturalHeight || 0,
+      complete: Boolean(image?.complete),
+    };
+  }));
+
+  if (equipment.length !== 7) fail(`equipment_card_count_after_load:${route.key}:${viewport.key}:${equipment.length}`);
+  for (const [index, item] of equipment.entries()) {
+    if (!item.title || !item.description || !item.alt) fail(`equipment_copy_missing:${route.key}:${viewport.key}:${index}`);
+    if (item.loading !== 'lazy') fail(`equipment_not_lazy:${route.key}:${viewport.key}:${index}`);
+    if (item.decoding !== 'async') fail(`equipment_not_async:${route.key}:${viewport.key}:${index}`);
+    if (item.widthAttr < 1 || item.heightAttr < 1) fail(`equipment_intrinsic_attrs_missing:${route.key}:${viewport.key}:${index}`);
+    if (!item.complete || item.naturalWidth < 1 || item.naturalHeight < 1 || !item.currentSrc) {
+      fail(`equipment_image_not_loaded:${route.key}:${viewport.key}:${index}`);
+    }
+    const selectedUrl = new URL(item.currentSrc);
+    if (selectedUrl.hostname !== expectedHost) fail(`equipment_current_src_cross_origin:${route.key}:${viewport.key}:${index}`);
+    const body = await loadSelectedBodyBytes(page, item.currentSrc);
+    if (isSiteGroundTransientResponse(body.status, body.headers, body.url) || body.url.includes(SITEGROUND_CAPTCHA_PATH)) {
+      console.error(`CLINIC_MEDIA_RUNTIME=TRANSIENT route=${route.path} viewport=${viewport.key} equipment=${index} http=${body.status}`);
+      return { transient: true };
+    }
+    if (body.status !== 200 || body.bytes < 1 || !/^image\\//i.test(body.contentType)) {
+      fail(`equipment_selected_resource_invalid:${route.key}:${viewport.key}:${index}:http=${body.status}:bytes=${body.bytes}:type=${body.contentType}`);
+    }
+  }
+
+  return { transient: false, count: equipment.length };
+}
+
 async function inspectInitialRoute(browser, route, viewport) {
   const context = await browser.newContext({
     viewport: { width: viewport.width, height: viewport.height },
@@ -164,12 +222,14 @@ async function inspectInitialRoute(browser, route, viewport) {
   const page = await context.newPage();
   await installPerformanceObservers(page);
 
-  try {
+    try {
     const navigation = await navigateForMeasurement(page, route, viewport);
     if (navigation.transient) return { transient: true };
 
     const perf = await page.evaluate(() => window.__nvxClinicPerf);
     assertInitialPerf(perf, route, viewport);
+    const equipment = await inspectEquipmentSection(page, route, viewport);
+    if (equipment?.transient) return { transient: true };
 
     return {
       transient: false,
@@ -181,8 +241,10 @@ async function inspectInitialRoute(browser, route, viewport) {
       initialLcp: perf.lcp,
       initialCls: perf.cls,
       initialClsEntries: perf.clsEntries,
+      equipment,
     };
   } finally {
+
     await context.close();
   }
 }
@@ -314,6 +376,7 @@ try {
         `CLINIC_MEDIA_RUNTIME_CASE=PASS kind=performance route=${route.key} viewport=${viewport.key}`
         + ` lcp_tag=${result.initialLcp.element?.tagName || 'unknown'}`
         + ` cls=${result.initialCls.toFixed(4)}`
+        + ` equipment=${result.equipment?.count || 0}`
       );
     }
   }

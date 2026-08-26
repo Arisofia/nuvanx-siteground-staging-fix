@@ -11,14 +11,16 @@ declare(strict_types=1);
 $root          = dirname(__DIR__, 2);
 $gbp_file      = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-gbp-local.php';
 $hub_file      = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-clinics-hub.php';
+$sede_file     = $root . '/wp-content/themes/nuvanx-medical/templates/page-sede.php';
 $registry_file = $root . '/wp-content/themes/nuvanx-medical/inc/data/clinic-asset-registry.json';
+$runtime_file  = $root . '/scripts/staging2/clinic-media-runtime.mjs';
 
 $fail = static function (string $reason): never {
     fwrite(STDERR, "CLINICS_HUB_EQUIPMENT_CONTRACT=FAIL reason={$reason}\n");
     exit(1);
 };
 
-foreach (array($gbp_file, $hub_file, $registry_file) as $file) {
+foreach (array($gbp_file, $hub_file, $sede_file, $registry_file, $runtime_file) as $file) {
     if (!is_readable($file)) {
         $fail('required_file_unreadable:' . basename($file));
     }
@@ -26,6 +28,8 @@ foreach (array($gbp_file, $hub_file, $registry_file) as $file) {
 
 $gbp      = (string) file_get_contents($gbp_file);
 $hub      = (string) file_get_contents($hub_file);
+$sede     = (string) file_get_contents($sede_file);
+$runtime  = (string) file_get_contents($runtime_file);
 $registry = json_decode((string) file_get_contents($registry_file), true);
 if (!is_array($registry)) {
     $fail('registry_invalid_json');
@@ -82,6 +86,23 @@ if (false === strpos($gbp, 'wp_getimagesize( $source_path )')) {
 if (false === strpos($gbp, "'srcset'  => \$url . ' ' . (int) \$image_size[0] . 'w'")) {
     $fail('gallery_srcset_contract_missing');
 }
+foreach (array(
+    'function nvx_clinic_landing_gallery_is_complete',
+    'return 4 === count( $photos );',
+) as $needle) {
+    if (false === strpos($gbp, $needle)) {
+        $fail('gallery_runtime_contract_missing:' . $needle);
+    }
+}
+foreach (array(
+    'data-nvx-gallery-contract="incomplete"',
+    'Galería de la sede temporalmente no disponible',
+    'if ( $clinic_gallery_complete )',
+) as $needle) {
+    if (false === strpos($sede, $needle)) {
+        $fail('gallery_visible_failure_state_missing:' . $needle);
+    }
+}
 
 $catalog_start = strpos($hub, 'function nvx_clinics_hub_equipment_catalog');
 $catalog_end   = strpos($hub, 'function nvx_clinics_hub_equipment_image_markup');
@@ -108,9 +129,24 @@ foreach (array(
     'NVX_APPROVED_EQUIPMENT_SECTION:clinic-hub-v1',
     'function nvx_clinics_hub_append_approved_equipment',
     "add_filter( 'the_content', 'nvx_clinics_hub_append_approved_equipment', 220 );",
+    'return nvx_clinics_hub_equipment_unavailable_markup();',
+    'function nvx_clinics_hub_equipment_unavailable_markup',
+    'data-nvx-approved-equipment-section="incomplete"',
 ) as $needle) {
     if (false === strpos($hub, $needle)) {
         $fail('equipment_scope_hook_missing');
+    }
+}
+foreach (array(
+    'async function inspectEquipmentSection',
+    'equipment_section_incomplete:',
+    'equipment_card_count:',
+    'equipment_selected_resource_invalid:',
+    'equipment_current_src_cross_origin:',
+    'if (initial.gallery.imageCount !== 4)',
+) as $needle) {
+    if (false === strpos($runtime, $needle)) {
+        $fail('runtime_acceptance_contract_missing:' . $needle);
     }
 }
 
