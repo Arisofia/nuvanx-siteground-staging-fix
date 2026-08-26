@@ -205,7 +205,7 @@ async function inspectEquipmentSection(page, route, viewport) {
       console.error(`CLINIC_MEDIA_RUNTIME=TRANSIENT route=${route.path} viewport=${viewport.key} equipment=${index} http=${body.status}`);
       return { transient: true };
     }
-    if (body.status !== 200 || body.bytes < 1 || !/^image\\//i.test(body.contentType)) {
+    if (body.status !== 200 || body.bytes < 1 || !/^image\//i.test(body.contentType)) {
       fail(`equipment_selected_resource_invalid:${route.key}:${viewport.key}:${index}:http=${body.status}:bytes=${body.bytes}:type=${body.contentType}`);
     }
   }

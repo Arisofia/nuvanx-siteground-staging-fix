@@ -378,7 +378,8 @@ if (
                     continue;
                 }
 
-                $destination_matches_source = filesize( $destination ) === filesize( $source );
+                $destination_matches_source = filesize( $destination ) === filesize( $source )
+            && md5_file( $destination ) === md5_file( $source );
                 if ( $is_equipment ) {
                     $destination_matches_source = $destination_matches_source
                         && is_readable( $destination )
@@ -415,7 +416,8 @@ if (
 
         clearstatcache( true, $source );
         clearstatcache( true, $destination );
-        if ( ! is_file( $destination ) || filesize( $destination ) !== filesize( $source ) ) {
+        if ( ! is_file( $destination ) || filesize( $destination ) !== filesize( $source )
+            || md5_file( $destination ) !== md5_file( $source ) ) {
             fwrite( STDERR, "[MEDIA-ERROR] copied media failed size verification: {$relative}\n" );
             @unlink( $destination );
             $media_copy_failures++;
