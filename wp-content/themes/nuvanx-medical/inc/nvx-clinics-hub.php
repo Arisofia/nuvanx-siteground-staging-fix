@@ -37,6 +37,121 @@ function nvx_clinics_hub_phone_display( string $e164 ): string {
 }
 
 /**
+ * Approved equipment imagery for the educational clinics-hub section only.
+ *
+ * These assets identify technology in general and are intentionally not used
+ * as proof that a specific device is installed at either physical sede, nor in
+ * GBP or the individual clinic landing galleries.
+ *
+ * @return array<int,array{uploads_path:string,title:string,alt:string,description:string}>
+ */
+function nvx_clinics_hub_equipment_catalog(): array {
+	return array(
+		array(
+			'uploads_path' => '2026/08/endolift-lasemar-1500-eufoton.webp',
+			'title'        => __( 'Endolift LaseMAR 1500 · Eufoton', 'nuvanx-medical' ),
+			'alt'          => __( 'Equipo Endolift LaseMAR 1500 de Eufoton', 'nuvanx-medical' ),
+			'description'  => __( 'Plataforma láser identificada como Endolift LaseMAR 1500 de Eufoton. La indicación y el plan de tratamiento se valoran de forma individual en consulta médica.', 'nuvanx-medical' ),
+		),
+		array(
+			'uploads_path' => '2026/08/BTL-Exion-Mobile-Version-1024x956-1.png',
+			'title'        => __( 'BTL EXION®', 'nuvanx-medical' ),
+			'alt'          => __( 'Plataforma BTL EXION', 'nuvanx-medical' ),
+			'description'  => __( 'Plataforma BTL EXION®. La tecnología aplicable se decide tras la valoración médica y según el objetivo clínico de cada persona.', 'nuvanx-medical' ),
+		),
+		array(
+			'uploads_path' => '2026/08/Endolift-ISO9001-Laser.webp',
+			'title'        => __( 'Endolift®', 'nuvanx-medical' ),
+			'alt'          => __( 'Sistema láser Endolift', 'nuvanx-medical' ),
+			'description'  => __( 'Sistema láser identificado como Endolift®. Su uso se determina únicamente después de una evaluación médica presencial.', 'nuvanx-medical' ),
+		),
+		array(
+			'uploads_path' => '2026/08/SmartLipo-for-Laserlipolysis-DEKA-1.png',
+			'title'        => __( 'SmartLipo® · DEKA', 'nuvanx-medical' ),
+			'alt'          => __( 'Equipo SmartLipo de DEKA para láser lipólisis', 'nuvanx-medical' ),
+			'description'  => __( 'Equipo SmartLipo® de DEKA, identificado como plataforma de láser para lipólisis. La candidatura se define de forma individual por el equipo médico.', 'nuvanx-medical' ),
+		),
+		array(
+			'uploads_path' => '2026/08/ipl-exilite-luz-pulsada.webp',
+			'title'        => __( 'IPL EXILITE™', 'nuvanx-medical' ),
+			'alt'          => __( 'Equipo IPL EXILITE de luz pulsada', 'nuvanx-medical' ),
+			'description'  => __( 'Equipo IPL EXILITE™, sistema de luz pulsada. La valoración médica determina si esta tecnología resulta adecuada en cada caso.', 'nuvanx-medical' ),
+		),
+		array(
+			'uploads_path' => '2026/08/Emfusion-btl-lentigo-aranitas-vasculares-punto-de-rubi-marcas-de-acne.png',
+			'title'        => __( 'EMFUSION™ · BTL', 'nuvanx-medical' ),
+			'alt'          => __( 'Plataforma EMFUSION de BTL', 'nuvanx-medical' ),
+			'description'  => __( 'Plataforma EMFUSION™ de BTL. La selección de tecnología forma parte de la valoración médica y del plan individualizado.', 'nuvanx-medical' ),
+		),
+		array(
+			'uploads_path' => '2026/08/SMARTXIDE-DOT_EQUIPO-TOUCH-DEKA-LASER-CO2-FRACCIONAL.png',
+			'title'        => __( 'SmartXide DOT® · DEKA', 'nuvanx-medical' ),
+			'alt'          => __( 'Equipo SmartXide DOT de DEKA, láser CO2 fraccionado', 'nuvanx-medical' ),
+			'description'  => __( 'Plataforma SmartXide DOT® de DEKA, identificada como láser CO₂ fraccionado. La indicación se establece tras una evaluación médica presencial.', 'nuvanx-medical' ),
+		),
+	);
+}
+
+/**
+ * Render one readable local uploads asset. Missing or unreadable media is not
+ * emitted, so the acceptance gate can fail rather than silently substituting a
+ * third-party, cross-origin or location-specific image.
+ *
+ * @param array{uploads_path:string,title:string,alt:string,description:string} $equipment Equipment entry.
+ */
+function nvx_clinics_hub_equipment_image_markup( array $equipment ): string {
+	$uploads_path = ltrim( (string) ( $equipment['uploads_path'] ?? '' ), '/' );
+	if ( '' === $uploads_path || str_contains( $uploads_path, '../' ) ) {
+		return '';
+	}
+
+	$uploads     = wp_get_upload_dir();
+	$source_path = trailingslashit( (string) $uploads['basedir'] ) . $uploads_path;
+	$image_size  = is_readable( $source_path ) ? wp_getimagesize( $source_path ) : false;
+	if ( ! is_array( $image_size ) || empty( $image_size[0] ) || empty( $image_size[1] ) ) {
+		return '';
+	}
+
+	$url = trailingslashit( (string) $uploads['baseurl'] ) . $uploads_path;
+	return sprintf(
+		'<img class="nvx-media nvx-clinics-equipment__image" src="%1$s" width="%2$d" height="%3$d" alt="%4$s" loading="lazy" decoding="async">',
+		esc_url( $url ),
+		(int) $image_size[0],
+		(int) $image_size[1],
+		esc_attr( (string) $equipment['alt'] )
+	);
+}
+
+/** Render the narrow, approved educational equipment section for the hub. */
+function nvx_clinics_hub_equipment_section_markup(): string {
+	$cards = '';
+	foreach ( nvx_clinics_hub_equipment_catalog() as $equipment ) {
+		$image = nvx_clinics_hub_equipment_image_markup( $equipment );
+		if ( '' === $image ) {
+			continue;
+		}
+		$cards .= '<article class="nvx-brand-card nvx-clinics-equipment__card">';
+		$cards .= '<figure class="nvx-brand-card__media nvx-clinics-equipment__media">' . $image . '</figure>';
+		$cards .= '<h3 class="nvx-brand-card__title">' . esc_html( (string) $equipment['title'] ) . '</h3>';
+		$cards .= '<p class="nvx-brand-card__body">' . esc_html( (string) $equipment['description'] ) . '</p>';
+		$cards .= '</article>';
+	}
+
+	if ( '' === $cards ) {
+		return '';
+	}
+
+	$html  = '<section class="nvx-brand-section nvx-clinics-equipment" data-nvx-approved-equipment-section="clinic-hub-v1" aria-labelledby="nvx-clinics-equipment-title">';
+	$html .= '<div class="nvx-brand-section__inner">';
+	$html .= '<p class="nvx-brand-kicker">' . esc_html__( 'Tecnología clínica', 'nuvanx-medical' ) . '</p>';
+	$html .= '<h2 id="nvx-clinics-equipment-title" class="nvx-brand-title">' . esc_html__( 'Equipos con los que trabajamos', 'nuvanx-medical' ) . '</h2>';
+	$html .= '<p class="nvx-brand-lead">' . esc_html__( 'Esta selección identifica plataformas tecnológicas utilizadas en nuestra práctica. No asigna un equipo concreto a una sede; la disponibilidad y la indicación se confirman siempre durante la valoración médica.', 'nuvanx-medical' ) . '</p>';
+	$html .= '<div class="nvx-brand-grid nvx-clinics-equipment__grid">' . $cards . '</div>';
+	$html .= '</div></section>';
+	return $html;
+}
+
+/**
  * Builds the canonical NUVANX clinics hub markup with clinic details, contact links, directions, and valuation calls to action.
  *
  * @return string The complete rendered clinics hub HTML.
@@ -128,6 +243,10 @@ function nvx_clinics_hub_page_markup(): string {
 	$html .= '<a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( $goya_url ) . '">' . esc_html__( 'Ficha de la sede Goya', 'nuvanx-medical' ) . '</a>';
 	$html .= '<a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( $goya_maps ) . '" rel="noopener noreferrer" target="_blank">' . esc_html__( 'Cómo llegar', 'nuvanx-medical' ) . '</a>';
 	$html .= '</div></div></section>';
+
+	// Educational equipment section, intentionally separate from the two sede blocks.
+	$html .= '<!-- NVX_APPROVED_EQUIPMENT_SECTION:clinic-hub-v1 -->';
+	$html .= '<!-- Equipment cards are appended after generic vendor-image hygiene. -->';
 
 	// Closing CTA with clinic codes for GEO/AI reinforcement.
 	$html .= '<section class="nvx-brand-section" aria-labelledby="nvx-clinics-closure-title">';
@@ -231,6 +350,25 @@ function nvxClinicsHubEnhance( string $content ): string {
 	return $output ?: $content;
 }
 add_filter( 'the_content', 'nvxClinicsHubEnhance', NVX_HOOK_PRIO_CLINICS_ENHANCE );
+
+/**
+ * Append the explicitly approved equipment cards after global vendor-image
+ * hygiene. This is a route-scoped exception; GBP and individual sede landing
+ * restrictions remain unchanged.
+ */
+function nvx_clinics_hub_append_approved_equipment( string $content ): string {
+	if ( is_admin() || ! nvxIsClinicsHub() || false === strpos( $content, 'NVX_APPROVED_EQUIPMENT_SECTION:clinic-hub-v1' ) ) {
+		return $content;
+	}
+
+	$section = nvx_clinics_hub_equipment_section_markup();
+	if ( '' === $section ) {
+		return str_replace( '<!-- NVX_APPROVED_EQUIPMENT_SECTION:clinic-hub-v1 -->', '', $content );
+	}
+
+	return str_replace( '<!-- NVX_APPROVED_EQUIPMENT_SECTION:clinic-hub-v1 -->', $section, $content );
+}
+add_filter( 'the_content', 'nvx_clinics_hub_append_approved_equipment', 220 );
 
 /**
  * Register clinics hub as page owner to prevent shell hero duplication.
