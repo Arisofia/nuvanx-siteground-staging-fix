@@ -375,10 +375,19 @@ if (
             if ( is_file( $destination ) && filesize( $destination ) > 0 ) {
                 if ( ! $is_required ) {
                     $media_already_present++;
-            if ( is_file( $destination ) && filesize( $destination ) > 0 ) {
+                    continue;
+                }
 
-                $destination_matches_source = filesize( $destination ) === filesize( $source )
-            && md5_file( $destination ) === md5_file( $source );
+                $destination_matches_source = filesize( $destination ) === filesize( $source );
+                if ( $destination_matches_source ) {
+                    $source_hash = md5_file( $source );
+                    $dest_hash = md5_file( $destination );
+                    if ( is_string( $source_hash ) && is_string( $dest_hash ) ) {
+                        $destination_matches_source = $source_hash === $dest_hash;
+                    } else {
+                        $destination_matches_source = false;
+                    }
+                }
                 if ( $is_equipment ) {
                     $destination_matches_source = $destination_matches_source
                         && is_readable( $destination )
