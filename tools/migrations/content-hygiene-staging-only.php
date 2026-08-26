@@ -424,7 +424,11 @@ if (
 
         clearstatcache( true, $source );
         clearstatcache( true, $destination );
-        if ( ! is_file( $destination ) || filesize( $destination ) !== filesize( $source ) ) {
+        $copied_source_hash = md5_file( $source );
+        $copied_dest_hash   = md5_file( $destination );
+        if ( ! is_file( $destination ) || filesize( $destination ) !== filesize( $source )
+            || ! is_string( $copied_source_hash ) || ! is_string( $copied_dest_hash )
+            || $copied_source_hash !== $copied_dest_hash ) {
             fwrite( STDERR, "[MEDIA-ERROR] copied media failed size verification: {$relative}\n" );
             @unlink( $destination );
             $media_copy_failures++;

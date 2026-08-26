@@ -8,10 +8,12 @@ const root = path.resolve(here, '../..');
 
 const hubPath = path.join(root, 'wp-content/themes/nuvanx-medical/inc/nvx-clinics-hub.php');
 const migrationPath = path.join(root, 'tools/migrations/content-hygiene-staging-only.php');
+const clinicMediaRuntimePath = path.join(root, 'scripts/staging2/clinic-media-runtime.mjs');
 
-const [hubSource, migrationSource] = await Promise.all([
+const [hubSource, migrationSource, clinicMediaRuntimeSource] = await Promise.all([
   fs.readFile(hubPath, 'utf8'),
   fs.readFile(migrationPath, 'utf8'),
+  fs.readFile(clinicMediaRuntimePath, 'utf8'),
 ]);
 
 const failures = [];
@@ -94,7 +96,7 @@ requireSource(migrationSource, requiredSourceGuard, 'staging_media_required_sour
 requireSource(migrationSource, '[MEDIA-ERROR] required Production original missing or empty:', 'staging_media_required_source_fatal');
 requireOrder(migrationSource, requiredSourceGuard, destinationGuard, 'staging_media_required_source_must_precede_destination_acceptance');
 requireSource(migrationSource, 'false === @getimagesize( $source )', 'staging_media_equipment_source_image_guard');
-requireSource(migrationSource, '$destination_matches_source = filesize( $destination ) === filesize( $source );', 'staging_media_required_destination_size_guard');
+requireSource(migrationSource, '$destination_matches_source = filesize( $destination ) === filesize( $source )', 'staging_media_required_destination_size_guard');
 requireSource(migrationSource, 'false !== @getimagesize( $destination )', 'staging_media_equipment_existing_destination_image_guard');
 requireSource(migrationSource, '[MEDIA-REPAIR] required Staging media stale or unreadable:', 'staging_media_required_repair_path');
 requireSource(migrationSource, 'if ( ! is_file( $source ) || filesize( $source ) <= 0 )', 'staging_media_optional_missing_source_guard');
@@ -104,9 +106,25 @@ requireSource(migrationSource, '$media_copy_failures++;', 'staging_media_copy_fa
 requireSource(migrationSource, 'if ( $media_copy_failures > 0 )', 'staging_media_parity_fail_closed');
 requireSource(migrationSource, 'Status: MIGRATION_FAIL', 'staging_media_migration_failure_exit');
 
+// P0.6 — hash parity gate: migration must use md5_file() not just filesize()
+requireSource(migrationSource, 'is_string( $source_hash ) && is_string( $dest_hash )', 'staging_media_required_destination_hash_guard');
+const postCopyVerification = segment(
+  migrationSource,
+  'if ( ! wp_mkdir_p( $destination_dir ) || ! copy( $source, $destination ) )',
+  '[MEDIA-ERROR] copied media failed size verification:',
+  'staging_media_post_copy_verification'
+);
+requireSource(postCopyVerification, '$copied_source_hash !== $copied_dest_hash', 'staging_media_post_copy_hash_guard');
+
+// P0.7 — regression gate: clinic-media-runtime must not contain the double-backslash
+// regex form !/^image\\//i which parses as (!/^image\\/) / i — ReferenceError: i is not defined.
+// The correct form is !/^image\//i (single escaped forward-slash, flag i on the literal).
+forbidSource(clinicMediaRuntimeSource, '!/^image\\\\//i', 'clinic_media_runtime_invalid_image_regex_double_backslash');
+requireSource(clinicMediaRuntimeSource, '!/^image\\//i', 'clinic_media_runtime_valid_image_regex_present');
+
 if (failures.length > 0) {
   console.error(`CLINIC_EQUIPMENT_STAGING_MEDIA_CONTRACT=FAIL reasons=${failures.join(',')}`);
   process.exit(1);
 }
 
-console.log(`CLINIC_EQUIPMENT_STAGING_MEDIA_CONTRACT=PASS equipment=${equipmentPaths.length} sync=required_dynamic source=production_first destination=size_checked image=verified fail_closed=1 renderer=local_readable_only`);
+console.log(`CLINIC_EQUIPMENT_STAGING_MEDIA_CONTRACT=PASS equipment=${equipmentPaths.length} sync=required_dynamic source=production_first destination=hash_and_size_checked image=verified fail_closed=1 renderer=local_readable_only regression_gate=clinic_media_regex`);
