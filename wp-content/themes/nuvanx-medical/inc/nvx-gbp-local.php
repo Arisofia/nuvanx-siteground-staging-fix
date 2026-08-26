@@ -76,12 +76,28 @@ function nvx_clinic_editorial_photo_map( string $clinic_key ): array {
 		array( 'id' => $facade[0], 'alt' => $facade[1], 'caption' => __( 'Fachada', 'nuvanx-medical' ) ),
 		array( 'id' => $waiting[0], 'alt' => $waiting[1], 'caption' => $waiting[2] ),
 		array( 'id' => $box[0], 'alt' => $box[1], 'caption' => __( 'Box clínico', 'nuvanx-medical' ) ),
-		array( 'id' => 2892, 'alt' => __( 'Consulta médica y valoración en NUVANX', 'nuvanx-medical' ), 'caption' => __( 'Valoración médica', 'nuvanx-medical' ) ),
+		array(
+			// Attachment 2892 and its historical alias 2877 have no physical
+			// source in Staging2. Use the versioned responsive render of the same
+			// approved consultation photo instead of advertising a stale upload.
+			'id'           => 0,
+			'asset_sources' => array(
+				array( 'file' => 'assets/images/responsive/consulta-medica-personalizada-nuvanx-madrid-480.webp', 'width' => 480 ),
+				array( 'file' => 'assets/images/responsive/consulta-medica-personalizada-nuvanx-madrid-768.webp', 'width' => 768 ),
+				array( 'file' => 'assets/images/responsive/consulta-medica-personalizada-nuvanx-madrid-960.webp', 'width' => 960 ),
+			),
+			'width'        => 960,
+			'height'       => 540,
+			'alt'          => __( 'Consulta médica y valoración en NUVANX', 'nuvanx-medical' ),
+			'caption'      => __( 'Valoración médica', 'nuvanx-medical' ),
+		),
 	);
 }
 
 /**
- * Theme-owned gallery for a clinic landing. Only readable attachments.
+ * Theme-owned gallery for a clinic landing. It uses readable attachments and
+ * an explicitly versioned editorial fallback when a governed attachment no
+ * longer has a physical uploads source.
  *
  * @return array<int,array{id:int,file:string,alt:string,caption:string}>
  */
@@ -90,6 +106,38 @@ function nvx_clinic_landing_photos( string $clinic_key ): array {
 	$photos     = array();
 
 	foreach ( nvx_clinic_editorial_photo_map( $clinic_key ) as $item ) {
+		$asset_sources = isset( $item['asset_sources'] ) && is_array( $item['asset_sources'] ) ? $item['asset_sources'] : array();
+		if ( array() !== $asset_sources ) {
+			$asset_candidates = array();
+			foreach ( $asset_sources as $source ) {
+				$file  = isset( $source['file'] ) ? ltrim( (string) $source['file'], '/' ) : '';
+				$width = isset( $source['width'] ) ? (int) $source['width'] : 0;
+				$asset_path = trailingslashit( get_template_directory() ) . $file;
+				// The versioned theme asset is served by the web tier. Some deployments
+				// run PHP under a different read context, so require physical presence
+				// without suppressing an otherwise valid public fallback.
+				if ( '' === $file || $width < 1 || ! file_exists( $asset_path ) ) {
+					continue;
+				}
+				$asset_candidates[ $width ] = trailingslashit( get_template_directory_uri() ) . $file;
+			}
+			if ( array() === $asset_candidates ) {
+				continue;
+			}
+			ksort( $asset_candidates, SORT_NUMERIC );
+			$largest_width = (int) array_key_last( $asset_candidates );
+			$photos[]      = array(
+				'id'      => 0,
+				'file'    => $asset_candidates[ $largest_width ],
+				'srcset'  => implode( ', ', array_map( static fn( int $width, string $url ): string => $url . ' ' . $width . 'w', array_keys( $asset_candidates ), array_values( $asset_candidates ) ) ),
+				'width'   => (int) ( $item['width'] ?? $largest_width ),
+				'height'  => (int) ( $item['height'] ?? 0 ),
+				'alt'     => (string) $item['alt'],
+				'caption' => (string) $item['caption'],
+			);
+			continue;
+		}
+
 		$attachment_id = (int) $item['id'];
 		$source_path   = get_attached_file( $attachment_id );
 		if ( ! is_string( $source_path ) || '' === $source_path || ! is_readable( $source_path ) ) {

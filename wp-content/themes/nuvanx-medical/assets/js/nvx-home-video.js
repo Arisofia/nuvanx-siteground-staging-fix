@@ -45,7 +45,6 @@
         entries.forEach(function(entry) {
           if (entry.isIntersecting) {
             initVideo();
-            video.play();
           } else {
             video.pause();
           }

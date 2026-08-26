@@ -261,9 +261,21 @@ function nvx_valoracion_form_stage_image_css(): void {
 	}
 
 	$image_url = get_the_post_thumbnail_url( get_queried_object_id(), 'full' );
-	if ( ! is_string( $image_url ) || $image_url === '' ) {
-		// Fallback to known header media filename when present in media library.
-		$image_url = content_url( 'uploads/2026/07/fondo-formulario.webp' );
+	$readable  = is_string( $image_url ) && '' !== $image_url
+		&& ( ! function_exists( 'nvx_public_media_upload_url_is_readable' ) || nvx_public_media_upload_url_is_readable( $image_url ) );
+
+	if ( ! $readable ) {
+		// Fall back only to a file verified in the active uploads tree. This CSS
+		// path bypasses wp_get_attachment_image() attributes, so it must not keep
+		// a stale featured-image URL when no physical derivative is available.
+		$fallback = content_url( 'uploads/2026/07/fondo-formulario.webp' );
+		$image_url = ( ! function_exists( 'nvx_public_media_upload_url_is_readable' ) || nvx_public_media_upload_url_is_readable( $fallback ) )
+			? $fallback
+			: '';
+	}
+
+	if ( '' === $image_url ) {
+		return;
 	}
 
 	$css = sprintf(
