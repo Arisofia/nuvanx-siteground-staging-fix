@@ -143,15 +143,42 @@ function assertInitialPerf(perf, route, viewport) {
 
 async function loadSelectedBodyBytes(page, url) {
   return page.evaluate(async (selectedUrl) => {
-    const response = await fetch(selectedUrl, { cache: 'reload', credentials: 'same-origin' });
-    const bytes = (await response.arrayBuffer()).byteLength;
-    return {
-      status: response.status,
-      url: response.url,
-      headers: Object.fromEntries(response.headers.entries()),
-      bytes,
-      contentType: response.headers.get('content-type') || '',
-    };
+    // Guard: fetch() inside page.evaluate() has no implicit timeout —
+    // a stalled TCP connection would hang forever until the 300s subprocess
+    // ceiling kills the entire process.  Bound each individual asset fetch
+    // to 15 seconds so that a missing or slow image produces a fast, named
+    // failure rather than a silent 5-minute hang.
+    const controller = new AbortController();
+    const FETCH_TIMEOUT_MS = 15_000;
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try {
+      const response = await fetch(selectedUrl, {
+        cache: 'reload',
+        credentials: 'same-origin',
+        signal: controller.signal,
+      });
+      const bytes = (await response.arrayBuffer()).byteLength;
+      return {
+        status: response.status,
+        url: response.url,
+        headers: Object.fromEntries(response.headers.entries()),
+        bytes,
+        contentType: response.headers.get('content-type') || '',
+      };
+    } catch (err) {
+      // AbortError (timeout) or network failure — return a 503 sentinel so
+      // that isSiteGroundTransientResponse() classifies this as TRANSIENT
+      // and the caller can log & propagate EX_TEMPFAIL instead of hanging.
+      return {
+        status: 503,
+        url: selectedUrl,
+        headers: { 'x-nvx-fetch-error': err instanceof Error ? err.name : String(err) },
+        bytes: 0,
+        contentType: '',
+      };
+    } finally {
+      clearTimeout(timer);
+    }
   }, url);
 }
 
