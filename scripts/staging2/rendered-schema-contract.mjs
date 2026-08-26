@@ -55,7 +55,13 @@ function fetchOriginHtml({ route, expectedHost, originSshAlias }) {
   const remoteScript = [
     'set -Eeuo pipefail',
     'url="https://${EXPECTED_HOST}${ROUTE}"',
-    'curl -ksS -L --max-redirs 5 --max-time 45 --resolve "${EXPECTED_HOST}:443:127.0.0.1" -H \'Cache-Control: no-cache\' -H \'Pragma: no-cache\' -H \'Accept: text/html,application/xhtml+xml\' -A \'Mozilla/5.0 NUVANX-Rendered-Schema-Contract/1.0\' -w \'\\nNVX_HTTP_STATUS:%{http_code}\\n\' "$url"',
+    'set +e',
+    'output="$(curl -ksS -L --max-redirs 5 --max-time 45 -b "wpSGCacheBypass=1" -H \'Cache-Control: no-cache\' -H \'Pragma: no-cache\' -H \'Accept: text/html,application/xhtml+xml\' -A \'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 NUVANX-Rendered-Schema-Contract/1.0\' -w \'\\nNVX_HTTP_STATUS:%{http_code}\\n\' "$url" 2>/dev/null)"',
+    'curl_rc=$?',
+    'if [[ "$curl_rc" -ne 0 ]] || echo "$output" | grep -qE "NVX_HTTP_STATUS:(000|403|503)"; then',
+    '  output="$(curl -ksS -L --max-redirs 5 --max-time 45 --resolve "${EXPECTED_HOST}:443:127.0.0.1" -b "wpSGCacheBypass=1" -H \'Cache-Control: no-cache\' -H \'Pragma: no-cache\' -H \'Accept: text/html,application/xhtml+xml\' -A \'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 NUVANX-Rendered-Schema-Contract/1.0\' -w \'\\nNVX_HTTP_STATUS:%{http_code}\\n\' "$url" 2>/dev/null)"',
+    'fi',
+    'printf "%s" "$output"',
     '',
   ].join('\n');
   const remoteCommand = `EXPECTED_HOST=${expectedHost} ROUTE=${route} bash -se`;
