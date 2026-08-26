@@ -606,11 +606,7 @@ jobs:
               echo "SITEMAP_RESPONSE_PREVIEW_attempt_${attempt}=$(echo "$sitemap_index" | head -c 500 | tr '\n' ' ')" >&2
               if [[ "$attempt" -ge 6 && "$ssh_fallback_pass" -eq 0 ]]; then
                 echo "SITEMAP_SSH_FALLBACK_attempt=${attempt}: Validating via WP-CLI at origin." >&2
-                indexable_count=$(ssh nvx-staging2 "STAGING_ROOT='$STAGING_ROOT' bash -se" <<'REMOTE'
-                  cd "$STAGING_ROOT"
-                  wp eval 'global $wpdb; echo (int)$wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}yoast_indexable WHERE object_type IN (\"post\",\"page\") AND is_public=1 AND post_status=\"publish\"");' --allow-root 2>/dev/null || echo 0
-REMOTE
-                )
+                indexable_count=$(ssh nvx-staging2 "cd '$STAGING_ROOT' && wp eval 'global \$wpdb; echo (int)\$wpdb->get_var(\"SELECT COUNT(*) FROM {\$wpdb->prefix}yoast_indexable WHERE object_type IN (\\\"post\\\",\\\"page\\\") AND is_public=1 AND post_status=\\\"publish\\\"\");' --allow-root 2>/dev/null || echo 0" 2>/dev/null || echo 0)
                 echo "SITEMAP_INDEXABLE_COUNT_SSH=${indexable_count}" >&2
                 if [[ "${indexable_count:-0}" -ge 1 ]]; then
                   echo "SITEMAP_SSH_FALLBACK=PASS indexable=${indexable_count}"
