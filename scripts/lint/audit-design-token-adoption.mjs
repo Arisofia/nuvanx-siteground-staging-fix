@@ -28,12 +28,14 @@ const STRICT_CATEGORIES = new Set([
   'shadow',
   'z-index',
   'typography-metric',
+  'dimension-review',
+  'position-review',
 ]);
 
 // Closed categories become default blocking ratchets even while the broader
 // adoption audit remains report-only. Add a category here only after CI has
 // demonstrated a zero baseline on protected master.
-const DEFAULT_BLOCKING_CATEGORIES = new Set(['motion', 'z-index', 'shadow', 'radius', 'spacing']);
+const DEFAULT_BLOCKING_CATEGORIES = new Set(['motion', 'z-index', 'shadow', 'radius', 'spacing', 'dimension-review', 'position-review']);
 
 // Exact legacy literals whose effective runtime values are governed by a later
 // semantic owner, plus structural values that are not the design category they
