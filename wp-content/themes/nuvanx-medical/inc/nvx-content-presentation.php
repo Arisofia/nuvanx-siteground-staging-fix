@@ -755,9 +755,9 @@ function nvx_content_normalize_interior_hero_shells( string $content ): string {
 				if ( '' === $token ) {
 					continue;
 				}
-				// Drop BEM modifiers on the brand hero, except the authorized media opt-in.
+				// Drop BEM modifiers on the brand hero, except the authorized media opt-in and surface-ink.
 				if ( preg_match( '/^nvx-brand-hero--/u', $token ) ) {
-					if ( 'nvx-brand-hero--has-media' !== $token ) {
+					if ( 'nvx-brand-hero--has-media' !== $token && 'nvx-brand-hero--surface-ink' !== $token ) {
 						continue;
 					}
 				}
