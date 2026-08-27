@@ -281,7 +281,7 @@ function nvx_valoracion_prepare_direct_success(): void {
 	}
 
 	$key = 'nvx_success_' . hash( 'sha256', $token );
-	if ( ! delete_transient( $key ) ) {
+	if ( false === get_transient( $key ) || ! delete_transient( $key ) ) {
 		return;
 	}
 
