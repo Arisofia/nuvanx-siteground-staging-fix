@@ -40,8 +40,9 @@ function nvx_complianz_policy_destination( string $label ): string {
 function nvx_rewrite_complianz_policy_links( string $html ): string {
 	$has_template_token = false !== strpos( $html, '{title}' ) || false !== strpos( $html, '{url}' );
 	$has_relative_link  = false !== strpos( $html, 'data-relative_url' );
+	$has_hash_anchor    = false !== strpos( $html, 'href="#"' );
 
-	if ( ! $has_template_token && ! $has_relative_link ) {
+	if ( ! $has_template_token && ! $has_relative_link && ! $has_hash_anchor ) {
 		return $html;
 	}
 
@@ -85,6 +86,12 @@ function nvx_rewrite_complianz_policy_links( string $html ): string {
 					if ( '' !== $destination ) {
 						$href = $destination;
 					}
+				}
+			} elseif ( '#' === $href || '' === $href ) {
+				// Allow label-based fallback for policy anchors without data-relative_url
+				$destination = nvx_complianz_policy_destination( $label );
+				if ( '' !== $destination ) {
+					$href = $destination;
 				}
 			}
 
