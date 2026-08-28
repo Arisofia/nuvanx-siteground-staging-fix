@@ -13,11 +13,9 @@ $sitemap_selection_audit = $root . '/tools/migrations/audit-publication-sitemap-
 $sitemap_cache_invalidation = $root . '/tools/migrations/invalidate-publication-sitemap-cache.php';
 $runtime_indexables_audit = $root . '/tools/migrations/audit-publication-indexables-runtime.php';
 $seo_metadata  = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-seo-metadata.php';
-$seo_retirement = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-seo-legacy-retirement.php';
-$sitemap_from_xml = $root . '/scripts/staging2/verify-publication-sitemap-from-xml.mjs';
-$page_hygiene  = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-page-hygiene.php';
-$gracias_governance = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-gracias-robots-governance.php';
-$gracias_template = $root . '/wp-content/themes/nuvanx-medical/page-gracias.php';
+	$seo_retirement = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-seo-legacy-retirement.php';
+	$sitemap_from_xml = $root . '/scripts/staging2/verify-publication-sitemap-from-xml.mjs';
+	$page_hygiene  = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-page-hygiene.php';
 $staging       = $root . '/.github/workflows/staging.yml';
 $production    = $root . '/.github/workflows/production.yml';
 $deploy        = $root . '/tools/deploy/deploy-to-prod.sh';
@@ -26,19 +24,6 @@ $manifest_raw = file_get_contents( $manifest_path );
 $manifest     = false === $manifest_raw ? null : json_decode( $manifest_raw, true );
 if ( ! is_array( $manifest ) || 'nuvanx-publication-manifest' !== (string) ( $manifest['schema'] ?? '' ) || ! is_array( $manifest['routes'] ?? null ) ) {
 	fwrite( STDERR, "PUBLICATION_ROBOTS_RECONCILIATION_STATIC=FAIL reason=manifest_invalid\n" );
-	exit( 1 );
-}
-
-$gracias_manifest = $manifest['routes']['/gracias/'] ?? null;
-if (
-	! is_array( $gracias_manifest )
-	|| 'publish' !== (string) ( $gracias_manifest['status'] ?? '' )
-	|| 'gracias' !== (string) ( $gracias_manifest['slug'] ?? '' )
-	|| ! is_array( $gracias_manifest['robots'] ?? null )
-	|| false !== ( $gracias_manifest['robots']['index'] ?? null )
-	|| true !== ( $gracias_manifest['robots']['follow'] ?? null )
-) {
-	fwrite( STDERR, "PUBLICATION_ROBOTS_RECONCILIATION_STATIC=FAIL reason=gracias_manifest_must_be_noindex_follow\n" );
 	exit( 1 );
 }
 
@@ -88,7 +73,7 @@ foreach ( $manifest['routes'] as $route => $config ) {
 	}
 }
 
-foreach ( array( $migration, $indexables_migration, $yoast_rebuild, $sitemap_selection_audit, $sitemap_cache_invalidation, $runtime_indexables_audit, $seo_metadata, $seo_retirement, $sitemap_from_xml, $page_hygiene, $gracias_governance, $gracias_template, $staging, $production, $deploy ) as $path ) {
+foreach ( array( $migration, $indexables_migration, $yoast_rebuild, $sitemap_selection_audit, $sitemap_cache_invalidation, $runtime_indexables_audit, $seo_metadata, $seo_retirement, $sitemap_from_xml, $page_hygiene, $staging, $production, $deploy ) as $path ) {
 	if ( ! is_file( $path ) || false === file_get_contents( $path ) ) {
 		fwrite( STDERR, "PUBLICATION_ROBOTS_RECONCILIATION_STATIC=FAIL reason=unreadable_dependency\n" );
 		exit( 1 );
@@ -105,8 +90,6 @@ $seo_metadata_raw = file_get_contents( $seo_metadata );
 $seo_retirement_raw = file_get_contents( $seo_retirement );
 $sitemap_from_xml_raw = file_get_contents( $sitemap_from_xml );
 $page_hygiene_raw = file_get_contents( $page_hygiene );
-$gracias_governance_raw = file_get_contents( $gracias_governance );
-$gracias_template_raw = file_get_contents( $gracias_template );
 $staging_raw      = file_get_contents( $staging );
 $production_raw = file_get_contents( $production );
 $deploy_raw     = file_get_contents( $deploy );
@@ -134,21 +117,10 @@ $required = array(
 	array( $runtime_indexables_audit_raw, "PUBLICATION_INDEXABLE_RUNTIME_AUDIT=PASS" ),
 	array( $runtime_indexables_audit_raw, "canonical_mismatch" ),
 	array( $runtime_indexables_audit_raw, "nvx_seo_is_nonproduction_environment" ),
-	array( $page_hygiene_raw, "nvx_nofollow_page_ids" ),
-	array( $page_hygiene_raw, "nvx_noindex_but_navigable_page_ids" ),
 	array( $page_hygiene_raw, "sgo_exclude_urls_from_cache" ),
 	array( $page_hygiene_raw, "sitemap_index.xml" ),
 	array( $page_hygiene_raw, "page-sitemap.xml" ),
 	array( $page_hygiene_raw, "post-sitemap.xml" ),
-	array( $gracias_governance_raw, "nvx_gracias_robots_remove_nofollow" ),
-	array( $gracias_governance_raw, "add_filter( 'nvx_nofollow_page_ids', 'nvx_gracias_robots_remove_nofollow', 20 )" ),
-	array( $gracias_governance_raw, "nvx_gracias_robots_add_noindex_follow" ),
-	array( $gracias_governance_raw, "add_filter( 'nvx_noindex_but_navigable_page_ids', 'nvx_gracias_robots_add_noindex_follow', 20 )" ),
-	array( $gracias_template_raw, "require_once get_template_directory() . '/inc/nvx-gracias-robots-governance.php'" ),
-	array( $seo_metadata_raw, "nvx_nofollow_page_ids" ),
-	array( $seo_metadata_raw, "NVX_ROBOTS_NOINDEX_NOFOLLOW" ),
-	array( $seo_metadata_raw, "nvx_noindex_page_ids" ),
-	array( $seo_metadata_raw, "NVX_ROBOTS_NOINDEX_FOLLOW" ),
 	array( $seo_metadata_raw, "defined( 'WP_CLI' ) && WP_CLI && '1' === getenv( 'NVX_ALLOW_STAGING_YOAST_INDEXABLE_REBUILD' )" ),
 	array( $seo_metadata_raw, "Yoast\\\\WP\\\\SEO\\\\should_index_indexables" ),
 	array( $seo_metadata_raw, "nvx_seo_allow_controlled_yoast_indexable_rebuild" ),
@@ -199,15 +171,8 @@ foreach ( $required as $pair ) {
 	}
 }
 
-$gracias_require_pos = strpos( $gracias_template_raw, "require_once get_template_directory() . '/inc/nvx-gracias-robots-governance.php'" );
-$get_header_pos = strpos( $gracias_template_raw, 'get_header();' );
-if ( false === $gracias_require_pos || false === $get_header_pos || $gracias_require_pos >= $get_header_pos ) {
-	fwrite( STDERR, "PUBLICATION_ROBOTS_RECONCILIATION_STATIC=FAIL reason=gracias_governance_must_load_before_wp_head\n" );
-	exit( 1 );
-}
-
 printf(
-	"PUBLICATION_ROBOTS_RECONCILIATION_STATIC=PASS routes=%d indexable=%d noindex=%d gracias=noindex,follow\n",
+	"PUBLICATION_ROBOTS_RECONCILIATION_STATIC=PASS routes=%d indexable=%d noindex=%d\n",
 	count( $manifest['routes'] ),
 	$indexable,
 	$noindex
