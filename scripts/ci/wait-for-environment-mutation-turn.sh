@@ -48,6 +48,34 @@ is_mutation_event() {
   esac
 }
 
+# GitHub can rarely leave the workflow-run aggregate in an active state after
+# every job belonging to that run has already reached `completed`. Such a run
+# must not hold the cross-environment FIFO forever. Ignore it only when the jobs
+# endpoint positively proves that at least one job exists and every job is
+# completed. API errors, malformed responses and zero-job runs fail closed.
+run_jobs_activity() {
+  local run_id="$1"
+  local jobs_json=""
+  local attempt
+  for attempt in 1 2 3; do
+    if jobs_json="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/jobs?filter=all&per_page=100" 2>/dev/null)" && [[ -n "$jobs_json" ]]; then
+      break
+    fi
+    jobs_json=""
+    sleep 2
+  done
+
+  [[ -n "$jobs_json" ]] || return 2
+
+  local total active
+  total="$(printf '%s' "$jobs_json" | jq -r '(.total_count // (.jobs | length) // 0) | tostring' 2>/dev/null || true)"
+  active="$(printf '%s' "$jobs_json" | jq -r '[.jobs[]? | select((.status // "") != "completed")] | length | tostring' 2>/dev/null || true)"
+  [[ "$total" =~ ^[0-9]+$ && "$active" =~ ^[0-9]+$ ]] || return 2
+  (( total > 0 )) || return 2
+  (( active > 0 )) && return 0
+  return 1
+}
+
 current_meta=""
 for attempt in 1 2 3; do
   if current_meta="$(gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${CURRENT_RUN_ID}" 2>/dev/null)" && [[ -n "$current_meta" ]]; then
@@ -252,7 +280,7 @@ while :; do
   for status in queued in_progress waiting requested pending; do
     raw_status_runs=""
     if ! raw_status_runs="$(gh api --paginate "/repos/${GITHUB_REPOSITORY}/actions/runs?status=${status}&per_page=100" \
-      --jq '.workflow_runs[] | [(.id|tostring),(.status // ""),(.event // ""),(.path // ""),(.head_sha // "")] | @tsv' 2>/dev/null)"; then
+      --jq '.workflow_runs[] | [(.id|tostring),(.status // ""),(.event // ""),(..path // ""),(.head_sha // "")] | @tsv' 2>/dev/null)"; then
       scan_failed=1
       break
     fi
@@ -261,12 +289,26 @@ while :; do
       [[ -n "$run_id" ]] || continue
       [[ "$run_id" =~ ^[0-9]{1,20}$ ]] || continue
       (( run_id < CURRENT_RUN_ID )) || continue
-      if [[ "$run_id" == "32985831917" || "$run_id" == "32985520449" ]]; then continue; fi
-
       is_mutation_workflow_path "$run_path" || continue
       is_mutation_event "$run_event" || continue
+
+      if run_jobs_activity "$run_id"; then
+        :
+      else
+        jobs_rc=$?
+        if (( jobs_rc == 1 )); then
+          echo "MUTATION_FIFO=IGNORE_ZOMBIE run_id=$run_id status=$run_status reason=all_jobs_completed"
+          continue
+        fi
+        scan_failed=1
+        echo "MUTATION_FIFO=WARN reason=blocker_jobs_query_failed run_id=$run_id retrying=true" >&2
+        break
+      fi
+
       blockers="${blockers}${run_id}\t${run_status}|${run_event}|${run_path}|${run_sha}\n"
     done <<< "$raw_status_runs"
+
+    (( scan_failed == 0 )) || break
   done
 
   if (( scan_failed != 0 )); then
