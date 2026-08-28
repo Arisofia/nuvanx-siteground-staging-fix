@@ -80,10 +80,15 @@ function nvx_schema_enrich_organization( array &$graph, int $index, array $all_c
 		$graph[ $index ]['employee'] = $employee_refs;
 	}
 
-	$existing_same_as          = isset( $graph[ $index ]['sameAs'] ) ? (array) $graph[ $index ]['sameAs'] : array();
+	$existing_same_as = isset( $graph[ $index ]['sameAs'] ) ? (array) $graph[ $index ]['sameAs'] : array();
 	// Note: Doctoralia links belong to individual clinic nodes, not corporate Organization
 	// Each MedicalClinic maintains its own sameAs for location-specific external identity
-	$graph[ $index ]['sameAs'] = array_values( array_unique( array_filter( $existing_same_as ) ) );
+	// Facebook (corporate page) is an Organization-level identity and belongs here.
+	$org_social = array(
+		'https://www.facebook.com/profile.php?id=61593612745090',
+		'https://www.instagram.com/nuvanx/',
+	);
+	$graph[ $index ]['sameAs'] = array_values( array_unique( array_filter( array_merge( $existing_same_as, $org_social ) ) ) );
 }
 
 /**
