@@ -116,8 +116,8 @@ get_header();
 	      <div>
 	        <div class="section-label">Agenda en NUVANX</div>
 	        <div class="schedule">
-	          <a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="sched-item" style="text-decoration:none;"><strong>Chamberí (CS20144)</strong>Martes &middot; Jueves</a>
-	          <a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="sched-item" style="text-decoration:none;"><strong>Goya&ndash;Salamanca (CS20073)</strong>Miércoles</a>
+	          <a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="sched-item"><strong>Chamberí (CS20144)</strong>Martes &middot; Jueves</a>
+	          <a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="sched-item"><strong>Goya&ndash;Salamanca (CS20073)</strong>Miércoles</a>
 	        </div>
 	      </div>
 

@@ -1,3 +1,4 @@
+/* nvx-equipo-medico.css */
 .nvx-equipo-shell {
   --font-sans: var(--nvx-sans);
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -65,6 +66,6 @@ a.tag.excl:hover { background: var(--nvx-form-stage-cool); }
 @media (min-width: 32rem) {
   .schedule { grid-template-columns: 1fr 1fr; }
 }
-.sched-item { font-size: var(--nvx-type-caption2); padding: .6rem .9rem; background: var(--surface-0); border-radius: var(--nvx-radius-card); color: var(--text-secondary); transition: background var(--nvx-transition-fast); }
+.sched-item { font-size: var(--nvx-type-caption2); padding: .6rem .9rem; background: var(--surface-0); border-radius: var(--nvx-radius-card); color: var(--text-secondary); text-decoration: none; transition: background var(--nvx-transition-fast); }
 a.sched-item:hover { background: var(--nvx-surface-soft); }
 .sched-item strong { font-weight: var(--nvx-fw-heading); color: var(--text-primary); display: block; font-size: var(--nvx-type-caption); margin-bottom: var(--nvx-nav-gap); }

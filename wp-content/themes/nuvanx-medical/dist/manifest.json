@@ -51,9 +51,9 @@
       ]
     },
     "equipo-medico": {
-      "file": "nvx-equipo-medico.2b5c7d9249.css",
-      "hash": "2b5c7d9249",
-      "size": 5522,
+      "file": "nvx-equipo-medico.c6f044b625.css",
+      "hash": "c6f044b625",
+      "size": 5545,
       "sources": [
         "assets/css/nvx-equipo-medico.css"
       ]
@@ -89,9 +89,9 @@
       "size": 50500
     },
     "assets/css/nvx-equipo-medico.css": {
-      "file": "nvx-equipo-medico.3f8d0c9aa4.css",
-      "hash": "3f8d0c9aa4",
-      "size": 5494
+      "file": "nvx-equipo-medico.f09e5d4885.css",
+      "hash": "f09e5d4885",
+      "size": 5517
     },
     "assets/css/nvx-fonts.css": {
       "file": "nvx-fonts.f64d52d459.css",
