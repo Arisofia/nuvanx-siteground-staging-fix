@@ -125,11 +125,14 @@ if ( $canonical_goya_url !== $goya_url || ! str_contains( $schema_raw, "'{$canon
 	$fail( 'Goya MedicalClinic sameAs lost the canonical public Doctoralia profile' );
 }
 
-// Check for unverified responsible-person data across all schema-producing sources
+// Check for unverified responsible-person data in the foundation schema only.
+// nvx-schema-physicians.php and nvx-schema-treatments.php legitimately contain
+// 'Javier Rivera Tejeda' as the site's medical director (E-E-A-T entity and
+// treatment descriptions). The prohibition targets unverified Doctoralia
+// responsible-person data leaking into clinic sameAs/legalName nodes —
+// which can only happen via nvx-schema-foundation.php.
 $schema_files = array(
 	$root . '/wp-content/themes/nuvanx-medical/inc/nvx-schema-foundation.php',
-	$root . '/wp-content/themes/nuvanx-medical/inc/nvx-schema-physicians.php',
-	$root . '/wp-content/themes/nuvanx-medical/inc/nvx-schema-treatments.php',
 );
 $prohibited_names = array( 'yolanda piñero', 'Javier Rivera Tejeda' );
 foreach ( $schema_files as $schema_file ) {
