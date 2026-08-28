@@ -68,6 +68,9 @@ if grep -Eqi "from[[:space:]]+['\"]playwright['\"]|nvxqa-h1-|QA H1 Attribution|w
 fi
 echo "STAGING_ACCEPTANCE_HUBSPOT_SAFETY=PASS sha=$CANDIDATE_SHA zero_submit=1"
 
+# Verify that a non-expired Block C acceptance artifact exists for the candidate SHA,
+# was produced by a successful Staging run on the canonical branch and workflow,
+# and contains a schema-1 manifest whose fields match the run that produced it.
 artifact_name="staging2-block-c-${CANDIDATE_SHA}"
 if ! response="$(curl -fsSL --retry 3 --retry-all-errors --connect-timeout 10 --max-time 60 --proto '=https' --proto-redir '=https' "${api_headers[@]}" "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts?name=${artifact_name}&per_page=100")"; then
   echo "STAGING_ACCEPTANCE=FAIL reason=github_api_artifacts_query_failed sha=$CANDIDATE_SHA" >&2
