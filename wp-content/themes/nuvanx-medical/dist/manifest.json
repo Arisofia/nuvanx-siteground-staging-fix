@@ -3,9 +3,9 @@
   "generated": "1970-01-01T00:00:00.000Z",
   "bundles": {
     "core": {
-      "file": "nvx-core.8155cb90c6.css",
-      "hash": "8155cb90c6",
-      "size": 156898,
+      "file": "nvx-core.27a5dbe104.css",
+      "hash": "27a5dbe104",
+      "size": 156641,
       "sources": [
         "assets/css/nvx-fonts.css",
         "assets/css/nvx-tokens.css",
@@ -129,9 +129,9 @@
       "size": 20241
     },
     "assets/css/nvx-site-layout.css": {
-      "file": "nvx-site-layout.732f60f3f5.css",
-      "hash": "732f60f3f5",
-      "size": 11602
+      "file": "nvx-site-layout.fd0e65ffba.css",
+      "hash": "fd0e65ffba",
+      "size": 11603
     },
     "assets/css/nvx-soluciones-medicas.css": {
       "file": "nvx-soluciones-medicas.fbef37ea48.css",
@@ -139,9 +139,9 @@
       "size": 11373
     },
     "assets/css/nvx-tokens.css": {
-      "file": "nvx-tokens.8734261de3.css",
-      "hash": "8734261de3",
-      "size": 9013
+      "file": "nvx-tokens.ae22d2c4ec.css",
+      "hash": "ae22d2c4ec",
+      "size": 8755
     }
   }
 }

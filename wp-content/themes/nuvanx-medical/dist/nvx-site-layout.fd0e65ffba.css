@@ -1,8 +1,5 @@
 /* Unified layout contract (Audit 4.1) */
-html:root {
-  --nvx-shell-max: 1240px;
-  --nvx-gutter-inline: clamp(20px, 4vw, 64px);
-}
+/* --nvx-shell-max and --nvx-gutter-inline are owned by nvx-tokens.css + nvx-base.css */
 
 .nvx-shell,
 .nvx-container,

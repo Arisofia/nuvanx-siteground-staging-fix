@@ -167,7 +167,6 @@
   --nvx-submenu-min-width: 256px;
   --nvx-submenu-max-width: 320px;
   --nvx-shell-max: 1240px;
-  --nvx-footer-link-gap: 12px;
 
   /* Icon dimensions and stroke */
   --nvx-icon-xs: 16px;
@@ -196,14 +195,6 @@
     rgba(26, 26, 26, 0.68) 70%,
     rgba(26, 26, 26, 0.86) 86%,
     rgba(26, 26, 26, 0.92) 100%
-  );
-
-  /* Archive hero card: darken the photograph so overlay type stays readable. */
-  --nvx-card-hero-overlay: linear-gradient(
-    to top,
-    rgba(17, 17, 17, 0.82) 0%,
-    rgba(17, 17, 17, 0.28) 46%,
-    transparent 100%
   );
 
   /* ========== TIPOGRAFÍA OFICIAL ÚNICA ========== */
@@ -681,10 +672,7 @@ body:not(.home) .nvx-brand-hero__copy {
 
 /* nvx-site-layout.css */
 /* Unified layout contract (Audit 4.1) */
-html:root {
-  --nvx-shell-max: 1240px;
-  --nvx-gutter-inline: clamp(20px, 4vw, 64px);
-}
+/* --nvx-shell-max and --nvx-gutter-inline are owned by nvx-tokens.css + nvx-base.css */
 
 .nvx-shell,
 .nvx-container,
