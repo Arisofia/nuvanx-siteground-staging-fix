@@ -511,6 +511,18 @@ async function main() {
     const identity = resultIdentityKey(result);
     return (identity && recoveredByKey.get(identity)) || result;
   });
+  
+  // Reject noncanonical PASS rows before promoting recovery.
+  // A row without a valid canonical identity (route::viewportKey) cannot be
+  // trusted as evidence, even if status=PASS, because the core validator
+  // checks result count, not the unique manifest route × canonical viewport set.
+  const noncanonicalPass = recoveredResults.filter(
+    (result) => result.status === 'PASS' && !resultIdentityKey(result)
+  );
+  if (noncanonicalPass.length > 0) {
+    return logTransient(`noncanonical_pass_rows count=${noncanonicalPass.length}`);
+  }
+  
   const remaining = recoveredResults.filter((result) => result.status !== 'PASS' || result.externalInconclusive === true);
   if (remaining.length > 0) return logTransient(`remaining_incomplete_cases count=${remaining.length}`);
 

@@ -17,7 +17,7 @@ Git history is the archive for retired audits, diagnostics and incident-era impl
 
 Repository agents must read [`AGENTS.md`](AGENTS.md) before diagnosing Staging2 or deployment failures and use [`docs/operations/staging-transient-classification.md`](docs/operations/staging-transient-classification.md) as the canonical classifier contract.
 
-A red or incomplete workflow is not, by itself, evidence of an application regression. Exit `75`/`EX_TEMPFAIL`, SiteGround `202`/antibot challenges, exit `78`/`EX_CONFIG`, and SSH transport `255` mean the candidate defect is **not established** unless independent `FAIL_REAL` application/contract evidence exists. These states remain release NO-GO until exact-SHA evidence completes; they must not be mislabeled as code defects.
+A red or incomplete workflow is not, by itself, evidence of an application regression. Exit `75`/`EX_TEMPFAIL`, SiteGround `202`/antibot challenges when confirmed by the classifier, exit `78`/`EX_CONFIG`, and SSH transport `255` mean the candidate defect is **not established** unless independent `FAIL_REAL` application/contract evidence exists. These states remain release NO-GO until exact-SHA evidence completes; they must not be mislabeled as code defects.
 
 ## Permanent GitHub Actions
 

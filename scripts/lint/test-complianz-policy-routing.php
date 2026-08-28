@@ -94,9 +94,9 @@ $manage = nvx_rewrite_complianz_policy_links(
 nvx_assert_contains( 'href="#"', $manage, 'js_managed_consent_control' );
 
 $hash_metadata_with_policy_label = nvx_rewrite_complianz_policy_links(
-	'<a class="cmplz-manage-options" href="#" data-relative_url="#cmplz-manage">Política de privacidad</a>'
+	'<a href="#" data-relative_url="#cmplz-manage">Política de privacidad</a>'
 );
-nvx_assert_contains( 'href="#"', $hash_metadata_with_policy_label, 'hash_metadata_suppresses_policy_label_fallback' );
+nvx_assert_same( '<a href="#" data-relative_url="#cmplz-manage">Política de privacidad</a>', $hash_metadata_with_policy_label, 'hash_metadata_suppresses_policy_label_fallback' );
 
 $ordinary_hash = '<a class="local-anchor" href="#">Abrir panel local</a>';
 nvx_assert_same( $ordinary_hash, nvx_rewrite_complianz_policy_links( $ordinary_hash ), 'ordinary_hash_untouched' );
