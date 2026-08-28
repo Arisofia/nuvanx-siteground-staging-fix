@@ -7,6 +7,11 @@
  * 2. All bundles declared in manifest exist on disk with matching content hashes.
  * 3. All source CSS files are accounted for in the manifest.
  * 4. Compiling matches exact hashes (deterministic build).
+ * 5. Each bundle is reconstructible from its declared sources — the
+ *    concatenation of normalised source files (with compiler-identical
+ *    comment headers and join logic) must produce byte-exact bundle content,
+ *    matching hash and size recorded in the manifest.
+ * 6. No orphan CSS files exist in dist/ that are not referenced by the manifest.
  */
 
 import fs from 'node:fs/promises';
@@ -44,11 +49,14 @@ async function testManifestContract() {
     throw new Error('Manifest missing core bundle');
   }
 
-  // Validate all bundles
+  const referencedFiles = new Set();
+
   for (const [name, info] of Object.entries(bundles)) {
+    referencedFiles.add(info.file);
+
     const bundleFilePath = path.join(DIST_DIR, info.file);
-    const content = normalizeCss(await fs.readFile(bundleFilePath, 'utf8'));
-    const actualHash = computeHash(content);
+    const distContent = normalizeCss(await fs.readFile(bundleFilePath, 'utf8'));
+    const actualHash = computeHash(distContent);
 
     if (actualHash !== info.hash) {
       throw new Error(`Bundle ${name} hash mismatch: manifest=${info.hash} actual=${actualHash}`);
@@ -57,10 +65,47 @@ async function testManifestContract() {
     if (!info.file.includes(info.hash)) {
       throw new Error(`Bundle ${name} filename ${info.file} does not contain hash ${info.hash}`);
     }
+
+    if (!Array.isArray(info.sources) || info.sources.length === 0) {
+      throw new Error(`Bundle ${name} missing sources array`);
+    }
+
+    const parts = [];
+    for (const relSrc of info.sources) {
+      const fullSrc = path.join(THEME_DIR, relSrc);
+      const srcContent = normalizeCss(await fs.readFile(fullSrc, 'utf8'));
+      parts.push(`/* ${path.basename(relSrc)} */\n${srcContent}`);
+    }
+
+    const reconstructed = parts.join('\n\n');
+    const reconstructedHash = computeHash(reconstructed);
+    const reconstructedSize = Buffer.byteLength(reconstructed, 'utf8');
+
+    if (reconstructedHash !== info.hash) {
+      throw new Error(
+        `Bundle ${name} source reconstruction hash mismatch: ` +
+        `manifest=${info.hash} reconstructed=${reconstructedHash}`
+      );
+    }
+
+    if (reconstructedSize !== info.size) {
+      throw new Error(
+        `Bundle ${name} source reconstruction size mismatch: ` +
+        `manifest=${info.size} reconstructed=${reconstructedSize}`
+      );
+    }
+
+    if (reconstructed !== distContent) {
+      throw new Error(
+        `Bundle ${name} source reconstruction content mismatch: ` +
+        `dist file does not equal concatenation of declared sources`
+      );
+    }
   }
 
-  // Validate all single files
   for (const [relPath, info] of Object.entries(manifest.files)) {
+    referencedFiles.add(info.file);
+
     const distFilePath = path.join(DIST_DIR, info.file);
     const content = normalizeCss(await fs.readFile(distFilePath, 'utf8'));
     const actualHash = computeHash(content);
@@ -78,7 +123,21 @@ async function testManifestContract() {
     }
   }
 
-  console.log(`CSS_MANIFEST_CONTRACT=PASS bundles=${Object.keys(bundles).length} files=${Object.keys(manifest.files).length} hash_integrity=verified`);
+  const distFiles = (await fs.readdir(DIST_DIR))
+    .filter((f) => f.endsWith('.css'));
+
+  const orphans = distFiles.filter((f) => !referencedFiles.has(f));
+  if (orphans.length > 0) {
+    throw new Error(
+      `Orphan dist CSS files not referenced by manifest: ${orphans.join(', ')}`
+    );
+  }
+
+  console.log(
+    `CSS_MANIFEST_CONTRACT=PASS bundles=${Object.keys(bundles).length} ` +
+    `files=${Object.keys(manifest.files).length} ` +
+    `bundle_reconstruction=verified hash_integrity=verified orphan_check=clean`
+  );
 }
 
 testManifestContract().catch((err) => {

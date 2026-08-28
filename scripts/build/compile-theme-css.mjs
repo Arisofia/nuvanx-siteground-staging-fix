@@ -74,9 +74,10 @@ async function main() {
     }
   }
 
+  const sourceDateEpoch = Number(process.env.SOURCE_DATE_EPOCH || 0);
   const manifest = {
     schema: 1,
-    generated: new Date().toISOString(),
+    generated: new Date(sourceDateEpoch * 1000).toISOString(),
     bundles: {},
     files: {},
   };

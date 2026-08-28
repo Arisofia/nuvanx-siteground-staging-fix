@@ -133,6 +133,9 @@ jobs:
           ENDOLASER_APPROVAL_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || (github.event_name == 'push' && github.event.before || '') }}
         run: |
           set -euo pipefail
+          npm run build:css
+          git diff --exit-code -- wp-content/themes/nuvanx-medical/dist/
+          npm run lint:manifest
           find wp-content/themes/nuvanx-medical -path '*/vendor' -prune -o -name '*.php' -type f -print0 | xargs -0 -n1 php -l >/dev/null
           find tools/migrations lib -name '*.php' -type f -print0 | xargs -0 -r -n1 php -l >/dev/null
           php scripts/lint/test-clinical-matrix-ownership.php
