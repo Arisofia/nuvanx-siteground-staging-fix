@@ -544,6 +544,8 @@ function nvx_schema_clinics() {
 			'medicalSpecialty'          => array( 'https://schema.org/PlasticSurgery', 'https://schema.org/Dermatology' ),
 			'sameAs'                    => array(
 				'https://www.doctoralia.es/clinicas/nuvanx-medicina-estetica-laser',
+				'https://www.facebook.com/profile.php?id=61593612745090',
+				'https://www.instagram.com/nuvanx/',
 			),
 		),
 		'goya'     => array(
@@ -590,6 +592,8 @@ function nvx_schema_clinics() {
 			'medicalSpecialty'          => array( 'https://schema.org/PlasticSurgery', 'https://schema.org/Dermatology' ),
 			'sameAs'                    => array(
 				'https://www.doctoralia.es/clinicas/nuvanx-medicina-estetica-laser-sede-goya',
+				'https://www.facebook.com/profile.php?id=61593612745090',
+				'https://www.instagram.com/nuvanx/',
 			),
 		),
 	);
