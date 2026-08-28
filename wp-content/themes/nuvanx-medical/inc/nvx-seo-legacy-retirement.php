@@ -13,6 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+// Retire the legacy Gracias nofollow owner globally rather than from the page
+// template so frontend, Yoast/REST and controlled WP-CLI surfaces resolve the
+// same publication-manifest robots policy before any presentation is built.
+require_once __DIR__ . '/nvx-gracias-robots-governance.php';
+
 /**
  * Identifies indexable publication-manifest routes whose Yoast canonical must
  * remain derived from the permalink. The whitelist is configuration-led: a
