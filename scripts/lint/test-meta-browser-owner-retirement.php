@@ -8,6 +8,7 @@ declare(strict_types=1);
 $root       = dirname( __DIR__, 2 );
 $runtime    = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-meta-browser-governance.php';
 $bootstrap  = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-environment-flags.php';
+$boundary   = $root . '/scripts/production/verify-production-boundary.mjs';
 
 $fail = static function ( string $reason ): never {
 	fwrite( STDERR, "META_BROWSER_OWNER_RETIREMENT=FAIL reason={$reason}\n" );
@@ -16,11 +17,14 @@ $fail = static function ( string $reason ): never {
 
 is_file( $runtime ) || $fail( 'runtime_missing' );
 is_file( $bootstrap ) || $fail( 'bootstrap_missing' );
+is_file( $boundary ) || $fail( 'production_boundary_missing' );
 
 $runtime_source   = file_get_contents( $runtime );
 $bootstrap_source = file_get_contents( $bootstrap );
+$boundary_source  = file_get_contents( $boundary );
 is_string( $runtime_source ) || $fail( 'runtime_unreadable' );
 is_string( $bootstrap_source ) || $fail( 'bootstrap_unreadable' );
+is_string( $boundary_source ) || $fail( 'production_boundary_unreadable' );
 
 str_contains( $bootstrap_source, "require_once __DIR__ . '/nvx-meta-browser-governance.php';" )
 	|| $fail( 'runtime_not_loaded_early' );
@@ -51,10 +55,26 @@ foreach ( array( 'connect.facebook.net', 'fbevents.js', "fbq('init'", '149794065
 	! str_contains( $runtime_source, $forbidden_browser_owner ) || $fail( 'browser_meta_loader_forbidden:' . $forbidden_browser_owner );
 }
 
-// Execute browser-level JS assertion
+$required_local_routes = array(
+	'/clinicas-de-medicina-estetica-nuvanx/',
+	'/medicina-estetica-chamberi/',
+	'/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/',
+);
+foreach ( $required_local_routes as $route ) {
+	$occurrences = substr_count( $boundary_source, $route );
+	$occurrences >= 2 || $fail( 'production_local_route_not_dual_path:' . $route . ':occurrences=' . $occurrences );
+}
+str_contains( $boundary_source, "routes=12 identity_fields=4 render_contract=pass meta_no_consent=pass" )
+	|| $fail( 'production_boundary_route_count_not_12' );
+str_contains( $boundary_source, "metaNoConsentIssues(html, response.headers)" )
+	|| $fail( 'production_external_meta_no_consent_check_missing' );
+str_contains( $boundary_source, "^set-cookie:[[:space:]]*(_fbp|_fbc)=" )
+	|| $fail( 'production_raw_meta_cookie_rejection_missing' );
+
+// Execute browser-level JS assertion.
 exec('node ' . __DIR__ . '/test-meta-browser-dynamic-loader.mjs', $output, $code);
 if ($code !== 0) {
 	$fail('browser_level_dynamic_loader_guard_failed');
 }
 
-echo "META_BROWSER_OWNER_RETIREMENT=PASS source_scoped=1 dynamic_loader_guard=1 header_guard=1 browser_pixel_owner=none\n";
+echo "META_BROWSER_OWNER_RETIREMENT=PASS source_scoped=1 dynamic_loader_guard=1 header_guard=1 browser_pixel_owner=none local_routes=3 boundary_routes=12 dual_path=1\n";
