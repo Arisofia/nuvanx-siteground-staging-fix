@@ -34,12 +34,7 @@
         "command": "gitleaks detect"
       }
     },
-    "theme_hygiene": {
-      "required": true,
-      "description": "Theme hygiene diagnostic",
-      "command": "wp eval require 'tools/migrations/diagnose-jsonld-storage.php';",
-      "_status": "MISSING — tools/migrations/diagnose-jsonld-storage.php does not exist in repo"
-    },
+
     "data_catalog": {
       "required": true,
       "description": "Data/catalog validation",
@@ -55,12 +50,7 @@
       "description": "SEO/Schema validation",
       "command": "jq empty"
     },
-    "block_c": {
-      "required": true,
-      "description": "Block C origin browser fallback",
-      "command": "node scripts/staging2/block-c-origin-browser-fallback.mjs",
-      "_status": "MISSING — scripts/staging2/block-c-origin-browser-fallback.mjs does not exist in repo"
-    },
+
     "hubspot": {
       "required": true,
       "description": "HubSpot specific gate",
@@ -78,25 +68,19 @@
       "description": "Editorial gate pre-publication",
       "command": "wp eval require 'tools/migrations/editorial-gate-validation.php';"
     },
-    "overlays_governance": {
-      "required": true,
-      "description": "Overlays/plugins design system audit",
-      "command": "node scripts/staging2/audit-overlays-design-system.mjs",
-      "optional_tool": "agent-browser",
-      "_status": "MISSING — scripts/staging2/audit-overlays-design-system.mjs does not exist in repo"
-    }
+
   },
   "workflows": {
     "staging": {
-      "required_gates": ["code_quality", "security", "theme_hygiene", "data_catalog", "publication_topology", "seo_schema", "block_c", "hubspot", "visual_states", "editorial_gate"],
+      "required_gates": ["code_quality", "security", "data_catalog", "publication_topology", "seo_schema", "hubspot", "visual_states", "editorial_gate"],
       "always_run": true
     },
     "production": {
-      "required_gates": ["code_quality", "security", "theme_hygiene", "data_catalog", "publication_topology", "seo_schema", "block_c", "hubspot", "visual_states", "editorial_gate", "overlays_governance", "production_parity"],
+      "required_gates": ["code_quality", "security", "data_catalog", "publication_topology", "seo_schema", "hubspot", "visual_states", "editorial_gate", "production_parity"],
       "always_run": true
     },
     "pre_merge": {
-      "required_gates": ["code_quality", "security", "theme_hygiene", "data_catalog", "publication_topology", "seo_schema"],
+      "required_gates": ["code_quality", "security", "data_catalog", "publication_topology", "seo_schema"],
       "always_run": true
     }
   },
