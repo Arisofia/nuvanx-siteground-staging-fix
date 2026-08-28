@@ -4,7 +4,9 @@
  *
  * The publication manifest owns the route policy. When it explicitly declares
  * `/gracias/` as `noindex,follow`, this adapter removes the route from the
- * legacy nofollow bucket while retaining it in the noindex/navigable bucket.
+ * legacy nofollow bucket while retaining it in the general noindex bucket.
+ * It deliberately does not use the "noindex but navigable" bucket because the
+ * transactional confirmation route must remain excluded from navigation menus.
  * If the manifest is missing, unreadable, invalid or changes policy, the
  * adapter fails closed and leaves the stronger legacy classification intact.
  *
@@ -108,12 +110,13 @@ function nvx_gracias_robots_remove_nofollow( array $ids ): array {
 add_filter( 'nvx_nofollow_page_ids', 'nvx_gracias_robots_remove_nofollow', 20 );
 
 /**
- * Keep Gracias explicitly noindex while restoring crawler link following.
+ * Keep Gracias explicitly in the general noindex set while preserving its
+ * exclusion from navigation menus.
  *
- * @param int[] $ids Page IDs currently classified noindex,follow.
+ * @param int[] $ids Page/post IDs currently forced to noindex.
  * @return int[]
  */
-function nvx_gracias_robots_add_noindex_follow( array $ids ): array {
+function nvx_gracias_robots_keep_noindex( array $ids ): array {
 	if ( ! nvx_gracias_manifest_declares_noindex_follow() ) {
 		return $ids;
 	}
@@ -130,4 +133,4 @@ function nvx_gracias_robots_add_noindex_follow( array $ids ): array {
 
 	return $normalized;
 }
-add_filter( 'nvx_noindex_but_navigable_page_ids', 'nvx_gracias_robots_add_noindex_follow', 20 );
+add_filter( 'nvx_noindex_page_ids', 'nvx_gracias_robots_keep_noindex', 20 );
