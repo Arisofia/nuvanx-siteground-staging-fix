@@ -53,11 +53,11 @@
 
 .nvx-home-hero__kicker {
 	font-family: var(--nvx-sans);
-	font-size: 0.75rem;
-	font-weight: 500;
-	letter-spacing: 0.12em;
+	font-size: var(--nvx-type-kicker);
+	font-weight: var(--nvx-fw-heading);
+	letter-spacing: var(--nvx-track-kicker);
 	text-transform: uppercase;
-	color: rgba(255, 255, 255, 0.78);
+	color: var(--nvx-text-on-dark-78);
 	margin: 0 0 var(--nvx-space-2);
 	text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
