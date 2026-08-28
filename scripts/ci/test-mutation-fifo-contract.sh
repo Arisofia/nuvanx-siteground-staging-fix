@@ -3,7 +3,9 @@ set -Eeuo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SUBJECT="$ROOT/scripts/ci/wait-for-environment-mutation-turn.sh"
+WORKFLOW="$ROOT/.github/workflows/staging.yml"
 [[ -s "$SUBJECT" ]]
+[[ -s "$WORKFLOW" ]]
 
 # Centralized test configuration
 readonly TEST_REPOSITORY="${TEST_REPOSITORY:-Arisofia/nuvanx-siteground}"
@@ -44,7 +46,7 @@ if [[ "${1:-}" == --paginate ]]; then
     pass)
       exit 0
       ;;
-    blocked)
+    blocked|zombie|jobs_api_fail)
       printf '%s\t%s\t%s\t%s\t%s\n' '41' 'in_progress' 'push' '.github/workflows/staging.yml' '0123456789abcdef0123456789abcdef01234567'
       exit 0
       ;;
@@ -68,9 +70,24 @@ if [[ "${1:-}" == --paginate ]]; then
       ;;
   esac
 fi
+
 case "${1:-}" in
   */actions/runs/42)
     printf '%s\n' '{"path":".github/workflows/staging.yml","event":"push","status":"in_progress","run_attempt":1,"head_sha":"0123456789abcdef0123456789abcdef01234567","head_branch":"master"}'
+    ;;
+  */actions/runs/41/jobs*)
+    case "${TEST_SCENARIO:-pass}" in
+      zombie)
+        printf '%s\n' '{"total_count":2,"jobs":[{"id":1,"status":"completed","conclusion":"success"},{"id":2,"status":"completed","conclusion":"cancelled"}]}'
+        ;;
+      jobs_api_fail)
+        echo 'simulated jobs endpoint failure' >&2
+        exit 1
+        ;;
+      *)
+        printf '%s\n' '{"total_count":1,"jobs":[{"id":1,"status":"in_progress","conclusion":null}]}'
+        ;;
+    esac
     ;;
   */actions/runs/41)
     if [[ -f "${TMP_DIR:-/tmp}/cancelled_41" ]]; then
@@ -112,13 +129,13 @@ common_env=(
   "MUTATION_WAIT_MAX_SECONDS=60"
 )
 
-# Case 1: Happy path
+# Case 1: Happy path.
 pass_log="$TMP/pass.log"
 env "${common_env[@]}" GITHUB_RUN_ATTEMPT=1 TEST_SCENARIO=pass bash "$SUBJECT" >"$pass_log" 2>&1
 grep -Fq 'MUTATION_FIFO=PASS' "$pass_log"
 grep -Fq 'attempt=1' "$pass_log"
 
-# Case 2: Re-run rejection
+# Case 2: Re-run rejection.
 after_rerun="$TMP/rerun.log"
 set +e
 env "${common_env[@]}" GITHUB_RUN_ATTEMPT=2 TEST_SCENARIO=pass bash "$SUBJECT" >"$after_rerun" 2>&1
@@ -128,7 +145,7 @@ set -e
 grep -Fq 'reason=rerun_forbidden' "$after_rerun"
 grep -Fq 'action=start_new_run' "$after_rerun"
 
-# Case 3: Blocker timeout detection
+# Case 3: A run with at least one active job remains a blocker.
 blocked_log="$TMP/blocked.log"
 set +e
 env "${common_env[@]}" GITHUB_RUN_ATTEMPT=1 MUTATION_WAIT_MAX_SECONDS=1 TEST_SCENARIO=blocked bash "$SUBJECT" >"$blocked_log" 2>&1
@@ -138,14 +155,14 @@ set -e
 grep -Fq 'MUTATION_FIFO=FAIL reason=wait_timeout' "$blocked_log"
 grep -Fq 'MUTATION_FIFO_BLOCKER run_id=41' "$blocked_log"
 
-# Case 4: API failure recovery (retries rather than failing open)
+# Case 4: Transient run-list API failure recovers rather than failing open.
 transient_log="$TMP/transient.log"
 rm -f "$TMP/failed_once"
 env "${common_env[@]}" GITHUB_RUN_ATTEMPT=1 TEST_SCENARIO=transient_api_fail bash "$SUBJECT" >"$transient_log" 2>&1
 grep -Fq 'MUTATION_FIFO=WARN reason=api_query_failed retrying=true' "$transient_log"
 grep -Fq 'MUTATION_FIFO=PASS' "$transient_log"
 
-# Case 5: Superseded push run rejection (exit 78)
+# Case 5: Superseded push run rejection (exit 78).
 superseded_log="$TMP/superseded.log"
 set +e
 env "${common_env[@]}" GITHUB_RUN_ATTEMPT=1 MUTATION_ROLE=staging TEST_BRANCH_SCENARIO=superseded bash "$SUBJECT" >"$superseded_log" 2>&1
@@ -169,7 +186,35 @@ env "${common_env[@]}" \
 grep -Fq 'MUTATION_FIFO=CANCEL_SUPERSEDED role=staging run_id=41' "$cancel_log"
 grep -Fq 'MUTATION_FIFO=PASS role=staging run_id=42' "$cancel_log"
 
-echo 'MUTATION_FIFO_CONTRACT_TEST=PASS cases=6'
+# Case 7: A stale run aggregate with real jobs all completed is ignored without a historical-ID allowlist.
+zombie_log="$TMP/zombie.log"
+env "${common_env[@]}" GITHUB_RUN_ATTEMPT=1 TEST_SCENARIO=zombie bash "$SUBJECT" >"$zombie_log" 2>&1
+grep -Fq 'MUTATION_FIFO=IGNORE_ZOMBIE run_id=41 status=in_progress reason=all_jobs_completed' "$zombie_log"
+grep -Fq 'MUTATION_FIFO=PASS' "$zombie_log"
+! grep -Eq '32985831917|32985520449' "$SUBJECT"
+
+# Case 8: If the jobs endpoint cannot prove a blocker is a zombie, the FIFO fails closed within its timeout.
+jobs_fail_log="$TMP/jobs-api-fail.log"
+set +e
+env "${common_env[@]}" GITHUB_RUN_ATTEMPT=1 MUTATION_WAIT_MAX_SECONDS=1 TEST_SCENARIO=jobs_api_fail bash "$SUBJECT" >"$jobs_fail_log" 2>&1
+jobs_fail_rc=$?
+set -e
+[[ "$jobs_fail_rc" -eq 1 ]]
+grep -Fq 'reason=blocker_jobs_query_failed run_id=41 retrying=true' "$jobs_fail_log"
+grep -Fq 'MUTATION_FIFO=FAIL reason=api_wait_timeout' "$jobs_fail_log"
+
+echo 'MUTATION_FIFO_CONTRACT_TEST=PASS cases=8 zombie=jobs_proven cancel=fail_closed'
+
+# A cancellation after a rollback snapshot and mutation arm must restore Staging
+# for both master deployments and labeled PR previews. `failure()` alone does
+# not run on GitHub cancellation and previously left a cancelled preview live.
+rollback_condition="if: \${{ (failure() || cancelled()) && env.STAGING_SNAPSHOT_READY == '1' && env.STAGING_MUTATION_ARMED == '1' }}"
+rollback_count="$(grep -Fc "$rollback_condition" "$WORKFLOW" || true)"
+[[ "$rollback_count" -eq 2 ]] || {
+  echo "STAGING_CANCELLATION_ROLLBACK_CONTRACT=FAIL expected=2 actual=$rollback_count" >&2
+  exit 1
+}
+echo 'STAGING_CANCELLATION_ROLLBACK_CONTRACT=PASS owners=master,pr-preview trigger=failure_or_cancelled armed=1'
 
 # Trusted migration gate: it is explicitly pending until the theme runtime is
 # introduced, then becomes blocking automatically for every normal PR/push.
@@ -209,4 +254,4 @@ php "$ROOT/scripts/lint/test-complianz-policy-routing.php"
 
 # Design-token adoption blocks the zero-baseline ratcheted categories by
 # default; --strict additionally blocks every category in STRICT_CATEGORIES.
-node "$ROOT/scripts/lint/audit-design-token-adoption.mjs"
+node "$ROOT/scripts/lint/audit-design-token-adoption.mjs
