@@ -135,15 +135,15 @@ if ( 'candidate_unconfirmed' !== ( $directions['53333']['canonical_status'] ?? n
 }
 
 $public = $goya['public_primary_profile'] ?? null;
-if ( ! is_array( $public ) || 'profile_fields_propagated_service_aggregation_stale' !== ( $public['status'] ?? null ) ) {
+if ( ! is_array( $public ) || 'primary_public_legacy_semantics_and_service_aggregation_live' !== ( $public['status'] ?? null ) ) {
 	$fail( 'primary Goya public profile state no longer matches the observed checkpoint' );
 }
-if ( 2 !== ( $public['public_direction_count'] ?? null )
-	|| 'same_physical_address_exposed_twice' !== ( $public['public_direction_duplication'] ?? null ) ) {
-	$fail( 'public duplicate Goya direction evidence is missing' );
+if ( 1 !== ( $public['public_direction_count'] ?? null )
+	|| 'not_observed_on_primary_public_profile' !== ( $public['public_direction_duplication'] ?? null ) ) {
+	$fail( 'public direction count evidence for primary Goya surface changed' );
 }
-if ( 'Javier Rivera Tejeda' !== ( $public['responsable_sanitario'] ?? null ) ) {
-	$fail( 'current public Doctoralia responsible-person observation drifted' );
+if ( 'yolanda piñero' !== strtolower( $public['responsable_sanitario'] ?? '' ) ) {
+	$fail( 'primary public Doctoralia responsible-person observation drifted' );
 }
 $legacy_services = $public['legacy_services_observed'] ?? array();
 foreach ( array( 'Coolsculpting', 'Tratamiento con dermapen', 'HIFU (Facial)', 'HIFU (Corporal)' ) as $legacy ) {
@@ -151,7 +151,7 @@ foreach ( array( 'Coolsculpting', 'Tratamiento con dermapen', 'HIFU (Facial)', '
 		$fail( 'observed legacy public service disappeared from governed checkpoint: ' . $legacy );
 	}
 }
-if ( 'service_aggregation_and_professional_mappings_still_stale' !== ( $goya['public_secondary_surfaces']['status'] ?? null ) ) {
+if ( 'inconsistent_indices_and_professional_service_mappings_still_live' !== ( $goya['public_secondary_surfaces']['status'] ?? null ) ) {
 	$fail( 'Doctoralia secondary service surfaces must remain marked stale until cleaned' );
 }
 
