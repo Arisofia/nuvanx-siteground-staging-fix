@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "observed_at": "2026-08-28",
   "issue": 751,
   "canonical_service_source": "treatment-hub-schema.json",
@@ -7,7 +7,7 @@
   "mutation_policy": {
     "doctoralia_write_allowed": true,
     "doctoralia_write_mode": "non_destructive_profile_and_service_mapping_only",
-    "reason": "Fresh public evidence confirms Goya profile fields have propagated while the 13-service legacy aggregation and duplicate direction relationship remain live. Safe profile/service-visibility corrections can proceed without deleting directions or changing agendas.",
+    "reason": "The Goya primary public profile still exposes legacy service aggregation and stale clinic semantics, while authenticated/dynamic Doctoralia surfaces show newer variants. Safe profile/service-visibility corrections can proceed without deleting directions or changing agendas.",
     "allowed_operations": [
       "edit_goya_clinic_profile_fields",
       "edit_goya_public_service_visibility",
@@ -131,23 +131,20 @@
         }
       },
       "public_primary_profile": {
-        "status": "profile_fields_propagated_service_aggregation_stale",
+        "status": "primary_public_legacy_semantics_and_service_aggregation_live",
         "observed_at": "2026-08-28",
         "specialties": [
-          "Medicina estética",
           "Enfermería",
-          "Geriatría",
-          "Nutrición y dietética"
+          "Medicina estética",
+          "Radiología"
         ],
         "equipment": [
-          "Endoláser corporal / laserlipólisis láser",
-          "Endolift® / plataforma láser para Endolift / LaseMAR 1500",
-          "DEKA SmartLipo® / laserlipólisis láser"
+          "Aire acondicionado"
         ],
-        "responsable_sanitario": "Javier Rivera Tejeda",
+        "responsable_sanitario": "yolanda piñero",
         "responsable_classification": "observed_public_not_official_register",
-        "public_direction_count": 2,
-        "public_direction_duplication": "same_physical_address_exposed_twice",
+        "public_direction_count": 1,
+        "public_direction_duplication": "not_observed_on_primary_public_profile",
         "service_count": 13,
         "legacy_services_observed": [
           "Primera consulta gratuita",
@@ -162,8 +159,38 @@
           "HIFU (Corporal)"
         ]
       },
+      "authenticated_or_dynamic_surface_observation": {
+        "status": "observed_in_agent_session_not_accepted_as_primary_public_truth",
+        "observed_at": "2026-08-28",
+        "specialties_reported": [
+          "Medicina estética",
+          "Enfermería",
+          "Geriatría",
+          "Nutrición y dietética"
+        ],
+        "equipment_reported": [
+          "Endoláser corporal / laserlipólisis láser",
+          "Endolift® / plataforma láser para Endolift / LaseMAR 1500",
+          "DEKA SmartLipo® / laserlipólisis láser"
+        ],
+        "responsable_reported": "Javier Rivera Tejeda",
+        "direction_count_reported": 2,
+        "acceptance_rule": "Do not use this surface alone as proof of primary public propagation; validate the canonical public URL and treatment-search surfaces independently."
+      },
       "public_secondary_surfaces": {
-        "status": "service_aggregation_and_professional_mappings_still_stale",
+        "status": "inconsistent_indices_and_professional_service_mappings_still_live",
+        "observed_specialty_variants": [
+          [
+            "Medicina estética",
+            "Enfermería",
+            "Geriatría"
+          ],
+          [
+            "Medicina estética",
+            "Enfermería",
+            "Radiología"
+          ]
+        ],
         "legacy_treatment_search_still_live": [
           "HIFU",
           "Tratamiento con dermapen",
