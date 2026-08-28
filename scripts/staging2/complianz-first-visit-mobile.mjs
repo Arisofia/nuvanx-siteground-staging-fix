@@ -23,6 +23,7 @@ try {
 const expectedHost = baseParsed.hostname;
 const viewport = { width: 390, height: 844 };
 const maxAttempts = 3;
+// MUST match --nvx-touch-target-min token in nvx-tokens.css (48px)
 const minTouchTarget = 48;
 const routes = ['/', '/contacto/', '/madrid/valoracion/'];
 const outDir = path.resolve('scripts/staging2/complianz-first-visit-mobile-artifacts');

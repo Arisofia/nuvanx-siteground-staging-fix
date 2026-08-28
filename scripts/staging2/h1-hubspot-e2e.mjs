@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import { HUBSPOT_PORTAL_ID, HUBSPOT_FORM_ID } from './hubspot-config.mjs';
 
-const formId = '5042522a-0bc5-4381-ac3e-5aee8649b69c';
-const portalId = '147416356';
+const formId = HUBSPOT_FORM_ID;
+const portalId = HUBSPOT_PORTAL_ID;
 const expectedSha = (process.env.EXPECTED_SHA || '').trim();
 
 if (!/^[0-9a-f]{40}$/.test(expectedSha)) {

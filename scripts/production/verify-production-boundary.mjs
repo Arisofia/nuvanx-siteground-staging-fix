@@ -34,6 +34,7 @@ const routes = [
   '/tratamiento-postparto-abdomen-contorno-corporal-madrid/',
 ];
 const SITEGROUND_CAPTCHA_PATH = '/.well-known/sgcaptcha/';
+// MUST match HUBSPOT_FORM_ID in ../staging2/hubspot-config.mjs
 const HUBSPOT_FORM_ID = '5042522a-0bc5-4381-ac3e-5aee8649b69c';
 const META_BROWSER_FORBIDDEN = [
   ['dedupe marker', 'NVX_META_EVENT_DEDUPE_ACTIVE'],
