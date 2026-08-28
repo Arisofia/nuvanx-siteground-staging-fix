@@ -6,7 +6,7 @@
   width: 100%;
   margin: 0;
   padding: var(--nvx-space-3) 0;
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
   border-bottom: var(--nvx-border-hairline) solid var(--nvx-border-soft);
   backdrop-filter: blur(10px);
   position: sticky;

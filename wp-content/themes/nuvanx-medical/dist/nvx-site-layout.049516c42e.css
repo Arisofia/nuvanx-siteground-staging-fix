@@ -148,7 +148,7 @@
 }
 
 .nvx-brand-section--soft {
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-brand-page .nvx-brand-section {

@@ -348,7 +348,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   font-weight: var(--nvx-fw-medium);
   letter-spacing: 0.08em; /* nvx-token-exception: EXCEPTION_DOCUMENTED — protocol eyebrow tracking */
   text-transform: uppercase;
-  color: var(--nvx-text-muted, var(--nvx-text-body));
+  color: var(--nvx-text-muted);
 }
 
 .nvx-home-protocol__fact dd {
@@ -638,7 +638,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   padding: var(--nvx-space-4);
   border: var(--nvx-border-hairline) solid var(--nvx-color-line);
   border-radius: var(--nvx-radius-card);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-fact-panel__label {
@@ -875,7 +875,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   margin-bottom: var(--nvx-space-6);
   border: var(--nvx-border-hairline) solid var(--nvx-color-line);
   border-radius: var(--nvx-radius-card);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-endolift-compare-table {
@@ -907,7 +907,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   font-weight: var(--nvx-fw-medium);
   color: var(--nvx-ink);
   text-align: left;
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-endolift-compare-table tbody td {
@@ -970,7 +970,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 .nvx-laser-pillar,
 .nvx-brand-card {
   padding: var(--nvx-card-padding);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
   border: var(--nvx-border-hairline) solid var(--nvx-border-soft);
   box-shadow: none;
 }
@@ -992,7 +992,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 .nvx-laser-platform,
 .nvx-brand-card {
   padding: var(--nvx-space-4);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
   border: var(--nvx-border-hairline) solid var(--nvx-border-soft);
 }
 
@@ -1029,7 +1029,7 @@ body:not(.home) .nvx-page-hero__copy h1,
    ═══════════════════════════════════════════════════════════ */
 
 .nvx-aes-catalog {
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-aes-regen {
@@ -1126,7 +1126,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   font-weight: var(--nvx-fw-bold);
   letter-spacing: var(--nvx-track-button);
   text-transform: uppercase;
-  color: var(--nvx-accent-muted, var(--nvx-text-muted));
+  color: var(--nvx-accent-muted);
 }
 
 .nvx-aes-card__meta dt:first-child {
@@ -1163,7 +1163,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 
 .nvx-aes-regen__panel {
   padding: var(--nvx-space-4);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
   border: var(--nvx-border-hairline) solid var(--nvx-color-line);
 }
 

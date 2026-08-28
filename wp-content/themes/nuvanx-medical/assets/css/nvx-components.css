@@ -545,7 +545,7 @@ body .joinchat__qr canvas {
 .nvx-faq .nvx-brand-faq-item[open],
 .nvx-brand-faq-accordion details[open],
 .nvx-brand-faq-accordion .nvx-brand-faq-item[open] {
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-faq summary::-webkit-details-marker,
@@ -569,7 +569,7 @@ body .joinchat__qr canvas {
 }
 
 .nvx-faq summary:hover, .nvx-brand-faq-accordion summary:hover {
-  color: var(--nvx-charcoal, var(--nvx-charcoal));
+  color: var(--nvx-charcoal);
   outline: none;
 }
 
@@ -1179,15 +1179,15 @@ body.nvx-valoracion-modal-open{
 
 
 .nvx-strategy-checklist {
-  margin-top: var(--nvx-space-6, var(--nvx-space-6));
+  margin-top: var(--nvx-space-6);
 }
 
 .nvx-check-list {
   list-style: none;
-  margin: var(--nvx-space-4, var(--nvx-space-4)) 0;
+  margin: var(--nvx-space-4) 0;
   padding: 0;
   display: grid;
-  gap: var(--nvx-space-3, var(--nvx-space-3));
+  gap: var(--nvx-space-3);
   max-width: 65ch;
 }
 
@@ -1205,7 +1205,7 @@ body.nvx-valoracion-modal-open{
   position: absolute;
   left: 0;
   top: 0;
-  color: var(--nvx-accent-muted, var(--nvx-accent-muted));
+  color: var(--nvx-accent-muted);
   font-weight: bold;
 }
 

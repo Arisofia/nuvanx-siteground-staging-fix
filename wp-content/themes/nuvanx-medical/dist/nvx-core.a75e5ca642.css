@@ -833,7 +833,7 @@ body:not(.home) .nvx-brand-hero__copy {
 }
 
 .nvx-brand-section--soft {
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-brand-page .nvx-brand-section {
@@ -1648,7 +1648,7 @@ body .joinchat__qr canvas {
 .nvx-faq .nvx-brand-faq-item[open],
 .nvx-brand-faq-accordion details[open],
 .nvx-brand-faq-accordion .nvx-brand-faq-item[open] {
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-faq summary::-webkit-details-marker,
@@ -1672,7 +1672,7 @@ body .joinchat__qr canvas {
 }
 
 .nvx-faq summary:hover, .nvx-brand-faq-accordion summary:hover {
-  color: var(--nvx-charcoal, var(--nvx-charcoal));
+  color: var(--nvx-charcoal);
   outline: none;
 }
 
@@ -2282,15 +2282,15 @@ body.nvx-valoracion-modal-open{
 
 
 .nvx-strategy-checklist {
-  margin-top: var(--nvx-space-6, var(--nvx-space-6));
+  margin-top: var(--nvx-space-6);
 }
 
 .nvx-check-list {
   list-style: none;
-  margin: var(--nvx-space-4, var(--nvx-space-4)) 0;
+  margin: var(--nvx-space-4) 0;
   padding: 0;
   display: grid;
-  gap: var(--nvx-space-3, var(--nvx-space-3));
+  gap: var(--nvx-space-3);
   max-width: 65ch;
 }
 
@@ -2308,7 +2308,7 @@ body.nvx-valoracion-modal-open{
   position: absolute;
   left: 0;
   top: 0;
-  color: var(--nvx-accent-muted, var(--nvx-accent-muted));
+  color: var(--nvx-accent-muted);
   font-weight: bold;
 }
 
@@ -3013,7 +3013,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   font-weight: var(--nvx-fw-medium);
   letter-spacing: 0.08em; /* nvx-token-exception: EXCEPTION_DOCUMENTED — protocol eyebrow tracking */
   text-transform: uppercase;
-  color: var(--nvx-text-muted, var(--nvx-text-body));
+  color: var(--nvx-text-muted);
 }
 
 .nvx-home-protocol__fact dd {
@@ -3303,7 +3303,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   padding: var(--nvx-space-4);
   border: var(--nvx-border-hairline) solid var(--nvx-color-line);
   border-radius: var(--nvx-radius-card);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-fact-panel__label {
@@ -3540,7 +3540,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   margin-bottom: var(--nvx-space-6);
   border: var(--nvx-border-hairline) solid var(--nvx-color-line);
   border-radius: var(--nvx-radius-card);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-endolift-compare-table {
@@ -3572,7 +3572,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   font-weight: var(--nvx-fw-medium);
   color: var(--nvx-ink);
   text-align: left;
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-endolift-compare-table tbody td {
@@ -3635,7 +3635,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 .nvx-laser-pillar,
 .nvx-brand-card {
   padding: var(--nvx-card-padding);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
   border: var(--nvx-border-hairline) solid var(--nvx-border-soft);
   box-shadow: none;
 }
@@ -3657,7 +3657,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 .nvx-laser-platform,
 .nvx-brand-card {
   padding: var(--nvx-space-4);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
   border: var(--nvx-border-hairline) solid var(--nvx-border-soft);
 }
 
@@ -3694,7 +3694,7 @@ body:not(.home) .nvx-page-hero__copy h1,
    ═══════════════════════════════════════════════════════════ */
 
 .nvx-aes-catalog {
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
 }
 
 .nvx-aes-regen {
@@ -3791,7 +3791,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   font-weight: var(--nvx-fw-bold);
   letter-spacing: var(--nvx-track-button);
   text-transform: uppercase;
-  color: var(--nvx-accent-muted, var(--nvx-text-muted));
+  color: var(--nvx-accent-muted);
 }
 
 .nvx-aes-card__meta dt:first-child {
@@ -3828,7 +3828,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 
 .nvx-aes-regen__panel {
   padding: var(--nvx-space-4);
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
   border: var(--nvx-border-hairline) solid var(--nvx-color-line);
 }
 
@@ -4304,7 +4304,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   width: 100%;
   margin: 0;
   padding: var(--nvx-space-3) 0;
-  background: var(--nvx-surface-base, var(--nvx-color-paper));
+  background: var(--nvx-surface-base);
   border-bottom: var(--nvx-border-hairline) solid var(--nvx-border-soft);
   backdrop-filter: blur(10px);
   position: sticky;
