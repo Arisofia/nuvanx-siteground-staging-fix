@@ -24,8 +24,11 @@ const ROUTES = Object.freeze([
   Object.freeze({ path: '/laser-co2-fraccionado-madrid-textura-cicatrices-poro/', treatmentId: 'laser_co2' }),
   Object.freeze({ path: '/exion-face/', treatmentId: 'exion_face' }),
 ]);
-const MAX_NAVIGATION_ATTEMPTS = 4;
-const NAVIGATION_TIMEOUT_MS = 45_000;
+
+const DEFAULT_RUNTIME_TIMEOUT_MS = 4 * 60 * 1000;
+const runtimeBudgetMs = Number.parseInt(process.env.CLINICAL_EVIDENCE_TIMEOUT_MS || '', 10) || DEFAULT_RUNTIME_TIMEOUT_MS;
+const runtimeDeadline = Date.now() + runtimeBudgetMs;
+const MAX_NAVIGATION_ATTEMPTS = 3;
 
 class RealFailure extends Error {
   constructor(message) {
@@ -53,6 +56,31 @@ function assertReal(condition, message) {
   if (!condition) throw new RealFailure(message);
 }
 
+function validateEvidenceRowMetadata(evidence, treatmentId) {
+  for (const field of ['study_type', 'sample_size', 'title', 'summary', 'limitation', 'source_label', 'source_url', 'pmid']) {
+    const value = String(evidence?.[field] || '').trim();
+    assertReal(value !== '', `empty_field_${field}_${treatmentId}_${evidence?.pmid || 'unknown'}`);
+  }
+
+  const pmidStr = String(evidence.pmid).trim();
+  assertReal(/^\d+$/.test(pmidStr), `invalid_pmid_format_${treatmentId}_${pmidStr}`);
+
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(evidence.source_url);
+  } catch {
+    throw new RealFailure(`malformed_source_url_${treatmentId}_${pmidStr}`);
+  }
+  assertReal(parsedUrl.protocol === 'https:', `non_https_source_url_${treatmentId}_${pmidStr}`);
+  assertReal(parsedUrl.hostname === 'pubmed.ncbi.nlm.nih.gov', `non_pubmed_host_${treatmentId}_${parsedUrl.hostname}`);
+  const urlPmid = parsedUrl.pathname.replace(/^\/+|\/+$/g, '').split('/')[0];
+  assertReal(urlPmid === pmidStr, `url_pmid_mismatch_${treatmentId}_expected_${pmidStr}_got_${urlPmid}`);
+
+  assertReal(/PubMed/i.test(evidence.source_label), `label_missing_pubmed_${treatmentId}_${pmidStr}`);
+  const labelMatch = evidence.source_label.match(/\bPMID\s*:?\s*(\d+)\b/i);
+  assertReal(Boolean(labelMatch) && labelMatch[1] === pmidStr, `label_pmid_mismatch_${treatmentId}_expected_${pmidStr}`);
+}
+
 function screenshotName(routePath, viewportKey) {
   const routeKey = routePath.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase();
   return `clinical-evidence-${routeKey}-${viewportKey}.png`;
@@ -61,8 +89,13 @@ function screenshotName(routePath, viewportKey) {
 async function navigatePublic(page, url) {
   let lastTransient = 'unknown';
   for (let attempt = 1; attempt <= MAX_NAVIGATION_ATTEMPTS; attempt += 1) {
+    const remainingMs = runtimeDeadline - Date.now();
+    if (remainingMs <= 2000) {
+      throw new TransientFailure(`clinical_runtime_budget_exhausted deadline=${runtimeBudgetMs}ms`);
+    }
+    const attemptTimeoutMs = Math.min(20_000, Math.max(5000, remainingMs - 2000));
     try {
-      const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: NAVIGATION_TIMEOUT_MS });
+      const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: attemptTimeoutMs });
       const currentUrl = page.url();
       const status = response?.status() || 0;
       const headers = response ? await response.allHeaders() : {};
@@ -177,6 +210,8 @@ async function inspectCase(browser, route, viewport, treatment) {
     assertReal(articleCount === treatment.evidence.length, `clinical_item_count_${articleCount}_expected_${treatment.evidence.length}`);
 
     for (const evidence of treatment.evidence) {
+      validateEvidenceRowMetadata(evidence, route.treatmentId);
+
       const sourceLink = section.locator(`a[href="${evidence.source_url}"]`);
       const sourceLinkCount = await sourceLink.count();
       assertReal(sourceLinkCount === 1, `source_link_count_${evidence.pmid}_${sourceLinkCount}`);
@@ -186,18 +221,29 @@ async function inspectCase(browser, route, viewport, treatment) {
       const article = sourceLink.locator('xpath=ancestor::article[contains(concat(" ", normalize-space(@class), " "), " nvx-clinical-note ")]');
       const sourceArticleCount = await article.count();
       assertReal(sourceArticleCount === 1, `source_article_missing_${evidence.pmid}`);
-      const articleText = normalizeText(await article.innerText());
-      const requiredFragments = [
-        evidence.title,
-        evidence.study_type,
-        evidence.sample_size,
-        evidence.summary,
-        evidence.limitation,
-        evidence.source_label,
-      ].map(normalizeText);
-      for (const fragment of requiredFragments) {
-        assertReal(articleText.includes(fragment), `source_content_mismatch_${evidence.pmid}`);
-      }
+
+      // 1) Exact title validation
+      const titleLoc = article.locator('h3.nvx-clinical-note__title');
+      assertReal(await titleLoc.count() === 1, `source_title_missing_${evidence.pmid}`);
+      assertReal(normalizeText(await titleLoc.innerText()) === normalizeText(evidence.title), `source_title_mismatch_${evidence.pmid}`);
+
+      // 2) Exact meta validation (study_type · sample_size)
+      const metaLoc = article.locator('p.nvx-brand-meta');
+      assertReal(await metaLoc.count() === 1, `source_meta_missing_${evidence.pmid}`);
+      const expectedMeta = [evidence.study_type, evidence.sample_size].filter(Boolean).join(' · ');
+      assertReal(normalizeText(await metaLoc.innerText()) === normalizeText(expectedMeta), `source_meta_mismatch_${evidence.pmid}`);
+
+      // 3) Exact summary validation
+      const summaryLoc = article.locator('p.nvx-clinical-note__text');
+      assertReal(await summaryLoc.count() === 1, `source_summary_missing_${evidence.pmid}`);
+      assertReal(normalizeText(await summaryLoc.innerText()) === normalizeText(evidence.summary), `source_summary_mismatch_${evidence.pmid}`);
+
+      // 4) Exact limitation validation
+      const limitationLoc = article.locator('p.nvx-body:has(strong)');
+      assertReal(await limitationLoc.count() === 1, `source_limitation_missing_${evidence.pmid}`);
+      const limitationText = normalizeText(await limitationLoc.innerText());
+      const expectedLimitation = normalizeText(`Límite de la evidencia: ${evidence.limitation}`);
+      assertReal(limitationText === expectedLimitation, `source_limitation_mismatch_${evidence.pmid}`);
     }
 
     const axe = await new AxeBuilder({ page }).include(selector).analyze();
@@ -249,6 +295,9 @@ async function main() {
   const treatments = matrix?.treatments || {};
   for (const route of ROUTES) {
     assertReal(treatments[route.treatmentId] && Array.isArray(treatments[route.treatmentId].evidence), `ssot_missing_${route.treatmentId}`);
+    for (const evidence of treatments[route.treatmentId].evidence) {
+      validateEvidenceRowMetadata(evidence, route.treatmentId);
+    }
   }
 
   const governedSources = ROUTES.reduce((sum, route) => sum + treatments[route.treatmentId].evidence.length, 0);
@@ -260,8 +309,17 @@ async function main() {
   try {
     for (const route of ROUTES) {
       for (const viewport of VIEWPORTS) {
+        if (Date.now() >= runtimeDeadline) {
+          throw new TransientFailure(`clinical_runtime_budget_exhausted deadline=${runtimeBudgetMs}ms`);
+        }
         results.push(await inspectCase(browser, route, viewport, treatments[route.treatmentId]));
       }
+    }
+  } catch (error) {
+    if (error instanceof TransientFailure) {
+      console.error(`CLINICAL_EVIDENCE_RUNTIME=TRANSIENT_INFRASTRUCTURE reason=${normalizeText(error.message).replace(/\s+/g, '_')}`);
+    } else {
+      throw error;
     }
   } finally {
     await browser.close().catch(() => {});
@@ -288,7 +346,7 @@ async function main() {
     process.exitCode = 1;
     return;
   }
-  if (payload.transient > 0) {
+  if (payload.transient > 0 || results.length < 9) {
     console.error(`CLINICAL_EVIDENCE_RUNTIME=TRANSIENT_INFRASTRUCTURE cases=${payload.cases} pass=${payload.pass} transient=${payload.transient} sha=${expectedSha} classification=transient_infrastructure candidate_defect=not_established`);
     process.exitCode = EX_TEMPFAIL;
     return;
