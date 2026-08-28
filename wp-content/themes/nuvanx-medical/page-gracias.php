@@ -10,6 +10,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Register the route-specific robots reconciliation before get_header() emits
+// wp_head()/Yoast robots. Production remains noindex,follow per the canonical
+// publication manifest; non-production still inherits the global nofollow gate.
+require_once get_template_directory() . '/inc/nvx-gracias-robots-governance.php';
+
 $nvx_clinics  = function_exists( 'nvx_get_clinics_config' ) ? nvx_get_clinics_config() : array();
 $nvx_chamberi = isset( $nvx_clinics['chamberi'] ) && is_array( $nvx_clinics['chamberi'] )
 	? $nvx_clinics['chamberi']
