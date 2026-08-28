@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
+import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
 import { EX_TEMPFAIL } from './siteground-transient-classifier.mjs';
@@ -41,32 +42,38 @@ function runProcess(moduleUrl) {
   });
 }
 
+const valoracionArtifactsDir = fileURLToPath(new URL('./valoracion-artifacts', import.meta.url));
 const STAGE_EVIDENCE_MAP = {
   'meta-no-consent': {
     source: fileURLToPath(new URL('./meta-no-consent-artifacts/results.json', import.meta.url)),
-    destinationDir: fileURLToPath(new URL('./valoracion-artifacts', import.meta.url)),
+    destinationDir: valoracionArtifactsDir,
     destination: fileURLToPath(new URL('./valoracion-artifacts/meta-no-consent-results.json', import.meta.url)),
   },
   'complianz-first-visit-mobile': {
-    source: fileURLToPath(new URL('./complianz-first-visit-mobile-artifacts/results.json', import.meta.url)),
-    destinationDir: fileURLToPath(new URL('./valoracion-artifacts', import.meta.url)),
-    destination: fileURLToPath(new URL('./valoracion-artifacts/complianz-first-visit-mobile-results.json', import.meta.url)),
+    sourceDirectory: fileURLToPath(new URL('./complianz-first-visit-mobile-artifacts', import.meta.url)),
+    destinationDirectory: fileURLToPath(new URL('./valoracion-artifacts/complianz-first-visit-mobile', import.meta.url)),
   },
   'block-a11y': {
     source: fileURLToPath(new URL('./block-a11y-artifacts/results.json', import.meta.url)),
-    destinationDir: fileURLToPath(new URL('./valoracion-artifacts', import.meta.url)),
+    destinationDir: valoracionArtifactsDir,
     destination: fileURLToPath(new URL('./valoracion-artifacts/block-a11y-results.json', import.meta.url)),
   },
 };
 
 async function prepareAllStageEvidence() {
   for (const config of Object.values(STAGE_EVIDENCE_MAP)) {
-    await fs.rm(config.source, { recursive: true, force: true }).catch((err) => {
-      console.warn(`STAGING_ACCEPTANCE_EVIDENCE=CLEANUP_WARN path=${config.source} error=${err instanceof Error ? err.message : String(err)}`);
-    });
-    await fs.rm(config.destination, { recursive: true, force: true }).catch((err) => {
-      console.warn(`STAGING_ACCEPTANCE_EVIDENCE=CLEANUP_WARN path=${config.destination} error=${err instanceof Error ? err.message : String(err)}`);
-    });
+    const sourceTarget = config.sourceDirectory || config.source;
+    const destinationTarget = config.destinationDirectory || config.destination;
+    if (sourceTarget) {
+      await fs.rm(sourceTarget, { recursive: true, force: true }).catch((err) => {
+        console.warn(`STAGING_ACCEPTANCE_EVIDENCE=CLEANUP_WARN path=${sourceTarget} error=${err instanceof Error ? err.message : String(err)}`);
+      });
+    }
+    if (destinationTarget) {
+      await fs.rm(destinationTarget, { recursive: true, force: true }).catch((err) => {
+        console.warn(`STAGING_ACCEPTANCE_EVIDENCE=CLEANUP_WARN path=${destinationTarget} error=${err instanceof Error ? err.message : String(err)}`);
+      });
+    }
   }
 }
 
@@ -75,9 +82,18 @@ async function preserveStageEvidence(component) {
   if (!config) return true;
 
   try {
+    if (config.sourceDirectory && config.destinationDirectory) {
+      await fs.access(path.join(config.sourceDirectory, 'results.json'));
+      await fs.rm(config.destinationDirectory, { recursive: true, force: true });
+      await fs.mkdir(path.dirname(config.destinationDirectory), { recursive: true });
+      await fs.cp(config.sourceDirectory, config.destinationDirectory, { recursive: true });
+      console.log(`STAGING_ACCEPTANCE_EVIDENCE=PRESERVED component=${component} path=${config.destinationDirectory} mode=directory`);
+      return true;
+    }
+
     await fs.mkdir(config.destinationDir, { recursive: true });
     await fs.copyFile(config.source, config.destination);
-    console.log(`STAGING_ACCEPTANCE_EVIDENCE=PRESERVED component=${component} path=${config.destination}`);
+    console.log(`STAGING_ACCEPTANCE_EVIDENCE=PRESERVED component=${component} path=${config.destination} mode=file`);
     return true;
   } catch (error) {
     console.warn(
