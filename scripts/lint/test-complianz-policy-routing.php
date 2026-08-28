@@ -7,6 +7,7 @@ define( 'ABSPATH', __DIR__ . '/' );
 
 $GLOBALS['nvx_added_filters']   = array();
 $GLOBALS['nvx_removed_filters'] = array();
+$GLOBALS['nvx_added_actions']   = array();
 
 function add_filter( $hook, $callback, $priority = 10 ) {
 	$GLOBALS['nvx_added_filters'][] = array( $hook, $callback, $priority );
@@ -14,6 +15,10 @@ function add_filter( $hook, $callback, $priority = 10 ) {
 }
 function remove_filter( $hook, $callback, $priority = 10 ) {
 	$GLOBALS['nvx_removed_filters'][] = array( $hook, $callback, $priority );
+	return true;
+}
+function add_action( $hook, $callback, $priority = 10 ) {
+	$GLOBALS['nvx_added_actions'][] = array( $hook, $callback, $priority );
 	return true;
 }
 function home_url( $path = '/' ) { return 'https://nuvanx.com' . $path; }
@@ -147,5 +152,10 @@ nvx_assert_filter_registration(
 	$GLOBALS['nvx_added_filters'],
 	'canonical_template_filter_registered'
 );
+nvx_assert_filter_registration(
+	array( 'wp_enqueue_scripts', 'nvx_complianz_enforce_touch_targets', 20 ),
+	$GLOBALS['nvx_added_actions'],
+	'canonical_touch_target_action_registered'
+);
 
-fwrite( STDOUT, "COMPLIANZ_POLICY_ROUTING=PASS cases=20 privacy=canonical cookies=canonical legal=canonical metadata=authoritative hash_metadata=authoritative js_controls=preserved template_url=preserved owner=single\n" );
+fwrite( STDOUT, "COMPLIANZ_POLICY_ROUTING=PASS cases=21 privacy=canonical cookies=canonical legal=canonical metadata=authoritative hash_metadata=authoritative js_controls=preserved template_url=preserved touch_target=registered owner=single\n" );
