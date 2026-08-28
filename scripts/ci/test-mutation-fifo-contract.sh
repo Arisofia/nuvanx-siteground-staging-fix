@@ -254,4 +254,4 @@ php "$ROOT/scripts/lint/test-complianz-policy-routing.php"
 
 # Design-token adoption blocks the zero-baseline ratcheted categories by
 # default; --strict additionally blocks every category in STRICT_CATEGORIES.
-node "$ROOT/scripts/lint/audit-design-token-adoption.mjs
+node "$ROOT/scripts/lint/audit-design-token-adoption.mjs"
