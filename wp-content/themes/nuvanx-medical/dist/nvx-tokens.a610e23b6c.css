@@ -57,6 +57,11 @@
   --nvx-shadow-button-on-dark: 0 4px 16px rgba(0, 0, 0, 0.3);
   --nvx-shadow-button-on-dark-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
 
+  /* Text shadows for dark overlays */
+  --nvx-text-shadow-overlay-strong: 0 1px 6px rgba(0, 0, 0, 0.6);
+  --nvx-text-shadow-overlay-medium: 0 2px 10px rgba(0, 0, 0, 0.55);
+  --nvx-text-shadow-overlay-heavy: 0 2px 8px rgba(0, 0, 0, 0.75);
+
   /* Escala de 8px */
   --nvx-space-1: 8px;
   --nvx-space-2: 16px;
@@ -249,6 +254,7 @@
 
   /* Additional design tokens added during migration */
   --nvx-outline-offset: 2px;
+  --nvx-underline-offset-medium: 3px;
   --nvx-catalog-width: 900px;
   --nvx-section-tight-width: 800px;
 
@@ -258,6 +264,9 @@
   --nvx-duration-slow: 320ms;
   --nvx-duration-slower: 480ms;
   --nvx-transition-fast: var(--nvx-duration-fast) cubic-bezier(0.2, 0, 0, 1);
+
+  /* Effects */
+  --nvx-blur-strong: 10px;
 
   /* Alias para variables huérfanas (Audit 4.5) */
   --nvx-color-soft: var(--nvx-surface-soft);

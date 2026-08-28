@@ -3,9 +3,9 @@
   "generated": "1970-01-01T00:00:00.000Z",
   "bundles": {
     "core": {
-      "file": "nvx-core.a75e5ca642.css",
-      "hash": "a75e5ca642",
-      "size": 156665,
+      "file": "nvx-core.af289a2f98.css",
+      "hash": "af289a2f98",
+      "size": 156539,
       "sources": [
         "assets/css/nvx-fonts.css",
         "assets/css/nvx-tokens.css",
@@ -19,9 +19,9 @@
       ]
     },
     "home-v3": {
-      "file": "nvx-home-v3.78e67d15ec.css",
-      "hash": "78e67d15ec",
-      "size": 18548,
+      "file": "nvx-home-v3.e0861799db.css",
+      "hash": "e0861799db",
+      "size": 18646,
       "sources": [
         "assets/css/nvx-home-v3.css"
       ]
@@ -69,14 +69,14 @@
   },
   "files": {
     "assets/css/nvx-accessibility-governance.css": {
-      "file": "nvx-accessibility-governance.85cd2d03db.css",
-      "hash": "85cd2d03db",
-      "size": 12982
+      "file": "nvx-accessibility-governance.c281faba63.css",
+      "hash": "c281faba63",
+      "size": 13075
     },
     "assets/css/nvx-base.css": {
-      "file": "nvx-base.18ae8daadc.css",
-      "hash": "18ae8daadc",
-      "size": 9394
+      "file": "nvx-base.c47a391f4e.css",
+      "hash": "c47a391f4e",
+      "size": 8835
     },
     "assets/css/nvx-cases-holding.css": {
       "file": "nvx-cases-holding.79a1c06596.css",
@@ -104,14 +104,14 @@
       "size": 8222
     },
     "assets/css/nvx-header.css": {
-      "file": "nvx-header.41273d4da5.css",
-      "hash": "41273d4da5",
-      "size": 10025
+      "file": "nvx-header.26a2021b55.css",
+      "hash": "26a2021b55",
+      "size": 10043
     },
     "assets/css/nvx-home-v3.css": {
-      "file": "nvx-home-v3.052db6cfbf.css",
-      "hash": "052db6cfbf",
-      "size": 18526
+      "file": "nvx-home-v3.3acc554342.css",
+      "hash": "3acc554342",
+      "size": 18624
     },
     "assets/css/nvx-patterns-editorial.css": {
       "file": "nvx-patterns-editorial.6cf7ca00ee.css",
@@ -139,9 +139,9 @@
       "size": 11373
     },
     "assets/css/nvx-tokens.css": {
-      "file": "nvx-tokens.e07dc9657e.css",
-      "hash": "e07dc9657e",
-      "size": 9170
+      "file": "nvx-tokens.a610e23b6c.css",
+      "hash": "a610e23b6c",
+      "size": 9492
     }
   }
 }

@@ -162,26 +162,9 @@ p, li, blockquote, dt, dd {
 
 /*
  * Approved NUVANX responsive layout contract — August 2026.
- * Exact breakpoint values replace fluid spacing aliases without creating a
- * parallel component system. html:root intentionally outranks older :root
- * aliases declared later in the concatenated critical bundle.
+ * Responsive overrides for spacing tokens at different breakpoints.
+ * Base values are defined in nvx-tokens.css; these are breakpoint-specific overrides.
  */
-html:root {
-  --nvx-section-py: 48px;
-  --nvx-section-compact-py: 32px;
-  --nvx-subblock-gap: 24px;
-  --nvx-heading-to-grid: 24px;
-  --nvx-card-grid-gap: 1px;
-  --nvx-card-padding: 20px;
-  --nvx-gutter-page: 24px;
-  --nvx-gutter-inner: var(--nvx-gutter-page);
-  --nvx-gutter-inline: var(--nvx-gutter-page);
-  --nvx-pad-section: var(--nvx-section-py);
-  --nvx-pad-section-tight: var(--nvx-section-compact-py);
-  --nvx-gap-section: var(--nvx-subblock-gap);
-  --nvx-pad-card: var(--nvx-card-padding);
-}
-
 @media (min-width: 768px) {
   html:root {
     --nvx-section-py: 64px;

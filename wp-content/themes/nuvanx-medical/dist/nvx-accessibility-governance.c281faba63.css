@@ -389,7 +389,7 @@
 }
 .nvx-skip-link:focus {
   top: var(--nvx-space-1, 8px);
-  outline: 3px solid var(--nvx-ink);
+  outline: 3px solid var(--nvx-ink); /* nvx-token-exception: EXCEPTION_DOCUMENTED — WCAG 2.1 AAA requires 3px for skip links */
   outline-offset: 2px;
   z-index: calc(var(--nvx-z-a11y) + 1);
   box-shadow: var(--nvx-shadow-focus-light);

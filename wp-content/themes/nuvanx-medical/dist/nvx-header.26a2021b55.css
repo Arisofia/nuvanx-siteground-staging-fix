@@ -8,7 +8,7 @@
   padding: var(--nvx-space-3) 0;
   background: var(--nvx-surface-base);
   border-bottom: var(--nvx-border-hairline) solid var(--nvx-border-soft);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(var(--nvx-blur-strong));
   position: sticky;
   top: 0;
   z-index: var(--nvx-z-header);
