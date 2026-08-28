@@ -280,7 +280,7 @@ while :; do
   for status in queued in_progress waiting requested pending; do
     raw_status_runs=""
     if ! raw_status_runs="$(gh api --paginate "/repos/${GITHUB_REPOSITORY}/actions/runs?status=${status}&per_page=100" \
-      --jq '.workflow_runs[] | [(.id|tostring),(.status // ""),(.event // ""),(..path // ""),(.head_sha // "")] | @tsv' 2>/dev/null)"; then
+      --jq '.workflow_runs[] | [(.id|tostring),(.status // ""),(.event // ""),(.path // ""),(.head_sha // "")] | @tsv' 2>/dev/null)"; then
       scan_failed=1
       break
     fi
@@ -313,6 +313,12 @@ while :; do
 
   if (( scan_failed != 0 )); then
     clear_scans=0
+    now_epoch="$(date +%s)"
+    waited=$(( now_epoch - started_epoch ))
+    if (( waited >= MAX_WAIT_SECONDS )); then
+      echo "MUTATION_FIFO=FAIL reason=api_wait_timeout role=$ROLE run_id=$CURRENT_RUN_ID waited_seconds=$waited" >&2
+      exit 1
+    fi
     echo "MUTATION_FIFO=WARN reason=api_query_failed retrying=true" >&2
     sleep "$POLL_SECONDS"
     continue
