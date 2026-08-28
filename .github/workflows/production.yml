@@ -58,6 +58,7 @@ on:
 permissions:
   contents: read
   actions: read
+  pull-requests: read
 
 # Each run owns a unique GitHub concurrency group. Cross-workflow mutation order
 # is enforced by scripts/ci/wait-for-environment-mutation-turn.sh so a newer run
@@ -89,6 +90,7 @@ jobs:
     permissions:
       actions: write
       contents: read
+      pull-requests: read
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
@@ -135,6 +137,10 @@ jobs:
   release:
     name: Promote immutable accepted SHA
     if: ${{ github.event_name == 'workflow_dispatch' && (inputs.deploy || inputs.run_ssh_connectivity_probe) }}
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
     runs-on: ubuntu-latest
     timeout-minutes: 105
     outputs:
