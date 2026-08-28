@@ -120,11 +120,32 @@ if ( 'observed_admin_not_official_register' !== ( $goya['admin_legal_surface']['
 }
 
 $goya_url = (string) ( $goya['public_url'] ?? '' );
-if ( '' === $goya_url || ! str_contains( $schema_raw, "'https://www.doctoralia.es/clinicas/nuvanx-medicina-estetica-laser-sede-goya'" ) ) {
+$canonical_goya_url = 'https://www.doctoralia.es/clinicas/nuvanx-medicina-estetica-laser-sede-goya';
+if ( $canonical_goya_url !== $goya_url || ! str_contains( $schema_raw, "'{$canonical_goya_url}'" ) ) {
 	$fail( 'Goya MedicalClinic sameAs lost the canonical public Doctoralia profile' );
 }
-if ( str_contains( $schema_raw, 'yolanda piñero' ) || str_contains( $schema_raw, 'Javier Rivera Tejeda' ) ) {
-	$fail( 'unverified Doctoralia responsible-person data leaked into website Schema' );
+
+// Check for unverified responsible-person data across all schema-producing sources
+$schema_files = array(
+	$root . '/wp-content/themes/nuvanx-medical/inc/nvx-schema-foundation.php',
+	$root . '/wp-content/themes/nuvanx-medical/inc/nvx-schema-physicians.php',
+	$root . '/wp-content/themes/nuvanx-medical/inc/nvx-schema-treatments.php',
+);
+$prohibited_names = array( 'yolanda piñero', 'Javier Rivera Tejeda' );
+foreach ( $schema_files as $schema_file ) {
+	if ( ! is_file( $schema_file ) ) {
+		continue;
+	}
+	$file_raw = file_get_contents( $schema_file );
+	if ( false === $file_raw ) {
+		continue;
+	}
+	$file_lower = strtolower( $file_raw );
+	foreach ( $prohibited_names as $name ) {
+		if ( str_contains( $file_lower, strtolower( $name ) ) ) {
+			$fail( 'unverified Doctoralia responsible-person data leaked into website Schema' );
+		}
+	}
 }
 
 foreach ( $data['target_projection']['legacy_not_canonical'] ?? array() as $legacy ) {
