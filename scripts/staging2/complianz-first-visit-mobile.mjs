@@ -62,6 +62,11 @@ function slugForRoute(route) {
   return route === '/' ? 'home' : route.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9-]+/gi, '-');
 }
 
+function normalizePathname(pathname) {
+  const normalized = `/${String(pathname || '').replace(/^\/+|\/+$/g, '')}`;
+  return normalized === '/' ? '/' : `${normalized}/`;
+}
+
 async function pollUntil(check, { timeoutMs = 8000, intervalMs = 150 } = {}) {
   const deadline = Date.now() + timeoutMs;
   let lastValue = null;
@@ -136,12 +141,31 @@ async function navigatePublicCandidate(page, route) {
     return { pass: false, transient: false, reason: `Expected HTTP 200, got ${status}`, transport: 'public-edge' };
   }
 
+  let finalUrl = null;
+  try {
+    finalUrl = new URL(currentUrl);
+  } catch {
+    return { pass: false, transient: false, reason: `Invalid final URL after navigation: ${currentUrl || 'missing'}`, transport: 'public-edge' };
+  }
+  if (
+    finalUrl.protocol !== 'https:'
+    || finalUrl.hostname !== expectedHost
+    || normalizePathname(finalUrl.pathname) !== normalizePathname(route)
+  ) {
+    return {
+      pass: false,
+      transient: false,
+      reason: `Unexpected final route: requested=${route} final=${finalUrl.href}`,
+      transport: 'public-edge',
+    };
+  }
+
   const metaSha = (await page.locator('meta[name="nvx-deploy-sha"]').getAttribute('content').catch(() => '')) || '';
   if (metaSha !== expectedSha) {
     return { pass: false, transient: false, reason: `SHA mismatch: ${metaSha || 'missing'} != ${expectedSha}`, transport: 'public-edge' };
   }
 
-  return { pass: true, transient: false, transport: 'public-edge', status };
+  return { pass: true, transient: false, transport: 'public-edge', status, finalUrl: finalUrl.href };
 }
 
 function verifyOriginOnly(route) {
@@ -151,9 +175,10 @@ function verifyOriginOnly(route) {
   const origin = originVerifier.fetchHtml(route);
   if (!origin.pass) {
     const details = origin.stderr || origin.error || `origin status ${origin.originStatus ?? 0}`;
+    const challengeFailure = /(?:http_code_(?:202|429|503)|captcha-(?:body|header))/i.test(details);
     return {
       pass: false,
-      transient: origin.transportFailure === true,
+      transient: origin.transportFailure === true || challengeFailure,
       reason: `Origin verification failed: ${details}`,
     };
   }
