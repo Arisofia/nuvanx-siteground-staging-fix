@@ -1,17 +1,40 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "observed_at": "2026-08-28",
   "issue": 751,
   "canonical_service_source": "treatment-hub-schema.json",
   "status": "external_public_parity_open",
   "mutation_policy": {
-    "doctoralia_write_allowed": false,
-    "reason": "Resolve synchronization ownership, canonical direction and Chamberi admin export before further service mutations.",
-    "required_before_write": [
+    "doctoralia_write_allowed": true,
+    "doctoralia_write_mode": "non_destructive_profile_and_service_mapping_only",
+    "reason": "Fresh public evidence confirms Goya profile fields have propagated while the 13-service legacy aggregation and duplicate direction relationship remain live. Safe profile/service-visibility corrections can proceed without deleting directions or changing agendas.",
+    "allowed_operations": [
+      "edit_goya_clinic_profile_fields",
+      "edit_goya_public_service_visibility",
+      "edit_goya_service_names_and_descriptions",
+      "edit_goya_specialist_service_mapping_when_access_authorized",
+      "edit_goya_online_booking_visibility",
+      "add_missing_canonical_goya_services_when_doctoralia_type_verified"
+    ],
+    "blocked_operations": [
+      "delete_or_merge_direction_53333_49168",
+      "deactivate_or_delete_clinic_cloud_service_globally",
+      "change_legal_healthcare_responsible",
+      "change_agenda_hours_or_delete_agenda",
+      "remove_professional",
+      "change_chamberi_until_admin_export_complete"
+    ],
+    "required_before_non_destructive_write": [
+      "goya_integrated_admin_access_confirmed",
+      "goya_public_profile_identity_54924_confirmed",
+      "before_snapshot_captured",
+      "canonical_service_target_loaded"
+    ],
+    "required_before_direction_write": [
       "goya_synchronization_owner_confirmed",
       "goya_canonical_direction_confirmed",
-      "chamberi_admin_export_complete",
-      "website_chamberi_goya_exact_parity_diff_complete"
+      "future_appointments_and_unique_mappings_checked",
+      "doctoralia_merge_delete_impact_confirmed"
     ]
   },
   "target_projection": {
@@ -108,18 +131,23 @@
         }
       },
       "public_primary_profile": {
-        "status": "drift_live",
+        "status": "profile_fields_propagated_service_aggregation_stale",
         "observed_at": "2026-08-28",
         "specialties": [
-          "Enfermería",
           "Medicina estética",
-          "Radiología"
+          "Enfermería",
+          "Geriatría",
+          "Nutrición y dietética"
         ],
         "equipment": [
-          "Aire acondicionado"
+          "Endoláser corporal / laserlipólisis láser",
+          "Endolift® / plataforma láser para Endolift / LaseMAR 1500",
+          "DEKA SmartLipo® / laserlipólisis láser"
         ],
-        "responsable_sanitario": "yolanda piñero",
+        "responsable_sanitario": "Javier Rivera Tejeda",
         "responsable_classification": "observed_public_not_official_register",
+        "public_direction_count": 2,
+        "public_direction_duplication": "same_physical_address_exposed_twice",
         "service_count": 13,
         "legacy_services_observed": [
           "Primera consulta gratuita",
@@ -135,19 +163,7 @@
         ]
       },
       "public_secondary_surfaces": {
-        "status": "inconsistent_with_primary_profile",
-        "observed_specialty_variants": [
-          [
-            "Medicina estética",
-            "Enfermería",
-            "Geriatría"
-          ],
-          [
-            "Radiología",
-            "Enfermería",
-            "Medicina estética"
-          ]
-        ],
+        "status": "service_aggregation_and_professional_mappings_still_stale",
         "legacy_treatment_search_still_live": [
           "HIFU",
           "Tratamiento con dermapen",
@@ -180,6 +196,35 @@
           ],
           "Francisco Geraldo Lorenzo": [
             "Primera consulta gratuita"
+          ]
+        }
+      },
+      "clinic_cloud_agenda_evidence": {
+        "observed_at": "2026-08-28",
+        "integrated_agendas": [
+          "201546",
+          "200338",
+          "200346",
+          "200337"
+        ],
+        "not_integrated_agendas": [
+          "201736"
+        ],
+        "legacy_service_agenda": {
+          "agenda_id": "200346",
+          "agenda_name": "ESTETICIEN",
+          "user": "GOSIA",
+          "services": [
+            "DIATERMIA CORPORAL",
+            "COOLIFTING",
+            "FOTOCOOL",
+            "HIFU CORPORAL",
+            "HIFU FACIAL",
+            "LÁSER IPL",
+            "MADEROTERAPIA",
+            "MICRO PIGMENTACIÓN CEJAS",
+            "DERMAPEN FACIAL O ANTI HAIR LOSS",
+            "DESPIGMENTANTE FACIAL"
           ]
         }
       },
