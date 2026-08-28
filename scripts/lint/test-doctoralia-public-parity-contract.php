@@ -93,6 +93,20 @@ if ( $required_before_direction_write !== ( $policy['required_before_direction_w
 	$fail( 'destructive direction-write preconditions changed without governance update' );
 }
 
+$required_before_non_destructive_write = array(
+	'goya_synchronization_owner_confirmed',
+	'goya_canonical_direction_confirmed',
+	'chamberi_admin_export_complete',
+	'website_chamberi_goya_exact_parity_diff_complete',
+	'integrated_admin_access_verified',
+	'profile_identity_verified',
+	'before_snapshot_complete',
+	'canonical_target_confirmed',
+);
+if ( $required_before_non_destructive_write !== ( $policy['required_before_non_destructive_write'] ?? null ) ) {
+	$fail( 'Doctoralia non-destructive write preconditions changed without governance update' );
+}
+
 $chamberi = $data['clinics']['chamberi'] ?? null;
 $goya     = $data['clinics']['goya'] ?? null;
 if ( ! is_array( $chamberi ) || ! is_array( $goya ) ) {
