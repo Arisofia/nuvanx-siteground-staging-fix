@@ -74,6 +74,7 @@
   --nvx-form-stage-image: none;
 
   --nvx-highlight-soft: rgba(247, 247, 245, 0.70);
+  --nvx-accent-glow: rgba(252, 251, 248, 0.18);
 
   --nvx-shadow-min: 0 1px 2px rgba(26, 26, 26, 0.04);
   --nvx-shadow-soft: 0 16px 48px rgba(26, 26, 26, 0.06);
@@ -81,6 +82,7 @@
   --nvx-shadow-button: 0 8px 24px rgba(26, 26, 26, 0.12);
   --nvx-shadow-button-hover: 0 16px 32px rgba(26, 26, 26, 0.14);
   --nvx-shadow-focus-light: 0 0 0 2px var(--nvx-light);
+  --nvx-shadow-focus-glow: 0 0 0 3px var(--nvx-accent-glow);
   --nvx-shadow-button-on-dark: 0 4px 16px rgba(0, 0, 0, 0.3);
   --nvx-shadow-button-on-dark-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
 
@@ -197,6 +199,15 @@
     rgba(26, 26, 26, 0.92) 100%
   );
 
+  /* Stronger overlay for text legibility on light backgrounds (Nosotros hero) */
+  --nvx-media-overlay-strong: linear-gradient(
+    180deg,
+    rgba(26, 26, 26, 0.68) 0%,
+    rgba(26, 26, 26, 0.75) 28%,
+    rgba(26, 26, 26, 0.85) 58%,
+    rgba(26, 26, 26, 0.94) 100%
+  );
+
   /* ========== TIPOGRAFÍA OFICIAL ÚNICA ========== */
   --nvx-serif: "Playfair Display", "Playfair Display Fallback", Georgia, "Times New Roman", serif;
   --nvx-sans: "Manrope", "Manrope Fallback", "Helvetica Neue", Arial, sans-serif;
@@ -272,6 +283,7 @@
 
   /* ========== MOTION & TRANSITIONS ========== */
   --nvx-duration-fast: 160ms;
+  --nvx-duration-normal: 240ms;
   --nvx-duration-slow: 320ms;
   --nvx-duration-slower: 480ms;
   --nvx-transition-fast: var(--nvx-duration-fast) cubic-bezier(0.2, 0, 0, 1);

@@ -3,9 +3,9 @@
   "generated": "1970-01-01T00:00:00.000Z",
   "bundles": {
     "core": {
-      "file": "nvx-core.27a5dbe104.css",
-      "hash": "27a5dbe104",
-      "size": 156641,
+      "file": "nvx-core.57440a3585.css",
+      "hash": "57440a3585",
+      "size": 157056,
       "sources": [
         "assets/css/nvx-fonts.css",
         "assets/css/nvx-tokens.css",
@@ -139,9 +139,9 @@
       "size": 11373
     },
     "assets/css/nvx-tokens.css": {
-      "file": "nvx-tokens.ae22d2c4ec.css",
-      "hash": "ae22d2c4ec",
-      "size": 8755
+      "file": "nvx-tokens.e07dc9657e.css",
+      "hash": "e07dc9657e",
+      "size": 9170
     }
   }
 }
