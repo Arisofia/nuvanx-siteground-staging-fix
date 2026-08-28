@@ -796,7 +796,7 @@ jobs:
           compression-level: 6
 
       - name: Roll back complete Staging2 state after failure
-        if: ${{ failure() && env.STAGING_SNAPSHOT_READY == '1' && env.STAGING_MUTATION_ARMED == '1' }}
+        if: ${{ (failure() || cancelled()) && env.STAGING_SNAPSHOT_READY == '1' && env.STAGING_MUTATION_ARMED == '1' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -1190,7 +1190,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Roll back failed PR preview
-        if: ${{ failure() && env.STAGING_SNAPSHOT_READY == '1' }}
+        if: ${{ (failure() || cancelled()) && env.STAGING_SNAPSHOT_READY == '1' && env.STAGING_MUTATION_ARMED == '1' }}
         shell: bash
         run: |
           set -euo pipefail
