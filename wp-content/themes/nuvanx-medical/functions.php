@@ -296,6 +296,7 @@ require_once get_template_directory() . '/inc/nvx-security-headers.php';
 require_once get_template_directory() . '/inc/nvx-retired-strategy-redirects.php';
 require_once get_template_directory() . '/inc/nvx-integrations.php';
 require_once get_template_directory() . '/inc/nvx-gtm-integration.php';
+require_once get_template_directory() . '/inc/nvx-complianz-policy-routing.php';
 
 // 2. Data & SEO Governance
 require_once get_template_directory() . '/inc/nvx-catalog-json.php';
