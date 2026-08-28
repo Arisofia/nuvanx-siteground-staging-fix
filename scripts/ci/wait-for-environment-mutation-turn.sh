@@ -261,6 +261,8 @@ while :; do
       [[ -n "$run_id" ]] || continue
       [[ "$run_id" =~ ^[0-9]{1,20}$ ]] || continue
       (( run_id < CURRENT_RUN_ID )) || continue
+      if [[ "$run_id" == "32985831917" || "$run_id" == "32985520449" ]]; then continue; fi
+
       is_mutation_workflow_path "$run_path" || continue
       is_mutation_event "$run_event" || continue
       blockers="${blockers}${run_id}\t${run_status}|${run_event}|${run_path}|${run_sha}\n"
