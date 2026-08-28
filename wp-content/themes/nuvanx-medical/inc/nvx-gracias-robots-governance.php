@@ -2,11 +2,11 @@
 /**
  * Canonical robots governance for the managed /gracias/ route.
  *
- * The publication manifest requires /gracias/ to remain out of search results
- * while still allowing crawlers to follow its links (`noindex,follow`). The
- * legacy page-hygiene owner historically grouped the route into the stronger
- * `noindex,nofollow` class. These filters reconcile that runtime ownership
- * without weakening the route's noindex/sitemap exclusion.
+ * The publication manifest owns the route policy. When it explicitly declares
+ * `/gracias/` as `noindex,follow`, this adapter removes the route from the
+ * legacy nofollow bucket while retaining it in the noindex/navigable bucket.
+ * If the manifest is missing, unreadable, invalid or changes policy, the
+ * adapter fails closed and leaves the stronger legacy classification intact.
  *
  * @package NUVANX_Medical
  */
@@ -14,6 +14,53 @@
 declare(strict_types=1);
 
 defined( 'ABSPATH' ) || exit;
+
+/**
+ * Whether the canonical publication manifest authorizes noindex,follow for
+ * `/gracias/`.
+ */
+function nvx_gracias_manifest_declares_noindex_follow(): bool {
+	static $authorized = null;
+
+	if ( is_bool( $authorized ) ) {
+		return $authorized;
+	}
+
+	$authorized = false;
+	$path       = __DIR__ . '/data/publication-manifest.json';
+	if ( ! is_readable( $path ) ) {
+		return false;
+	}
+
+	$raw = file_get_contents( $path );
+	if ( false === $raw ) {
+		return false;
+	}
+
+	$manifest = json_decode( $raw, true );
+	if (
+		! is_array( $manifest )
+		|| 'nuvanx-publication-manifest' !== (string) ( $manifest['schema'] ?? '' )
+		|| ! is_array( $manifest['routes'] ?? null )
+	) {
+		return false;
+	}
+
+	$route = $manifest['routes']['/gracias/'] ?? null;
+	if (
+		! is_array( $route )
+		|| 'publish' !== (string) ( $route['status'] ?? '' )
+		|| 'gracias' !== (string) ( $route['slug'] ?? '' )
+		|| ! is_array( $route['robots'] ?? null )
+	) {
+		return false;
+	}
+
+	$authorized = false === ( $route['robots']['index'] ?? null )
+		&& true === ( $route['robots']['follow'] ?? null );
+
+	return $authorized;
+}
 
 /**
  * Resolve the canonical Gracias page ID once per request.
@@ -33,12 +80,17 @@ function nvx_gracias_robots_page_id(): int {
 }
 
 /**
- * Remove Gracias from the legacy nofollow class.
+ * Remove Gracias from the legacy nofollow class only when the manifest owns
+ * `noindex,follow` for the route.
  *
  * @param int[] $ids Page IDs currently classified noindex,nofollow.
  * @return int[]
  */
 function nvx_gracias_robots_remove_nofollow( array $ids ): array {
+	if ( ! nvx_gracias_manifest_declares_noindex_follow() ) {
+		return $ids;
+	}
+
 	$page_id = nvx_gracias_robots_page_id();
 	if ( $page_id <= 0 ) {
 		return $ids;
@@ -62,6 +114,10 @@ add_filter( 'nvx_nofollow_page_ids', 'nvx_gracias_robots_remove_nofollow', 20 );
  * @return int[]
  */
 function nvx_gracias_robots_add_noindex_follow( array $ids ): array {
+	if ( ! nvx_gracias_manifest_declares_noindex_follow() ) {
+		return $ids;
+	}
+
 	$page_id = nvx_gracias_robots_page_id();
 	if ( $page_id <= 0 ) {
 		return $ids;
