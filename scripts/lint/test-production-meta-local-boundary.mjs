@@ -13,10 +13,13 @@ const requiredLocalRoutes = [
 ];
 
 const failures = [];
+const nodeRouteInventory = source.match(/const routes = \[([\s\S]*?)\];/)?.[1] ?? '';
+const siteGroundRouteInventory = source.match(/for route in [\\]\n([\s\S]*?)\ndo/)?.[1] ?? '';
 for (const route of requiredLocalRoutes) {
-  const occurrences = source.split(route).length - 1;
-  if (occurrences < 2) {
-    failures.push(`${route}: expected in both JS and SiteGround route inventories, found ${occurrences}`);
+  const inNodeRoutes = nodeRouteInventory.includes(`'${route}'`);
+  const inSiteGroundRoutes = siteGroundRouteInventory.includes(`'${route}'`);
+  if (!inNodeRoutes || !inSiteGroundRoutes) {
+    failures.push(`${route}: expected in both JS and SiteGround route inventories`);
   }
 }
 
