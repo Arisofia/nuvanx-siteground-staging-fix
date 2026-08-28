@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# MANUAL DIAGNOSTIC — not invoked by any CI workflow (staging.yml / production.yml).
+# Owner: platform-ops. Run locally to verify HubSpot Conversations API read access is granted.
+# If this becomes a CI gate, move to .github/workflows/ and add to gate-normalization-config.json.
 set -Eeuo pipefail
 
 : "${HUBSPOT_ACCESS_TOKEN:?Missing HUBSPOT_ACCESS_TOKEN}"

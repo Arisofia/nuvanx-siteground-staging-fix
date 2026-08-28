@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# MANUAL DIAGNOSTIC — not invoked by any CI workflow (staging.yml / production.yml).
+# Owner: platform-ops. Run locally to verify the HubSpot form is live and unarchived.
+# If this becomes a CI gate, move to .github/workflows/ and add to gate-normalization-config.json.
 set -Eeuo pipefail
 
 FORM_ID="${HUBSPOT_FORM_ID:-5042522a-0bc5-4381-ac3e-5aee8649b69c}"

@@ -3,6 +3,7 @@
   "title": "NUVANX Gate Normalization Configuration",
   "description": "Defines the complete set of mandatory gates that must run on every release candidate. No workflow 'green' should mean lower coverage than another.",
   "version": "1.0.0",
+  "_ci_status": "validate-gate-normalization.mjs exists but is NOT invoked by any workflow (staging.yml / production.yml). Must be wired to CI before these gates are enforced.",
   "mandatory_gates": {
     "code_quality": {
       "php_syntax": {
@@ -36,7 +37,8 @@
     "theme_hygiene": {
       "required": true,
       "description": "Theme hygiene diagnostic",
-      "command": "wp eval require 'tools/migrations/diagnose-jsonld-storage.php';"
+      "command": "wp eval require 'tools/migrations/diagnose-jsonld-storage.php';",
+      "_status": "MISSING — tools/migrations/diagnose-jsonld-storage.php does not exist in repo"
     },
     "data_catalog": {
       "required": true,
@@ -56,7 +58,8 @@
     "block_c": {
       "required": true,
       "description": "Block C origin browser fallback",
-      "command": "node scripts/staging2/block-c-origin-browser-fallback.mjs"
+      "command": "node scripts/staging2/block-c-origin-browser-fallback.mjs",
+      "_status": "MISSING — scripts/staging2/block-c-origin-browser-fallback.mjs does not exist in repo"
     },
     "hubspot": {
       "required": true,
@@ -79,7 +82,8 @@
       "required": true,
       "description": "Overlays/plugins design system audit",
       "command": "node scripts/staging2/audit-overlays-design-system.mjs",
-      "optional_tool": "agent-browser"
+      "optional_tool": "agent-browser",
+      "_status": "MISSING — scripts/staging2/audit-overlays-design-system.mjs does not exist in repo"
     }
   },
   "workflows": {
