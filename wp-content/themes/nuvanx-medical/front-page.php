@@ -24,6 +24,7 @@ ob_start();
 			<source src="<?php echo esc_url( $hero_video_url ); ?>" type="video/mp4">
 		</video>
 		<div class="nvx-home-hero__content nvx-home-hero__copy">
+			<p class="nvx-home-hero__kicker">Endolift® · Láser CO₂ · Medicina Regenerativa · Madrid</p>
 			<h1 id="nvx-home-hero-title" class="nvx-home-hero__title">Primero el diagnóstico médico. Luego, el tratamiento adecuado.<span class="nvx-hero-title-location"> Madrid.</span></h1>
 			<p class="nvx-home-hero__lead">Antes de recomendar nada, escuchamos qué te preocupa y entendemos qué tendría sentido mejorar en tu caso.</p>
 			<div class="nvx-brand-actions">

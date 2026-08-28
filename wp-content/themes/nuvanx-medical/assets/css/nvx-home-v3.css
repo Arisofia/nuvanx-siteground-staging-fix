@@ -51,6 +51,17 @@
 	color: var(--nvx-light);
 }
 
+.nvx-home-hero__kicker {
+	font-family: var(--nvx-sans);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.78);
+	margin: 0 0 var(--nvx-space-2);
+	text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
 .nvx-home-hero__title {
 	font-family: var(--nvx-serif);
 	font-size: var(--nvx-type-h1);
