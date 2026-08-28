@@ -298,7 +298,7 @@ function nvx_aesthetic_treatment_render( array $page ): void {
 						'h1'                 => (string) $page['h1'],
 						'byline'             => true,
 						'lead'               => (string) $page['lead'],
-						'cta_fallback_label' => __( 'Solicitar valoración médica', 'nuvanx-medical' ),
+						'cta_fallback_label' => __( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' ),
 						'meta'               => __( 'Chamberí (CS20144) · Salamanca–Goya (CS20073)', 'nuvanx-medical' ),
 					)
 				);

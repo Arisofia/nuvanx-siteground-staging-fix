@@ -125,7 +125,7 @@ function nvx_aesthetic_hero_ctas_markup(): string {
 	$html .= sprintf(
 		'<a class="nvx-brand-btn nvx-brand-btn--primary" href="%1$s">%2$s</a>',
 		esc_url( $valoracion ),
-		esc_html__( 'Solicitar valoración médica', 'nuvanx-medical' )
+		esc_html__( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' )
 	);
 
 	$whatsapp = '';

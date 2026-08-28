@@ -217,7 +217,7 @@ function nvx_clinics_hub_page_markup(): string {
 	$html .= '<h1 id="nvx-clinics-hub-h1" class="nvx-brand-hero__title">' . esc_html__( 'Clínicas NUVANX Medicina Estética Láser en Madrid', 'nuvanx-medical' ) . '</h1>';
 	$html .= '<p class="nvx-brand-hero__lead">' . esc_html__( 'Dos centros sanitarios autorizados, una sola dirección médica. Chamberí y Salamanca–Goya con el mismo criterio clínico, protocolos láser y valoración presencial antes de cualquier tratamiento.', 'nuvanx-medical' ) . '</p>';
 	$html .= '<div class="nvx-brand-actions nvx-clinics-hub-actions">';
-	$html .= '<a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( $valoracion ) . '">' . esc_html__( 'Solicitar valoración médica', 'nuvanx-medical' ) . '</a>';
+	$html .= '<a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( $valoracion ) . '">' . esc_html__( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' ) . '</a>';
 	$html .= '</div>';
 	$html .= '<p class="nvx-brand-meta nvx-reg-copy">' . esc_html__( 'Chamberí CS20144 · Salamanca–Goya CS20073 · Medicina basada en evidencia', 'nuvanx-medical' ) . '</p>';
 	$html .= '</div></div></section>';
@@ -272,7 +272,7 @@ function nvx_clinics_hub_page_markup(): string {
 	$html .= '<h2 id="nvx-clinics-closure-title" class="nvx-brand-title">' . esc_html__( 'Valoración en nuestras sedes de Madrid', 'nuvanx-medical' ) . '</h2>';
 	$html .= '<p class="nvx-brand-lead">' . esc_html__( 'Chamberí (CS20144) y Salamanca–Goya (CS20073). Un único criterio médico, dos centros sanitarios autorizados.', 'nuvanx-medical' ) . '</p>';
 	$html .= '<div class="nvx-brand-actions">';
-	$html .= '<a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( $valoracion ) . '">' . esc_html__( 'Solicitar valoración médica', 'nuvanx-medical' ) . '</a>';
+	$html .= '<a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( $valoracion ) . '">' . esc_html__( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' ) . '</a>';
 	$html .= '</div></div></section>';
 
 	$html .= '<section class="nvx-brand-section" aria-labelledby="nvx-clinics-hub-cta-title">';

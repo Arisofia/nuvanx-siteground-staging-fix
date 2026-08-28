@@ -111,7 +111,7 @@ function nvx_strategy_why_nuvanx_markup(): string {
 		. '<p>Este procedimiento no es habitual en el sector. Lo describimos porque creemos que debería serlo.</p>'
 		. '</section>';
 
-	$html .= '<section class="nvx-brand-section" aria-labelledby="why-centros"><h2 id="why-centros">Atención en centros sanitarios autorizados</h2><p>NUVANX atiende en Chamberí (CS20144) y Salamanca–Goya (CS20073), con equipo médico colegiado.</p><p><a class="nvx-brand-btn" href="' . $valuation_url . '">Solicitar valoración médica</a> <a class="nvx-brand-inline-link" href="' . $team_url . '">Conocer al equipo médico</a>';
+	$html .= '<section class="nvx-brand-section" aria-labelledby="why-centros"><h2 id="why-centros">Atención en centros sanitarios autorizados</h2><p>NUVANX atiende en Chamberí (CS20144) y Salamanca–Goya (CS20073), con equipo médico colegiado.</p><p><a class="nvx-brand-btn" href="' . $valuation_url . '">Valoración gratuita — sin compromiso</a> <a class="nvx-brand-inline-link" href="' . $team_url . '">Conocer al equipo médico</a>';
 	if ( '' !== $investment ) {
 		$html .= ' <a class="nvx-brand-inline-link" href="' . esc_url( $investment ) . '">Consultar inversión orientativa</a>';
 	}
@@ -289,8 +289,8 @@ function nvx_strategy_investment_markup(): string {
 		. '<p>En NUVANX no usamos descuentos estacionales, precios de captación ni financiaciones como argumento de venta. Si el importe no encaja con tu situación, preferimos decírtelo en la valoración antes que comprometer la indicación o el protocolo.</p>'
 		. '</section>';
 
-	$html .= '<section class="nvx-brand-section" aria-label="' . esc_attr__( 'Solicitar valoración médica', 'nuvanx-medical' ) . '">'
-		. '<p><a class="nvx-brand-btn" href="' . $valuation_url . '">Solicitar valoración médica</a></p>'
+	$html .= '<section class="nvx-brand-section" aria-label="' . esc_attr__( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' ) . '">'
+		. '<p><a class="nvx-brand-btn" href="' . $valuation_url . '">Valoración gratuita — sin compromiso</a></p>'
 		. '</section>';
 
 	$html .= '</article>';

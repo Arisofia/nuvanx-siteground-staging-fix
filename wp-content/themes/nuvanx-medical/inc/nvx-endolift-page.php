@@ -115,7 +115,7 @@ function nvx_endolift_hero_copy_markup(): string {
 					$colegiado
 				)
 			),
-			'cta_fallback_label' => __( 'Reservar valoración médica', 'nuvanx-medical' ),
+			'cta_fallback_label' => __( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' ),
 			'meta'               => (string) ( $data['meta'] ?? '' ),
 		)
 	);

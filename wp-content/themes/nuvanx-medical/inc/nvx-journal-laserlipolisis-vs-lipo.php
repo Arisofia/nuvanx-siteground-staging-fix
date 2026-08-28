@@ -215,7 +215,7 @@ function nvx_journal_tech_article_markup( string $slug ): string {
 		$html .= '</div>';
 	}
 
-	$html .= '<p><a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( $valoracion ) . '">' . esc_html__( 'Solicitar valoración médica', 'nuvanx-medical' ) . '</a></p>';
+	$html .= '<p><a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( $valoracion ) . '">' . esc_html__( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' ) . '</a></p>';
 	$html .= '</div>';
 
 	return $html;

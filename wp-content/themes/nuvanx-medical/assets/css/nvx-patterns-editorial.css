@@ -482,7 +482,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   max-width: 50ch; /* ~55ch editorial line, short block */
   margin: 0;
   font-family: var(--nvx-sans);
-  font-size: 0.9375rem;
+  font-size: var(--nvx-type-body-compact);
   line-height: 1.65; /* nvx-token-exception: EXCEPTION_DOCUMENTED — catalog excerpt leading */
   color: var(--nvx-text-body);
   display: -webkit-box;
@@ -661,7 +661,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 
 .nvx-fact-panel__list li {
   font-family: var(--nvx-sans);
-  font-size: 0.9375rem;
+  font-size: var(--nvx-type-body-compact);
   line-height: var(--nvx-lh-body);
   color: var(--nvx-text-body);
 }
@@ -1136,7 +1136,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 .nvx-aes-card__meta dd {
   margin: 0;
   font-family: var(--nvx-sans);
-  font-size: 0.9375rem;
+  font-size: var(--nvx-type-body-compact);
   line-height: 1.55; /* nvx-token-exception: EXCEPTION_DOCUMENTED — AES panel copy leading */
   color: var(--nvx-text-body, var(--nvx-ink-muted));
 }
@@ -1187,7 +1187,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 
 .nvx-aes-panel-list li {
   font-family: var(--nvx-sans);
-  font-size: 0.9375rem;
+  font-size: var(--nvx-type-body-compact);
   line-height: var(--nvx-lh-body);
   color: var(--nvx-ink-muted);
 }

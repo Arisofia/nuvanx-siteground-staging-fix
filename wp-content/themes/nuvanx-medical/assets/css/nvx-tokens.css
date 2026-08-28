@@ -38,7 +38,6 @@
   --nvx-border-on-dark-45: rgba(247, 247, 245, 0.45);
   --nvx-border-on-dark: rgba(247, 247, 245, 0.45);
   --nvx-accent-success: #25d366;
-  --nvx-accent-error: #c53030;
   --nvx-accent-warning: #d69e2e;
   --nvx-accent-info: #4a5568;
   --nvx-ink-muted: rgba(17, 17, 17, 0.82);
@@ -57,9 +56,7 @@
   --nvx-shadow-medium: 0 24px 64px rgba(26, 26, 26, 0.08);
   --nvx-shadow-button: 0 8px 24px rgba(26, 26, 26, 0.12);
   --nvx-shadow-button-hover: 0 16px 32px rgba(26, 26, 26, 0.14);
-  --nvx-accent-glow: rgba(252, 251, 248, 0.18);
   --nvx-shadow-focus-light: 0 0 0 2px var(--nvx-light);
-  --nvx-shadow-focus-glow: 0 0 0 3px var(--nvx-accent-glow);
   --nvx-shadow-button-on-dark: 0 4px 16px rgba(0, 0, 0, 0.3);
   --nvx-shadow-button-on-dark-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
 
@@ -108,9 +105,6 @@
   --nvx-gap-wide: clamp(24px, 3vw, 40px);
   --nvx-gutter: clamp(32px, 6vw, 96px);
 
-  --nvx-accent-gold: #C1A68D;
-  --nvx-accent-gold-text: #735942;
-
   --nvx-margin-display: 32px;
   --nvx-margin-h1: 32px;
   --nvx-margin-h2: 24px;
@@ -149,6 +143,8 @@
   --nvx-logo-width-mobile: 152px;
   --nvx-submenu-min-width: 256px;
   --nvx-submenu-max-width: 320px;
+  --nvx-shell-max: 1240px;
+  --nvx-footer-link-gap: 12px;
 
   /* Icon dimensions and stroke */
   --nvx-icon-xs: 16px;
@@ -157,9 +153,11 @@
 
 
   --nvx-border-hairline: 1px;
+  --nvx-border-focus: 2px;
   --nvx-radius-pill: 999px;
   --nvx-radius-button: var(--nvx-radius-pill);
   --nvx-radius-card: 0;
+  --nvx-radius-lg: 8px;
   --nvx-radius-image: 0;
   --nvx-radius-legal-card-mobile: 16px;
 
@@ -202,12 +200,15 @@
   /* ========== TIPOGRAFÍA OFICIAL ÚNICA ========== */
   --nvx-serif: "Playfair Display", "Playfair Display Fallback", Georgia, "Times New Roman", serif;
   --nvx-sans: "Manrope", "Manrope Fallback", "Helvetica Neue", Arial, sans-serif;
+  --nvx-font-heading: var(--nvx-serif);
 
   /* Escala tipográfica validada */
   --nvx-type-display: clamp(2.8rem, 5vw, 4.2rem);
   --nvx-type-h1: clamp(2.2rem, 4vw, 3.2rem);
   --nvx-type-h2: clamp(1.7rem, 3vw, 2.4rem);
   --nvx-type-h3: 1.4rem;
+  --nvx-type-h5: 1.0rem;
+  --nvx-type-body-compact: 0.9375rem;
   --nvx-type-lead: clamp(1.0625rem, 1.35vw, 1.25rem);
   --nvx-type-body: 1.0625rem;
   --nvx-type-small: 0.875rem;
@@ -265,12 +266,6 @@
   /* Superficies oscuras editoriales */
   --nvx-surface-dark-editorial: #111111;
 
-  --nvx-on-dark:       #f7f7f5;
-  /* Aliases — prefer --nvx-text-on-dark-88 / --nvx-text-on-dark-82 for new code */
-  --nvx-on-dark-88:    rgba(247, 247, 245, 0.88);
-  --nvx-on-dark-82:    rgba(247, 247, 245, 0.82);
-  --nvx-on-dark-72:    rgba(247, 247, 245, 0.82);
-  --nvx-on-dark-50:    rgba(247, 247, 245, 0.78);
   --nvx-accent-line-dark: rgba(247, 247, 245, 0.15);
 
 

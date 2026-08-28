@@ -28,7 +28,7 @@ ob_start();
 			<h1 id="nvx-home-hero-title" class="nvx-home-hero__title">Primero el diagnóstico médico. Luego, el tratamiento adecuado.<span class="nvx-hero-title-location"> Madrid.</span></h1>
 			<p class="nvx-home-hero__lead">Antes de recomendar nada, escuchamos qué te preocupa y entendemos qué tendría sentido mejorar en tu caso.</p>
 			<div class="nvx-brand-actions">
-				<a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="nvx-brand-btn nvx-btn--primary">Iniciar valoración</a>
+				<a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="nvx-brand-btn nvx-btn--primary">Valoración gratuita — sin compromiso</a>
 			</div>
 		</div>
 		<a href="#nvx-home-philosophy-title" class="nvx-home-hero__scroll-cue" aria-label="<?php esc_attr_e( 'Desplazarse al contenido', 'nuvanx-medical' ); ?>">

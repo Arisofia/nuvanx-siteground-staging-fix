@@ -165,7 +165,7 @@ function nvx_brand_hero_copy_markup( array $config ): string {
 	if ( function_exists( 'nvx_cta_pair_markup' ) ) {
 		$html .= nvx_cta_pair_markup( 'nvx-brand-actions' );
 	} else {
-		$fallback = (string) ( $config['cta_fallback_label'] ?? __( 'Reservar valoración médica', 'nuvanx-medical' ) );
+		$fallback = (string) ( $config['cta_fallback_label'] ?? __( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' ) );
 		$html    .= '<div class="nvx-brand-actions"><a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( home_url( '/madrid/valoracion/' ) ) . '">' . esc_html( $fallback ) . '</a></div>';
 	}
 

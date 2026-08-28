@@ -406,12 +406,12 @@ function nvx_btl_detail_candidacy_markup( array $c ): string {
 function nvx_btl_detail_reservation_markup( array $c ): string {
 	$id    = (string) ( $c['marker'] ?? 'nvx-btl' );
 	$html  = nvx_page_brand_section_open_markup( '', $id . '-reserva' );
-	$html .= nvx_page_brand_section_heading_markup( esc_html__( 'Reserva', 'nuvanx-medical' ), $id . '-reserva', esc_html__( 'Solicitar valoración médica', 'nuvanx-medical' ) );
+	$html .= nvx_page_brand_section_heading_markup( esc_html__( 'Reserva', 'nuvanx-medical' ), $id . '-reserva', esc_html__( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' ) );
 	$html .= '<p class="nvx-body nvx-body--measure">' . esc_html__( 'La indicación, el número de sesiones y el presupuesto se confirman en consulta presencial. Puedes reservar valoración en Chamberí o Salamanca–Goya.', 'nuvanx-medical' ) . '</p>';
 	if ( function_exists( 'nvx_cta_pair_markup' ) ) {
 		$html .= nvx_cta_pair_markup();
 	} else {
-		$html .= '<p><a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( home_url( '/madrid/valoracion/' ) ) . '">' . esc_html__( 'Reservar valoración médica', 'nuvanx-medical' ) . '</a></p>';
+		$html .= '<p><a class="nvx-brand-btn nvx-brand-btn--primary" href="' . esc_url( home_url( '/madrid/valoracion/' ) ) . '">' . esc_html__( 'Valoración gratuita — sin compromiso', 'nuvanx-medical' ) . '</a></p>';
 	}
 	$html .= '</div></section>';
 	return $html;
