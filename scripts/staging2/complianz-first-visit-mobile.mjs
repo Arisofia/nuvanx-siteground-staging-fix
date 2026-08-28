@@ -34,14 +34,29 @@ if (!/^[0-9a-f]{40}$/.test(expectedSha)) {
   console.error('COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_CONFIG reason=EXPECTED_SHA_must_be_40_hex');
   process.exit(EX_CONFIG);
 }
-if (baseParsed.protocol !== 'https:' || expectedHost !== 'staging2.nuvanx.com') {
+if (
+  baseParsed.protocol !== 'https:'
+  || expectedHost !== 'staging2.nuvanx.com'
+  || baseParsed.port !== ''
+  || baseParsed.username !== ''
+  || baseParsed.password !== ''
+  || baseParsed.pathname !== '/'
+  || baseParsed.search !== ''
+  || baseParsed.hash !== ''
+) {
   console.error(`COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_CONFIG reason=unexpected_BASE_URL value=${baseUrl}`);
   process.exit(EX_CONFIG);
 }
 
 await fs.rm(outDir, { recursive: true, force: true });
 await fs.mkdir(outDir, { recursive: true });
-const originVerifier = createSiteGroundOriginVerifier({ expectedHost, expectedSha });
+let originVerifier = null;
+try {
+  originVerifier = createSiteGroundOriginVerifier({ expectedHost, expectedSha });
+} catch (error) {
+  console.error(`COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_CONFIG reason=origin_verifier_configuration error=${error instanceof Error ? error.message : String(error)}`);
+  process.exit(EX_CONFIG);
+}
 
 const bannerSelectors = [
   '.cmplz-cookiebanner',
@@ -141,8 +156,10 @@ async function pageIdentityFailure(page, route) {
     return `Invalid final URL after navigation: ${currentUrl || 'missing'}`;
   }
   if (
-    finalUrl.protocol !== 'https:'
-    || finalUrl.hostname !== expectedHost
+    finalUrl.origin !== baseParsed.origin
+    || finalUrl.username !== ''
+    || finalUrl.password !== ''
+    || finalUrl.port !== ''
     || normalizePathname(finalUrl.pathname) !== normalizePathname(route)
   ) {
     return `Unexpected final route: requested=${route} final=${finalUrl.href}`;
@@ -574,7 +591,7 @@ if (realFailure) {
   process.exit(1);
 }
 if (transientFailure) {
-  console.error(`COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_TRANSIENT exit=${EX_TEMPFAIL}`);
+  console.error(`COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_TRANSIENT exit=${EX_TEMPFAIL} classification=transient_infrastructure candidate_defect=not_established`);
   process.exit(EX_TEMPFAIL);
 }
 
