@@ -128,6 +128,10 @@ function nvx_theme_critical_stylesheet_files(): array {
 		$files[] = 'assets/css/nvx-equipo-medico.css';
 	}
 
+	if ( function_exists( 'nvx_theme_is_treatments_hub_page' ) && nvx_theme_is_treatments_hub_page() ) {
+		$files[] = 'assets/css/nvx-portfolio-hub.css';
+	}
+
 	return $files;
 }
 
@@ -230,20 +234,31 @@ function nvx_theme_get_compiled_critical_css_bundle( array $relative_files ): st
 			&& array_slice( $relative_files, 0, count( $core_sources ) ) === $core_sources;
 
 		if ( $is_core_prefix && is_readable( $core_file ) ) {
-			$critical_css = (string) file_get_contents( $core_file );
+			$core_contents = file_get_contents( $core_file );
+			if ( false === $core_contents ) {
+				$bundle_cache[ $cache_key ] = '';
+				return '';
+			}
+			$critical_css = $core_contents;
 			$extra_files  = array_slice( $relative_files, count( $core_sources ) );
 
 			foreach ( $extra_files as $extra_file ) {
 				if ( isset( $manifest['files'][ $extra_file ]['file'] ) ) {
 					$extra_dist = $theme_dir . '/dist/' . $manifest['files'][ $extra_file ]['file'];
 					if ( is_readable( $extra_dist ) ) {
-						$critical_css .= "\n/* " . basename( $extra_file ) . " */\n" . (string) file_get_contents( $extra_dist );
+						$extra_contents = file_get_contents( $extra_dist );
+						if ( false !== $extra_contents ) {
+							$critical_css .= "\n/* " . basename( $extra_file ) . " */\n" . $extra_contents;
+						}
 						continue;
 					}
 				}
 				$extra_src = $theme_dir . '/' . $extra_file;
 				if ( is_readable( $extra_src ) ) {
-					$critical_css .= "\n/* " . basename( $extra_file ) . " */\n" . (string) file_get_contents( $extra_src );
+					$extra_contents = file_get_contents( $extra_src );
+					if ( false !== $extra_contents ) {
+						$critical_css .= "\n/* " . basename( $extra_file ) . " */\n" . $extra_contents;
+					}
 				}
 			}
 
