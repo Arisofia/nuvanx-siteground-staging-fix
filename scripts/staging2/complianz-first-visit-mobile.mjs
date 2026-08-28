@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {
   SITEGROUND_CAPTCHA_PATH,
+  EX_CONFIG,
   EX_TEMPFAIL,
   isSiteGroundCaptchaInterruption,
   isSiteGroundTransientResponse,
@@ -12,7 +13,14 @@ import { createSiteGroundOriginVerifier } from './siteground-origin-verifier.mjs
 
 const baseUrl = (process.env.BASE_URL || 'https://staging2.nuvanx.com').replace(/\/$/, '');
 const expectedSha = (process.env.EXPECTED_SHA || '').trim();
-const expectedHost = new URL(baseUrl).hostname;
+let baseParsed = null;
+try {
+  baseParsed = new URL(baseUrl);
+} catch {
+  console.error(`COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_CONFIG reason=invalid_BASE_URL value=${baseUrl}`);
+  process.exit(EX_CONFIG);
+}
+const expectedHost = baseParsed.hostname;
 const viewport = { width: 390, height: 844 };
 const maxAttempts = 3;
 const minTouchTarget = 48;
@@ -23,12 +31,12 @@ const requiredDecisionNames = ['cmplz_functional', 'cmplz_statistics', 'cmplz_ma
 const durableSeconds = 60 * 60;
 
 if (!/^[0-9a-f]{40}$/.test(expectedSha)) {
-  console.error('COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_REAL reason=EXPECTED_SHA_must_be_40_hex');
-  process.exit(1);
+  console.error('COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_CONFIG reason=EXPECTED_SHA_must_be_40_hex');
+  process.exit(EX_CONFIG);
 }
-if (expectedHost !== 'staging2.nuvanx.com') {
-  console.error(`COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_REAL reason=unexpected_host host=${expectedHost}`);
-  process.exit(1);
+if (baseParsed.protocol !== 'https:' || expectedHost !== 'staging2.nuvanx.com') {
+  console.error(`COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_CONFIG reason=unexpected_BASE_URL value=${baseUrl}`);
+  process.exit(EX_CONFIG);
 }
 
 await fs.rm(outDir, { recursive: true, force: true });
@@ -115,10 +123,33 @@ function classifyNavigationError(error, currentUrl) {
   if (isSiteGroundCaptchaInterruption(error, currentUrl)) {
     return { transient: true, reason: `SiteGround captcha navigation interruption: ${message}` };
   }
-  if (/net::ERR_(?:CONNECTION|HTTP2|NETWORK|NAME_NOT_RESOLVED|SOCKET|PROXY|TUNNEL|ADDRESS|INTERNET_DISCONNECTED)/i.test(message)) {
+  if (
+    /net::ERR_(?:CONNECTION|HTTP2|NETWORK|NAME_NOT_RESOLVED|SOCKET|PROXY|TUNNEL|ADDRESS|INTERNET_DISCONNECTED|TIMED_OUT)/i.test(message)
+    || /Timeout \d+ms exceeded/i.test(message)
+  ) {
     return { transient: true, reason: `Browser transport failure: ${message}` };
   }
   return { transient: false, reason: `Browser navigation failure: ${message}` };
+}
+
+async function pageIdentityFailure(page, route) {
+  const currentUrl = page.url() || '';
+  let finalUrl = null;
+  try {
+    finalUrl = new URL(currentUrl);
+  } catch {
+    return `Invalid final URL after navigation: ${currentUrl || 'missing'}`;
+  }
+  if (
+    finalUrl.protocol !== 'https:'
+    || finalUrl.hostname !== expectedHost
+    || normalizePathname(finalUrl.pathname) !== normalizePathname(route)
+  ) {
+    return `Unexpected final route: requested=${route} final=${finalUrl.href}`;
+  }
+  const metaSha = (await page.locator('meta[name="nvx-deploy-sha"]').getAttribute('content').catch(() => '')) || '';
+  if (metaSha !== expectedSha) return `SHA mismatch: ${metaSha || 'missing'} != ${expectedSha}`;
+  return '';
 }
 
 async function navigatePublicCandidate(page, route) {
@@ -141,31 +172,10 @@ async function navigatePublicCandidate(page, route) {
     return { pass: false, transient: false, reason: `Expected HTTP 200, got ${status}`, transport: 'public-edge' };
   }
 
-  let finalUrl = null;
-  try {
-    finalUrl = new URL(currentUrl);
-  } catch {
-    return { pass: false, transient: false, reason: `Invalid final URL after navigation: ${currentUrl || 'missing'}`, transport: 'public-edge' };
-  }
-  if (
-    finalUrl.protocol !== 'https:'
-    || finalUrl.hostname !== expectedHost
-    || normalizePathname(finalUrl.pathname) !== normalizePathname(route)
-  ) {
-    return {
-      pass: false,
-      transient: false,
-      reason: `Unexpected final route: requested=${route} final=${finalUrl.href}`,
-      transport: 'public-edge',
-    };
-  }
+  const identityFailure = await pageIdentityFailure(page, route);
+  if (identityFailure) return { pass: false, transient: false, reason: identityFailure, transport: 'public-edge' };
 
-  const metaSha = (await page.locator('meta[name="nvx-deploy-sha"]').getAttribute('content').catch(() => '')) || '';
-  if (metaSha !== expectedSha) {
-    return { pass: false, transient: false, reason: `SHA mismatch: ${metaSha || 'missing'} != ${expectedSha}`, transport: 'public-edge' };
-  }
-
-  return { pass: true, transient: false, transport: 'public-edge', status, finalUrl: finalUrl.href };
+  return { pass: true, transient: false, transport: 'public-edge', status, finalUrl: currentUrl };
 }
 
 function verifyOriginOnly(route) {
@@ -386,7 +396,9 @@ async function reloadForPersistence(page) {
       return { pass: false, transient: true, reason: `SiteGround transient response during persistence reload: HTTP ${status}` };
     }
     if (status !== 200) return { pass: false, transient: false, reason: `Unexpected reload status ${status}` };
-    return { pass: true, transient: false, status };
+    const identityFailure = await pageIdentityFailure(page, '/');
+    if (identityFailure) return { pass: false, transient: false, reason: `Persistence reload identity failure: ${identityFailure}` };
+    return { pass: true, transient: false, status, finalUrl: currentUrl };
   } catch (error) {
     const classification = classifyNavigationError(error, page.url() || '');
     return { pass: false, ...classification };
