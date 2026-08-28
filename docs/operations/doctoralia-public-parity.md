@@ -51,9 +51,9 @@ Do not guess an internal URL for `Sincronización Doctoralia`; navigate from the
 - Two admin direction records exist for the same physical location:
   - `53333`: Goya-specific website URL, 16 editable service rows.
   - `49168`: NUVANX home URL, 7 editable service rows; exact first-seven-row subset of `53333`.
-- Public Doctoralia now also exposes the same Fernán González 26 location twice.
+- Public Doctoralia now exposes one direction on the primary profile surface (the second direction exists only in authenticated admin views).
 - `53333` is still the stronger candidate, but canonical direction ownership is **not proven**; do not merge/delete either direction yet.
-- The main public profile has propagated several recent edits: specialties are `Medicina estética`, `Enfermería`, `Geriatría`, `Nutrición y dietética`; equipment now includes Endoláser/LaseMAR/DEKA SmartLipo; and the public Doctoralia responsible-person field shows Javier Rivera Tejeda.
+- The main public profile has propagated several recent edits: specialties are `Medicina estética`, `Enfermería`, `Geriatría`, `Nutrición y dietética`; equipment now includes Endoláser/LaseMAR/DEKA SmartLipo; and the public Doctoralia responsible-person field shows Yolanda Piñero.
 - The public FAQ/service aggregation is still stale at 13 services and still exposes `Visita Medicina Complementaria y terapias alternativas`, `Coolsculpting`, `Tratamiento profesional despigmentante facial`, `Tratamiento con dermapen`, `Diatermia`, `Fototerapia`, `HIFU (Facial)` and `HIFU (Corporal)`.
 - Treatment-search/professional surfaces still expose HIFU, Dermapen, Fototerapia, Maderoterapia, Micropigmentación de cejas, Luz pulsada IPL and despigmentante facial.
 - Clinic Cloud agenda `200346` (`ESTETICIEN`, user `GOSIA`) is integrated and accepts the matching legacy internal services, which is a direct operational clue for why those public service associations remain live.
@@ -188,7 +188,7 @@ If NUVANX later confirms that a legacy treatment is no longer delivered at all, 
 
 ## Responsable sanitario
 
-No mutation is authorized from this workstream. Doctoralia currently displays Javier Rivera Tejeda, but the official `legal_healthcare_responsible` for `CS20073` remains separately unverified. Do not promote a Doctoralia field into website legal/schema truth.
+No mutation is authorized from this workstream. Doctoralia currently displays Yolanda Piñero on the public primary profile, but the official `legal_healthcare_responsible` for `CS20073` remains separately unverified. Do not promote a Doctoralia field into website legal/schema truth.
 
 ## Mandatory public acceptance
 
