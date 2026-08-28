@@ -47,6 +47,11 @@ const STAGE_EVIDENCE_MAP = {
     destinationDir: fileURLToPath(new URL('./valoracion-artifacts', import.meta.url)),
     destination: fileURLToPath(new URL('./valoracion-artifacts/meta-no-consent-results.json', import.meta.url)),
   },
+  'complianz-first-visit-mobile': {
+    source: fileURLToPath(new URL('./complianz-first-visit-mobile-artifacts/results.json', import.meta.url)),
+    destinationDir: fileURLToPath(new URL('./valoracion-artifacts', import.meta.url)),
+    destination: fileURLToPath(new URL('./valoracion-artifacts/complianz-first-visit-mobile-results.json', import.meta.url)),
+  },
   'block-a11y': {
     source: fileURLToPath(new URL('./block-a11y-artifacts/results.json', import.meta.url)),
     destinationDir: fileURLToPath(new URL('./valoracion-artifacts', import.meta.url)),
@@ -208,6 +213,11 @@ const stages = [
 // its dedicated attribution phase instead.
 console.log('STAGING_ACCEPTANCE_SCOPE=P0 attribution_lineage=deferred');
 
+// Prove the real first-visit mobile state before the existing a11y gate accepts
+// consent. Every route/action uses a fresh browser context with no persisted
+// Complianz cookies, so an inaccessible or viewport-blocking banner cannot be
+// hidden by test setup.
+stages.push({ name: 'complianz-first-visit-mobile', url: new URL('./complianz-first-visit-mobile.mjs', import.meta.url), maxCycles: 1 });
 stages.push({ name: 'block-a11y', url: new URL('./block-a11y.mjs', import.meta.url), maxCycles: 1 });
 
 await prepareAllStageEvidence();
