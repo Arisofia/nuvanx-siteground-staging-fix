@@ -124,7 +124,6 @@
   /* Media */
   --nvx-media-ratio-card: 16 / 9;
   --nvx-media-max-h-featured: clamp(240px, 34vw, 400px);
-  --nvx-hero-h: min(92svh, 980px);
   /* Home video stage. Must stay in tokens (inlined) so first paint reserves
      the same box that the loaded page uses. Do not override this in deferred CSS. */
   --nvx-home-hero-h: clamp(520px, 72svh, 680px);
@@ -162,13 +161,7 @@
   --nvx-radius-legal-card-mobile: 16px;
 
 
-  --nvx-media-overlay: linear-gradient(
-    180deg,
-    rgba(26, 26, 26, 0.62) 0%,
-    rgba(26, 26, 26, 0.68) 28%,
-    rgba(26, 26, 26, 0.78) 58%,
-    rgba(26, 26, 26, 0.90) 100%
-  );
+
 
   /* Home video stage: keep the upper frame open; scrim only under the bottom copy. */
   --nvx-home-hero-overlay: linear-gradient(
@@ -179,14 +172,6 @@
     rgba(26, 26, 26, 0.68) 70%,
     rgba(26, 26, 26, 0.86) 86%,
     rgba(26, 26, 26, 0.92) 100%
-  );
-
-  --nvx-media-overlay-strong: linear-gradient(
-    180deg,
-    rgba(26, 26, 26, 0.68) 0%,
-    rgba(26, 26, 26, 0.75) 28%,
-    rgba(26, 26, 26, 0.85) 58%,
-    rgba(26, 26, 26, 0.94) 100%
   );
 
   /* Archive hero card: darken the photograph so overlay type stays readable. */
@@ -275,16 +260,11 @@
 --nvx-section-tight-width: 800px;
 
 /* ========== MOTION & TRANSITIONS ========== */
---nvx-duration-instant: 80ms;
 --nvx-duration-fast: 160ms;
---nvx-duration-normal: 240ms;
 --nvx-duration-slow: 320ms;
 --nvx-duration-slower: 480ms;
 
---nvx-ease-standard: cubic-bezier(0.2, 0, 0, 1);
-
---nvx-transition-fast: var(--nvx-duration-fast) var(--nvx-ease-standard);
---nvx-transition-normal: var(--nvx-duration-normal) var(--nvx-ease-standard);
+--nvx-transition-fast: var(--nvx-duration-fast) cubic-bezier(0.2, 0, 0, 1);
 
   /* Alias para variables huérfanas (Audit 4.5) */
   --nvx-color-soft: var(--nvx-surface-soft);
