@@ -75,6 +75,8 @@ $required_blocked = array(
 	'deactivate_or_delete_clinic_cloud_service_globally',
 	'change_legal_healthcare_responsible',
 	'change_agenda_hours_or_delete_agenda',
+	'remove_professional',
+	'change_chamberi_until_admin_export_complete',
 );
 $blocked = $policy['blocked_operations'] ?? array();
 foreach ( $required_blocked as $operation ) {
