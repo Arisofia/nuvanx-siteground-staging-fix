@@ -282,7 +282,7 @@ async function inspectOpenBanner(page, route) {
   if (!deny) failures.push('Visible reject/deny action is missing');
 
   const controlMetrics = [];
-  const visibleButtons = bannerMatch.locator('button, .cmplz-btn');
+  const visibleButtons = bannerMatch.locator.locator('button, .cmplz-btn');
   const buttonCount = await visibleButtons.count();
   for (let index = 0; index < buttonCount; index += 1) {
     const button = visibleButtons.nth(index);
