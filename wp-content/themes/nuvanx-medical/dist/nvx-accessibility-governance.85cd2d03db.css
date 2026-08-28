@@ -435,7 +435,7 @@
   --button-bg: var(--nvx-charcoal);
   --button-color: var(--nvx-light);
   --button-border: var(--nvx-border-on-dark-45);
-  --button-hover-bg: var(--nvx-on-dark);
+  --button-hover-bg: var(--nvx-light);
   --button-hover-color: var(--nvx-ink);
   --button-hover-border: var(--nvx-light);
   --button-focus: var(--nvx-light);

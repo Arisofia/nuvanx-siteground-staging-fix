@@ -30,16 +30,10 @@
   --nvx-text-on-dark-72: rgba(247, 247, 245, 0.72);
   --nvx-border-on-dark-55: rgba(247, 247, 245, 0.55);
 
-  /* Luxurious dark surfaces with subtle grain texture */
+  /* Luxurious dark surfaces */
   --nvx-surface-dark: #070707;
-  --nvx-surface-dark-texture:
-    linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.01) 0%, transparent 100%);
   --nvx-border-on-dark-45: rgba(247, 247, 245, 0.45);
-  --nvx-border-on-dark: rgba(247, 247, 245, 0.45);
   --nvx-accent-success: #25d366;
-  --nvx-accent-error: #c53030;
-  --nvx-accent-warning: #d69e2e;
   --nvx-accent-info: #4a5568;
   --nvx-ink-muted: rgba(17, 17, 17, 0.82);
 
@@ -57,9 +51,7 @@
   --nvx-shadow-medium: 0 24px 64px rgba(26, 26, 26, 0.08);
   --nvx-shadow-button: 0 8px 24px rgba(26, 26, 26, 0.12);
   --nvx-shadow-button-hover: 0 16px 32px rgba(26, 26, 26, 0.14);
-  --nvx-accent-glow: rgba(252, 251, 248, 0.18);
   --nvx-shadow-focus-light: 0 0 0 2px var(--nvx-light);
-  --nvx-shadow-focus-glow: 0 0 0 3px var(--nvx-accent-glow);
   --nvx-shadow-button-on-dark: 0 4px 16px rgba(0, 0, 0, 0.3);
   --nvx-shadow-button-on-dark-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
 
@@ -108,9 +100,6 @@
   --nvx-gap-wide: clamp(24px, 3vw, 40px);
   --nvx-gutter: clamp(32px, 6vw, 96px);
 
-  --nvx-accent-gold: #C1A68D;
-  --nvx-accent-gold-text: #735942;
-
   --nvx-margin-display: 32px;
   --nvx-margin-h1: 32px;
   --nvx-margin-h2: 24px;
@@ -130,7 +119,6 @@
   /* Media */
   --nvx-media-ratio-card: 16 / 9;
   --nvx-media-max-h-featured: clamp(240px, 34vw, 400px);
-  --nvx-hero-h: min(92svh, 980px);
   /* Home video stage. Must stay in tokens (inlined) so first paint reserves
      the same box that the loaded page uses. Do not override this in deferred CSS. */
   --nvx-home-hero-h: clamp(520px, 72svh, 680px);
@@ -149,6 +137,8 @@
   --nvx-logo-width-mobile: 152px;
   --nvx-submenu-min-width: 256px;
   --nvx-submenu-max-width: 320px;
+  --nvx-shell-max: 1240px;
+  --nvx-footer-link-gap: 12px;
 
   /* Icon dimensions and stroke */
   --nvx-icon-xs: 16px;
@@ -157,20 +147,16 @@
 
 
   --nvx-border-hairline: 1px;
+  --nvx-border-focus: 2px;
   --nvx-radius-pill: 999px;
   --nvx-radius-button: var(--nvx-radius-pill);
   --nvx-radius-card: 0;
+  --nvx-radius-lg: 8px;
   --nvx-radius-image: 0;
   --nvx-radius-legal-card-mobile: 16px;
 
 
-  --nvx-media-overlay: linear-gradient(
-    180deg,
-    rgba(26, 26, 26, 0.62) 0%,
-    rgba(26, 26, 26, 0.68) 28%,
-    rgba(26, 26, 26, 0.78) 58%,
-    rgba(26, 26, 26, 0.90) 100%
-  );
+
 
   /* Home video stage: keep the upper frame open; scrim only under the bottom copy. */
   --nvx-home-hero-overlay: linear-gradient(
@@ -181,14 +167,6 @@
     rgba(26, 26, 26, 0.68) 70%,
     rgba(26, 26, 26, 0.86) 86%,
     rgba(26, 26, 26, 0.92) 100%
-  );
-
-  --nvx-media-overlay-strong: linear-gradient(
-    180deg,
-    rgba(26, 26, 26, 0.68) 0%,
-    rgba(26, 26, 26, 0.75) 28%,
-    rgba(26, 26, 26, 0.85) 58%,
-    rgba(26, 26, 26, 0.94) 100%
   );
 
   /* Archive hero card: darken the photograph so overlay type stays readable. */
@@ -202,12 +180,15 @@
   /* ========== TIPOGRAFÍA OFICIAL ÚNICA ========== */
   --nvx-serif: "Playfair Display", "Playfair Display Fallback", Georgia, "Times New Roman", serif;
   --nvx-sans: "Manrope", "Manrope Fallback", "Helvetica Neue", Arial, sans-serif;
+  --nvx-font-heading: var(--nvx-serif);
 
   /* Escala tipográfica validada */
   --nvx-type-display: clamp(2.8rem, 5vw, 4.2rem);
   --nvx-type-h1: clamp(2.2rem, 4vw, 3.2rem);
   --nvx-type-h2: clamp(1.7rem, 3vw, 2.4rem);
   --nvx-type-h3: 1.4rem;
+  --nvx-type-h5: 1.0rem;
+  --nvx-type-body-compact: 0.9375rem;
   --nvx-type-lead: clamp(1.0625rem, 1.35vw, 1.25rem);
   --nvx-type-body: 1.0625rem;
   --nvx-type-small: 0.875rem;
@@ -262,34 +243,18 @@
   --nvx-index-number-weight: 600;
   --nvx-index-number-track: 0.16em;
 
-  /* Superficies oscuras editoriales */
-  --nvx-surface-dark-editorial: #111111;
-
-  --nvx-on-dark:       #f7f7f5;
-  /* Aliases — prefer --nvx-text-on-dark-88 / --nvx-text-on-dark-82 for new code */
-  --nvx-on-dark-88:    rgba(247, 247, 245, 0.88);
-  --nvx-on-dark-82:    rgba(247, 247, 245, 0.82);
-  --nvx-on-dark-72:    rgba(247, 247, 245, 0.82);
-  --nvx-on-dark-50:    rgba(247, 247, 245, 0.78);
   --nvx-accent-line-dark: rgba(247, 247, 245, 0.15);
 
+  /* Additional design tokens added during migration */
+  --nvx-outline-offset: 2px;
+  --nvx-catalog-width: 900px;
+  --nvx-section-tight-width: 800px;
 
-/* Additional design tokens added during migration */
---nvx-outline-offset: 2px;
---nvx-catalog-width: 900px;
---nvx-section-tight-width: 800px;
-
-/* ========== MOTION & TRANSITIONS ========== */
---nvx-duration-instant: 80ms;
---nvx-duration-fast: 160ms;
---nvx-duration-normal: 240ms;
---nvx-duration-slow: 320ms;
---nvx-duration-slower: 480ms;
-
---nvx-ease-standard: cubic-bezier(0.2, 0, 0, 1);
-
---nvx-transition-fast: var(--nvx-duration-fast) var(--nvx-ease-standard);
---nvx-transition-normal: var(--nvx-duration-normal) var(--nvx-ease-standard);
+  /* ========== MOTION & TRANSITIONS ========== */
+  --nvx-duration-fast: 160ms;
+  --nvx-duration-slow: 320ms;
+  --nvx-duration-slower: 480ms;
+  --nvx-transition-fast: var(--nvx-duration-fast) cubic-bezier(0.2, 0, 0, 1);
 
   /* Alias para variables huérfanas (Audit 4.5) */
   --nvx-color-soft: var(--nvx-surface-soft);
@@ -299,23 +264,14 @@
   --nvx-lh-heading: var(--nvx-lh-h2);
   --nvx-type-body-sm: var(--nvx-type-small);
 
-}
-/* Z-index system (CSS-1) */
-:root {
-  /* Reusable layers inside an isolated/local stacking context. */
+  /* Z-index system */
   --nvx-z-local-base: 1;
   --nvx-z-local-overlay: 2;
   --nvx-z-local-content: 3;
   --nvx-z-local-control: 4;
-
-  --nvx-z-base: 1;
-  --nvx-z-raised: 10;
-  --nvx-z-dropdown: 100;
-  --nvx-z-sticky: 200;
   --nvx-z-sticky-cta: 900;
   --nvx-z-header: 1000;
   --nvx-z-overlay: 2000;
   --nvx-z-modal: 3000;
-  --nvx-z-toast: 4000;
   --nvx-z-a11y: 10000;
 }

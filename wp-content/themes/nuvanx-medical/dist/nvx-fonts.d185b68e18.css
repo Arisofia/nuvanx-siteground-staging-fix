@@ -24,8 +24,3 @@
   descent-override: 24%;
   line-gap-override: 0%;
 }
-
-:root {
-  --nvx-font-primary: 'Manrope', 'Manrope Fallback', -apple-system, BlinkMacSystemFont, sans-serif;
-  --nvx-font-display: 'Playfair Display', 'Playfair Display Fallback', Georgia, serif;
-}

@@ -1,5 +1,5 @@
 /* Unified layout contract (Audit 4.1) */
-:root {
+html:root {
   --nvx-shell-max: 1240px;
   --nvx-gutter-inline: clamp(20px, 4vw, 64px);
 }

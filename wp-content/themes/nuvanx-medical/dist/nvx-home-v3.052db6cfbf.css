@@ -1,4 +1,3 @@
-/* nvx-home-v3.css */
 /**
  * Home page layout and typography for front-page.php.
  */
@@ -50,6 +49,17 @@
 	padding-inline: var(--nvx-gutter-inner);
 	padding-block: var(--nvx-space-5) var(--nvx-space-8);
 	color: var(--nvx-light);
+}
+
+.nvx-home-hero__kicker {
+	font-family: var(--nvx-sans);
+	font-size: var(--nvx-type-kicker);
+	font-weight: var(--nvx-fw-heading);
+	letter-spacing: var(--nvx-track-kicker);
+	text-transform: uppercase;
+	color: var(--nvx-text-on-dark-78);
+	margin: 0 0 var(--nvx-space-2);
+	text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .nvx-home-hero__title {
