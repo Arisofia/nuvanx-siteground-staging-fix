@@ -18,9 +18,21 @@ $nvx_goya     = isset( $nvx_clinics['goya'] ) && is_array( $nvx_clinics['goya'] 
 	? $nvx_clinics['goya']
 	: array( 'whatsapp_href' => 'https://wa.me/34647505107' );
 
-ob_start();
+// header.php opens the canonical .nvx-brand-page wrapper unless the stored CMS
+// body already owns the standard wrapper. In that latter case open a local
+// wrapper here so the managed template remains structurally identical without
+// ever delegating back to historical the_content().
+$nvx_needs_local_wrapper = function_exists( 'nvx_page_has_standard_wrapper' )
+	&& nvx_page_has_standard_wrapper();
+
+get_header();
+
+if ( $nvx_needs_local_wrapper ) :
+	?>
+	<div class="nvx-brand-page nvx-brand-page--gracias">
+	<?php
+endif;
 ?>
-<div class="nvx-brand-page nvx-brand-page--gracias">
 	<section class="nvx-brand-hero nvx-brand-hero--surface-ink" aria-labelledby="nvx-gracias-h1">
 		<div class="nvx-brand-hero__inner">
 			<div class="nvx-brand-hero__copy">
@@ -63,11 +75,11 @@ ob_start();
 			</div>
 		</div>
 	</section>
-</div>
 <?php
-$nvx_gracias_content = ob_get_clean();
+if ( $nvx_needs_local_wrapper ) :
+	?>
+	</div><!-- .nvx-brand-page--gracias -->
+	<?php
+endif;
 
-set_query_var( 'nvx_shell_content', $nvx_gracias_content );
-set_query_var( 'nvx_shell_skip_header', true );
-set_query_var( 'nvx_shell_content_is_layout', true );
-get_template_part( 'template-parts/content/nvx-page-shell' );
+get_footer();
