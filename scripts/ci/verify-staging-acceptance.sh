@@ -19,6 +19,32 @@ api_headers=(
   -H 'X-GitHub-Api-Version: 2022-11-28'
 )
 
+# Fail closed on repository-governance bypasses. A production candidate must be
+# a GitHub-verified commit produced by a merged PR into the canonical branch.
+# This prevents unsigned/direct-to-master commits from being promoted even if a
+# repository administrator can temporarily bypass the branch ruleset.
+if ! commit_response="$(curl -fsSL --retry 3 --retry-all-errors --connect-timeout 10 --max-time 60 --proto '=https' --proto-redir '=https' "${api_headers[@]}" "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${CANDIDATE_SHA}")"; then
+  echo "STAGING_ACCEPTANCE=FAIL reason=github_api_commit_query_failed sha=$CANDIDATE_SHA" >&2
+  exit 1
+fi
+commit_verified="$(printf '%s' "$commit_response" | jq -r '.commit.verification.verified // false')"
+commit_verification_reason="$(printf '%s' "$commit_response" | jq -r '.commit.verification.reason // "unknown"')"
+if [[ "$commit_verified" != 'true' ]]; then
+  echo "STAGING_ACCEPTANCE=FAIL reason=unverified_candidate_commit sha=$CANDIDATE_SHA verification_reason=$commit_verification_reason" >&2
+  exit 1
+fi
+
+if ! prs_response="$(curl -fsSL --retry 3 --retry-all-errors --connect-timeout 10 --max-time 60 --proto '=https' --proto-redir '=https' "${api_headers[@]}" "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${CANDIDATE_SHA}/pulls?per_page=100")"; then
+  echo "STAGING_ACCEPTANCE=FAIL reason=github_api_commit_pr_query_failed sha=$CANDIDATE_SHA" >&2
+  exit 1
+fi
+merged_pr_number="$(printf '%s' "$prs_response" | jq -r --arg sha "$CANDIDATE_SHA" --arg branch "$STAGING_ACCEPTANCE_BRANCH" '[.[] | select(.merged_at != null and .base.ref == $branch and .merge_commit_sha == $sha)] | sort_by(.number) | last | .number // empty')"
+if [[ ! "$merged_pr_number" =~ ^[0-9]+$ ]]; then
+  echo "STAGING_ACCEPTANCE=FAIL reason=candidate_not_merged_pr_head sha=$CANDIDATE_SHA branch=$STAGING_ACCEPTANCE_BRANCH" >&2
+  exit 1
+fi
+echo "STAGING_ACCEPTANCE_GOVERNANCE=PASS sha=$CANDIDATE_SHA verified=1 merged_pr=$merged_pr_number branch=$STAGING_ACCEPTANCE_BRANCH"
+
 # Production candidates must carry the zero-submit HubSpot verification contract.
 # This permanently rejects historical SHAs whose production QA filled and
 # submitted the commercial HubSpot form, even if those SHAs once had successful
