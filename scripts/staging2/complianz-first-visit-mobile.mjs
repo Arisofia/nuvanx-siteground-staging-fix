@@ -17,6 +17,9 @@ const maxAttempts = 3;
 const minTouchTarget = 48;
 const routes = ['/', '/contacto/', '/madrid/valoracion/'];
 const outDir = path.resolve('scripts/staging2/complianz-first-visit-mobile-artifacts');
+const consentCategoryNames = ['cmplz_functional', 'cmplz_preferences', 'cmplz_statistics', 'cmplz_marketing'];
+const requiredDecisionNames = ['cmplz_functional', 'cmplz_statistics', 'cmplz_marketing'];
+const durableSeconds = 60 * 60;
 
 if (!/^[0-9a-f]{40}$/.test(expectedSha)) {
   console.error('COMPLIANZ_FIRST_VISIT_MOBILE=FAIL_REAL reason=EXPECTED_SHA_must_be_40_hex');
@@ -27,6 +30,7 @@ if (expectedHost !== 'staging2.nuvanx.com') {
   process.exit(1);
 }
 
+await fs.rm(outDir, { recursive: true, force: true });
 await fs.mkdir(outDir, { recursive: true });
 const originVerifier = createSiteGroundOriginVerifier({ expectedHost, expectedSha });
 
@@ -57,26 +61,38 @@ function slugForRoute(route) {
   return route === '/' ? 'home' : route.replace(/^\/+|\/+$/g, '').replace(/[^a-z0-9-]+/gi, '-');
 }
 
-async function waitForVisibleBanner(page, timeoutMs = 8000) {
+async function pollUntil(check, { timeoutMs = 8000, intervalMs = 150 } = {}) {
   const deadline = Date.now() + timeoutMs;
+  let lastValue = null;
   while (Date.now() < deadline) {
-    for (const selector of bannerSelectors) {
-      const locator = page.locator(selector).first();
-      if (await locator.isVisible().catch(() => false)) {
-        return { locator, selector };
-      }
-    }
-    await page.waitForTimeout(200);
+    lastValue = await check();
+    if (lastValue) return lastValue;
+    await new Promise((resolve) => setTimeout(resolve, intervalMs));
   }
   return null;
+}
+
+async function waitForVisibleBanner(page, timeoutMs = 8000) {
+  return pollUntil(async () => {
+    for (const selector of bannerSelectors) {
+      const locator = page.locator(selector).first();
+      if (await locator.isVisible().catch(() => false)) return { locator, selector };
+    }
+    return null;
+  }, { timeoutMs, intervalMs: 200 });
+}
+
+async function waitForBannerHidden(bannerLocator, timeoutMs = 8000) {
+  return Boolean(await pollUntil(
+    async () => !(await bannerLocator.isVisible().catch(() => false)),
+    { timeoutMs, intervalMs: 150 },
+  ));
 }
 
 async function findVisibleAction(page, action) {
   for (const selector of actionSelectors[action] || []) {
     const locator = page.locator(selector).first();
-    if (await locator.isVisible().catch(() => false)) {
-      return { locator, selector };
-    }
+    if (await locator.isVisible().catch(() => false)) return { locator, selector };
   }
   return null;
 }
@@ -88,137 +104,102 @@ async function waitForVisualStability(page) {
   await page.waitForTimeout(350);
 }
 
-async function installOriginDocumentFallback(page, route) {
+function classifyNavigationError(error, currentUrl) {
+  const message = error instanceof Error ? error.message : String(error);
+  if (currentUrl.includes(SITEGROUND_CAPTCHA_PATH)) {
+    return { transient: true, reason: `SiteGround captcha challenge: ${currentUrl}` };
+  }
+  if (/net::ERR_(?:CONNECTION|HTTP2|NETWORK|NAME_NOT_RESOLVED|SOCKET|PROXY|TUNNEL|ADDRESS|INTERNET_DISCONNECTED)/i.test(message)) {
+    return { transient: true, reason: `Browser transport failure: ${message}` };
+  }
+  return { transient: false, reason: `Browser navigation failure: ${message}` };
+}
+
+async function navigatePublicCandidate(page, route) {
+  const url = `${baseUrl}${route}`;
+  let response = null;
+  try {
+    response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 40000 });
+  } catch (error) {
+    const classification = classifyNavigationError(error, page.url() || '');
+    return { pass: false, ...classification, transport: 'public-edge' };
+  }
+
+  const currentUrl = page.url() || '';
+  const headers = response ? await response.allHeaders() : {};
+  const status = response?.status() || 0;
+  if (currentUrl.includes(SITEGROUND_CAPTCHA_PATH) || isSiteGroundTransientResponse(status, headers, currentUrl)) {
+    return { pass: false, transient: true, reason: `SiteGround transient response: HTTP ${status}`, transport: 'public-edge' };
+  }
+  if (status !== 200) {
+    return { pass: false, transient: false, reason: `Expected HTTP 200, got ${status}`, transport: 'public-edge' };
+  }
+
+  const metaSha = (await page.locator('meta[name="nvx-deploy-sha"]').getAttribute('content').catch(() => '')) || '';
+  if (metaSha !== expectedSha) {
+    return { pass: false, transient: false, reason: `SHA mismatch: ${metaSha || 'missing'} != ${expectedSha}`, transport: 'public-edge' };
+  }
+
+  return { pass: true, transient: false, transport: 'public-edge', status };
+}
+
+function verifyOriginOnly(route) {
   if (!originVerifier.isAvailable()) {
     return { pass: false, transient: true, reason: 'SiteGround origin SSH unavailable' };
   }
-
   const origin = originVerifier.fetchHtml(route);
   if (!origin.pass) {
     const details = origin.stderr || origin.error || `origin status ${origin.originStatus ?? 0}`;
     return {
       pass: false,
       transient: origin.transportFailure === true,
-      reason: `Origin HTML verification failed: ${details}`,
+      reason: `Origin verification failed: ${details}`,
     };
   }
   if (origin.originStatus !== 200 || origin.originDeploySha !== expectedSha || !origin.html) {
     return {
       pass: false,
       transient: false,
-      reason: `Origin HTML contract mismatch: status=${origin.originStatus ?? 0} sha=${origin.originDeploySha || 'missing'}`,
+      reason: `Origin contract mismatch: status=${origin.originStatus ?? 0} sha=${origin.originDeploySha || 'missing'}`,
     };
   }
-
-  const targetUrl = `${baseUrl}${route}`;
-  await page.route(targetUrl, async (routeHandle) => {
-    if (!routeHandle.request().isNavigationRequest()) {
-      await routeHandle.continue();
-      return;
-    }
-    await routeHandle.fulfill({
-      status: 200,
-      contentType: 'text/html; charset=utf-8',
-      headers: {
-        'cache-control': 'no-store',
-        'x-nvx-validation-transport': 'siteground-origin-document',
-      },
-      body: origin.html,
-    });
-  }, { times: 1 });
-
-  return { pass: true, transient: false, origin };
-}
-
-async function navigateCandidate(page, route, { useOriginDocument = false } = {}) {
-  const url = `${baseUrl}${route}`;
-  let originFallback = null;
-
-  if (useOriginDocument) {
-    originFallback = await installOriginDocumentFallback(page, route);
-    if (!originFallback.pass) {
-      return {
-        pass: false,
-        transient: originFallback.transient,
-        reason: originFallback.reason,
-        transport: 'siteground-origin-document',
-      };
-    }
-  }
-
-  let response = null;
-  try {
-    response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 40000 });
-  } catch (error) {
-    const currentUrl = page.url() || '';
-    const message = error instanceof Error ? error.message : String(error);
-    if (!useOriginDocument && currentUrl.includes(SITEGROUND_CAPTCHA_PATH)) {
-      return { pass: false, transient: true, reason: `SiteGround captcha challenge: ${currentUrl}`, transport: 'public-edge' };
-    }
-    return {
-      pass: false,
-      transient: !useOriginDocument,
-      reason: `Navigation failed: ${message}`,
-      transport: useOriginDocument ? 'siteground-origin-document' : 'public-edge',
-    };
-  }
-
-  const currentUrl = page.url() || '';
-  const headers = response ? await response.allHeaders() : {};
-  const status = response?.status() || 0;
-  if (!useOriginDocument && (currentUrl.includes(SITEGROUND_CAPTCHA_PATH) || isSiteGroundTransientResponse(status, headers, currentUrl))) {
-    return { pass: false, transient: true, reason: `SiteGround transient response: HTTP ${status}`, transport: 'public-edge' };
-  }
-  if (status !== 200) {
-    return {
-      pass: false,
-      transient: false,
-      reason: `Expected HTTP 200, got ${status}`,
-      transport: useOriginDocument ? 'siteground-origin-document' : 'public-edge',
-    };
-  }
-
-  const metaSha = (await page.locator('meta[name="nvx-deploy-sha"]').getAttribute('content').catch(() => '')) || '';
-  if (metaSha !== expectedSha) {
-    return {
-      pass: false,
-      transient: false,
-      reason: `SHA mismatch: ${metaSha || 'missing'} != ${expectedSha}`,
-      transport: useOriginDocument ? 'siteground-origin-document' : 'public-edge',
-    };
-  }
-
-  return {
-    pass: true,
-    transient: false,
-    transport: useOriginDocument ? 'siteground-origin-document' : 'public-edge',
-    originStatus: useOriginDocument ? originFallback?.origin?.originStatus : undefined,
-    originDeploySha: useOriginDocument ? originFallback?.origin?.originDeploySha : undefined,
-  };
+  return { pass: true, transient: false, originStatus: origin.originStatus, originDeploySha: origin.originDeploySha };
 }
 
 async function navigateWithRecovery(page, route) {
+  let lastTransient = null;
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    const result = await navigateCandidate(page, route);
+    const result = await navigatePublicCandidate(page, route);
     if (result.pass || !result.transient) return { ...result, attempt };
+    lastTransient = result;
     console.warn(`COMPLIANZ_FIRST_VISIT_TRANSIENT route=${route} attempt=${attempt}/${maxAttempts} reason=${result.reason}`);
     if (attempt < maxAttempts) await page.waitForTimeout(2000 * attempt);
   }
 
-  console.warn(`COMPLIANZ_FIRST_VISIT_ORIGIN_FALLBACK=ATTEMPT route=${route}`);
-  const originResult = await navigateCandidate(page, route, { useOriginDocument: true });
-  return { ...originResult, attempt: maxAttempts + 1 };
+  // Origin can establish that the expected SHA is healthy, but it cannot prove
+  // the user's public-edge first-visit UX. Keep the gate transient even when
+  // origin verification succeeds; never synthesize the challenged document.
+  console.warn(`COMPLIANZ_FIRST_VISIT_ORIGIN_VERIFY=ATTEMPT route=${route}`);
+  const origin = verifyOriginOnly(route);
+  if (!origin.pass) return { ...origin, attempt: maxAttempts + 1, transport: 'origin-verification-only' };
+  return {
+    pass: false,
+    transient: true,
+    attempt: maxAttempts + 1,
+    transport: 'origin-verification-only',
+    originVerified: true,
+    originStatus: origin.originStatus,
+    originDeploySha: origin.originDeploySha,
+    reason: `Public-edge first visit remained unavailable after ${maxAttempts} attempts; exact origin SHA verified`,
+    publicReason: lastTransient?.reason || 'unknown',
+  };
 }
 
-async function inspectOpenBanner(page, route, transport) {
+async function inspectOpenBanner(page, route) {
   await waitForVisualStability(page);
   const bannerMatch = await waitForVisibleBanner(page);
   if (!bannerMatch) {
-    return {
-      pass: false,
-      transient: transport === 'siteground-origin-document',
-      failures: ['Complianz banner is not visible in a clean first-visit context'],
-    };
+    return { pass: false, transient: false, failures: ['Complianz banner is not visible in a clean first-visit context'] };
   }
 
   const h1 = page.locator('h1').first();
@@ -287,20 +268,17 @@ async function inspectOpenBanner(page, route, transport) {
     .disableRules(['skip-link', 'region'])
     .analyze();
   const blockingAxe = (axeResults.violations || []).filter((violation) => violation.impact === 'critical' || violation.impact === 'serious');
-  for (const violation of blockingAxe) {
-    failures.push(`Axe ${violation.impact}: ${violation.id} — ${violation.help}`);
-  }
+  for (const violation of blockingAxe) failures.push(`Axe ${violation.impact}: ${violation.id} — ${violation.help}`);
 
-  await page.screenshot({
-    path: path.join(outDir, `${slugForRoute(route)}-banner-open.png`),
-    fullPage: false,
-  }).catch(() => {});
+  const screenshotPath = path.join(outDir, `${slugForRoute(route)}-banner-open.png`);
+  await page.screenshot({ path: screenshotPath, fullPage: false }).catch(() => {});
 
   return {
     pass: failures.length === 0,
     transient: false,
     failures,
     bannerSelector: bannerMatch.selector,
+    screenshot: screenshotPath,
     bannerBox,
     h1Box,
     overlapRatio,
@@ -315,6 +293,48 @@ async function inspectOpenBanner(page, route, transport) {
   };
 }
 
+function summarizeConsentCookies(cookies) {
+  const map = Object.fromEntries(cookies.filter((cookie) => cookie.name.startsWith('cmplz_')).map((cookie) => [cookie.name, cookie]));
+  return Object.fromEntries(Object.entries(map).map(([name, cookie]) => [name, {
+    value: cookie.value,
+    expires: cookie.expires,
+    durable: Number(cookie.expires) > Math.floor(Date.now() / 1000) + durableSeconds,
+  }]));
+}
+
+function consentSemanticsPass(action, cookies) {
+  const map = Object.fromEntries(cookies.map((cookie) => [cookie.name, cookie]));
+  const expectedNonFunctional = action === 'accept' ? 'allow' : 'deny';
+  const failures = [];
+
+  for (const name of requiredDecisionNames) {
+    if (!map[name]) failures.push(`Required consent cookie missing: ${name}`);
+  }
+  if (map.cmplz_functional && map.cmplz_functional.value !== 'allow') {
+    failures.push(`cmplz_functional must be allow for ${action}, got ${map.cmplz_functional.value}`);
+  }
+  for (const name of ['cmplz_preferences', 'cmplz_statistics', 'cmplz_marketing']) {
+    if (map[name] && map[name].value !== expectedNonFunctional) {
+      failures.push(`${name} must be ${expectedNonFunctional} for ${action}, got ${map[name].value}`);
+    }
+  }
+  for (const name of consentCategoryNames) {
+    if (map[name] && !(Number(map[name].expires) > Math.floor(Date.now() / 1000) + durableSeconds)) {
+      failures.push(`${name} is not durable beyond ${durableSeconds}s (expires=${map[name].expires})`);
+    }
+  }
+
+  return { pass: failures.length === 0, failures, expectedNonFunctional };
+}
+
+async function waitForConsentState(context, action, timeoutMs = 8000) {
+  return pollUntil(async () => {
+    const cookies = await context.cookies(baseUrl);
+    const semantics = consentSemanticsPass(action, cookies);
+    return semantics.pass ? { cookies, semantics } : null;
+  }, { timeoutMs, intervalMs: 150 });
+}
+
 async function inspectRoute(browser, route) {
   const context = await browser.newContext({
     viewport,
@@ -322,16 +342,31 @@ async function inspectRoute(browser, route) {
     userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 NUVANX-CONSENT-FIRST-VISIT/1.0',
   });
   const page = await context.newPage();
-
   try {
     const navigation = await navigateWithRecovery(page, route);
-    if (!navigation.pass) {
-      return { route, ...navigation };
-    }
-    const inspection = await inspectOpenBanner(page, route, navigation.transport);
+    if (!navigation.pass) return { route, ...navigation };
+    const inspection = await inspectOpenBanner(page, route);
     return { route, navigation, ...inspection };
   } finally {
     await context.close().catch(() => {});
+  }
+}
+
+async function reloadForPersistence(page) {
+  try {
+    const response = await page.reload({ waitUntil: 'domcontentloaded', timeout: 40000 });
+    if (!response) return { pass: false, transient: false, reason: 'Reload completed without an HTTP response' };
+    const headers = await response.allHeaders();
+    const status = response.status();
+    const currentUrl = page.url() || '';
+    if (currentUrl.includes(SITEGROUND_CAPTCHA_PATH) || isSiteGroundTransientResponse(status, headers, currentUrl)) {
+      return { pass: false, transient: true, reason: `SiteGround transient response during persistence reload: HTTP ${status}` };
+    }
+    if (status !== 200) return { pass: false, transient: false, reason: `Unexpected reload status ${status}` };
+    return { pass: true, transient: false, status };
+  } catch (error) {
+    const classification = classifyNavigationError(error, page.url() || '');
+    return { pass: false, ...classification };
   }
 }
 
@@ -346,73 +381,66 @@ async function verifyConsentPersistence(browser, action) {
   try {
     const navigation = await navigateWithRecovery(page, '/');
     if (!navigation.pass) return { action, ...navigation };
-    if (navigation.transport !== 'public-edge') {
-      return {
-        action,
-        pass: false,
-        transient: true,
-        reason: 'Consent persistence requires a public-edge navigation after origin fallback was needed',
-      };
-    }
 
     const bannerMatch = await waitForVisibleBanner(page);
-    if (!bannerMatch) {
-      return { action, pass: false, transient: false, reason: 'Consent banner missing before interaction' };
-    }
+    if (!bannerMatch) return { action, pass: false, transient: false, reason: 'Consent banner missing before interaction' };
     const actionMatch = await findVisibleAction(page, action);
-    if (!actionMatch) {
-      return { action, pass: false, transient: false, reason: `${action} action is not visible` };
-    }
+    if (!actionMatch) return { action, pass: false, transient: false, reason: `${action} action is not visible` };
 
     const box = await actionMatch.locator.boundingBox();
     if (!box || box.width < minTouchTarget || box.height < minTouchTarget) {
+      return { action, pass: false, transient: false, reason: `${action} action is below ${minTouchTarget}px touch target`, box };
+    }
+
+    await actionMatch.locator.click({ timeout: 3000 });
+    const bannerClosed = await waitForBannerHidden(bannerMatch.locator);
+    if (!bannerClosed) return { action, pass: false, transient: false, reason: 'Consent banner remains visible after interaction' };
+
+    const state = await waitForConsentState(context, action);
+    if (!state) {
+      const cookies = await context.cookies(baseUrl);
+      const semantics = consentSemanticsPass(action, cookies);
       return {
         action,
         pass: false,
         transient: false,
-        reason: `${action} action is below ${minTouchTarget}px touch target`,
-        box,
+        reason: `Consent cookie semantics did not settle: ${semantics.failures.join(' | ') || 'unknown'}`,
+        cookies: summarizeConsentCookies(cookies),
       };
     }
 
-    await actionMatch.locator.click({ timeout: 3000 });
-    await page.waitForTimeout(500);
-    if (await bannerMatch.locator.isVisible().catch(() => false)) {
-      return { action, pass: false, transient: false, reason: 'Consent banner remains visible after interaction' };
+    const beforeReload = summarizeConsentCookies(state.cookies);
+    const reload = await reloadForPersistence(page);
+    if (!reload.pass) return { action, ...reload, beforeReload };
+
+    const postReloadState = await waitForConsentState(context, action, 5000);
+    if (!postReloadState) {
+      const cookies = await context.cookies(baseUrl);
+      const semantics = consentSemanticsPass(action, cookies);
+      return {
+        action,
+        pass: false,
+        transient: false,
+        reason: `Consent semantics changed after reload: ${semantics.failures.join(' | ') || 'unknown'}`,
+        beforeReload,
+        afterReload: summarizeConsentCookies(cookies),
+      };
     }
 
-    const consentCookies = (await context.cookies(baseUrl)).filter((cookie) => cookie.name.startsWith('cmplz_'));
-    if (consentCookies.length === 0) {
-      return { action, pass: false, transient: false, reason: 'No Complianz persistence cookie was written after interaction' };
-    }
-
-    const reloadResponse = await page.reload({ waitUntil: 'domcontentloaded', timeout: 40000 }).catch(() => null);
-    if (!reloadResponse) {
-      return { action, pass: false, transient: true, reason: 'Reload failed while verifying persisted consent' };
-    }
-    const headers = await reloadResponse.allHeaders();
-    const status = reloadResponse.status();
-    const currentUrl = page.url() || '';
-    if (currentUrl.includes(SITEGROUND_CAPTCHA_PATH) || isSiteGroundTransientResponse(status, headers, currentUrl)) {
-      return { action, pass: false, transient: true, reason: `SiteGround transient response during persistence reload: HTTP ${status}` };
-    }
-    if (status !== 200) {
-      return { action, pass: false, transient: false, reason: `Unexpected reload status ${status}` };
-    }
-
-    await page.waitForTimeout(800);
-    const persistedBanner = await waitForVisibleBanner(page, 1200);
+    const persistedBanner = await waitForVisibleBanner(page, 1500);
     if (persistedBanner) {
-      return { action, pass: false, transient: false, reason: 'Consent banner reappeared after reload despite stored Complianz cookies' };
+      return { action, pass: false, transient: false, reason: 'Consent banner reappeared after reload despite durable category decision', beforeReload };
     }
 
     return {
       action,
       pass: true,
       transient: false,
-      cookieNames: consentCookies.map((cookie) => cookie.name).sort(),
       selector: actionMatch.selector,
       box,
+      expectedNonFunctional: state.semantics.expectedNonFunctional,
+      beforeReload,
+      afterReload: summarizeConsentCookies(postReloadState.cookies),
     };
   } finally {
     await context.close().catch(() => {});
@@ -442,6 +470,24 @@ try {
     if (result.transient) transientFailure = true;
     else if (!result.pass) realFailure = true;
   }
+
+  const acceptResult = persistenceResults.find((result) => result.action === 'accept' && result.pass);
+  const denyResult = persistenceResults.find((result) => result.action === 'deny' && result.pass);
+  if (acceptResult && denyResult) {
+    const acceptMarketing = acceptResult.afterReload?.cmplz_marketing?.value;
+    const denyMarketing = denyResult.afterReload?.cmplz_marketing?.value;
+    const acceptStatistics = acceptResult.afterReload?.cmplz_statistics?.value;
+    const denyStatistics = denyResult.afterReload?.cmplz_statistics?.value;
+    if (acceptMarketing === denyMarketing || acceptStatistics === denyStatistics) {
+      realFailure = true;
+      persistenceResults.push({
+        action: 'cross-check',
+        pass: false,
+        transient: false,
+        reason: `Accept and deny resolved to identical category decisions marketing=${acceptMarketing} statistics=${acceptStatistics}`,
+      });
+    }
+  }
 } finally {
   await browser.close().catch(() => {});
 }
@@ -458,7 +504,7 @@ await fs.writeFile(path.join(outDir, 'results.json'), `${JSON.stringify(evidence
 
 for (const result of routeResults) {
   if (result.transient) {
-    console.warn(`COMPLIANZ_FIRST_VISIT_ROUTE=TRANSIENT route=${result.route} reason=${result.reason || result.failures?.join(' | ') || 'unknown'}`);
+    console.warn(`COMPLIANZ_FIRST_VISIT_ROUTE=TRANSIENT route=${result.route} reason=${result.reason || 'unknown'}`);
   } else if (!result.pass) {
     console.error(`COMPLIANZ_FIRST_VISIT_ROUTE=FAIL_REAL route=${result.route} failures=${(result.failures || [result.reason || 'unknown']).join(' | ')}`);
   } else {
@@ -471,7 +517,7 @@ for (const result of persistenceResults) {
   } else if (!result.pass) {
     console.error(`COMPLIANZ_FIRST_VISIT_PERSISTENCE=FAIL_REAL action=${result.action} reason=${result.reason || 'unknown'}`);
   } else {
-    console.log(`COMPLIANZ_FIRST_VISIT_PERSISTENCE=PASS action=${result.action} cookies=${result.cookieNames.length}`);
+    console.log(`COMPLIANZ_FIRST_VISIT_PERSISTENCE=PASS action=${result.action} expected_nonfunctional=${result.expectedNonFunctional}`);
   }
 }
 
