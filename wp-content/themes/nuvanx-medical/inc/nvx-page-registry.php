@@ -165,6 +165,120 @@ function nvx_get_canonical_page_registry(): array {
 			'surface'  => 'surface-warm',
 			'template' => 'page.php',
 		),
+		'/por-que-nuvanx/' => array(
+			'owner'    => 'nvx_strategy_pages',
+			'renderer' => 'nvx_strategy_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/inversion-medicina-estetica/' => array(
+			'owner'    => 'nvx_strategy_pages',
+			'renderer' => 'nvx_strategy_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/protocolos-signature/' => array(
+			'owner'    => 'nvx_signature_hub_page',
+			'renderer' => 'nvx_signature_hub_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/papada-definicion-mandibular-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/calidad-piel-firmeza-luminosidad-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/cicatrices-acne-poros-textura-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/manchas-rojeces-fotorejuvenecimiento-ipl-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/grasa-localizada-abdomen-flancos-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/flacidez-grasa-localizada-brazos-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/grasa-espalda-zona-sujetador-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/flacidez-muslos-internos-subgluteo-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/tratamiento-rodillas-grasa-flacidez-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/contorno-corporal-masculino-madrid/' => array(
+			'owner'    => 'nvx_signature_phase_pages',
+			'renderer' => 'nvx_signature_phase_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/labios-acido-hialuronico-madrid/' => array(
+			'owner'    => 'nvx_aesthetic_treatment_pages',
+			'renderer' => 'nvx_aesthetic_treatment_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/rinomodelacion-sin-cirugia-madrid/' => array(
+			'owner'    => 'nvx_aesthetic_treatment_pages',
+			'renderer' => 'nvx_aesthetic_treatment_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/ojeras-surco-lagrimal-madrid/' => array(
+			'owner'    => 'nvx_aesthetic_treatment_pages',
+			'renderer' => 'nvx_aesthetic_treatment_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/bioestimuladores-colageno-madrid/' => array(
+			'owner'    => 'nvx_aesthetic_treatment_pages',
+			'renderer' => 'nvx_aesthetic_treatment_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/neuromoduladores-faciales-madrid/' => array(
+			'owner'    => 'nvx_aesthetic_treatment_pages',
+			'renderer' => 'nvx_aesthetic_treatment_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
+		'/acido-hialuronico-relleno-madrid/' => array(
+			'owner'    => 'nvx_aesthetic_treatment_pages',
+			'renderer' => 'nvx_aesthetic_treatment_page_content',
+			'surface'  => 'surface-warm',
+			'template' => 'page.php',
+		),
 	);
 
 	return $registry;
@@ -178,12 +292,24 @@ function nvx_get_canonical_page_registry(): array {
  */
 function nvx_resolve_canonical_page_entry( ?int $post_id = null ): ?array {
 	$registry = nvx_get_canonical_page_registry();
+	$target_id = $post_id ?? (int) get_queried_object_id();
 
-	// Check current request URI path
+	// Check current request URI path via schema helper
 	if ( function_exists( 'nvx_schema_current_path' ) ) {
-		$path = nvx_schema_current_path( $post_id ?? (int) get_queried_object_id() );
+		$path = nvx_schema_current_path( $target_id );
 		if ( isset( $registry[ $path ] ) ) {
 			return $registry[ $path ];
+		}
+	}
+
+	// Check queried post slug
+	if ( $target_id > 0 ) {
+		$slug = (string) get_post_field( 'post_name', $target_id );
+		if ( '' !== $slug ) {
+			$slug_path = '/' . trim( $slug, '/' ) . '/';
+			if ( isset( $registry[ $slug_path ] ) ) {
+				return $registry[ $slug_path ];
+			}
 		}
 	}
 

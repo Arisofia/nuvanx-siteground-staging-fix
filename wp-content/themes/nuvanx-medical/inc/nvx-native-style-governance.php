@@ -173,10 +173,39 @@ function nvx_theme_style_after_data( WP_Styles $styles, string $handle ): string
 }
 
 /**
+ * Load the immutable compiled CSS manifest if available.
+ *
+ * @return array{schema?: int, bundles?: array<string, array{file: string, hash: string, size: int, sources: string[]}>, files?: array<string, array{file: string, hash: string, size: int}>}|null
+ */
+function nvx_theme_get_css_manifest(): ?array {
+	static $manifest = false;
+	if ( false !== $manifest ) {
+		return $manifest;
+	}
+
+	$manifest_file = get_template_directory() . '/dist/manifest.json';
+	if ( ! is_readable( $manifest_file ) ) {
+		$manifest = null;
+		return null;
+	}
+
+	$json = file_get_contents( $manifest_file );
+	if ( false === $json || '' === trim( $json ) ) {
+		$manifest = null;
+		return null;
+	}
+
+	$data     = json_decode( $json, true );
+	$manifest = ( is_array( $data ) && ! empty( $data['bundles'] ) ) ? $data : null;
+	return $manifest;
+}
+
+/**
  * Cached bundle provider for critical theme CSS files.
  *
- * Avoids repeated runtime disk reads by compiling and caching the CSS bundle
- * per route manifest key.
+ * Loads pre-compiled immutable distribution bundles via dist/manifest.json,
+ * eliminating runtime individual file disk reads. Falls back gracefully to source
+ * files if the compiled distribution is not yet built.
  *
  * @param string[] $relative_files Ordered stylesheet file paths.
  * @return string Compiled CSS bundle.
@@ -190,7 +219,38 @@ function nvx_theme_get_compiled_critical_css_bundle( array $relative_files ): st
 	}
 
 	$theme_dir     = get_template_directory();
+	$manifest      = nvx_theme_get_css_manifest();
 	$critical_css  = '';
+
+	if ( null !== $manifest && ! empty( $manifest['bundles']['core']['file'] ) ) {
+		$core_sources = $manifest['bundles']['core']['sources'] ?? array();
+		$core_file    = $theme_dir . '/dist/' . $manifest['bundles']['core']['file'];
+
+		$is_core_prefix = count( $relative_files ) >= count( $core_sources )
+			&& array_slice( $relative_files, 0, count( $core_sources ) ) === $core_sources;
+
+		if ( $is_core_prefix && is_readable( $core_file ) ) {
+			$critical_css = (string) file_get_contents( $core_file );
+			$extra_files  = array_slice( $relative_files, count( $core_sources ) );
+
+			foreach ( $extra_files as $extra_file ) {
+				if ( isset( $manifest['files'][ $extra_file ]['file'] ) ) {
+					$extra_dist = $theme_dir . '/dist/' . $manifest['files'][ $extra_file ]['file'];
+					if ( is_readable( $extra_dist ) ) {
+						$critical_css .= "\n/* " . basename( $extra_file ) . " */\n" . (string) file_get_contents( $extra_dist );
+						continue;
+					}
+				}
+				$extra_src = $theme_dir . '/' . $extra_file;
+				if ( is_readable( $extra_src ) ) {
+					$critical_css .= "\n/* " . basename( $extra_file ) . " */\n" . (string) file_get_contents( $extra_src );
+				}
+			}
+
+			$bundle_cache[ $cache_key ] = $critical_css;
+			return $critical_css;
+		}
+	}
 
 	foreach ( $relative_files as $relative_file ) {
 		$absolute_file = $theme_dir . '/' . $relative_file;
