@@ -5,6 +5,7 @@ import path from 'node:path';
 import {
   SITEGROUND_CAPTCHA_PATH,
   EX_TEMPFAIL,
+  isSiteGroundCaptchaInterruption,
   isSiteGroundTransientResponse,
 } from './siteground-transient-classifier.mjs';
 import { createSiteGroundOriginVerifier } from './siteground-origin-verifier.mjs';
@@ -106,8 +107,8 @@ async function waitForVisualStability(page) {
 
 function classifyNavigationError(error, currentUrl) {
   const message = error instanceof Error ? error.message : String(error);
-  if (currentUrl.includes(SITEGROUND_CAPTCHA_PATH)) {
-    return { transient: true, reason: `SiteGround captcha challenge: ${currentUrl}` };
+  if (isSiteGroundCaptchaInterruption(error, currentUrl)) {
+    return { transient: true, reason: `SiteGround captcha navigation interruption: ${message}` };
   }
   if (/net::ERR_(?:CONNECTION|HTTP2|NETWORK|NAME_NOT_RESOLVED|SOCKET|PROXY|TUNNEL|ADDRESS|INTERNET_DISCONNECTED)/i.test(message)) {
     return { transient: true, reason: `Browser transport failure: ${message}` };
@@ -176,9 +177,6 @@ async function navigateWithRecovery(page, route) {
     if (attempt < maxAttempts) await page.waitForTimeout(2000 * attempt);
   }
 
-  // Origin can establish that the expected SHA is healthy, but it cannot prove
-  // the user's public-edge first-visit UX. Keep the gate transient even when
-  // origin verification succeeds; never synthesize the challenged document.
   console.warn(`COMPLIANZ_FIRST_VISIT_ORIGIN_VERIFY=ATTEMPT route=${route}`);
   const origin = verifyOriginOnly(route);
   if (!origin.pass) return { ...origin, attempt: maxAttempts + 1, transport: 'origin-verification-only' };
