@@ -10,14 +10,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Devuelve el "dueÃ±o" lÃ³gico de la pÃ¡gina actual.
+ * Devuelve el "dueño" lógico de la página actual.
  *
- * Los mÃ³dulos pueden engancharse al filtro 'nvx_page_owner' para declararse
- * propietarios en funciÃ³n del contexto (is_page(), is_singular(), etc.).
+ * Consulta primero el Page Registry canónico para garantizar resolución
+ * determinista e independiente del orden de bootstrap; si no está definido,
+ * evalúa el filtro 'nvx_page_owner' como fallback dinámico.
  */
 function nvx_get_page_owner() {
+	if ( function_exists( 'nvx_get_canonical_page_owner' ) ) {
+		$canonical_owner = nvx_get_canonical_page_owner();
+		if ( ! empty( $canonical_owner ) ) {
+			return $canonical_owner;
+		}
+	}
+
 	/**
-	 * Filtro que permite a los mÃ³dulos declarar la propiedad de la pÃ¡gina.
+	 * Filtro que permite a los módulos declarar la propiedad de la página.
 	 *
 	 * Debe devolver un identificador estable de propietario (string) o null.
 	 */

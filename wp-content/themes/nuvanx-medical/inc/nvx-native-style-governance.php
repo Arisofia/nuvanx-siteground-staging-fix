@@ -173,20 +173,27 @@ function nvx_theme_style_after_data( WP_Styles $styles, string $handle ): string
 }
 
 /**
- * Inline the complete theme stylesheet contract before WordPress prints head
- * styles. This removes local theme <link> requests while preserving dynamic
- * wp_add_inline_style() additions such as the valoración form stage image.
+ * Cached bundle provider for critical theme CSS files.
+ *
+ * Avoids repeated runtime disk reads by compiling and caching the CSS bundle
+ * per route manifest key.
+ *
+ * @param string[] $relative_files Ordered stylesheet file paths.
+ * @return string Compiled CSS bundle.
  */
-function nvx_theme_inline_critical_style_foundation(): void {
-	if ( is_admin() ) {
-		return;
+function nvx_theme_get_compiled_critical_css_bundle( array $relative_files ): string {
+	static $bundle_cache = array();
+	$cache_key = implode( '|', $relative_files );
+
+	if ( isset( $bundle_cache[ $cache_key ] ) ) {
+		return $bundle_cache[ $cache_key ];
 	}
 
-	$styles       = wp_styles();
-	$critical_css = '';
+	$theme_dir     = get_template_directory();
+	$critical_css  = '';
 
-	foreach ( nvx_theme_critical_stylesheet_files() as $relative_file ) {
-		$absolute_file = get_template_directory() . '/' . $relative_file;
+	foreach ( $relative_files as $relative_file ) {
+		$absolute_file = $theme_dir . '/' . $relative_file;
 		if ( ! is_readable( $absolute_file ) ) {
 			continue;
 		}
@@ -198,6 +205,23 @@ function nvx_theme_inline_critical_style_foundation(): void {
 
 		$critical_css .= "\n/* " . basename( $relative_file ) . " */\n" . $contents;
 	}
+
+	$bundle_cache[ $cache_key ] = $critical_css;
+	return $critical_css;
+}
+
+/**
+ * Inline the complete theme stylesheet contract before WordPress prints head
+ * styles. This removes local theme <link> requests while preserving dynamic
+ * wp_add_inline_style() additions such as the valoración form stage image.
+ */
+function nvx_theme_inline_critical_style_foundation(): void {
+	if ( is_admin() ) {
+		return;
+	}
+
+	$styles       = wp_styles();
+	$critical_css = nvx_theme_get_compiled_critical_css_bundle( nvx_theme_critical_stylesheet_files() );
 
 	if ( is_front_page() ) {
 		$critical_css .= "\n/* home-hero geometry reservation */\n"
