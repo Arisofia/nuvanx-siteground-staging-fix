@@ -261,4 +261,4 @@ function nvx_content_restructure_exion_page( string $content ): string {
 	$standard_wrapper = '<div class="entry-content nvx-page__content">';
 	return $standard_wrapper . $hero . $body . '</div>';
 }
-add_filter( 'the_content', 'nvx_content_restructure_exion_page', 21 );
+add_filter( 'the_content', 'nvx_content_restructure_exion_page', NVX_HOOK_PRIO_ENDOLIFT );
