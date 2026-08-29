@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "clinics": {
+    "chamberi": {
+      "name": "Centro Clínico NUVANX Chamberí",
+      "reg": "CS20144",
+      "address": "Calle de Fernández de la Hoz, 4, Bajo Derecha",
+      "postal_code": "28010",
+      "locality": "Madrid",
+      "phone": "669 319 836",
+      "phone_href": "+34669319836",
+      "hours": "lunes a sábado, 10:00–20:00",
+      "opening_hours": [
+        {
+          "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "10:00",
+          "closes": "20:00"
+        }
+      ],
+      "days": "Martes y jueves",
+      "latitude": 40.431204,
+      "longitude": -3.693425,
+      "landing_path": "/medicina-estetica-chamberi/",
+      "short_name": "Chamberí",
+      "descriptor": "Serenidad y discreción."
+    },
+    "goya": {
+      "name": "Centro Clínico NUVANX Salamanca–Goya",
+      "reg": "CS20073",
+      "address": "Calle de Fernán González, 26",
+      "postal_code": "28009",
+      "locality": "Madrid",
+      "phone": "647 50 51 07",
+      "phone_href": "+34647505107",
+      "hours": "lunes a sábado, 11:00–20:00",
+      "opening_hours": [
+        {
+          "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "11:00",
+          "closes": "20:00"
+        }
+      ],
+      "days": "Miércoles",
+      "latitude": 40.423912,
+      "longitude": -3.675648,
+      "landing_path": "/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/",
+      "short_name": "Salamanca–Goya",
+      "descriptor": "Accesibilidad y sofisticación."
+    }
+  }
+}
