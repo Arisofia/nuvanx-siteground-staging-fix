@@ -667,7 +667,7 @@ function nvx_equipo_physician_authority_markup( array $config ): string {
 function nvx_equipo_director_authority_markup( string $rivera_media = '' ): string {
 	require_once __DIR__ . '/nvx-catalog-json.php';
 	$data = nvx_catalog_json_resolved( 'equipo-medico-page.json' )['rivera'] ?? array();
-	$authorized_consultation = 2381;
+	$authorized_consultation = function_exists( 'nvx_medical_staff_profile_media_attachment_id' ) ? nvx_medical_staff_profile_media_attachment_id( 'director' ) : 0;
 	$consultation_file       = get_attached_file( $authorized_consultation );
 	if ( is_string( $consultation_file ) && is_readable( $consultation_file ) ) {
 		$consultation = wp_get_attachment_image(
@@ -770,7 +770,7 @@ function nvx_equipo_ivon_authority_markup( string $ivon_media = '' ): string {
 	require_once __DIR__ . '/nvx-catalog-json.php';
 	$data = nvx_catalog_json_resolved( 'equipo-medico-page.json' )['ivon'] ?? array();
 
-	$colegiado = defined( 'NVX_IVON_COLEGIADO' ) ? NVX_IVON_COLEGIADO : '284621525';
+	$colegiado = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'ivon' ) : '';
 
 	return nvx_equipo_physician_authority_markup(
 		array(
@@ -836,7 +836,7 @@ function nvx_equipo_fabio_authority_markup( string $fabio_media = '' ): string {
 	require_once __DIR__ . '/nvx-catalog-json.php';
 	$data = nvx_catalog_json_resolved( 'equipo-medico-page.json' )['fabio'] ?? array();
 
-	$colegiado = defined( 'NVX_FABIO_COLEGIADO' ) ? NVX_FABIO_COLEGIADO : '282877543';
+	$colegiado = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'fabio' ) : '';
 
 	return nvx_equipo_physician_authority_markup(
 		array(
