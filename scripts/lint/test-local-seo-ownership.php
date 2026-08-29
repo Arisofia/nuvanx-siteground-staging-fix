@@ -124,7 +124,7 @@ if ( ! str_contains( $landing, 'Clínica de medicina estética láser en Goya, B
 	$fail( 'Goya hero lead must state local medical-aesthetic intent' );
 }
 if ( ! str_contains( $landing, 'nvx_get_clinics_config' )
-	|| ! str_contains( $landing, "$clinic_config['reg']" )
+	|| ! str_contains( $landing, '$clinic_config[\'reg\']' )
 	|| ! str_contains( $landing, 'Centro sanitario %3$s.' ) ) {
 	$fail( 'Goya landing must render sanitary-registration context from clinics registry' );
 }
