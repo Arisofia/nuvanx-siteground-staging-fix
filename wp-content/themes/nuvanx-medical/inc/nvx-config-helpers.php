@@ -23,10 +23,6 @@ function nvx_whatsapp_url_from_phone( string $phone ): string {
 /**
  * Get WhatsApp number for a specific clinic or the primary clinic.
  *
- * Clinic phone data is owned by nvx_get_clinics_config(); this helper only
- * resolves the requested clinic. Unknown clinic keys resolve to the primary
- * Chamberí contact.
- *
  * @param string $clinic Clinic identifier ('primary', 'chamberi', 'goya').
  */
 function nvx_whatsapp_number( string $clinic = 'primary' ): string {
@@ -52,12 +48,12 @@ function nvx_whatsapp_url( string $clinic = 'primary' ): string {
 }
 
 /**
- * Load the canonical medical-staff identity registry.
+ * Load the canonical medical-staff registry.
  *
- * The registry is deliberately narrow: it owns public clinician identity and
- * colegiado values only. Page copy remains in the page-specific catalogs.
+ * Page copy remains in page-specific catalogs. This registry owns clinician
+ * identity, colegiado and stable public-profile/media references only.
  *
- * @return array<string,array{name:string,colegiado:string}>
+ * @return array<string,array<string,mixed>>
  */
 function nvx_medical_staff_registry(): array {
 	static $staff = null;
@@ -88,25 +84,53 @@ function nvx_medical_staff_registry(): array {
 		if ( '' === $name || '' === $colegiado ) {
 			continue;
 		}
-		$staff[ $id ] = array(
+
+		$record = array(
 			'name'      => $name,
 			'colegiado' => $colegiado,
 		);
+		$doctoralia_url = trim( (string) ( $doctor['doctoralia_url'] ?? '' ) );
+		if ( '' !== $doctoralia_url && wp_http_validate_url( $doctoralia_url ) ) {
+			$record['doctoralia_url'] = $doctoralia_url;
+		}
+		$attachment_id = (int) ( $doctor['profile_media_attachment_id'] ?? 0 );
+		if ( $attachment_id > 0 ) {
+			$record['profile_media_attachment_id'] = $attachment_id;
+		}
+		$staff[ $id ] = $record;
 	}
 
 	return $staff;
 }
 
+/** Get a complete clinician record from the canonical registry. */
+function nvx_medical_staff_record( string $doctor_id ): array {
+	$staff = nvx_medical_staff_registry();
+	return isset( $staff[ $doctor_id ] ) && is_array( $staff[ $doctor_id ] ) ? $staff[ $doctor_id ] : array();
+}
+
 /** Get a clinician's colegiado number from the canonical registry. */
 function nvx_medical_colegiado( string $doctor_id ): string {
-	$staff = nvx_medical_staff_registry();
-	return isset( $staff[ $doctor_id ]['colegiado'] ) ? (string) $staff[ $doctor_id ]['colegiado'] : '';
+	$doctor = nvx_medical_staff_record( $doctor_id );
+	return isset( $doctor['colegiado'] ) ? (string) $doctor['colegiado'] : '';
 }
 
 /** Get a clinician's public name from the canonical registry. */
 function nvx_medical_staff_name( string $doctor_id ): string {
-	$staff = nvx_medical_staff_registry();
-	return isset( $staff[ $doctor_id ]['name'] ) ? (string) $staff[ $doctor_id ]['name'] : '';
+	$doctor = nvx_medical_staff_record( $doctor_id );
+	return isset( $doctor['name'] ) ? (string) $doctor['name'] : '';
+}
+
+/** Get a clinician's Doctoralia profile URL when governed. */
+function nvx_medical_staff_doctoralia_url( string $doctor_id ): string {
+	$doctor = nvx_medical_staff_record( $doctor_id );
+	return isset( $doctor['doctoralia_url'] ) ? (string) $doctor['doctoralia_url'] : '';
+}
+
+/** Get a clinician's governed profile-media attachment ID. */
+function nvx_medical_staff_profile_media_attachment_id( string $doctor_id ): int {
+	$doctor = nvx_medical_staff_record( $doctor_id );
+	return isset( $doctor['profile_media_attachment_id'] ) ? (int) $doctor['profile_media_attachment_id'] : 0;
 }
 
 // Public medical identity constants are defined once from the canonical registry.
