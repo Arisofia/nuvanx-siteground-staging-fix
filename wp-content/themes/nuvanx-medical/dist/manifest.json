@@ -17,106 +17,23 @@
         "assets/css/nvx-footer.css",
         "assets/css/nvx-accessibility-governance.css"
       ]
-    },
-    "home-v3": {
-      "file": "nvx-home-v3.e0861799db.css",
-      "hash": "e0861799db",
-      "size": 18646,
-      "sources": [
-        "assets/css/nvx-home-v3.css"
-      ]
-    },
-    "posts": {
-      "file": "nvx-posts.49b87b966d.css",
-      "hash": "49b87b966d",
-      "size": 20261,
-      "sources": [
-        "assets/css/nvx-posts.css"
-      ]
-    },
-    "soluciones-medicas": {
-      "file": "nvx-soluciones-medicas.656cd28fd1.css",
-      "hash": "656cd28fd1",
-      "size": 11406,
-      "sources": [
-        "assets/css/nvx-soluciones-medicas.css"
-      ]
-    },
-    "cases-holding": {
-      "file": "nvx-cases-holding.cca1da4e4e.css",
-      "hash": "cca1da4e4e",
-      "size": 1322,
-      "sources": [
-        "assets/css/nvx-cases-holding.css"
-      ]
-    },
-    "equipo-medico": {
-      "file": "nvx-equipo-medico.c6f044b625.css",
-      "hash": "c6f044b625",
-      "size": 5545,
-      "sources": [
-        "assets/css/nvx-equipo-medico.css"
-      ]
-    },
-    "portfolio-hub": {
-      "file": "nvx-portfolio-hub.f23a52182d.css",
-      "hash": "f23a52182d",
-      "size": 5806,
-      "sources": [
-        "assets/css/nvx-portfolio-hub.css"
-      ]
     }
   },
   "files": {
-    "assets/css/nvx-accessibility-governance.css": {
-      "file": "nvx-accessibility-governance.c281faba63.css",
-      "hash": "c281faba63",
-      "size": 13075
-    },
-    "assets/css/nvx-base.css": {
-      "file": "nvx-base.c47a391f4e.css",
-      "hash": "c47a391f4e",
-      "size": 8835
-    },
     "assets/css/nvx-cases-holding.css": {
       "file": "nvx-cases-holding.79a1c06596.css",
       "hash": "79a1c06596",
       "size": 1294
-    },
-    "assets/css/nvx-components.css": {
-      "file": "nvx-components.3d173a066b.css",
-      "hash": "3d173a066b",
-      "size": 50368
     },
     "assets/css/nvx-equipo-medico.css": {
       "file": "nvx-equipo-medico.f09e5d4885.css",
       "hash": "f09e5d4885",
       "size": 5517
     },
-    "assets/css/nvx-fonts.css": {
-      "file": "nvx-fonts.d185b68e18.css",
-      "hash": "d185b68e18",
-      "size": 796
-    },
-    "assets/css/nvx-footer.css": {
-      "file": "nvx-footer.a910c13f49.css",
-      "hash": "a910c13f49",
-      "size": 8222
-    },
-    "assets/css/nvx-header.css": {
-      "file": "nvx-header.26a2021b55.css",
-      "hash": "26a2021b55",
-      "size": 10043
-    },
     "assets/css/nvx-home-v3.css": {
       "file": "nvx-home-v3.3acc554342.css",
       "hash": "3acc554342",
       "size": 18624
-    },
-    "assets/css/nvx-patterns-editorial.css": {
-      "file": "nvx-patterns-editorial.6cf7ca00ee.css",
-      "hash": "6cf7ca00ee",
-      "size": 43888
     },
     "assets/css/nvx-portfolio-hub.css": {
       "file": "nvx-portfolio-hub.263ec577c4.css",
@@ -128,20 +45,10 @@
       "hash": "e53843656e",
       "size": 20241
     },
-    "assets/css/nvx-site-layout.css": {
-      "file": "nvx-site-layout.049516c42e.css",
-      "hash": "049516c42e",
-      "size": 11579
-    },
     "assets/css/nvx-soluciones-medicas.css": {
       "file": "nvx-soluciones-medicas.fbef37ea48.css",
       "hash": "fbef37ea48",
       "size": 11373
-    },
-    "assets/css/nvx-tokens.css": {
-      "file": "nvx-tokens.a610e23b6c.css",
-      "hash": "a610e23b6c",
-      "size": 9492
     }
   }
 }

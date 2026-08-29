@@ -2,9 +2,11 @@
 /**
  * Deterministic CSS compiler and manifest generator for nuvanx-medical theme.
  *
- * Compiles modular source CSS into immutable hashed distribution bundles and
- * generates dist/manifest.json for high-performance server delivery without
- * runtime multi-file disk reads.
+ * Compiles modular source CSS into immutable hashed distribution artifacts.
+ * Runtime consumes one aggregate core bundle plus one hashed file for each
+ * route-local stylesheet. A source that belongs to core is never emitted again
+ * as an individual dist artifact; dist/ represents runtime consumption, not
+ * source history or alternate representations.
  *
  * @package nuvanx-siteground
  */
@@ -32,30 +34,14 @@ const BUNDLE_DEFINITIONS = {
     'assets/css/nvx-footer.css',
     'assets/css/nvx-accessibility-governance.css',
   ],
-  'home-v3': ['assets/css/nvx-home-v3.css'],
-  posts: ['assets/css/nvx-posts.css'],
-  'soluciones-medicas': ['assets/css/nvx-soluciones-medicas.css'],
-  'cases-holding': ['assets/css/nvx-cases-holding.css'],
-  'equipo-medico': ['assets/css/nvx-equipo-medico.css'],
-  'portfolio-hub': ['assets/css/nvx-portfolio-hub.css'],
 };
 
-/**
- * Compute 10-char sha256 hash for content.
- *
- * @param {string} content
- * @returns {string}
- */
+/** Compute 10-char sha256 hash for content. */
 function computeHash(content) {
   return crypto.createHash('sha256').update(content, 'utf8').digest('hex').slice(0, 10);
 }
 
-/**
- * Clean and normalize CSS content deterministically.
- *
- * @param {string} raw
- * @returns {string}
- */
+/** Clean and normalize CSS content deterministically. */
 function normalizeCss(raw) {
   return raw
     .replace(/\r\n/g, '\n')
@@ -66,7 +52,8 @@ function normalizeCss(raw) {
 async function main() {
   await fs.mkdir(DIST_DIR, { recursive: true });
 
-  // Clean existing .css and manifest files in dist/
+  // dist/ is generated state, not an archive. Remove every prior CSS artifact
+  // and manifest before rebuilding the exact current runtime graph.
   const existingFiles = await fs.readdir(DIST_DIR);
   for (const file of existingFiles) {
     if (file.endsWith('.css') || file === 'manifest.json') {
@@ -82,11 +69,16 @@ async function main() {
     files: {},
   };
 
-  // Compile individual source files
+  const bundledSources = new Set(Object.values(BUNDLE_DEFINITIONS).flat());
+
+  // Only route-local sources that are not already represented inside an
+  // aggregate bundle get their own immutable dist artifact.
   const srcFiles = await fs.readdir(CSS_SRC_DIR);
   for (const srcFile of srcFiles) {
     if (!srcFile.endsWith('.css')) continue;
     const relSrc = `assets/css/${srcFile}`;
+    if (bundledSources.has(relSrc)) continue;
+
     const fullSrc = path.join(CSS_SRC_DIR, srcFile);
     const content = normalizeCss(await fs.readFile(fullSrc, 'utf8'));
     const hash = computeHash(content);
@@ -102,8 +94,12 @@ async function main() {
     };
   }
 
-  // Compile aggregate bundles
+  // Only true multi-source aggregate bundles belong here.
   for (const [bundleName, sourceList] of Object.entries(BUNDLE_DEFINITIONS)) {
+    if (sourceList.length < 2) {
+      throw new Error(`Bundle ${bundleName} must aggregate at least two sources`);
+    }
+
     const parts = [];
     for (const relSrc of sourceList) {
       const fullSrc = path.join(THEME_DIR, relSrc);
@@ -129,7 +125,10 @@ async function main() {
   const manifestPath = path.join(DIST_DIR, 'manifest.json');
   await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
 
-  console.log(`CSS_COMPILATION=PASS bundles=${Object.keys(manifest.bundles).length} files=${Object.keys(manifest.files).length} dist=${path.relative(ROOT_DIR, DIST_DIR)}`);
+  console.log(
+    `CSS_COMPILATION=PASS bundles=${Object.keys(manifest.bundles).length} ` +
+    `route_files=${Object.keys(manifest.files).length} dist=${path.relative(ROOT_DIR, DIST_DIR)}`
+  );
 }
 
 main().catch((err) => {
