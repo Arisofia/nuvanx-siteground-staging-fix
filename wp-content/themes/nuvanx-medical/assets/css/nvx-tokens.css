@@ -287,3 +287,29 @@
   --nvx-z-modal: 3000;
   --nvx-z-a11y: 10000;
 }
+
+/* Clinical evidence note component */
+.nvx-clinical-evidence-note {
+  --_note-gap:        var(--nvx-space-6, 2rem);
+  --_note-border:     var(--nvx-color-border-subtle, #e2e2e2);
+  --_note-bg:         var(--nvx-color-surface-secondary, #f8f8f6);
+  --_note-text:       var(--nvx-type-body-sm);
+
+  margin-block-start:  var(--_note-gap);
+  padding:             var(--nvx-space-4, 1.25rem) var(--nvx-space-5, 1.5rem);
+  border-block-start:  1px solid var(--_note-border);
+  background:          var(--_note-bg);
+  border-radius:       var(--nvx-radius-sm, 4px);
+}
+
+.nvx-clinical-evidence-note__inner {
+  font:   var(--_note-text);
+  color:  var(--nvx-color-text-secondary);
+  max-width: 72ch;
+}
+
+@media (max-width: 768px) {
+  .nvx-clinical-evidence-note {
+    padding: var(--nvx-space-3, 1rem);
+  }
+}

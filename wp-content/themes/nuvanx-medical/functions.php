@@ -262,7 +262,7 @@ function nvx_blog_pre_get_posts( WP_Query $query ): void {
 	}
 
 	if ( $query->is_home() && ! $query->is_front_page() ) {
-		$query->set( 'posts_per_page', 12 );
+		$query->set( 'posts_per_page', 24 );
 		$query->set( 'ignore_sticky_posts', true );
 	}
 }

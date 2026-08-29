@@ -148,6 +148,8 @@ jobs:
           php scripts/lint/test-goya-gallery-fallback.php
           node scripts/lint/test-single-hubspot-mount.mjs
           node scripts/lint/test-clinic-equipment-staging-media-contract.mjs
+          node scripts/lint/test-btl-clinical-note-presence.mjs
+          node scripts/lint/test-blog-archive-completeness.mjs
           node scripts/staging2/test-console-error-classifier.mjs
           find wp-content/themes/nuvanx-medical -name '*.js' -type f -print0 | xargs -0 -r -n1 node --check >/dev/null
           node scripts/lint/no-hardcoded-colors.mjs --strict
