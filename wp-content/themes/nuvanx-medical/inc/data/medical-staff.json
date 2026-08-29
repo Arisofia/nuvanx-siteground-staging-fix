@@ -3,7 +3,9 @@
   "staff": {
     "director": {
       "name": "Dr. José Javier Rivera Tejeda",
-      "colegiado": "282864786"
+      "colegiado": "282864786",
+      "doctoralia_url": "https://www.doctoralia.es/jose-javier-rivera-tejeda/medico-estetico/madrid",
+      "profile_media_attachment_id": 2381
     },
     "ivon": {
       "name": "Dra. Ivon Yamileth Rivera Deras",
@@ -15,7 +17,8 @@
     },
     "cristina": {
       "name": "Dra. Cristina Márquez González",
-      "colegiado": "282858861"
+      "colegiado": "282858861",
+      "doctoralia_url": "https://www.doctoralia.es/cristina-marquez-gonzalez-2/radiologo-medico-estetico/madrid"
     }
   }
 }
