@@ -3,24 +3,24 @@
  * Canonical front page template.
  *
  * Complete theme-owned markup: no block-content dependency and no nested main
- * landmark. Media URLs use the active WordPress content origin.
+ * landmark. Media URLs use the active WordPress content origin; clinic and
+ * clinician identity data come from their canonical registries.
  *
  * @package nuvanx-medical
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$hero_video_url        = content_url( '/uploads/2026/07/nvx-home-video-portada-hero-12s-720p.mp4' );
-$hero_poster_url       = function_exists( 'nvx_resolve_home_hero_poster_url' ) ? nvx_resolve_home_hero_poster_url() : content_url( '/uploads/2026/07/nvx-home-video-portada-poster.webp' );
-$evidence_image        = content_url( '/uploads/2026/07/consulta-medica-personalizada-nuvanx-madrid.webp' );
-
-
+$hero_video_url  = content_url( '/uploads/2026/07/nvx-home-video-portada-hero-12s-720p.mp4' );
+$hero_poster_url = function_exists( 'nvx_resolve_home_hero_poster_url' ) ? nvx_resolve_home_hero_poster_url() : content_url( '/uploads/2026/07/nvx-home-video-portada-poster.webp' );
+$evidence_image  = content_url( '/uploads/2026/07/consulta-medica-personalizada-nuvanx-madrid.webp' );
+$clinics         = function_exists( 'nvx_get_clinics_config' ) ? nvx_get_clinics_config() : array();
 
 ob_start();
 ?>
 <div id="nvx-home-v3" class="nvx-home-v3">
 	<section class="nvx-home-hero" aria-labelledby="nvx-home-hero-title">
-		<video id="nvx-home-hero-video" class="nvx-home-hero__video nvx-home-hero-video" autoplay muted loop playsinline preload="none" poster="<?php echo esc_url( $hero_poster_url ); ?>" aria-label="Experiencia NUVANX Medicina Estética Láser en Madrid" onerror="this.style.display='none'">
+		<video id="nvx-home-hero-video" class="nvx-home-hero__video nvx-home-hero-video" autoplay muted loop playsinline preload="none" poster="<?php echo esc_url( $hero_poster_url ); ?>" aria-label="Experiencia NUVANX Medicina Estética Láser en Madrid">
 			<source src="<?php echo esc_url( $hero_video_url ); ?>" type="video/mp4">
 		</video>
 		<div class="nvx-home-hero__content nvx-home-hero__copy">
@@ -131,11 +131,8 @@ ob_start();
 		<div class="nvx-home-evidence__grid">
 			<div class="nvx-home-evidence__image-col">
 				<?php
-				// Intrinsic size from the asset file (hardcoded to prevent I/O on every request).
 				$evidence_w = 1672;
 				$evidence_h = 941;
-				?>
-				<?php
 				echo nvx_responsive_img_markup( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper escapes.
 					$evidence_image,
 					'Consulta médica personalizada en NUVANX Madrid',
@@ -166,9 +163,9 @@ ob_start();
 			<div class="nvx-home-team__content">
 				<p class="nvx-home-team__desc">El equipo integra experiencia clínica, valoración individual y seguimiento para seleccionar la tecnología adecuada en cada caso.</p>
 				<ul class="nvx-home-team__list">
-					<li><strong>Dr. José Javier Rivera Tejeda</strong> <span>Dirección médica. Endolift® y láser CO₂.</span></li>
-					<li><strong>Dra. Ivon Yamileth Rivera Deras</strong> <span>Medicina y well-aging.</span></li>
-					<li><strong>Dr. Fabio Augusto Quiñónez Bareiro</strong> <span>Medicina e investigación en fisiología del envejecimiento.</span></li>
+					<li><strong><?php echo esc_html( nvx_medical_staff_name( 'director' ) ); ?></strong> <span>Dirección médica. Endolift® y láser CO₂.</span></li>
+					<li><strong><?php echo esc_html( nvx_medical_staff_name( 'ivon' ) ); ?></strong> <span>Medicina y well-aging.</span></li>
+					<li><strong><?php echo esc_html( nvx_medical_staff_name( 'fabio' ) ); ?></strong> <span>Medicina e investigación en fisiología del envejecimiento.</span></li>
 				</ul>
 			</div>
 		</div>
@@ -202,38 +199,27 @@ ob_start();
 	<section class="nvx-home-locations" aria-labelledby="nvx-home-locations-title">
 		<h2 id="nvx-home-locations-title" class="nvx-home-locations__title">Madrid. Dos sedes. Un único criterio médico.</h2>
 		<div class="nvx-home-locations__grid">
-			<div class="nvx-home-location">
-				<div class="nvx-home-location__map">
-					<?php
-					echo nvx_lazy_map_embed_markup( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper escapes.
-						'https://maps.google.com/maps?q=Calle+de+Fernandez+de+la+Hoz+4+28010+Madrid&t=&z=16&ie=UTF8&iwloc=&output=embed',
-						__( 'Ubicación en Google Maps de NUVANX Chamberí', 'nuvanx-medical' ),
-						'nvx-map-embed--home'
-					);
-					?>
-				</div>
-				<h3 class="nvx-home-location__name">Chamberí</h3>
-				<p class="nvx-home-location__address">Calle de Fernández de la Hoz, 4</p>
-				<p class="nvx-home-location__desc">Serenidad y discreción.</p>
-				<span class="nvx-home-location__code nvx-reg-copy">Reg. Sanitario CS20144</span>
-				<a href="<?php echo esc_url( home_url( '/medicina-estetica-chamberi/' ) ); ?>" class="nvx-home-location__link">Ver sede y ubicación →</a>
-			</div>
-			<div class="nvx-home-location">
-				<div class="nvx-home-location__map">
-					<?php
-					echo nvx_lazy_map_embed_markup( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper escapes.
-						'https://maps.google.com/maps?q=Calle+de+Fernan+Gonzalez+26+28009+Madrid&t=&z=16&ie=UTF8&iwloc=&output=embed',
-						__( 'Ubicación en Google Maps de NUVANX Salamanca–Goya', 'nuvanx-medical' ),
-						'nvx-map-embed--home'
-					);
-					?>
-				</div>
-				<h3 class="nvx-home-location__name">Salamanca–Goya</h3>
-				<p class="nvx-home-location__address">Calle de Fernán González, 26</p>
-				<p class="nvx-home-location__desc">Accesibilidad y sofisticación.</p>
-				<span class="nvx-home-location__code nvx-reg-copy">Reg. Sanitario CS20073</span>
-				<a href="<?php echo esc_url( home_url( '/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/' ) ); ?>" class="nvx-home-location__link">Ver sede y ubicación →</a>
-			</div>
+			<?php foreach ( array( 'chamberi', 'goya' ) as $clinic_key ) : ?>
+				<?php if ( isset( $clinics[ $clinic_key ] ) && is_array( $clinics[ $clinic_key ] ) ) : ?>
+					<?php $clinic = $clinics[ $clinic_key ]; ?>
+					<div class="nvx-home-location">
+						<div class="nvx-home-location__map">
+							<?php
+							echo nvx_lazy_map_embed_markup( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper escapes.
+								nvx_clinic_map_embed_url( $clinic ),
+								sprintf( __( 'Ubicación en Google Maps de NUVANX %s', 'nuvanx-medical' ), (string) $clinic['short_name'] ),
+								'nvx-map-embed--home'
+							);
+							?>
+						</div>
+						<h3 class="nvx-home-location__name"><?php echo esc_html( (string) $clinic['short_name'] ); ?></h3>
+						<p class="nvx-home-location__address"><?php echo esc_html( (string) $clinic['address'] ); ?></p>
+						<p class="nvx-home-location__desc"><?php echo esc_html( (string) ( $clinic['descriptor'] ?? '' ) ); ?></p>
+						<span class="nvx-home-location__code nvx-reg-copy"><?php echo esc_html( 'Reg. Sanitario ' . (string) $clinic['reg'] ); ?></span>
+						<a href="<?php echo esc_url( home_url( (string) $clinic['landing_path'] ) ); ?>" class="nvx-home-location__link">Ver sede y ubicación →</a>
+					</div>
+				<?php endif; ?>
+			<?php endforeach; ?>
 		</div>
 	</section>
 
@@ -242,7 +228,7 @@ ob_start();
 		<p class="nvx-home-closure__desc">Presupuesto y plan documentado por escrito en la primera visita. Tiempos de recuperación informados según el protocolo.</p>
 		<div class="nvx-home-closure__actions">
 			<a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="nvx-brand-btn nvx-btn--primary nvx-open-valoracion-modal" data-nvx-valoracion-modal="1" aria-haspopup="dialog" data-gtag="click-reserve">Definir mi plan clínico</a>
-			<a href="<?php echo esc_url( ( function_exists( 'nvx_cta_whatsapp_url' ) ? nvx_cta_whatsapp_url() : '#' ) ); ?>" class="nvx-brand-btn nvx-btn--secondary-on-dark" target="_blank" rel="noopener noreferrer" data-gtag="click-whatsapp">Contactar por WhatsApp</a>
+			<a href="<?php echo esc_url( nvx_cta_whatsapp_url() ); ?>" class="nvx-brand-btn nvx-btn--secondary-on-dark" target="_blank" rel="noopener noreferrer" data-gtag="click-whatsapp">Contactar por WhatsApp</a>
 		</div>
 	</section>
 </div>
