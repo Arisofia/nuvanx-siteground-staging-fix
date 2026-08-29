@@ -39,6 +39,10 @@ if ( 1 !== (int) ( $profiles['schema'] ?? 0 ) ) {
 if ( ! str_contains( $config_source, "__DIR__ . '/data/clinics.json'" ) ) {
 	$fail( 'business config loader does not consume clinics.json' );
 }
+// Schema must derive NVX_CONTACT_EMAIL from canonical business loader, not deleted config.json
+if ( ! str_contains( $schema_source, 'nvx_business_contact_email' ) ) {
+	$fail( 'Schema does not use canonical business loader for contact email' );
+}
 
 $expected = array(
 	'chamberi' => array( 'display' => 'lunes a sábado, 10:00–20:00', 'opens' => '10:00', 'closes' => '20:00' ),
@@ -121,4 +125,4 @@ if ( ! str_contains( $landing, 'Centro sanitario CS20073.' ) ) {
 	$fail( 'Goya landing must retain its sanitary-registration context' );
 }
 
-echo 'LOCAL_SEO_OWNERSHIP_TEST=PASS clinics=2 hours=clinics-json+gbp metadata=aligned schema_fallbacks=aligned goya_intent=explicit productive_state=clean' . PHP_EOL;
+echo 'LOCAL_SEO_OWNERSHIP_TEST=PASS clinics=2 hours=clinics-json+gbp metadata=aligned schema_fallbacks=aligned goya_intent=explicit productive_state=clean schema_email=canonical_loader' . PHP_EOL;

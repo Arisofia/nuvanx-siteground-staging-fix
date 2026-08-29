@@ -33,8 +33,13 @@ function nvx_get_config(): array {
 }
 
 if ( ! defined( 'NVX_CONTACT_EMAIL' ) ) {
-	$config = nvx_get_config();
-	define( 'NVX_CONTACT_EMAIL', $config['contact']['email'] ?? 'info@nuvanx.com' );
+	// Use canonical business loader from clinics.json instead of deleted config.json
+	if ( function_exists( 'nvx_business_contact_email' ) ) {
+		$email = nvx_business_contact_email();
+		define( 'NVX_CONTACT_EMAIL', '' !== $email ? $email : 'info@nuvanx.com' );
+	} else {
+		define( 'NVX_CONTACT_EMAIL', 'info@nuvanx.com' );
+	}
 }
 /**
  * Editorial review month label for Endolift® byline (update with clinical review).
