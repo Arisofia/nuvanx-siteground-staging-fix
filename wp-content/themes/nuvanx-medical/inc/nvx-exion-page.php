@@ -149,6 +149,22 @@ function nvx_exion_editorial_body_markup(): string {
 	$html .= '</p>';
 
 	$html .= nvx_render_generic_brand_treatment_page_body( $data, 'nvx-exion', 'nvx_exion_process_icon' );
+
+	// The canonical comparison-table presentation is currently owned by the
+	// shared Endolift selectors in nvx-patterns-editorial.css. Reuse that owner
+	// instead of restoring EXION-specific inline CSS removed by #929.
+	$html = str_replace(
+		array(
+			'class="nvx-exion-compare-wrap"',
+			'class="nvx-exion-compare-table"',
+		),
+		array(
+			'class="nvx-exion-compare-wrap nvx-endolift-compare-wrap"',
+			'class="nvx-exion-compare-table nvx-endolift-compare-table"',
+		),
+		$html
+	);
+
 	$html .= '</div>';
 
 	return $html;
