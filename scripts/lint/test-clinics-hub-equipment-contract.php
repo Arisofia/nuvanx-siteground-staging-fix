@@ -47,6 +47,10 @@ $gallery_paths = array(
         '2025/04/despacho-nuvanx.webp',
     ),
 );
+$gallery_roles = array(
+    'goya'     => array('box', 'facade'),
+    'chamberi' => array('box', 'facade', 'waiting_room', 'consultation_office'),
+);
 $equipment_paths = array(
     '2026/08/endolift-lasemar-1500-eufoton.webp',
     '2026/08/BTL-Exion-Mobile-Version-1024x956-1.png',
@@ -58,20 +62,25 @@ $equipment_paths = array(
 );
 
 $map_start = strpos($gbp, 'function nvx_clinic_editorial_photo_map');
-$map_end   = strpos($gbp, 'function nvx_clinic_landing_photos');
+$map_end   = strpos($gbp, 'function nvx_clinic_landing_gallery_expected_count');
 if (false === $map_start || false === $map_end || $map_end <= $map_start) {
     $fail('gallery_map_missing');
 }
 $map = substr($gbp, $map_start, $map_end - $map_start);
+if (false === strpos($map, 'nvx_clinic_landing_gallery_registry( $clinic_key )')) {
+    $fail('gallery_registry_consumer_missing');
+}
 foreach ($gallery_paths as $clinic => $paths) {
     foreach ($paths as $path) {
-        if (1 !== substr_count($map, $path)) {
-            $fail('gallery_path_missing_or_duplicated:' . $clinic . ':' . $path);
+        if (false !== strpos($map, $path)) {
+            $fail('gallery_path_redeclared_in_php:' . $clinic . ':' . $path);
         }
     }
-}
-if (6 !== substr_count($map, "'uploads_path'")) {
-    $fail('gallery_path_count_not_six');
+    foreach ($gallery_roles[$clinic] as $role) {
+        if (false === strpos($map, "'{$role}' => array(")) {
+            $fail('gallery_role_copy_missing:' . $clinic . ':' . $role);
+        }
+    }
 }
 foreach (array('2026/07/gosia-1.webp', '2026/07/WhatsApp-Image-2026-07-04-at-1.39.33-PM.webp') as $team_path) {
     if (false !== strpos($map, $team_path)) {
@@ -171,6 +180,10 @@ foreach ($gallery_paths as $clinic => $paths) {
     if ($actual !== $paths) {
         $fail('registry_gallery_order_or_paths:' . $clinic);
     }
+    $actual_roles = array_map(static fn(array $entry): string => (string) ($entry['role'] ?? ''), $entries);
+    if ($actual_roles !== $gallery_roles[$clinic]) {
+        $fail('registry_gallery_roles:' . $clinic);
+    }
 }
 $equipment_override = $override['clinics_hub_equipment_section'] ?? null;
 if (!is_array($equipment_override) || 'clinic-hub-v1' !== ($equipment_override['marker'] ?? null)) {
@@ -186,4 +199,4 @@ foreach (array('GBP', 'individual sede landing galleries', 'proof of physical av
     }
 }
 
-echo "CLINICS_HUB_EQUIPMENT_CONTRACT=PASS galleries=6 goya=2 chamberi=4 equipment=7 scope=clinic-hub-v1\n";
+echo "CLINICS_HUB_EQUIPMENT_CONTRACT=PASS galleries=6 goya=2 chamberi=4 equipment=7 scope=clinic-hub-v1 ownership=registry\n";

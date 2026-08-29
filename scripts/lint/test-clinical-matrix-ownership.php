@@ -3,9 +3,14 @@
  * Linter: Verify Clinical Matrix completeness, evidence provenance and governance.
  */
 
-$file = __DIR__ . '/../../wp-content/themes/nuvanx-medical/inc/data/clinical-matrix.json';
+$file       = __DIR__ . '/../../wp-content/themes/nuvanx-medical/inc/data/clinical-matrix.json';
+$staff_file = __DIR__ . '/../../wp-content/themes/nuvanx-medical/inc/data/medical-staff.json';
 if ( ! file_exists( $file ) ) {
     echo "FAIL: clinical-matrix.json not found.\n";
+    exit( 1 );
+}
+if ( ! file_exists( $staff_file ) ) {
+    echo "FAIL: medical-staff.json not found.\n";
     exit( 1 );
 }
 
@@ -15,6 +20,14 @@ if ( JSON_ERROR_NONE !== json_last_error() ) {
     echo "FAIL: clinical-matrix.json is invalid JSON.\n";
     exit( 1 );
 }
+
+$staff_raw = (string) file_get_contents( $staff_file );
+$staff_data = json_decode( $staff_raw, true );
+if ( JSON_ERROR_NONE !== json_last_error() || ! is_array( $staff_data['staff'] ?? null ) ) {
+    echo "FAIL: medical-staff.json is invalid or missing staff registry.\n";
+    exit( 1 );
+}
+$staff = $staff_data['staff'];
 
 $treatments = $data['treatments'] ?? array();
 if ( empty( $treatments ) ) {
@@ -26,7 +39,7 @@ $required_fields = array(
     'name', 'indications', 'contraindications', 'mechanism',
     'applicators', 'published_parameters', 'anesthesia',
     'duration', 'recovery', 'sessions',
-    'medical_responsible', 'scientific_review_date'
+    'medical_responsible_id', 'scientific_review_date'
 );
 
 $errors = 0;
@@ -37,6 +50,22 @@ foreach ( $treatments as $id => $t ) {
             $errors++;
         }
     }
+
+    $responsible_id = trim( (string) ( $t['medical_responsible_id'] ?? '' ) );
+    if ( '' === $responsible_id || ! isset( $staff[ $responsible_id ] ) || ! is_array( $staff[ $responsible_id ] ) ) {
+        echo "ERROR: Treatment '{$id}' references unknown medical_responsible_id '{$responsible_id}'.\n";
+        $errors++;
+        continue;
+    }
+    if ( empty( $staff[ $responsible_id ]['name'] ) || empty( $staff[ $responsible_id ]['colegiado'] ) ) {
+        echo "ERROR: Responsible staff '{$responsible_id}' for treatment '{$id}' lacks governed name/colegiado.\n";
+        $errors++;
+    }
+}
+
+if ( preg_match( '/"medical_responsible"\s*:/u', $raw ) ) {
+    echo "ERROR: clinical-matrix.json must reference medical staff by ID, not duplicate medical_responsible identity text.\n";
+    $errors++;
 }
 
 $evidence_contract = array(
@@ -93,7 +122,6 @@ foreach ( $evidence_contract as $treatment_id => $required_pmids ) {
     }
 }
 
-// Fast SSOT-local guard. The Node contract below performs the broader theme-wide scan.
 $forbidden_patterns = array(
     '/Endolift[^\n]{0,120}20\s*[%–-]\s*40\s*%/iu',
     '/EXION[^\n]{0,120}37\s*%[^\n]{0,80}col[aá]geno/iu',
@@ -181,8 +209,6 @@ if ( false === strpos( $co2_meta_limit, 'I² 97% y 92%' ) ) {
     $errors++;
 }
 
-// This PHP linter is part of the canonical required workflow, so invoking the
-// focused Node contract here makes its theme-wide public-copy scan blocking CI.
 $node_contract = __DIR__ . '/test-clinical-evidence-contract.mjs';
 if ( ! is_file( $node_contract ) ) {
     echo "ERROR: Clinical evidence Node contract is missing.\n";
@@ -201,5 +227,5 @@ if ( $errors > 0 ) {
     exit( 1 );
 }
 
-echo "OK: Clinical Matrix validation passed with source-traceable balanced evidence contract.\n";
+echo "OK: Clinical Matrix validation passed with source-traceable balanced evidence contract and registry-backed medical responsibility.\n";
 exit( 0 );

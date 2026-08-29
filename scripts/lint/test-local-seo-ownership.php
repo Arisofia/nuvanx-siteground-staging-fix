@@ -39,7 +39,6 @@ if ( 1 !== (int) ( $profiles['schema'] ?? 0 ) ) {
 if ( ! str_contains( $config_source, "__DIR__ . '/data/clinics.json'" ) ) {
 	$fail( 'business config loader does not consume clinics.json' );
 }
-// Schema must derive NVX_CONTACT_EMAIL from canonical business loader, not deleted config.json
 if ( ! str_contains( $schema_source, 'nvx_business_contact_email' ) ) {
 	$fail( 'Schema does not use canonical business loader for contact email' );
 }
@@ -58,6 +57,9 @@ foreach ( $expected as $clinic_key => $hours ) {
 	}
 	if ( '' === trim( (string) ( $profile['place_id'] ?? '' ) ) || '' === trim( (string) ( $profile['maps_query'] ?? '' ) ) ) {
 		$fail( 'GBP operational identifiers missing for ' . $clinic_key );
+	}
+	if ( '' === trim( (string) ( $clinic['reg'] ?? '' ) ) ) {
+		$fail( 'sanitary registration missing for ' . $clinic_key );
 	}
 	foreach ( $weekdays as $day ) {
 		$expected_value = $hours['opens'] . '-' . $hours['closes'];
@@ -121,8 +123,14 @@ if ( ! str_contains( $landing, 'Medicina estética en Goya y Barrio de Salamanca
 if ( ! str_contains( $landing, 'Clínica de medicina estética láser en Goya, Barrio de Salamanca:' ) ) {
 	$fail( 'Goya hero lead must state local medical-aesthetic intent' );
 }
-if ( ! str_contains( $landing, 'Centro sanitario CS20073.' ) ) {
-	$fail( 'Goya landing must retain its sanitary-registration context' );
+if ( ! str_contains( $landing, 'nvx_get_clinics_config' )
+	|| ! str_contains( $landing, '$clinic_config[\'reg\']' )
+	|| ! str_contains( $landing, 'Centro sanitario %3$s.' ) ) {
+	$fail( 'Goya landing must render sanitary-registration context from clinics registry' );
 }
 
-echo 'LOCAL_SEO_OWNERSHIP_TEST=PASS clinics=2 hours=clinics-json+gbp metadata=aligned schema_fallbacks=aligned goya_intent=explicit productive_state=clean schema_email=canonical_loader' . PHP_EOL;
+if ( str_contains( $landing, 'Centro sanitario CS20073.' ) || str_contains( $landing, 'Registro sanitario: CS20073' ) ) {
+	$fail( 'Goya landing duplicates governed sanitary registration literal' );
+}
+
+echo 'LOCAL_SEO_OWNERSHIP_TEST=PASS clinics=2 hours=clinics-json+gbp metadata=aligned schema_fallbacks=aligned goya_intent=explicit sanitary_context=registry productive_state=clean schema_email=canonical_loader' . PHP_EOL;

@@ -34,6 +34,10 @@ const galleryPaths = {
     '2025/04/despacho-nuvanx.webp',
   ],
 };
+const galleryRoles = {
+  goya: ['box', 'facade'],
+  chamberi: ['box', 'facade', 'waiting_room', 'consultation_office'],
+};
 const equipmentPaths = [
   '2026/08/endolift-lasemar-1500-eufoton.webp',
   '2026/08/BTL-Exion-Mobile-Version-1024x956-1.png',
@@ -45,13 +49,18 @@ const equipmentPaths = [
 ];
 
 const galleryStart = gbp.indexOf('function nvx_clinic_editorial_photo_map');
-const galleryEnd = gbp.indexOf('function nvx_clinic_landing_photos');
+const galleryEnd = gbp.indexOf('function nvx_clinic_landing_gallery_expected_count');
 if (galleryStart < 0 || galleryEnd <= galleryStart) fail('gallery_map_missing');
 const galleryMap = gbp.slice(galleryStart, galleryEnd);
+if (!galleryMap.includes('nvx_clinic_landing_gallery_registry( $clinic_key )')) fail('gallery_registry_consumer_missing');
 for (const [clinic, paths] of Object.entries(galleryPaths)) {
-  for (const assetPath of paths) requireExact(galleryMap, assetPath, 1, `gallery_path:${clinic}:${assetPath}`);
+  for (const assetPath of paths) {
+    if (galleryMap.includes(assetPath)) fail(`gallery_path_redeclared_in_php:${clinic}:${assetPath}`);
+  }
+  for (const role of galleryRoles[clinic]) {
+    if (!galleryMap.includes(`'${role}' => array(`)) fail(`gallery_role_copy_missing:${clinic}:${role}`);
+  }
 }
-requireExact(galleryMap, "'uploads_path'", 6, 'gallery_path_count');
 for (const forbiddenGoyaTeamPath of [
   '2026/07/gosia-1.webp',
   '2026/07/WhatsApp-Image-2026-07-04-at-1.39.33-PM.webp',
@@ -119,8 +128,11 @@ for (const token of [
 const override = registry.approved_editorial_overrides;
 assert.equal(override?.source, 'operator_explicit', 'registry override source must remain explicit');
 for (const [clinic, paths] of Object.entries(galleryPaths)) {
-  const actual = override?.clinic_landing_galleries?.[clinic]?.map(({ uploads_path: assetPath }) => assetPath);
-  assert.deepEqual(actual, paths, `registry ${clinic} gallery order and paths must match the approved map`);
+  const entries = override?.clinic_landing_galleries?.[clinic];
+  const actualPaths = entries?.map(({ uploads_path: assetPath }) => assetPath);
+  const actualRoles = entries?.map(({ role }) => role);
+  assert.deepEqual(actualPaths, paths, `registry ${clinic} gallery order and paths must match the approved map`);
+  assert.deepEqual(actualRoles, galleryRoles[clinic], `registry ${clinic} gallery roles must match renderer copy roles`);
 }
 assert.equal(override?.clinics_hub_equipment_section?.marker, 'clinic-hub-v1', 'registry equipment marker must remain scoped');
 assert.deepEqual(override?.clinics_hub_equipment_section?.allowed_uploads_paths, equipmentPaths, 'registry equipment paths must match the renderer');
@@ -128,4 +140,4 @@ for (const prohibitedUse of ['GBP', 'individual sede landing galleries', 'proof 
   if (!override?.clinics_hub_equipment_section?.prohibited_uses?.includes(prohibitedUse)) fail(`registry_equipment_prohibition_missing:${prohibitedUse}`);
 }
 
-console.log('CLINICS_HUB_EQUIPMENT_CONTRACT=PASS galleries=6 goya=2 chamberi=4 equipment=7 scope=clinic-hub-v1');
+console.log('CLINICS_HUB_EQUIPMENT_CONTRACT=PASS galleries=6 goya=2 chamberi=4 equipment=7 scope=clinic-hub-v1 ownership=registry');

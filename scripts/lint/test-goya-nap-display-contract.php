@@ -56,11 +56,21 @@ if ( $e164 !== ( $goya['phone_href'] ?? null ) ) {
 if ( ! str_contains( $sources['sede'], '$clinic_config[\'phone\']' ) ) {
 	$fail( 'Sede renderer does not consume clinic display phone' );
 }
-if ( ! str_contains( $sources['contact'], '$config[\'goya\'][\'phone\']' ) ) {
+$contact_uses_registry = str_contains( $sources['contact'], 'nvx_get_clinics_config' )
+	&& str_contains( $sources['contact'], '$config[\'goya\']' )
+	&& str_contains( $sources['contact'], '$goya[\'phone\']' );
+if ( ! $contact_uses_registry ) {
 	$fail( 'Contacto renderer does not consume Goya display SSOT' );
 }
 if ( ! str_contains( $sources['hub'], '$config[\'goya\'][\'phone\']' ) ) {
 	$fail( 'Clinics hub does not consume Goya display SSOT' );
+}
+$footer_uses_registry = str_contains( $sources['footer'], 'nvx_get_clinics_config' )
+	&& str_contains( $sources['footer'], '$nvx_footer_clinics' )
+	&& str_contains( $sources['footer'], "['phone']" )
+	&& str_contains( $sources['footer'], "['phone_href']" );
+if ( ! $footer_uses_registry ) {
+	$fail( 'Footer does not consume clinic phone SSOT' );
 }
 
 // A dedicated display helper may own generic E.164 formatting. What is
@@ -77,11 +87,8 @@ $hub_renderer_source = substr( $sources['hub'], 0, $helper_start ) . substr( $so
 if ( str_contains( $hub_renderer_source, 'chunk_split(' ) ) {
 	$fail( 'ad-hoc phone reconstruction outside display helper surface=hub' );
 }
-
-// Footer may remain static markup until its canonical-data refactor, but its
-// public text and tel target must still be canonical and independently guarded.
-if ( ! str_contains( $sources['footer'], 'tel:' . $e164 ) || ! str_contains( $sources['footer'], '>' . $display . '</a>' ) ) {
-	$fail( 'footer Goya phone display/E.164 parity drift' );
+if ( str_contains( $sources['footer'], $display ) || str_contains( $sources['footer'], $e164 ) ) {
+	$fail( 'footer reintroduced Goya phone literals instead of registry consumption' );
 }
 
 // Schema must stay machine-readable; never replace telephone with display text.
@@ -107,4 +114,4 @@ foreach ( $scan_files as $file ) {
 	}
 }
 
-echo 'GOYA_NAP_DISPLAY_TEST=PASS display=clinics-json machine=e164 legacy=blocked renderers=3 anti_pattern=helper_only' . PHP_EOL;
+echo 'GOYA_NAP_DISPLAY_TEST=PASS display=clinics-json machine=e164 legacy=blocked renderers=4 anti_pattern=helper_only' . PHP_EOL;

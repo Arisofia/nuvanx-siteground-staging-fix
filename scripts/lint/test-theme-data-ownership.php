@@ -32,22 +32,27 @@ $staff   = $read_json( $theme_root . '/inc/data/medical-staff.json', 'medical-st
 $clinics = $read_json( $theme_root . '/inc/data/clinics.json', 'clinics' );
 $assets  = $read_json( $theme_root . '/inc/data/clinic-asset-registry.json', 'clinic-assets' );
 
-$forbidden_literals = array();
+$string_literals  = array();
+$numeric_literals = array();
 foreach ( $staff['staff'] ?? array() as $record ) {
 	if ( ! is_array( $record ) ) {
 		continue;
 	}
-	foreach ( array( 'colegiado', 'doctoralia_url', 'profile_media_attachment_id' ) as $field ) {
+	foreach ( array( 'colegiado', 'doctoralia_url' ) as $field ) {
 		$value = trim( (string) ( $record[ $field ] ?? '' ) );
 		if ( '' !== $value ) {
-			$forbidden_literals[ $value ] = 'medical_staff_' . $field;
+			$string_literals[ $value ] = 'medical_staff_' . $field;
 		}
+	}
+	$profile_media_id = (int) ( $record['profile_media_attachment_id'] ?? 0 );
+	if ( $profile_media_id > 0 ) {
+		$numeric_literals[ $profile_media_id ] = 'medical_staff_profile_media_attachment_id';
 	}
 }
 
 $contact_email = trim( (string) ( $clinics['contact_email'] ?? '' ) );
 if ( '' !== $contact_email ) {
-	$forbidden_literals[ $contact_email ] = 'business_contact_email';
+	$string_literals[ $contact_email ] = 'business_contact_email';
 }
 foreach ( $clinics['clinics'] ?? array() as $clinic ) {
 	if ( ! is_array( $clinic ) ) {
@@ -56,7 +61,7 @@ foreach ( $clinics['clinics'] ?? array() as $clinic ) {
 	foreach ( array( 'phone', 'phone_href', 'reg', 'address', 'landing_path' ) as $field ) {
 		$value = trim( (string) ( $clinic[ $field ] ?? '' ) );
 		if ( '' !== $value ) {
-			$forbidden_literals[ $value ] = 'clinic_' . $field;
+			$string_literals[ $value ] = 'clinic_' . $field;
 		}
 	}
 }
@@ -76,49 +81,9 @@ foreach ( $assets['approved_editorial_overrides']['clinic_landing_galleries'] ??
 foreach ( $assets['approved_editorial_overrides']['authorized_partner_marks'] ?? array() as $mark ) {
 	$id = is_array( $mark ) ? (int) ( $mark['attachment_id'] ?? 0 ) : 0;
 	if ( $id > 0 ) {
-		$forbidden_literals[ (string) $id ] = 'authorized_partner_attachment_id';
+		$numeric_literals[ $id ] = 'authorized_partner_attachment_id';
 	}
 }
-
-// Transitional files that still contain documented fallbacks pending migration.
-// These are excluded until their migrations are complete, as documented in PR #928.
-$transitional_files = array(
-	'nvx-equipo-page.php',
-	'nvx-exion-page.php', 
-	'nvx-complianz-policy-routing.php',
-	'nvx-native-style-governance.php',
-	'nvx-treatments-catalog.php',
-	'nvx-schema-foundation.php',
-	'nvx-gbp-local.php',
-	'nvx-integrations.php',
-	'nvx-page-registry.php',
-	'nvx-page-render-helpers.php',
-	'nvx-signature-phase-pages.php',
-	'nvx-strategy-pages.php',
-	'nvx-valoracion-managed-page.php',
-	'nvx-authentic-page-photography.php',
-	'nvx-cta-components.php',
-	'nvx-page-hygiene.php',
-	'nvx-laser-medicine-page.php',
-	'nvx-aesthetic-medicine-page.php',
-	'nvx-aesthetic-treatment-pages.php',
-	'nvx-endolift-authority-graph.php',
-	'nvx-schema-faq.php',
-	'nvx-co2-page.php',
-	'nvx-profhilo-page.php',
-	'nvx-dr-rivera-page.php',
-	'nvx-medical-review.php',
-	'nvx-endolift-page.php',
-	'nvx-schema-physicians.php',
-	'nvx-schema-graph.php',
-	'nvx-clinics-hub.php',
-	'nvx-catalog-json.php',
-	'footer.php',
-	'page-equipo-medico.php',
-	'template-parts/content/nvx-blog-single.php',
-	'templates/page-sede.php',
-	'templates/page-contacto.php',
-);
 
 $iterator = new RecursiveIteratorIterator(
 	new RecursiveDirectoryIterator( $theme_root, FilesystemIterator::SKIP_DOTS )
@@ -134,21 +99,9 @@ foreach ( $iterator as $file ) {
 		continue;
 	}
 	$relative = str_replace( $root . '/', '', $path );
-	
-	// Skip vendor directory (third-party code)
+
+	// Third-party vendor code is outside theme ownership governance.
 	if ( str_contains( $relative, 'vendor/' ) ) {
-		continue;
-	}
-	
-	// Skip transitional files that are documented as still containing fallbacks
-	$is_transitional = false;
-	foreach ( $transitional_files as $transitional ) {
-		if ( str_ends_with( $relative, $transitional ) ) {
-			$is_transitional = true;
-			break;
-		}
-	}
-	if ( $is_transitional ) {
 		continue;
 	}
 
@@ -158,12 +111,28 @@ foreach ( $iterator as $file ) {
 	if ( preg_match( '/\bonerror\s*=/i', $source ) ) {
 		$failures[] = 'inline_onerror_forbidden file=' . $relative;
 	}
-	foreach ( $forbidden_literals as $literal => $owner ) {
+	foreach ( $string_literals as $literal => $owner ) {
 		$needle = (string) $literal;
 		if ( '' !== $needle && str_contains( $source, $needle ) ) {
 			$failures[] = 'canonical_literal_duplicated owner=' . $owner . ' file=' . $relative;
 		}
 	}
+
+	// Numeric registry identifiers are ownership values only when PHP declares
+	// the exact integer token. Substring matching is invalid here: e.g. partner
+	// ID 898 must not flag SVG path decimal 2.898 or unrelated prose.
+	if ( array() !== $numeric_literals ) {
+		foreach ( token_get_all( $source ) as $token ) {
+			if ( ! is_array( $token ) || T_LNUMBER !== $token[0] ) {
+				continue;
+			}
+			$number = (int) $token[1];
+			if ( isset( $numeric_literals[ $number ] ) ) {
+				$failures[] = 'canonical_literal_duplicated owner=' . $numeric_literals[ $number ] . ' file=' . $relative;
+			}
+		}
+	}
+
 	foreach ( $gallery_paths as $gallery_path ) {
 		if ( str_contains( $source, $gallery_path ) ) {
 			$failures[] = 'gallery_path_duplicated file=' . $relative;
