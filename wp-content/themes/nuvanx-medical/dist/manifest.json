@@ -3,9 +3,9 @@
   "generated": "1970-01-01T00:00:00.000Z",
   "bundles": {
     "core": {
-      "file": "nvx-core.3565f64b68.css",
-      "hash": "3565f64b68",
-      "size": 158259,
+      "file": "nvx-core.171a59442e.css",
+      "hash": "171a59442e",
+      "size": 158349,
       "sources": [
         "assets/css/nvx-fonts.css",
         "assets/css/nvx-tokens.css",

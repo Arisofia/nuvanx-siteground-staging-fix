@@ -952,8 +952,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   color: var(--nvx-ink);
 }
 
-.nvx-laser-body,
-.nvx-body {
+.nvx-laser-body {
   margin: 0 0 var(--nvx-space-3);
   font-family: var(--nvx-sans);
   font-size: var(--nvx-type-body);

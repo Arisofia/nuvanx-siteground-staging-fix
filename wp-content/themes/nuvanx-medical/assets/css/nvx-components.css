@@ -425,7 +425,7 @@ body .joinchat__qr canvas {
 /* Media e imágenes - diseño elegante */
 .nvx-media{display:block;width:100%;height:auto;border-radius:var(--nvx-radius-image);transition:transform var(--nvx-duration-slow) ease}
 .nvx-media:hover{transform:scale(1.02)}
-.nvx-media--hero{height:100%;object-fit:cover;border-radius:0}
+.nvx-media--hero{min-height:16rem;height:100%;object-fit:cover;border-radius:0}
 .nvx-media--doctor{aspect-ratio:5/6;object-fit:cover;max-height:600px;min-height:400px;object-position:center top} /* nvx-token-exception: STRUCTURAL_ALLOWED — doctor media ratio bounds */
 /* Body content images: natural height, same radius as cards/figures */
 .nvx-media--body{width:100%;height:auto;max-height:var(--nvx-media-max-h-featured);object-fit:cover;border-radius:var(--nvx-radius-image)}

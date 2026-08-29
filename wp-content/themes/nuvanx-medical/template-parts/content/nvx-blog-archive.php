@@ -61,6 +61,9 @@ $topics = get_categories(
 			<?php if ( have_posts() ) : ?>
 				<div class="nvx-blog-grid">
 					<?php
+					if ( function_exists( 'nvx_blog_reset_used_images' ) ) {
+						nvx_blog_reset_used_images();
+					}
 					$nvx_editorial_index = 0;
 					while ( have_posts() ) :
 						the_post();

@@ -299,12 +299,24 @@ function nvx_blog_named_image_html( array $asset, array $args = array() ): strin
 }
 
 /**
+ * Reset used named images tracking for new loops or requests.
+ */
+function nvx_blog_reset_used_images(): void {
+	nvx_blog_archive_card_image( array( 'reset_used' => true ) );
+}
+
+/**
  * Featured image, or a named theme photo matched to the post.
  *
- * @param array{priority?:bool,sizes?:string} $args Image flags.
+ * @param array{priority?:bool,sizes?:string,reset_used?:bool} $args Image flags.
  */
 function nvx_blog_archive_card_image( array $args = array() ): string {
 	static $used = array();
+
+	if ( ! empty( $args['reset_used'] ) ) {
+		$used = array();
+		return '';
+	}
 
 	$priority = ! empty( $args['priority'] );
 	$sizes    = isset( $args['sizes'] ) ? (string) $args['sizes'] : '(min-width: 1024px) 33vw, (min-width: 641px) 50vw, 100vw';
