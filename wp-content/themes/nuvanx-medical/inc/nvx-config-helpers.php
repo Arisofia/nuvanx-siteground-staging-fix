@@ -1,50 +1,12 @@
 <?php
 /**
- * Configuration helpers for externalized values.
- *
- * Loads and provides access to configuration data from JSON files for values
- * that are not part of the canonical clinic business configuration.
+ * Canonical helpers for clinic contact and medical-staff identity data.
  *
  * @package nuvanx-medical
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}
-
-/**
- * Get configuration value from JSON config file.
- *
- * @param string $key     Configuration key in dot notation.
- * @param mixed  $default Default value if key not found.
- * @return mixed Configuration value or default.
- */
-function nvx_config_get( string $key, $default = '' ) {
-	static $config = null;
-
-	if ( null === $config ) {
-		$config_file = __DIR__ . '/data/config.json';
-		if ( is_readable( $config_file ) ) {
-			$config = json_decode( file_get_contents( $config_file ), true );
-			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				$config = array();
-			}
-		} else {
-			$config = array();
-		}
-	}
-
-	$keys  = explode( '.', $key );
-	$value = $config;
-
-	foreach ( $keys as $k ) {
-		if ( ! is_array( $value ) || ! array_key_exists( $k, $value ) ) {
-			return $default;
-		}
-		$value = $value[ $k ];
-	}
-
-	return $value;
 }
 
 /** Normalize a telephone value to international digits only. */
@@ -62,11 +24,10 @@ function nvx_whatsapp_url_from_phone( string $phone ): string {
  * Get WhatsApp number for a specific clinic or the primary clinic.
  *
  * Clinic phone data is owned by nvx_get_clinics_config(); this helper only
- * resolves the requested clinic. Unknown clinic keys retain the historical
- * fallback to the primary Chamberí contact.
+ * resolves the requested clinic. Unknown clinic keys resolve to the primary
+ * Chamberí contact.
  *
  * @param string $clinic Clinic identifier ('primary', 'chamberi', 'goya').
- * @return string WhatsApp number in international digits-only format.
  */
 function nvx_whatsapp_number( string $clinic = 'primary' ): string {
 	if ( ! function_exists( 'nvx_get_clinics_config' ) ) {
@@ -85,28 +46,79 @@ function nvx_whatsapp_number( string $clinic = 'primary' ): string {
 	return nvx_phone_digits( $phone );
 }
 
-/**
- * Get full WhatsApp URL for specific clinic.
- *
- * @param string $clinic Clinic identifier ('primary', 'chamberi', 'goya').
- * @return string Full WhatsApp URL (https://wa.me/NUMBER).
- */
+/** Get full WhatsApp URL for a specific clinic. */
 function nvx_whatsapp_url( string $clinic = 'primary' ): string {
 	return nvx_whatsapp_url_from_phone( nvx_whatsapp_number( $clinic ) );
 }
 
 /**
- * Get medical colegiado number by doctor ID.
+ * Load the canonical medical-staff identity registry.
  *
- * @param string $doctor_id Doctor identifier ('director', 'ivon', 'fabio').
- * @return string Colegiado number or empty string if not found.
+ * The registry is deliberately narrow: it owns public clinician identity and
+ * colegiado values only. Page copy remains in the page-specific catalogs.
+ *
+ * @return array<string,array{name:string,colegiado:string}>
  */
-function nvx_medical_colegiado( string $doctor_id ): string {
-	$staff = nvx_config_get( 'medical_staff.directors', array() );
-	foreach ( $staff as $doctor ) {
-		if ( isset( $doctor['id'] ) && $doctor['id'] === $doctor_id ) {
-			return $doctor['colegiado'] ?? '';
-		}
+function nvx_medical_staff_registry(): array {
+	static $staff = null;
+	if ( is_array( $staff ) ) {
+		return $staff;
 	}
-	return '';
+
+	$file = __DIR__ . '/data/medical-staff.json';
+	if ( ! is_readable( $file ) ) {
+		$staff = array();
+		return $staff;
+	}
+
+	$json = file_get_contents( $file );
+	$data = false !== $json ? json_decode( $json, true ) : null;
+	if ( ! is_array( $data ) || 1 !== (int) ( $data['schema'] ?? 0 ) || ! is_array( $data['staff'] ?? null ) ) {
+		$staff = array();
+		return $staff;
+	}
+
+	$staff = array();
+	foreach ( $data['staff'] as $id => $doctor ) {
+		if ( ! is_string( $id ) || ! is_array( $doctor ) ) {
+			continue;
+		}
+		$name      = trim( (string) ( $doctor['name'] ?? '' ) );
+		$colegiado = preg_replace( '/\D+/', '', (string) ( $doctor['colegiado'] ?? '' ) ) ?? '';
+		if ( '' === $name || '' === $colegiado ) {
+			continue;
+		}
+		$staff[ $id ] = array(
+			'name'      => $name,
+			'colegiado' => $colegiado,
+		);
+	}
+
+	return $staff;
+}
+
+/** Get a clinician's colegiado number from the canonical registry. */
+function nvx_medical_colegiado( string $doctor_id ): string {
+	$staff = nvx_medical_staff_registry();
+	return isset( $staff[ $doctor_id ]['colegiado'] ) ? (string) $staff[ $doctor_id ]['colegiado'] : '';
+}
+
+/** Get a clinician's public name from the canonical registry. */
+function nvx_medical_staff_name( string $doctor_id ): string {
+	$staff = nvx_medical_staff_registry();
+	return isset( $staff[ $doctor_id ]['name'] ) ? (string) $staff[ $doctor_id ]['name'] : '';
+}
+
+// Public medical identity constants are defined once from the canonical registry.
+if ( ! defined( 'NVX_DIRECTOR_COLEGIADO' ) ) {
+	define( 'NVX_DIRECTOR_COLEGIADO', nvx_medical_colegiado( 'director' ) );
+}
+if ( ! defined( 'NVX_IVON_COLEGIADO' ) ) {
+	define( 'NVX_IVON_COLEGIADO', nvx_medical_colegiado( 'ivon' ) );
+}
+if ( ! defined( 'NVX_FABIO_COLEGIADO' ) ) {
+	define( 'NVX_FABIO_COLEGIADO', nvx_medical_colegiado( 'fabio' ) );
+}
+if ( ! defined( 'NVX_CRISTINA_COLEGIADO' ) ) {
+	define( 'NVX_CRISTINA_COLEGIADO', nvx_medical_colegiado( 'cristina' ) );
 }
