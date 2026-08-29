@@ -14,6 +14,7 @@ $clinics = function_exists( 'nvx_get_clinics_config' ) ? nvx_get_clinics_config(
 $director_colegiado = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'director' ) : '';
 $director_doctoralia = function_exists( 'nvx_medical_staff_doctoralia_url' ) ? nvx_medical_staff_doctoralia_url( 'director' ) : '';
 $ivon_colegiado = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'ivon' ) : '';
+$fabio_colegiado = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'fabio' ) : '';
 
 $css_relative = '/assets/css/nvx-equipo-medico.css';
 $css_path     = get_template_directory() . $css_relative;
@@ -230,7 +231,7 @@ get_header();
 	      <div class="doc-name" itemprop="name">Dr. Fabio Augusto Quiñónez Bareiro</div>
 	      <div class="doc-title" itemprop="jobTitle">Geriatría &middot; Gerontología &middot; Fisiología del envejecimiento &middot; Paciente complejo</div>
 	      <div class="doc-meta">
-	        <span class="doc-pill accent">ICOMEM 282877543</span>
+	        <span class="doc-pill accent">ICOMEM <?php echo esc_html( $fabio_colegiado ); ?></span>
 	        <span class="doc-pill">Ph.D. UAM &mdash; 11 jun. 2024</span>
 	        <span class="doc-pill">CIBERFES (ISCIII)</span>
 	        <span class="doc-pill">SEMEG</span>
