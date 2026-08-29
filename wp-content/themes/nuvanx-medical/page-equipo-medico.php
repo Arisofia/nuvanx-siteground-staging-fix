@@ -10,6 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$clinics = function_exists( 'nvx_get_clinics_config' ) ? nvx_get_clinics_config() : array();
+$director_colegiado = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'director' ) : '';
+$director_doctoralia = function_exists( 'nvx_medical_staff_doctoralia_url' ) ? nvx_medical_staff_doctoralia_url( 'director' ) : '';
+$ivon_colegiado = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'ivon' ) : '';
+
 $css_relative = '/assets/css/nvx-equipo-medico.css';
 $css_path     = get_template_directory() . $css_relative;
 if ( is_readable( $css_path ) ) {
@@ -45,7 +50,7 @@ get_header();
 	      <div class="doc-name">Dr. José Javier Rivera Tejeda</div>
 	      <div class="doc-title">Director médico &middot; Endolift&reg; &middot; Láser CO&sub2; fraccionado &middot; Tricología</div>
 	      <div class="doc-meta">
-	        <span class="doc-pill accent">ICOMEM 282864786</span>
+	        <span class="doc-pill accent">ICOMEM <?php echo esc_html( $director_colegiado ); ?></span>
 	        <span class="doc-pill">+17 años de trayectoria</span>
 	        <span class="doc-pill">166 opiniones verificadas Doctoralia</span>
 	        <span class="doc-pill">Idiomas: ES &middot; EN &middot; DE</span>
@@ -116,15 +121,15 @@ get_header();
 	      <div>
 	        <div class="section-label">Agenda en NUVANX</div>
 	        <div class="schedule">
-	          <a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="sched-item"><strong>Chamberí (CS20144)</strong>Martes &middot; Jueves</a>
-	          <a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="sched-item"><strong>Goya&ndash;Salamanca (CS20073)</strong>Miércoles</a>
+	          <a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="sched-item"><strong><?php echo esc_html( (string) ( $clinics['chamberi']['short_name'] ??  ) ); ?> (<?php echo esc_html( (string) ( $clinics['chamberi']['reg'] ??  ) ?>)</strong>Martes &middot; Jueves</a>
+	          <a href="<?php echo esc_url( home_url( '/madrid/valoracion/' ) ); ?>" class="sched-item"><strong><?php echo esc_html( (string) ( $clinics['goya']['short_name'] ?? '' ) ); ?>&ndash;Salamanca (<?php echo esc_html( (string) ( $clinics['goya']['reg'] ?? '' ) ?>)</strong>Miércoles</a>
 	        </div>
 	      </div>
 
 	      <div>
 	        <div class="quote">
 	          El diagnóstico tisular manda sobre la tecnología, no al revés. Primero evaluamos calidad dérmica, grado de ptosis y anatomía. Después, y solo si hay una razón clínica clara, seleccionamos la energía, la profundidad y los parámetros. Si el caso indica cirugía, lo decimos.
-	          <cite>&mdash; Dr. J.J. Rivera Tejeda &middot; ICOMEM 282864786 &middot; <a href="https://www.doctoralia.es/jose-javier-rivera-tejeda/medico-estetico/madrid" target="_blank" rel="noopener noreferrer">Ver perfil Doctoralia (166 opiniones)</a></cite>
+	          <cite>&mdash; Dr. J.J. Rivera Tejeda &middot; ICOMEM <?php echo esc_html( $director_colegiado ); ?> &middot; <a href="<?php echo esc_url( $director_doctoralia ); ?>" target="_blank" rel="noopener noreferrer">Ver perfil Doctoralia (166 opiniones)</a></cite>
 	        </div>
 	      </div>
 
@@ -137,7 +142,7 @@ get_header();
 	      <div class="doc-name">Dra. Ivon Yamileth Rivera Deras</div>
 	      <div class="doc-title">Well-aging &middot; Geriatría preventiva &middot; Longevidad &middot; Medicina funcional</div>
 	      <div class="doc-meta">
-	        <span class="doc-pill accent">ICOMEM 284621525</span>
+	        <span class="doc-pill accent">ICOMEM <?php echo esc_html( $ivon_colegiado ); ?></span>
 	        <span class="doc-pill">FEA Hospital Universitario La Paz</span>
 	        <span class="doc-pill">SEMEG &middot; EuGMS</span>
 	        <span class="doc-pill">OXON Epidemiology</span>
