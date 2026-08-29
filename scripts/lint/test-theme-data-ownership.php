@@ -58,6 +58,7 @@ foreach ( $clinics['clinics'] ?? array() as $clinic ) {
 		if ( '' !== $value ) {
 			$forbidden_literals[ $value ] = 'clinic_' . $field;
 		}
+	}
 }
 
 $gallery_paths = array();
