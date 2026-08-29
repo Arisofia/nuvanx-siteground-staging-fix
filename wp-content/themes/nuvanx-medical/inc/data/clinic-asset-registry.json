@@ -1,5 +1,5 @@
 {
-  "schema": "nuvanx-clinic-asset-registry/v2",
+  "schema": "nuvanx-clinic-asset-registry/v3",
   "approved_editorial_overrides": {
     "source": "operator_explicit",
     "clinic_landing_galleries": {
@@ -31,6 +31,17 @@
         "proof of physical availability at a specific sede",
         "unverified clinical efficacy claims"
       ]
-    }
+    },
+    "authorized_partner_marks": [
+      {"attachment_id": 1506, "label": "Teoxane"},
+      {"attachment_id": 905, "label": "Merz Pharma"},
+      {"attachment_id": 898, "label": "Vivacy"},
+      {"attachment_id": 897, "label": "Sculptra"},
+      {"attachment_id": 896, "label": "Radiesse"},
+      {"attachment_id": 893, "label": "Ellansé"},
+      {"attachment_id": 891, "label": "Croma"},
+      {"attachment_id": 889, "label": "Azzalure"},
+      {"attachment_id": 904, "label": "SkinCeuticals"}
+    ]
   }
 }
