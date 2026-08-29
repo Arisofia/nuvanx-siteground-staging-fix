@@ -2,8 +2,9 @@
 /**
  * Blocking contract for local-intent landing ownership and governed clinic hours.
  *
- * clinics.json is the public clinic SSOT. It must remain aligned with the
- * business-owner-confirmed GBP hours, SEO metadata and Schema fallbacks.
+ * clinics.json is the public clinic SSOT. GBP configuration provides the
+ * external operational profile contract; both must remain aligned with SEO and
+ * Schema without relying on dated audit-status fields.
  */
 
 declare(strict_types=1);
@@ -14,13 +15,13 @@ $fail = static function ( string $message ): void {
 	exit( 1 );
 };
 
-$theme_root      = $root . '/wp-content/themes/nuvanx-medical';
-$profiles_raw    = file_get_contents( $theme_root . '/inc/data/gbp-profiles.json' );
-$clinics_raw     = file_get_contents( $theme_root . '/inc/data/clinics.json' );
-$seo_raw         = file_get_contents( $theme_root . '/inc/data/seo-metadata.json' );
-$config_source   = file_get_contents( $theme_root . '/inc/nvx-business-config.php' );
-$schema_source   = file_get_contents( $theme_root . '/inc/nvx-schema-foundation.php' );
-$landing         = file_get_contents( $theme_root . '/templates/page-sede.php' );
+$theme_root    = $root . '/wp-content/themes/nuvanx-medical';
+$profiles_raw  = file_get_contents( $theme_root . '/inc/data/gbp-profiles.json' );
+$clinics_raw   = file_get_contents( $theme_root . '/inc/data/clinics.json' );
+$seo_raw       = file_get_contents( $theme_root . '/inc/data/seo-metadata.json' );
+$config_source = file_get_contents( $theme_root . '/inc/nvx-business-config.php' );
+$schema_source = file_get_contents( $theme_root . '/inc/nvx-schema-foundation.php' );
+$landing       = file_get_contents( $theme_root . '/templates/page-sede.php' );
 
 if ( false === $profiles_raw || false === $clinics_raw || false === $seo_raw || false === $config_source || false === $schema_source || false === $landing ) {
 	$fail( 'unreadable local SEO contract source' );
@@ -29,12 +30,11 @@ if ( false === $profiles_raw || false === $clinics_raw || false === $seo_raw || 
 $profiles = json_decode( $profiles_raw, true );
 $clinics  = json_decode( $clinics_raw, true );
 $seo      = json_decode( $seo_raw, true );
-if ( ! is_array( $profiles ) || ! is_array( $clinics ) || ! is_array( $seo ) || ! is_array( $clinics['clinics'] ?? null ) ) {
+if ( ! is_array( $profiles ) || ! is_array( $clinics ) || ! is_array( $seo ) || ! is_array( $profiles['clinics'] ?? null ) || ! is_array( $clinics['clinics'] ?? null ) ) {
 	$fail( 'governed local SEO JSON is invalid' );
 }
-
-if ( 'business_owner_confirmed_2026-08-24' !== ( $profiles['source_of_truth']['business_hours_status'] ?? null ) ) {
-	$fail( 'GBP regular-hours truth is not owner-confirmed' );
+if ( 1 !== (int) ( $profiles['schema'] ?? 0 ) ) {
+	$fail( 'GBP productive configuration schema mismatch' );
 }
 if ( ! str_contains( $config_source, "__DIR__ . '/data/clinics.json'" ) ) {
 	$fail( 'business config loader does not consume clinics.json' );
@@ -52,8 +52,8 @@ foreach ( $expected as $clinic_key => $hours ) {
 	if ( ! is_array( $profile ) || ! is_array( $clinic ) ) {
 		$fail( 'missing clinic record: ' . $clinic_key );
 	}
-	if ( 'business_owner_confirmed_2026-08-24' !== ( $profile['regular_hours_status'] ?? null ) ) {
-		$fail( 'clinic regular hours are not owner-confirmed: ' . $clinic_key );
+	if ( '' === trim( (string) ( $profile['place_id'] ?? '' ) ) || '' === trim( (string) ( $profile['maps_query'] ?? '' ) ) ) {
+		$fail( 'GBP operational identifiers missing for ' . $clinic_key );
 	}
 	foreach ( $weekdays as $day ) {
 		$expected_value = $hours['opens'] . '-' . $hours['closes'];
@@ -98,6 +98,12 @@ if ( ! is_string( $chamberi_meta ) || ! str_contains( $chamberi_meta, 'Lunes a s
 	$fail( 'Chamberí SEO metadata hours drift from governed truth' );
 }
 
+$forbidden_runtime_state = array( 'pending_reconciliation', 'unverified', 'goya_discarded', 'missing_photo_capture', 'legacy_default_superseded' );
+foreach ( $forbidden_runtime_state as $needle ) {
+	if ( str_contains( $profiles_raw, $needle ) ) {
+		$fail( 'non-productive GBP state remains: ' . $needle );
+	}
+}
 if ( str_contains( $clinics_raw, 'lunes a viernes, 12:00–20:00; sábados, 10:00–18:00' ) || str_contains( $clinics_raw, 'lunes a viernes, 11:00–20:00' ) ) {
 	$fail( 'legacy clinic hours reintroduced' );
 }
@@ -115,4 +121,4 @@ if ( ! str_contains( $landing, 'Centro sanitario CS20073.' ) ) {
 	$fail( 'Goya landing must retain its sanitary-registration context' );
 }
 
-echo 'LOCAL_SEO_OWNERSHIP_TEST=PASS clinics=2 hours=clinics-json+gbp metadata=aligned schema_fallbacks=aligned goya_intent=explicit' . PHP_EOL;
+echo 'LOCAL_SEO_OWNERSHIP_TEST=PASS clinics=2 hours=clinics-json+gbp metadata=aligned schema_fallbacks=aligned goya_intent=explicit productive_state=clean' . PHP_EOL;
