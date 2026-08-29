@@ -12,18 +12,21 @@ const governancePath = resolve(themeRoot, 'inc/nvx-clinical-governance.php');
 const constantsPath = resolve(themeRoot, 'inc/nvx-constants.php');
 const authorityGraphPath = resolve(themeRoot, 'inc/nvx-endolift-authority-graph.php');
 const signatureCatalogPath = resolve(themeRoot, 'inc/data/nvx-signature-phase-catalog.json');
+const clinicsPath = resolve(themeRoot, 'inc/data/clinics.json');
 
-const [matrixRaw, governance, constants, authorityGraph, signatureCatalogRaw] = await Promise.all([
+const [matrixRaw, governance, constants, authorityGraph, signatureCatalogRaw, clinicsRaw] = await Promise.all([
   readFile(matrixPath, 'utf8'),
   readFile(governancePath, 'utf8'),
   readFile(constantsPath, 'utf8'),
   readFile(authorityGraphPath, 'utf8'),
   readFile(signatureCatalogPath, 'utf8'),
+  readFile(clinicsPath, 'utf8'),
 ]);
 
 const matrix = JSON.parse(matrixRaw);
 const treatments = matrix?.treatments ?? {};
 const signatureCatalog = JSON.parse(signatureCatalogRaw);
+const clinicsRegistry = JSON.parse(clinicsRaw);
 
 function fail(reason) {
   console.error(`CLINICAL_EVIDENCE_CONTRACT=FAIL reason=${reason}`);
@@ -135,16 +138,35 @@ if (!/RR 3,04/.test(co2Meta?.summary ?? '')) fail('co2_meta_pih_risk_missing');
 if (!/frente a RF microneedling, el dolor fue menor con CO₂/iu.test(co2Meta?.summary ?? '')) fail('co2_meta_pain_comparison_missing');
 if (!/I² 97% y 92%/.test(co2Meta?.limitation ?? '')) fail('co2_meta_heterogeneity_missing');
 
-// Endolift authority graph: exact canonical owners only. The problem hub already
-// owns the reciprocal Endolift link in the Signature catalogue; keep both sides.
-const canonicalAuthorityPaths = [
+// Endolift authority graph: problem/pricing routes remain local concerns. Clinic
+// routes are owned exclusively by clinics.json and consumed through the registry.
+for (const path of [
   '/papada-definicion-mandibular-madrid/',
   '/inversion-medicina-estetica/',
-  '/medicina-estetica-chamberi/',
-  '/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/',
-];
-for (const path of canonicalAuthorityPaths) {
+]) {
   if (!authorityGraph.includes(`home_url( '${path}' )`)) fail(`endolift_authority_path_missing:${path}`);
+}
+
+const canonicalClinicPaths = {
+  chamberi: '/medicina-estetica-chamberi/',
+  goya: '/clinicas-de-medicina-estetica-nuvanx/medicina-estetica-goya-barrio-salamanca/',
+};
+for (const [clinic, expectedPath] of Object.entries(canonicalClinicPaths)) {
+  if (clinicsRegistry?.clinics?.[clinic]?.landing_path !== expectedPath) {
+    fail(`clinic_registry_landing_path_invalid:${clinic}`);
+  }
+}
+for (const marker of [
+  "nvx_get_clinics_config",
+  "['chamberi']['landing_path']",
+  "['goya']['landing_path']",
+  'home_url( $chamberi_path )',
+  'home_url( $goya_path )',
+]) {
+  if (!authorityGraph.includes(marker)) fail(`endolift_authority_registry_contract_missing:${marker}`);
+}
+for (const governedPath of Object.values(canonicalClinicPaths)) {
+  if (authorityGraph.includes(`home_url( '${governedPath}' )`)) fail(`endolift_authority_clinic_literal_forbidden:${governedPath}`);
 }
 for (const forbiddenPath of [
   "home_url( '/medicina-estetica-goya/' )",
