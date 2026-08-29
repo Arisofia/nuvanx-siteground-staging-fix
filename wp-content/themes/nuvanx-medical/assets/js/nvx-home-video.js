@@ -5,12 +5,23 @@
     var video = document.getElementById('nvx-home-hero-video');
     if (!video) return;
 
-    // A11y guard: respect user preferences for reduced motion
+    var toggle = document.getElementById('nvx-hero-video-toggle');
+    var hero = video.closest('.nvx-home-hero');
+
+    function usePosterFallback() {
+      video.pause();
+      video.hidden = true;
+      if (hero) hero.classList.add('is-video-poster');
+      if (toggle) toggle.hidden = true;
+    }
+
+    // Media failures are owned here, not by inline onerror/style attributes.
+    video.addEventListener('error', usePosterFallback);
+
+    // A11y guard: respect user preferences for reduced motion.
     var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
-      var wrapper = video.closest('.nvx-home-video-frame');
-      if (wrapper) wrapper.classList.add('is-video-poster');
-      video.pause();
+      usePosterFallback();
       return;
     }
 
@@ -19,15 +30,10 @@
     video.setAttribute('muted', '');
     video.setAttribute('playsinline', '');
 
-    var frame = video.closest('.nvx-home-video-frame');
-    if (frame) frame.classList.add('is-video-mounted');
-
     function tryPlay() {
       var p = video.play();
       if (p && typeof p.catch === 'function') {
-        p.catch(function () {
-          if (frame) frame.classList.add('is-video-poster');
-        });
+        p.catch(usePosterFallback);
       }
     }
 
@@ -41,8 +47,8 @@
     }
 
     if (typeof IntersectionObserver === 'function') {
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             initVideo();
           } else {
