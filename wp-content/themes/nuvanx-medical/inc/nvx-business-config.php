@@ -2,14 +2,55 @@
 /**
  * NUVANX business configuration loader and clinic render helpers.
  *
- * Clinic identity, NAP, registrations, hours, coordinates and route paths are
- * owned by inc/data/clinics.json. This module contains logic only.
+ * Business contact, clinic identity, NAP, registrations, hours, coordinates
+ * and route paths are owned by inc/data/clinics.json. This module contains
+ * validation and rendering logic only.
  *
  * @package nuvanx-medical
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+/**
+ * Load and validate the canonical business registry.
+ *
+ * @return array<string,mixed>
+ */
+function nvx_get_business_config(): array {
+	static $config = null;
+	if ( is_array( $config ) ) {
+		return $config;
+	}
+
+	$file = __DIR__ . '/data/clinics.json';
+	if ( ! is_readable( $file ) ) {
+		$config = array();
+		return $config;
+	}
+
+	$json = file_get_contents( $file );
+	$data = false !== $json ? json_decode( $json, true ) : null;
+	if ( ! is_array( $data ) || 1 !== (int) ( $data['schema'] ?? 0 ) || ! is_array( $data['clinics'] ?? null ) ) {
+		$config = array();
+		return $config;
+	}
+
+	$email = trim( (string) ( $data['contact_email'] ?? '' ) );
+	if ( '' === $email || ! is_email( $email ) ) {
+		$config = array();
+		return $config;
+	}
+
+	$config = $data;
+	return $config;
+}
+
+/** Get the canonical public business contact email. */
+function nvx_business_contact_email(): string {
+	$config = nvx_get_business_config();
+	return isset( $config['contact_email'] ) ? (string) $config['contact_email'] : '';
 }
 
 /**
@@ -23,15 +64,8 @@ function nvx_get_clinics_config(): array {
 		return $clinics;
 	}
 
-	$file = __DIR__ . '/data/clinics.json';
-	if ( ! is_readable( $file ) ) {
-		$clinics = array();
-		return $clinics;
-	}
-
-	$json = file_get_contents( $file );
-	$data = false !== $json ? json_decode( $json, true ) : null;
-	if ( ! is_array( $data ) || 1 !== (int) ( $data['schema'] ?? 0 ) || ! is_array( $data['clinics'] ?? null ) ) {
+	$data = nvx_get_business_config();
+	if ( ! is_array( $data['clinics'] ?? null ) ) {
 		$clinics = array();
 		return $clinics;
 	}
