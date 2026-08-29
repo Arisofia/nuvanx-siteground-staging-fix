@@ -1,23 +1,6 @@
 {
-  "schema": "nuvanx-clinic-asset-registry/v1",
-  "status": "INVENTORY_ONLY",
-  "business_confirmations": {
-    "confirmed_at": "2026-08-18",
-    "source": "operator_go_defaults",
-    "goya_nap": "647 50 51 07",
-    "goya_nap_discarded": "649 232 267",
-    "chamberi_nap": "669 319 836",
-    "valoracion_central": "689 31 73 99",
-    "sala_waiting": "chamberi/02-sala.jpg is Chamberí waiting room; same hash must not be used as Goya proof",
-    "equipment_prep_only": {
-      "chamberi": ["DEKA/SmartLipo", "Endolift/LaseMAR"],
-      "goya": ["EXION®", "Endolift/LaseMAR"]
-    },
-    "gbp_live_upload": false,
-    "wp_live_blocks_chamberi_goya": "keep"
-  },
+  "schema": "nuvanx-clinic-asset-registry/v2",
   "approved_editorial_overrides": {
-    "approved_at": "2026-08-27",
     "source": "operator_explicit",
     "clinic_landing_galleries": {
       "goya": [
@@ -32,7 +15,6 @@
       ]
     },
     "clinics_hub_equipment_section": {
-      "scope": "educational equipment section on /clinicas-de-medicina-estetica-nuvanx/ only",
       "marker": "clinic-hub-v1",
       "allowed_uploads_paths": [
         "2026/08/endolift-lasemar-1500-eufoton.webp",
@@ -50,157 +32,5 @@
         "unverified clinical efficacy claims"
       ]
     }
-  },
-  "deduplication": {
-    "verified_at": "2026-08-23",
-    "verification": "git_blob_sha_identity",
-    "canonical_directory": "chamberi",
-    "unique_goya_asset": "goya/01-fachada.jpg",
-    "removed_goya_duplicates": [
-      "goya/02-sala.jpg",
-      "goya/03-consulta-rivera.jpg",
-      "goya/04-endolift.jpg",
-      "goya/05-laser-detalle.jpg",
-      "goya/06-retrato-rivera.jpg",
-      "goya/07-sala-vertical.jpg",
-      "goya/08-lifestyle.jpg",
-      "goya/09-retrato-corporativo.jpg",
-      "goya/10-laser-piel.jpg"
-    ],
-    "removed_bytes": 2327711,
-    "note": "The removed Goya files were byte-identical to the same-numbered Chamberí files. They remain historical deduplication records only and must not be used as evidence that the scene belongs to Goya."
-  },
-  "notes": [
-    "No ZIP/WebP from the local-SEO pack is loaded here. Theme JPEGs only.",
-    "Hashes show most former Goya files were copies of Chamberí/PMAX assets. Duplicate physical files are retired; only canonical Chamberí files and goya/01-fachada.jpg remain in the governed theme set.",
-    "BTL EXION® promotional PNG and manufacturer packshots are rejected for GBP and sede landings. The explicit clinic-hub-v1 educational exception is limited to the seven named uploads paths and must not be generalized.",
-    "GBP derivatives must be JPG sRGB; web may use WebP/AVIF later. Do not upload WebP to GBP."
-  ],
-  "rejected_for_gbp_and_local_landing": [
-    {
-      "pattern": "BTL-Exion-Mobile-Version*",
-      "reason": "Promotional collage with claims, people and overlaid text."
-    },
-    {
-      "pattern": "SmartLipo/LaseMAR packshots",
-      "reason": "Manufacturer product shots; technology pages only if rights exist, never primary local proof."
-    }
-  ],
-  "gbp_first_round_roles": [
-    "facade_front",
-    "facade_angle",
-    "entrance_context",
-    "reception_or_waiting",
-    "consult_empty",
-    "interior_signage",
-    "device_in_sede",
-    "team_consented"
-  ],
-  "assets": [
-    {
-      "sede": "chamberi",
-      "asset_role": "interior",
-      "canonical_filename": "chamberi/01-interior.jpg",
-      "wp_media_id": null,
-      "source_url": "theme://assets/images/clinics/chamberi/01-interior.jpg",
-      "sha256": "3cdf8545c97dba21",
-      "dimensions": "1200x628",
-      "rights_status": "theme_copy_from_ads_pmax",
-      "location_verified": false,
-      "approved_for_landing": false,
-      "approved_for_gbp": false
-    },
-    {
-      "sede": "chamberi",
-      "asset_role": "reception_or_waiting",
-      "canonical_filename": "chamberi/02-sala.jpg",
-      "wp_media_id": null,
-      "source_url": "theme://assets/images/clinics/chamberi/02-sala.jpg",
-      "sha256": "aa15be6fdd5de476",
-      "dimensions": "1200x628",
-      "rights_status": "theme_copy_from_ads_pmax",
-      "location_verified": true,
-      "approved_for_landing": false,
-      "approved_for_gbp": false,
-      "note": "Confirmed Chamberí waiting room at canonical chamberi/02-sala.jpg. The former goya/02-sala.jpg duplicate was removed; do not use it as Goya local proof."
-    },
-    {
-      "sede": "chamberi",
-      "asset_role": "consult_or_team",
-      "canonical_filename": "chamberi/03-consulta-rivera.jpg",
-      "wp_media_id": null,
-      "source_url": "theme://assets/images/clinics/chamberi/03-consulta-rivera.jpg",
-      "sha256": "0f0fc2fa7efdd031",
-      "dimensions": "1200x628",
-      "rights_status": "theme_copy_from_ads_pmax",
-      "location_verified": false,
-      "approved_for_landing": false,
-      "approved_for_gbp": false
-    },
-    {
-      "sede": "unassigned",
-      "asset_role": "device_packshot_or_detail",
-      "canonical_filename": "chamberi/04-endolift.jpg",
-      "wp_media_id": null,
-      "source_url": "theme://assets/images/clinics/chamberi/04-endolift.jpg",
-      "sha256": "e3634389ccbf654b",
-      "dimensions": "1200x628",
-      "rights_status": "theme_copy_from_ads_pmax",
-      "location_verified": false,
-      "approved_for_landing": false,
-      "approved_for_gbp": false,
-      "note": "Formerly duplicated under goya/04-endolift.jpg; duplicate removed. Not a sede-specific in-room shot."
-    },
-    {
-      "sede": "goya",
-      "asset_role": "facade_front",
-      "canonical_filename": "goya/01-fachada.jpg",
-      "wp_media_id": null,
-      "source_url": "theme://assets/images/clinics/goya/01-fachada.jpg",
-      "sha256": "cf2f414d5cd825a4",
-      "dimensions": "1024x1024",
-      "rights_status": "theme_asset",
-      "location_verified": false,
-      "approved_for_landing": false,
-      "approved_for_gbp": false,
-      "note": "Only unique Goya file in the theme set. Still needs human location verification before GBP."
-    },
-    {
-      "sede": "chamberi",
-      "asset_role": "facade_front",
-      "canonical_filename": null,
-      "wp_media_id": null,
-      "source_url": null,
-      "sha256": null,
-      "dimensions": null,
-      "rights_status": "missing",
-      "location_verified": false,
-      "approved_for_landing": false,
-      "approved_for_gbp": false,
-      "note": "ZIP names conflict (nuvanx-medicina-2.webp vs nvx-fachada-chamberi-final-760.webp vs fachada-chamberi.webp). No Chamberí facade in the theme. Do not pick a canonical file until one original is chosen."
-    }
-  ],
-  "capture_queue": {
-    "chamberi": [
-      "facade_front",
-      "facade_angle",
-      "entrance_context",
-      "reception_or_waiting",
-      "consult_empty",
-      "interior_signage",
-      "device_in_sede_endolift",
-      "device_in_sede_deka_if_present",
-      "placa_CS20144"
-    ],
-    "goya": [
-      "facade_angle",
-      "entrance_context",
-      "reception_or_waiting",
-      "consult_empty",
-      "interior_signage",
-      "device_in_sede_exion_if_present",
-      "device_in_sede_endolift",
-      "placa_CS20073"
-    ]
   }
 }
