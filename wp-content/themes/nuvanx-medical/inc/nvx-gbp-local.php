@@ -28,12 +28,6 @@ function nvx_gbp_profiles_catalog(): array {
 	if ( ! function_exists( 'nvx_catalog_json_load' ) ) {
 		return array();
 	}
-	$registry = nvx_catalog_json_load( 'clinic-asset-registry.json' );
-	if ( ! is_array( $registry ) || empty( $registry['approved_editorial_overrides']['clinic_landing_galleries'] ) ) {
-		return array();
-	}
-	return $registry['approved_editorial_overrides']['clinic_landing_galleries'];
-}
 	$catalog = nvx_catalog_json_load( 'gbp-profiles.json' );
 	return is_array( $catalog ) && empty( $catalog['_error'] ) ? $catalog : array();
 }
@@ -78,33 +72,51 @@ function nvx_gbp_review_url( string $clinic_key ): string {
  */
 function nvx_clinic_editorial_photo_map( string $clinic_key ): array {
 	$clinic_key = 'goya' === $clinic_key ? 'goya' : 'chamberi';
-	$catalog = nvx_gbp_profiles_catalog();
-	$gallery = $catalog[ $clinic_key ] ?? array();
 
-	$photos = array();
-	foreach ( $gallery as $item ) {
-		if ( ! is_array( $item ) || empty( $item['uploads_path'] ) ) {
-			continue;
-		}
-		$role = (string) ( $item['role'] ?? '' );
-		$alt = 'box' === $role
-			? __( 'Box clínico de NUVANX %s, Madrid', 'nuvanx-medical' )
-			: __( 'Fachada de NUVANX %s, Madrid', 'nuvanx-medical' );
-		$alt = sprintf( $alt, 'goya' === $clinic_key ? 'Salamanca–Goya' : 'Chamberí' );
-		$caption = 'box' === $role ? __( 'Box clínico', 'nuvanx-medical' ) : __( 'Fachada', 'nuvanx-medical' );
-		$photos[] = array(
-			'id'           => 0,
-			'uploads_path' => (string) $item['uploads_path'],
-			'alt'          => $alt,
-			'caption'      => $caption,
-		);
-	}
+	$photos = array(
+		'goya' => array(
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/03/nuvanx-medicina-estetica1.webp',
+				'alt'          => __( 'Box clínico de NUVANX Salamanca–Goya, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Box clínico', 'nuvanx-medical' ),
+			),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/06/nvx-fachada-goya-900.webp',
+				'alt'          => __( 'Fachada de NUVANX Salamanca–Goya, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Fachada', 'nuvanx-medical' ),
+			),
+		),
+		'chamberi' => array(
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/03/nuvanx-medicina-estetica7.webp',
+				'alt'          => __( 'Box clínico de NUVANX Chamberí, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Box clínico', 'nuvanx-medical' ),
+			),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/06/nvx-fachada-chamberi-final-760.webp',
+				'alt'          => __( 'Fachada de NUVANX Chamberí, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Fachada', 'nuvanx-medical' ),
+			),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2026/06/Sala-Nuvanx.webp',
+				'alt'          => __( 'Sala de espera de NUVANX Chamberí, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Sala de espera', 'nuvanx-medical' ),
+			),
+			array(
+				'id'           => 0,
+				'uploads_path' => '2025/04/despacho-nuvanx.webp',
+				'alt'          => __( 'Despacho de consulta de NUVANX Chamberí, Madrid', 'nuvanx-medical' ),
+				'caption'      => __( 'Despacho de consulta', 'nuvanx-medical' ),
+			),
+		),
+	);
 
-	if ( empty( $photos ) ) {
-		return array();
-	}
-
-	return $photos;
+	return $photos[ $clinic_key ];
 }
 
 /** Expected number of verified editorial sede photographs per clinic landing. */
