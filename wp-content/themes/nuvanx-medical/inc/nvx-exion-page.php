@@ -130,7 +130,7 @@ function nvx_exion_editorial_body_markup(): string {
 	$data = nvx_catalog_json_resolved( 'exion-page.json' );
 
 	$colegiado    = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'director' ) : '';
-	$review_label = defined( 'NVX_EXION®_REVIEW_LABEL' ) ? NVX_EXION®_REVIEW_LABEL : 'julio 2026';
+	$review_label = defined( 'NVX_EXION_REVIEW_LABEL' ) ? NVX_EXION_REVIEW_LABEL : 'julio 2026';
 	$equipo_url   = home_url( '/equipo-medico/' );
 
 	$html = '<div class="nvx-exion-editorial">';

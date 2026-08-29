@@ -169,6 +169,14 @@ function nvx_blog_named_image_catalog(): array {
  * @return array{id:string,keys:string[],stem?:string,file?:string}|null
  */
 function nvx_blog_match_named_image( string $haystack, array $catalog, array &$used ): ?array {
+	if ( empty( $catalog ) ) {
+		return null;
+	}
+
+	if ( count( $used ) >= count( $catalog ) ) {
+		$used = array();
+	}
+
 	$lower    = static function ( string $value ): string {
 		return function_exists( 'mb_strtolower' ) ? mb_strtolower( $value, 'UTF-8' ) : strtolower( $value );
 	};
@@ -209,7 +217,8 @@ function nvx_blog_match_named_image( string $haystack, array $catalog, array &$u
 		return $asset;
 	}
 
-	return null;
+	$first = reset( $catalog );
+	return is_array( $first ) ? $first : null;
 }
 
 /**
@@ -425,14 +434,17 @@ function nvx_theme_wrap_first_plain_mention( string $html, array $needles, strin
 			if ( '' === $needle || false === stripos( $part, $needle ) ) {
 				continue;
 			}
-			$parts[ $index ] = preg_replace(
+			$replaced = preg_replace(
 				'/' . preg_quote( $needle, '/' ) . '/iu',
 				'<a href="' . esc_url( $href ) . '">' . esc_html( $anchor ) . '</a>',
 				$part,
 				1
 			);
-			$done = true;
-			break;
+			if ( is_string( $replaced ) ) {
+				$parts[ $index ] = $replaced;
+				$done = true;
+				break;
+			}
 		}
 	}
 

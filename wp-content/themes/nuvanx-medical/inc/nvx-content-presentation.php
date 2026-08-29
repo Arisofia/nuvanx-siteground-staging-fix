@@ -506,7 +506,7 @@ function nvx_content_ensure_exion_investment( string $content ): string {
 
 	return $content . $block;
 }
-add_filter( 'the_content', 'nvx_content_ensure_exion_investment', 126 );
+add_filter( 'the_content', 'nvx_content_ensure_exion_investment', NVX_HOOK_PRIO_EXION_INVESTMENT );
 
 /**
  * Unify conversion CTAs globally in post content.

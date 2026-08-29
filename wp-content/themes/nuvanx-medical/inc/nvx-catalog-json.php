@@ -366,7 +366,7 @@ function nvx_catalog_apply_runtime_truth( array $catalog, string $filename, ?arr
  */
 function nvx_catalog_disable_legacy_exion_investment_override(): void {
 	if ( function_exists( 'nvx_content_ensure_exion_investment' ) ) {
-		remove_filter( 'the_content', 'nvx_content_ensure_exion_investment', 126 );
+		remove_filter( 'the_content', 'nvx_content_ensure_exion_investment', NVX_HOOK_PRIO_EXION_INVESTMENT );
 	}
 }
 add_action( 'wp', 'nvx_catalog_disable_legacy_exion_investment_override', 1 );
