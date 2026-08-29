@@ -68,26 +68,39 @@ function nvx_treatments_catalog_data(): array {
 }
 
 /**
- * Authorized partner marks available in the WordPress media library.
- *
- * Do not add partner marks here until written authorization and the original
- * asset have both been recorded. IDs 3346, 2473, 2101, 1379 and 1376 remain
- * deliberately excluded while their source files are in quarantine.
+ * Authorized partner marks from the canonical asset registry.
  *
  * @return array<int, array{id:int,label:string,invert?:bool}>
  */
 function nvx_treatments_partner_assets(): array {
-	return array(
-		array( 'id' => 1506, 'label' => 'Teoxane' ),
-		array( 'id' => 905,  'label' => 'Merz Pharma' ),
-		array( 'id' => 898,  'label' => 'Vivacy' ),
-		array( 'id' => 897,  'label' => 'Sculptra' ),
-		array( 'id' => 896,  'label' => 'Radiesse' ),
-		array( 'id' => 893,  'label' => 'Ellansé' ),
-		array( 'id' => 891,  'label' => 'Croma' ),
-		array( 'id' => 889,  'label' => 'Azzalure' ),
-		array( 'id' => 904,  'label' => 'SkinCeuticals' ),
-	);
+	require_once __DIR__ . '/nvx-catalog-json.php';
+	$registry = nvx_catalog_json_resolved( 'clinic-asset-registry.json' );
+	$marks    = $registry['approved_editorial_overrides']['authorized_partner_marks'] ?? array();
+	if ( ! is_array( $marks ) ) {
+		return array();
+	}
+
+	$assets = array();
+	foreach ( $marks as $mark ) {
+		if ( ! is_array( $mark ) ) {
+			continue;
+		}
+		$id    = (int) ( $mark['attachment_id'] ?? 0 );
+		$label = trim( (string) ( $mark['label'] ?? '' ) );
+		if ( $id < 1 || '' === $label ) {
+			continue;
+		}
+		$asset = array(
+			'id'    => $id,
+			'label' => $label,
+		);
+		if ( true === ( $mark['invert'] ?? false ) ) {
+			$asset['invert'] = true;
+		}
+		$assets[] = $asset;
+	}
+
+	return $assets;
 }
 
 /** Build the canonical treatment catalogue section. */
@@ -159,7 +172,6 @@ function nvx_treatments_logo_cloud_markup(): string {
 
 	return $html . '</ul></div></section>';
 }
-
 
 /** Replace prior catalogue, collaborator, summary and CTA blocks. */
 function nvx_content_restructure_treatments_index( string $content ): string {
