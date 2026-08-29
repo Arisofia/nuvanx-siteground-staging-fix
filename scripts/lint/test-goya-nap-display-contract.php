@@ -17,7 +17,7 @@ $fail       = static function ( string $message ): void {
 };
 
 $paths = array(
-	'config'  => $theme_root . '/inc/nvx-business-config.php',
+	'clinics' => $theme_root . '/inc/data/clinics.json',
 	'sede'    => $theme_root . '/templates/page-sede.php',
 	'contact' => $theme_root . '/templates/page-contacto.php',
 	'hub'     => $theme_root . '/inc/nvx-clinics-hub.php',
@@ -35,19 +35,20 @@ foreach ( $paths as $key => $path ) {
 	$sources[ $key ] = $source;
 }
 
+$clinic_registry = json_decode( $sources['clinics'], true );
+$goya             = is_array( $clinic_registry ) ? ( $clinic_registry['clinics']['goya'] ?? null ) : null;
+if ( ! is_array( $goya ) ) {
+	$fail( 'missing Goya SSOT record in clinics.json' );
+}
+
 $display = '647 50 51 07';
 $e164    = '+34647505107';
 $legacy  = '647 505 107';
 
-$goya_start = strpos( $sources['config'], "'goya'" );
-if ( false === $goya_start ) {
-	$fail( 'missing Goya SSOT block' );
-}
-$goya_block = substr( $sources['config'], $goya_start );
-if ( ! str_contains( $goya_block, "'phone'         => '" . $display . "'" ) ) {
+if ( $display !== ( $goya['phone'] ?? null ) ) {
 	$fail( 'Goya governed display phone drift' );
 }
-if ( ! str_contains( $goya_block, "'phone_href'    => '" . $e164 . "'" ) ) {
+if ( $e164 !== ( $goya['phone_href'] ?? null ) ) {
 	$fail( 'Goya governed E.164 phone drift' );
 }
 
@@ -77,8 +78,8 @@ if ( str_contains( $hub_renderer_source, 'chunk_split(' ) ) {
 	$fail( 'ad-hoc phone reconstruction outside display helper surface=hub' );
 }
 
-// Footer may remain static markup until its Figma refactor, but its public text
-// and tel target must still be canonical and independently guarded.
+// Footer may remain static markup until its canonical-data refactor, but its
+// public text and tel target must still be canonical and independently guarded.
 if ( ! str_contains( $sources['footer'], 'tel:' . $e164 ) || ! str_contains( $sources['footer'], '>' . $display . '</a>' ) ) {
 	$fail( 'footer Goya phone display/E.164 parity drift' );
 }
@@ -106,4 +107,4 @@ foreach ( $scan_files as $file ) {
 	}
 }
 
-echo 'GOYA_NAP_DISPLAY_TEST=PASS display=ssot machine=e164 legacy=blocked renderers=3 anti_pattern=helper_only' . PHP_EOL;
+echo 'GOYA_NAP_DISPLAY_TEST=PASS display=clinics-json machine=e164 legacy=blocked renderers=3 anti_pattern=helper_only' . PHP_EOL;
