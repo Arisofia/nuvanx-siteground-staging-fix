@@ -65,9 +65,9 @@ function nvx_equipo_hero_copy_markup(): string {
 	require_once __DIR__ . '/nvx-catalog-json.php';
 	$data = nvx_catalog_json_resolved( 'equipo-medico-page.json' )['hero'] ?? array();
 
-	$colegiado_dir   = defined( 'NVX_DIRECTOR_COLEGIADO' ) ? NVX_DIRECTOR_COLEGIADO : '282864786';
-	$colegiado_ivon  = defined( 'NVX_IVON_COLEGIADO' ) ? NVX_IVON_COLEGIADO : '284621525';
-	$colegiado_fabio = defined( 'NVX_FABIO_COLEGIADO' ) ? NVX_FABIO_COLEGIADO : '282877543';
+	$colegiado_dir   = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'director' ) : '';
+	$colegiado_ivon  = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'ivon' ) : '';
+	$colegiado_fabio = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'fabio' ) : '';
 
 	$html  = '<div class="nvx-brand-hero__copy">';
 	$html .= '<p class="nvx-brand-kicker">' . esc_html( $data['kicker'] ?? '' ) . '</p>';
@@ -686,8 +686,8 @@ function nvx_equipo_director_authority_markup( string $rivera_media = '' ): stri
 		}
 	}
 
-	$colegiado  = defined( 'NVX_DIRECTOR_COLEGIADO' ) ? NVX_DIRECTOR_COLEGIADO : '282864786';
-	$doctoralia = 'https://www.doctoralia.es/jose-javier-rivera-tejeda/medico-estetico/madrid';
+	$colegiado  = function_exists( 'nvx_medical_colegiado' ) ? nvx_medical_colegiado( 'director' ) : '';
+	$doctoralia = function_exists( 'nvx_medical_staff_doctoralia_url' ) ? nvx_medical_staff_doctoralia_url( 'director' ) : '';
 
 	return nvx_equipo_physician_authority_markup(
 		array(
@@ -907,7 +907,7 @@ function nvx_equipo_fabio_authority_markup( string $fabio_media = '' ): string {
 function nvx_equipo_cristina_authority_markup( string $cristina_media = '' ): string {
 	require_once __DIR__ . '/nvx-catalog-json.php';
 	$data       = nvx_catalog_json_resolved( 'equipo-medico-page.json' )['cristina'] ?? array();
-	$doctoralia = 'https://www.doctoralia.es/cristina-marquez-gonzalez-2/radiologo-medico-estetico/madrid';
+	$doctoralia = function_exists( 'nvx_medical_staff_doctoralia_url' ) ? nvx_medical_staff_doctoralia_url( 'cristina' ) : '';
 
 	return nvx_equipo_physician_authority_markup(
 		array(
