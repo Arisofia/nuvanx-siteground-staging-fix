@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "staff": {
+    "director": {
+      "name": "Dr. José Javier Rivera Tejeda",
+      "colegiado": "282864786"
+    },
+    "ivon": {
+      "name": "Dra. Ivon Yamileth Rivera Deras",
+      "colegiado": "284621525"
+    },
+    "fabio": {
+      "name": "Dr. Fabio Augusto Quiñónez Bareiro",
+      "colegiado": "282877543"
+    },
+    "cristina": {
+      "name": "Dra. Cristina Márquez González",
+      "colegiado": "282858861"
+    }
+  }
+}
