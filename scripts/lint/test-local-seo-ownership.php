@@ -2,9 +2,8 @@
 /**
  * Blocking contract for local-intent landing ownership and governed clinic hours.
  *
- * The public clinic configuration, Schema fallbacks and SEO metadata must agree
- * with the API/business-owner truth in gbp-profiles.json, and each clinic landing
- * must explicitly own its local search intent instead of relying on the home page.
+ * clinics.json is the public clinic SSOT. It must remain aligned with the
+ * business-owner-confirmed GBP hours, SEO metadata and Schema fallbacks.
  */
 
 declare(strict_types=1);
@@ -15,97 +14,65 @@ $fail = static function ( string $message ): void {
 	exit( 1 );
 };
 
-$data_path     = $root . '/wp-content/themes/nuvanx-medical/inc/data/gbp-profiles.json';
-$seo_path      = $root . '/wp-content/themes/nuvanx-medical/inc/data/seo-metadata.json';
-$config_path   = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-business-config.php';
-$schema_path   = $root . '/wp-content/themes/nuvanx-medical/inc/nvx-schema-foundation.php';
-$landing_path  = $root . '/wp-content/themes/nuvanx-medical/templates/page-sede.php';
-$profiles_raw  = file_get_contents( $data_path );
-$seo_raw       = file_get_contents( $seo_path );
-$config_source = file_get_contents( $config_path );
-$schema_source = file_get_contents( $schema_path );
-$landing       = file_get_contents( $landing_path );
+$theme_root      = $root . '/wp-content/themes/nuvanx-medical';
+$profiles_raw    = file_get_contents( $theme_root . '/inc/data/gbp-profiles.json' );
+$clinics_raw     = file_get_contents( $theme_root . '/inc/data/clinics.json' );
+$seo_raw         = file_get_contents( $theme_root . '/inc/data/seo-metadata.json' );
+$config_source   = file_get_contents( $theme_root . '/inc/nvx-business-config.php' );
+$schema_source   = file_get_contents( $theme_root . '/inc/nvx-schema-foundation.php' );
+$landing         = file_get_contents( $theme_root . '/templates/page-sede.php' );
 
-if (
-	false === $profiles_raw
-	|| false === $seo_raw
-	|| false === $config_source
-	|| false === $schema_source
-	|| false === $landing
-) {
+if ( false === $profiles_raw || false === $clinics_raw || false === $seo_raw || false === $config_source || false === $schema_source || false === $landing ) {
 	$fail( 'unreadable local SEO contract source' );
 }
 
 $profiles = json_decode( $profiles_raw, true );
+$clinics  = json_decode( $clinics_raw, true );
 $seo      = json_decode( $seo_raw, true );
-if ( ! is_array( $profiles ) || ! is_array( $seo ) ) {
+if ( ! is_array( $profiles ) || ! is_array( $clinics ) || ! is_array( $seo ) || ! is_array( $clinics['clinics'] ?? null ) ) {
 	$fail( 'governed local SEO JSON is invalid' );
 }
 
 if ( 'business_owner_confirmed_2026-08-24' !== ( $profiles['source_of_truth']['business_hours_status'] ?? null ) ) {
 	$fail( 'GBP regular-hours truth is not owner-confirmed' );
 }
-
-/** Extract one clinic's source block so another branch cannot satisfy its assertions. */
-$clinic_source_block = static function ( string $source, string $clinic, ?string $next_clinic ) use ( $fail ): string {
-	$start = strpos( $source, "'{$clinic}'" );
-	if ( false === $start ) {
-		$fail( 'missing public clinic config block: ' . $clinic );
-	}
-	if ( null !== $next_clinic ) {
-		$end = strpos( $source, "'{$next_clinic}'", $start + 1 );
-	} else {
-		$end = strpos( $source, "\n\t);", $start );
-	}
-	if ( false === $end || $end <= $start ) {
-		$fail( 'unable to isolate public clinic config block: ' . $clinic );
-	}
-	return substr( $source, $start, $end - $start );
-};
+if ( ! str_contains( $config_source, "__DIR__ . '/data/clinics.json'" ) ) {
+	$fail( 'business config loader does not consume clinics.json' );
+}
 
 $expected = array(
-	'chamberi' => array(
-		'display' => 'lunes a sábado, 10:00–20:00',
-		'opens'   => '10:00',
-		'closes'  => '20:00',
-		'next'    => 'goya',
-	),
-	'goya' => array(
-		'display' => 'lunes a sábado, 11:00–20:00',
-		'opens'   => '11:00',
-		'closes'  => '20:00',
-		'next'    => null,
-	),
+	'chamberi' => array( 'display' => 'lunes a sábado, 10:00–20:00', 'opens' => '10:00', 'closes' => '20:00' ),
+	'goya'     => array( 'display' => 'lunes a sábado, 11:00–20:00', 'opens' => '11:00', 'closes' => '20:00' ),
 );
-
 $weekdays = array( 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' );
-foreach ( $expected as $clinic => $hours ) {
-	$profile = $profiles['clinics'][ $clinic ] ?? null;
-	if ( ! is_array( $profile ) ) {
-		$fail( 'missing GBP clinic profile: ' . $clinic );
+
+foreach ( $expected as $clinic_key => $hours ) {
+	$profile = $profiles['clinics'][ $clinic_key ] ?? null;
+	$clinic  = $clinics['clinics'][ $clinic_key ] ?? null;
+	if ( ! is_array( $profile ) || ! is_array( $clinic ) ) {
+		$fail( 'missing clinic record: ' . $clinic_key );
 	}
 	if ( 'business_owner_confirmed_2026-08-24' !== ( $profile['regular_hours_status'] ?? null ) ) {
-		$fail( 'clinic regular hours are not owner-confirmed: ' . $clinic );
+		$fail( 'clinic regular hours are not owner-confirmed: ' . $clinic_key );
 	}
 	foreach ( $weekdays as $day ) {
 		$expected_value = $hours['opens'] . '-' . $hours['closes'];
 		if ( $expected_value !== ( $profile['regular_hours'][ $day ] ?? null ) ) {
-			$fail( sprintf( 'GBP hours mismatch clinic=%s day=%s', $clinic, $day ) );
+			$fail( sprintf( 'GBP hours mismatch clinic=%s day=%s', $clinic_key, $day ) );
 		}
 	}
 	if ( 'closed' !== ( $profile['regular_hours']['sunday'] ?? null ) ) {
-		$fail( 'Sunday must remain closed for ' . $clinic );
+		$fail( 'Sunday must remain closed for ' . $clinic_key );
 	}
-
-	$block = $clinic_source_block( $config_source, $clinic, $hours['next'] );
-	if ( ! str_contains( $block, "'hours'         => '" . $hours['display'] . "'" ) ) {
-		$fail( 'public display hours drift for ' . $clinic );
+	if ( $hours['display'] !== ( $clinic['hours'] ?? null ) ) {
+		$fail( 'public display hours drift for ' . $clinic_key );
 	}
-	$days_line = "array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' )";
-	if ( ! str_contains( $block, $days_line )
-		|| ! str_contains( $block, "'opens'  => '" . $hours['opens'] . "'" )
-		|| ! str_contains( $block, "'closes' => '" . $hours['closes'] . "'" ) ) {
-		$fail( 'OpeningHoursSpecification source drift for ' . $clinic );
+	$opening = $clinic['opening_hours'][0] ?? null;
+	if ( ! is_array( $opening )
+		|| array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ) !== ( $opening['days'] ?? null )
+		|| $hours['opens'] !== ( $opening['opens'] ?? null )
+		|| $hours['closes'] !== ( $opening['closes'] ?? null ) ) {
+		$fail( 'OpeningHoursSpecification registry drift for ' . $clinic_key );
 	}
 }
 
@@ -116,30 +83,22 @@ if ( false === $schema_start || false === $schema_end || $schema_end <= $schema_
 }
 $schema_clinics = substr( $schema_source, $schema_start, $schema_end - $schema_start );
 $days_line      = "array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' )";
-
-if ( str_contains( $schema_clinics, "'opens'     => '12:00'" )
-	|| str_contains( $schema_clinics, "'closes'    => '18:00'" ) ) {
+if ( str_contains( $schema_clinics, "'opens'     => '12:00'" ) || str_contains( $schema_clinics, "'closes'    => '18:00'" ) ) {
 	$fail( 'legacy clinic hours remain reachable through Schema fallback' );
 }
-if ( substr_count( $schema_clinics, $days_line ) < 2 ) {
-	$fail( 'Schema fallbacks must cover Monday through Saturday for both clinics' );
-}
-if ( ! str_contains( $schema_clinics, "'opens'     => '10:00'" )
+if ( substr_count( $schema_clinics, $days_line ) < 2
+	|| ! str_contains( $schema_clinics, "'opens'     => '10:00'" )
 	|| ! str_contains( $schema_clinics, "'opens'     => '11:00'" )
 	|| substr_count( $schema_clinics, "'closes'    => '20:00'" ) < 2 ) {
 	$fail( 'Schema fallback hours drift from governed clinic truth' );
 }
 
 $chamberi_meta = $seo['chamberi']['description'] ?? '';
-if ( ! is_string( $chamberi_meta )
-	|| ! str_contains( $chamberi_meta, 'Lunes a sábado 10:00–20:00' )
-	|| str_contains( $chamberi_meta, '12:00–20:00' )
-	|| str_contains( $chamberi_meta, '10:00–18:00' ) ) {
+if ( ! is_string( $chamberi_meta ) || ! str_contains( $chamberi_meta, 'Lunes a sábado 10:00–20:00' ) || str_contains( $chamberi_meta, '12:00–20:00' ) || str_contains( $chamberi_meta, '10:00–18:00' ) ) {
 	$fail( 'Chamberí SEO metadata hours drift from governed truth' );
 }
 
-if ( str_contains( $config_source, 'lunes a viernes, 12:00–20:00; sábados, 10:00–18:00' )
-	|| str_contains( $config_source, 'lunes a viernes, 11:00–20:00' ) ) {
+if ( str_contains( $clinics_raw, 'lunes a viernes, 12:00–20:00; sábados, 10:00–18:00' ) || str_contains( $clinics_raw, 'lunes a viernes, 11:00–20:00' ) ) {
 	$fail( 'legacy clinic hours reintroduced' );
 }
 
@@ -156,4 +115,4 @@ if ( ! str_contains( $landing, 'Centro sanitario CS20073.' ) ) {
 	$fail( 'Goya landing must retain its sanitary-registration context' );
 }
 
-echo 'LOCAL_SEO_OWNERSHIP_TEST=PASS clinics=2 hours=gbp-governed metadata=aligned schema_fallbacks=aligned goya_intent=explicit' . PHP_EOL;
+echo 'LOCAL_SEO_OWNERSHIP_TEST=PASS clinics=2 hours=clinics-json+gbp metadata=aligned schema_fallbacks=aligned goya_intent=explicit' . PHP_EOL;
