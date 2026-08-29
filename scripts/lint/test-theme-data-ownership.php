@@ -120,7 +120,7 @@ foreach ( $iterator as $file ) {
 }
 
 if ( array() !== $failures ) {
-	fwrite( STDERR, "THEME_DATA_OWNERSHIP_TEST=FAIL\n" . implode( "\n", array_values( array_unique( $failures ) ) . "\n" );
+	fwrite( STDERR, "THEME_DATA_OWNERSHIP_TEST=FAIL\n" . implode( "\n", array_values( array_unique( $failures ) ) ) . "\n" );
 	exit( 1 );
 }
 
