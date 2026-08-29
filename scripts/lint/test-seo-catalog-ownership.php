@@ -3,20 +3,23 @@
  * Static ownership contract for canonical SEO text metadata.
  *
  * Every canonical route with seo_id must resolve to a complete catalog record,
- * and known page-local legacy title/description filters must be retired after
- * registration so nvx-seo-metadata.php remains the sole textual owner.
+ * known page-local legacy title/description filters must remain registered for
+ * retirement and forbidden from reintroduction, and website-emitted external
+ * identity links must stay explicitly governed.
  */
 
 declare(strict_types=1);
 
 $root       = dirname( __DIR__, 2 );
 $data_dir   = $root . '/wp-content/themes/nuvanx-medical/inc/data';
+$theme_dir  = $root . '/wp-content/themes/nuvanx-medical';
 $routes_raw = file_get_contents( $data_dir . '/routes.json' );
 $seo_raw    = file_get_contents( $data_dir . '/seo-metadata.json' );
-$retirement = file_get_contents( $root . '/wp-content/themes/nuvanx-medical/inc/nvx-seo-legacy-retirement.php' );
-$central    = file_get_contents( $root . '/wp-content/themes/nuvanx-medical/inc/nvx-seo-metadata.php' );
+$retirement = file_get_contents( $theme_dir . '/inc/nvx-seo-legacy-retirement.php' );
+$central    = file_get_contents( $theme_dir . '/inc/nvx-seo-metadata.php' );
+$schema     = file_get_contents( $theme_dir . '/inc/nvx-schema-foundation.php' );
 
-if ( false === $routes_raw || false === $seo_raw || false === $retirement || false === $central ) {
+if ( false === $routes_raw || false === $seo_raw || false === $retirement || false === $central || false === $schema ) {
     fwrite( STDERR, "SEO_CATALOG_OWNERSHIP_TEST=FAIL reason=unreadable_contract_source\n" );
     exit( 1 );
 }
@@ -64,11 +67,63 @@ foreach ( $legacy as $registration ) {
     }
 }
 
+// Additionally, forbid any reintroduction of these legacy callbacks outside the
+// retirement shim itself. This prevents split-ownership regressions that would
+// bypass the canonical metadata layer. The priority configuration file is
+// excluded because it maps names to priorities but does not implement the
+// deprecated callbacks.
+$forbidden_callbacks = array(
+    'nvx_filter_valoracion_document_title',
+    'nvx_filter_valoracion_metadesc',
+    'nvx_filter_contacto_document_title',
+    'nvx_filter_contacto_metadesc',
+    'nvx_contacto_seo_title',
+    'nvx_contacto_seo_metadesc',
+    'nvx_filter_contacto_social_title',
+    'nvx_filter_contacto_social_description',
+);
+$iterator = new RecursiveIteratorIterator(
+    new RecursiveDirectoryIterator( $theme_dir, FilesystemIterator::SKIP_DOTS )
+);
+foreach ( $iterator as $file ) {
+    if ( ! $file->isFile() || 'php' !== strtolower( $file->getExtension() ) ) {
+        continue;
+    }
+    $path = $file->getPathname();
+    // Skip the retirement shim and priority configuration (legitimate mapping, not implementation)
+    if ( str_ends_with( $path, '/inc/nvx-seo-legacy-retirement.php' ) || str_ends_with( $path, '/inc/nvx-filter-priorities.php' ) ) {
+        continue;
+    }
+    $source = file_get_contents( $path );
+    if ( false === $source ) {
+        $failures[] = 'unreadable_php_source ' . $path;
+        continue;
+    }
+    foreach ( $forbidden_callbacks as $callback ) {
+        if ( false !== strpos( $source, $callback ) ) {
+            $failures[] = 'legacy_seo_callback_forbidden callback=' . $callback . ' file=' . str_replace( $root . '/', '', $path );
+        }
+    }
+}
+
 if ( false === strpos( $central, "add_filter( 'wpseo_title', 'nvx_seo_filter_title', 100 );" ) ) {
     $failures[] = 'canonical_title_owner_missing';
 }
 if ( false === strpos( $central, "add_filter( 'wpseo_metadesc', 'nvx_seo_filter_description', 100 );" ) ) {
     $failures[] = 'canonical_description_owner_missing';
+}
+
+// Doctoralia's observed service/admin state is external and must be checked live,
+// not frozen in the repository. The website-owned sameAs identity is different:
+// it is emitted by our Schema and therefore remains a blocking source contract.
+$canonical_goya_doctoralia = 'https://www.doctoralia.es/clinicas/nuvanx-medicina-estetica-laser-sede-goya';
+if ( ! str_contains( $schema, "'{$canonical_goya_doctoralia}'" ) ) {
+    $failures[] = 'goya_medicalclinic_doctoralia_sameas_missing';
+}
+foreach ( array( 'yolanda piñero' ) as $unverified_external_identity ) {
+    if ( str_contains( strtolower( $schema ), $unverified_external_identity ) ) {
+        $failures[] = 'unverified_external_identity_leaked_into_schema';
+    }
 }
 
 $contact = $seo['contacto'] ?? null;
@@ -80,56 +135,21 @@ if (
     $failures[] = 'contacto_catalog_parity_missing';
 }
 
-// Local intent and business hours are one governed SEO/entity contract. Run the
-// dedicated source-level test from this already-blocking CI entry point.
-$local_contract = __DIR__ . '/test-local-seo-ownership.php';
-if ( ! is_file( $local_contract ) ) {
-    $failures[] = 'local_seo_ownership_contract_missing';
-} else {
-    $command = 'php ' . escapeshellarg( $local_contract );
-    passthru( $command, $local_status );
-    if ( 0 !== $local_status ) {
-        $failures[] = 'local_seo_ownership_contract_failed exit=' . $local_status;
+$contracts = array(
+    array( 'file' => 'test-local-seo-ownership.php', 'runtime' => 'php', 'label' => 'local_seo_ownership_contract' ),
+    array( 'file' => 'test-goya-nap-display-contract.php', 'runtime' => 'php', 'label' => 'goya_nap_display_contract' ),
+    array( 'file' => 'test-gsc-search-analytics-contract.mjs', 'runtime' => 'node', 'label' => 'gsc_search_analytics_contract' ),
+);
+foreach ( $contracts as $contract ) {
+    $path = __DIR__ . '/' . $contract['file'];
+    if ( ! is_file( $path ) ) {
+        $failures[] = $contract['label'] . '_missing';
+        continue;
     }
-}
-
-// Doctoralia is an external entity surface, not an authority over the website
-// treatment catalog. Keep its public/admin drift explicit and fail-closed until
-// synchronization/direction ownership and Chamberí admin export are resolved.
-$doctoralia_contract = __DIR__ . '/test-doctoralia-public-parity-contract.php';
-if ( ! is_file( $doctoralia_contract ) ) {
-    $failures[] = 'doctoralia_public_parity_contract_missing';
-} else {
-    $command = 'php ' . escapeshellarg( $doctoralia_contract );
-    passthru( $command, $doctoralia_status );
-    if ( 0 !== $doctoralia_status ) {
-        $failures[] = 'doctoralia_public_parity_contract_failed exit=' . $doctoralia_status;
-    }
-}
-
-// Goya NAP display is governed separately from machine-readable E.164 values.
-// This blocks copy/paste regressions that reformat the public number ad hoc.
-$nap_contract = __DIR__ . '/test-goya-nap-display-contract.php';
-if ( ! is_file( $nap_contract ) ) {
-    $failures[] = 'goya_nap_display_contract_missing';
-} else {
-    $command = 'php ' . escapeshellarg( $nap_contract );
-    passthru( $command, $nap_status );
-    if ( 0 !== $nap_status ) {
-        $failures[] = 'goya_nap_display_contract_failed exit=' . $nap_status;
-    }
-}
-
-// Search Analytics is a production telemetry contract, but its code/auth/privacy
-// guarantees are static and must block CI before a candidate can reach master.
-$gsc_contract = __DIR__ . '/test-gsc-search-analytics-contract.mjs';
-if ( ! is_file( $gsc_contract ) ) {
-    $failures[] = 'gsc_search_analytics_contract_missing';
-} else {
-    $command = 'node ' . escapeshellarg( $gsc_contract );
-    passthru( $command, $gsc_status );
-    if ( 0 !== $gsc_status ) {
-        $failures[] = 'gsc_search_analytics_contract_failed exit=' . $gsc_status;
+    $command = $contract['runtime'] . ' ' . escapeshellarg( $path );
+    passthru( $command, $status );
+    if ( 0 !== $status ) {
+        $failures[] = $contract['label'] . '_failed exit=' . $status;
     }
 }
 
