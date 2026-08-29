@@ -56,7 +56,10 @@ if ( $e164 !== ( $goya['phone_href'] ?? null ) ) {
 if ( ! str_contains( $sources['sede'], '$clinic_config[\'phone\']' ) ) {
 	$fail( 'Sede renderer does not consume clinic display phone' );
 }
-if ( ! str_contains( $sources['contact'], '$config[\'goya\'][\'phone\']' ) ) {
+$contact_uses_registry = str_contains( $sources['contact'], 'nvx_get_clinics_config' )
+	&& str_contains( $sources['contact'], '$config[\'goya\']' )
+	&& str_contains( $sources['contact'], '$goya[\'phone\']' );
+if ( ! $contact_uses_registry ) {
 	$fail( 'Contacto renderer does not consume Goya display SSOT' );
 }
 if ( ! str_contains( $sources['hub'], '$config[\'goya\'][\'phone\']' ) ) {
