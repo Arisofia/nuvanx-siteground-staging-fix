@@ -67,11 +67,6 @@ foreach ( $legacy as $registration ) {
     }
 }
 
-// Additionally, forbid any reintroduction of these legacy callbacks outside the
-// retirement shim itself. This prevents split-ownership regressions that would
-// bypass the canonical metadata layer. The priority configuration file is
-// excluded because it maps names to priorities but does not implement the
-// deprecated callbacks.
 $forbidden_callbacks = array(
     'nvx_filter_valoracion_document_title',
     'nvx_filter_valoracion_metadesc',
@@ -90,7 +85,6 @@ foreach ( $iterator as $file ) {
         continue;
     }
     $path = $file->getPathname();
-    // Skip the retirement shim and priority configuration (legitimate mapping, not implementation)
     if ( str_ends_with( $path, '/inc/nvx-seo-legacy-retirement.php' ) || str_ends_with( $path, '/inc/nvx-filter-priorities.php' ) ) {
         continue;
     }
@@ -113,9 +107,6 @@ if ( false === strpos( $central, "add_filter( 'wpseo_metadesc', 'nvx_seo_filter_
     $failures[] = 'canonical_description_owner_missing';
 }
 
-// Doctoralia's observed service/admin state is external and must be checked live,
-// not frozen in the repository. The website-owned sameAs identity is different:
-// it is emitted by our Schema and therefore remains a blocking source contract.
 $canonical_goya_doctoralia = 'https://www.doctoralia.es/clinicas/nuvanx-medicina-estetica-laser-sede-goya';
 if ( ! str_contains( $schema, "'{$canonical_goya_doctoralia}'" ) ) {
     $failures[] = 'goya_medicalclinic_doctoralia_sameas_missing';
@@ -136,6 +127,7 @@ if (
 }
 
 $contracts = array(
+    array( 'file' => 'test-theme-data-ownership.php', 'runtime' => 'php', 'label' => 'theme_data_ownership_contract' ),
     array( 'file' => 'test-local-seo-ownership.php', 'runtime' => 'php', 'label' => 'local_seo_ownership_contract' ),
     array( 'file' => 'test-goya-nap-display-contract.php', 'runtime' => 'php', 'label' => 'goya_nap_display_contract' ),
     array( 'file' => 'test-gsc-search-analytics-contract.mjs', 'runtime' => 'node', 'label' => 'gsc_search_analytics_contract' ),
