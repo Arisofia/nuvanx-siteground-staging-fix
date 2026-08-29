@@ -37,7 +37,7 @@ foreach ( $staff['staff'] ?? array() as $record ) {
 	if ( ! is_array( $record ) ) {
 		continue;
 	}
-	foreach ( array( 'colegiado', 'doctoralia_url' ) as $field ) {
+	foreach ( array( 'colegiado', 'doctoralia_url', 'profile_media_attachment_id' ) as $field ) {
 		$value = trim( (string) ( $record[ $field ] ?? '' ) );
 		if ( '' !== $value ) {
 			$forbidden_literals[ $value ] = 'medical_staff_' . $field;
@@ -58,7 +58,6 @@ foreach ( $clinics['clinics'] ?? array() as $clinic ) {
 		if ( '' !== $value ) {
 			$forbidden_literals[ $value ] = 'clinic_' . $field;
 		}
-	}
 }
 
 $gallery_paths = array();
@@ -71,6 +70,12 @@ foreach ( $assets['approved_editorial_overrides']['clinic_landing_galleries'] ??
 		if ( '' !== $path ) {
 			$gallery_paths[] = $path;
 		}
+	}
+}
+foreach ( $assets['approved_editorial_overrides']['authorized_partner_marks'] ?? array() as $mark ) {
+	$id = is_array( $mark ) ? (int) ( $mark['attachment_id'] ?? 0 ) : 0;
+	if ( $id > 0 ) {
+		$forbidden_literals[ (string) $id ] = 'authorized_partner_attachment_id';
 	}
 }
 
@@ -112,4 +117,4 @@ if ( array() !== $failures ) {
 	exit( 1 );
 }
 
-echo 'THEME_DATA_OWNERSHIP_TEST=PASS registries=3 php_literals=canonical-only inline_onerror=absent deleted_config=absent' . PHP_EOL;
+echo 'THEME_DATA_OWNERSHIP_TEST=PASS registries=3 php_literals=canonical-only media_ids=canonical-only inline_onerror=absent deleted_config=absent' . PHP_EOL;
