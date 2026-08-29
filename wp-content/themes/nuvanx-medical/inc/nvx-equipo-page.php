@@ -283,8 +283,6 @@ function nvx_equipo_capture_media_if_empty( string $card, string &$media ): void
 	}
 	if ( preg_match( NVX_EQUIPO_MEDIA_PATTERN, $card, $im ) ) {
 		$media = $im[0];
-		// Add onerror handler to prevent network errors from breaking page functionality
-		$media = preg_replace('/<img/', '<img onerror="this.style.display=\'none\'"', $media);
 	}
 }
 
