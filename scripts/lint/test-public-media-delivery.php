@@ -15,6 +15,34 @@ $fail = static function ( string $reason ): never {
 	exit( 1 );
 };
 
+$staff_registry = json_decode(
+	(string) file_get_contents( $root . '/wp-content/themes/nuvanx-medical/inc/data/medical-staff.json' ),
+	true
+);
+$asset_registry = json_decode(
+	(string) file_get_contents( $root . '/wp-content/themes/nuvanx-medical/inc/data/clinic-asset-registry.json' ),
+	true
+);
+if ( ! is_array( $staff_registry ) || ! is_array( $asset_registry ) ) {
+	$fail( 'canonical_registry_invalid' );
+}
+$GLOBALS['nvx_test_staff_registry'] = $staff_registry;
+$GLOBALS['nvx_test_asset_registry'] = $asset_registry;
+$director_profile_id = (int) ( $staff_registry['staff']['director']['profile_media_attachment_id'] ?? 0 );
+if ( $director_profile_id < 1 ) {
+	$fail( 'director_profile_media_id_missing' );
+}
+
+function nvx_medical_staff_profile_media_attachment_id( string $doctor_id ): int {
+	$staff = $GLOBALS['nvx_test_staff_registry']['staff'] ?? array();
+	return isset( $staff[ $doctor_id ]['profile_media_attachment_id'] )
+		? (int) $staff[ $doctor_id ]['profile_media_attachment_id']
+		: 0;
+}
+function nvx_clinic_landing_gallery_registry( string $clinic_key ): array {
+	$gallery = $GLOBALS['nvx_test_asset_registry']['approved_editorial_overrides']['clinic_landing_galleries'][ $clinic_key ] ?? array();
+	return is_array( $gallery ) ? $gallery : array();
+}
 function add_filter( $hook_name = null, $callback = null, $priority = 10, $accepted_args = 1 ) {
 	unset( $hook_name, $callback, $priority, $accepted_args );
 	return true;
@@ -67,8 +95,8 @@ function wp_get_attachment_url( $attachment_id ): string {
 	return 'https://staging2.nuvanx.com/media/' . (int) $attachment_id . '.webp';
 }
 
-// Reproduce the runtime state in which the clinic map is available when the
-// authentic registry is evaluated.
+// Reproduce the runtime state in which canonical clinic and staff registries
+// are available when the public media modules are evaluated.
 require $root . '/wp-content/themes/nuvanx-medical/inc/nvx-gbp-local.php';
 require $root . '/wp-content/themes/nuvanx-medical/inc/nvx-authentic-page-photography.php';
 
@@ -77,6 +105,9 @@ foreach ( nvx_authentic_page_photo_registry() as $entry ) {
 	foreach ( (array) ( $entry['images'] ?? array() ) as $image ) {
 		$registry_ids[] = (int) ( $image['id'] ?? 0 );
 	}
+}
+if ( ! in_array( $director_profile_id, $registry_ids, true ) ) {
+	$fail( 'director_profile_missing_from_runtime_registry' );
 }
 if ( ! in_array( 2877, $registry_ids, true ) ) {
 	$fail( 'optimized_consultation_missing_from_runtime_registry' );
@@ -138,7 +169,7 @@ $sources = array(
 	1600 => array( 'url' => '1600.webp', 'descriptor' => 'w', 'value' => 1600 ),
 );
 
-$rivera_sources = nvx_governed_public_srcset_sources( $sources, array(), '', array(), 2381 );
+$rivera_sources = nvx_governed_public_srcset_sources( $sources, array(), '', array(), $director_profile_id );
 if ( array_key_exists( 1024, $rivera_sources ) || array_key_exists( 1280, $rivera_sources ) || array_key_exists( 1600, $rivera_sources ) ) {
 	$fail( 'rivera_portrait_srcset_exceeds_768' );
 }
@@ -148,7 +179,7 @@ if ( array_key_exists( 1600, $body_sources ) || ! array_key_exists( 1280, $body_
 	$fail( 'editorial_srcset_cap_not_1280' );
 }
 
-$attachment = (object) array( 'ID' => 2381 );
+$attachment = (object) array( 'ID' => $director_profile_id );
 $attrs      = nvx_governed_public_image_attributes( array( 'sizes' => '28vw' ), $attachment, 'full' );
 if ( '(min-width: 769px) 224px, 92vw' !== (string) ( $attrs['sizes'] ?? '' ) ) {
 	$fail( 'rivera_sizes_not_bound_to_14rem_column' );
@@ -174,4 +205,4 @@ if ( array( 'sizes' => '28vw' ) !== $untouched_attrs ) {
 	$fail( 'unrelated_attachment_image_attributes_changed' );
 }
 
-echo 'PUBLIC_MEDIA_DELIVERY=PASS' . PHP_EOL;
+echo 'PUBLIC_MEDIA_DELIVERY=PASS registry_owned=staff+clinic_assets' . PHP_EOL;
