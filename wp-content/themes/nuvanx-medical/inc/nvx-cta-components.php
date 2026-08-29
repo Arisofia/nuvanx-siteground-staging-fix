@@ -2,42 +2,22 @@
 /**
  * CTA components: valoración URL, WhatsApp markup, CTA pair, and closing CTA block.
  *
- * Extracted from nvx-content-presentation.php.
- *
  * @package NUVANX
  */
 
 defined( 'ABSPATH' ) || exit;
 
-// Backwards compatibility: define constants if not already set (fallback to config)
-if ( ! defined( 'NVX_DIRECTOR_COLEGIADO' ) ) {
-	define( 'NVX_DIRECTOR_COLEGIADO', nvx_medical_colegiado( 'director' ) ?: '282864786' );
-}
-if ( ! defined( 'NVX_IVON_COLEGIADO' ) ) {
-	define( 'NVX_IVON_COLEGIADO', nvx_medical_colegiado( 'ivon' ) ?: '284621525' );
-}
-if ( ! defined( 'NVX_FABIO_COLEGIADO' ) ) {
-	define( 'NVX_FABIO_COLEGIADO', nvx_medical_colegiado( 'fabio' ) ?: '282877543' );
-}
-
-/**
- * @return string
- */
+/** @return string */
 function nvx_cta_valoracion_url(): string {
 	return home_url( '/madrid/valoracion/' );
 }
 
-/**
- * @return string
- */
+/** @return string */
 function nvx_cta_whatsapp_url(): string {
 	return nvx_whatsapp_url( 'primary' );
 }
 
-
-/**
- * Secondary WhatsApp CTA.
- */
+/** Secondary WhatsApp CTA. */
 function nvx_cta_whatsapp_markup( string $class = 'nvx-brand-btn nvx-brand-btn--secondary' ): string {
 	return sprintf(
 		'<a class="%1$s" href="%2$s" target="_blank" rel="noopener noreferrer">%3$s</a>',
@@ -47,14 +27,11 @@ function nvx_cta_whatsapp_markup( string $class = 'nvx-brand-btn nvx-brand-btn--
 	);
 }
 
-/**
- * Dual CTA cluster.
- */
+/** Dual CTA cluster. */
 function nvx_cta_pair_markup( string $extra_class = '' ): string {
 	$class      = trim( 'nvx-cta-cluster ' . $extra_class );
 	$valoracion = nvx_cta_valoracion_url();
 
-	// Already on the valoración form page: primary CTA targets the form anchor.
 	if ( function_exists( 'nvx_theme_is_valoracion_form_page' ) && nvx_theme_is_valoracion_form_page() ) {
 		$valoracion = trailingslashit( get_permalink() ) . '#nvx-hubspot-form';
 	}
@@ -70,15 +47,11 @@ function nvx_cta_pair_markup( string $extra_class = '' ): string {
 	</div>';
 }
 
-/**
- * Canonical site-wide closing conversion band (pre-footer).
- * One markup, one copy, used by footer.php on every non-conversion page.
- */
+/** Canonical site-wide closing conversion band (pre-footer). */
 function nvx_site_closing_cta_markup(): string {
 	$valoracion = nvx_cta_valoracion_url();
 	$whatsapp   = nvx_cta_whatsapp_url();
 
-	// Already on the valoración form page: primary CTA targets the form anchor.
 	if ( function_exists( 'nvx_theme_is_valoracion_form_page' ) && nvx_theme_is_valoracion_form_page() ) {
 		$valoracion = trailingslashit( get_permalink() ) . '#nvx-hubspot-form';
 	}
@@ -90,7 +63,6 @@ function nvx_site_closing_cta_markup(): string {
 	$html .= '<h2 class="nvx-cta-banner__title">Cada protocolo comienza con una valoración médica individual. Si no está indicado para ti, te lo diremos con claridad.</h2>';
 	$html .= '<p class="nvx-cta-banner__sub">Presupuesto y plan documentado por escrito tras la valoración médica &bull; Tiempos de recuperación informados según el protocolo</p>';
 	$html .= '</div>';
-
 	$html .= '<div class="nvx-cta-pair nvx-cta-banner__actions">';
 	$html .= sprintf(
 		'<a class="nvx-brand-btn nvx-btn--light nvx-open-valoracion-modal" id="nvx-footer-cta" href="%1$s" data-nvx-valoracion-modal="1" aria-haspopup="dialog">%2$s</a>',
@@ -106,4 +78,3 @@ function nvx_site_closing_cta_markup(): string {
 
 	return $html;
 }
-
