@@ -112,7 +112,8 @@ foreach ( $iterator as $file ) {
 		$failures[] = 'inline_onerror_forbidden file=' . $relative;
 	}
 	foreach ( $string_literals as $literal => $owner ) {
-		if ( '' !== $literal && str_contains( $source, $literal ) ) {
+		$needle = (string) $literal;
+		if ( '' !== $needle && str_contains( $source, $needle ) ) {
 			$failures[] = 'canonical_literal_duplicated owner=' . $owner . ' file=' . $relative;
 		}
 	}
