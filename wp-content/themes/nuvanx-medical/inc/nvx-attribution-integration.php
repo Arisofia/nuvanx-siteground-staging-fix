@@ -48,6 +48,24 @@ function nvx_attribution_is_uuid_v4( string $value ): bool {
 	return 1 === preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $value );
 }
 
+/**
+ * Deterministic collector submission_id derived from nvx_lead_id.
+ *
+ * Browser and PHP must emit the same UUID-v4-shaped value so google-click
+ * attribution dedupes on submission_id instead of inserting two rows.
+ */
+function nvx_attribution_submission_id_from_lead( string $lead_id ): string {
+	$lead_id = strtolower( trim( $lead_id ) );
+	if ( ! nvx_attribution_is_uuid_v4( $lead_id ) ) {
+		return '';
+	}
+	$digest = hash( 'sha256', 'nuvanx-google-click-submission-id-v1|' . $lead_id, true );
+	$digest[6] = chr( ( ord( $digest[6] ) & 0x0f ) | 0x40 );
+	$digest[8] = chr( ( ord( $digest[8] ) & 0x3f ) | 0x80 );
+	$hex       = bin2hex( substr( $digest, 0, 16 ) );
+	return substr( $hex, 0, 8 ) . '-' . substr( $hex, 8, 4 ) . '-' . substr( $hex, 12, 4 ) . '-' . substr( $hex, 16, 4 ) . '-' . substr( $hex, 20, 12 );
+}
+
 /** Canonical collector URL; env/constant may only pin this exact value. */
 function nvx_attribution_collector_canonical_endpoint(): string {
 	return 'https://ssvvuuysgxyqvmovrlvk.supabase.co/functions/v1/google-click-attribution';
@@ -162,10 +180,20 @@ function nvx_attribution_hubspot_field_map( array $payload ): array {
 /** Emit bounded, non-PII collector telemetry. */
 function nvx_attribution_log_direct_relay( string $outcome, int $status = 0, string $reason = '' ): void {
 	$outcome = strtoupper( $outcome );
-	if ( ! in_array( $outcome, array( 'SUCCESS', 'FAILURE' ), true ) ) {
+	$legacy  = array(
+		'SUCCESS'   => 'SUCCESS',
+		'FAILURE'   => 'FAILURE',
+		'HTTP_4XX'  => 'FAILURE',
+		'HTTP_429'  => 'FAILURE',
+		'HTTP_5XX'  => 'FAILURE',
+		'TRANSPORT' => 'FAILURE',
+		'QUEUED'    => 'FAILURE',
+		'DEAD'      => 'FAILURE',
+	);
+	if ( ! isset( $legacy[ $outcome ] ) ) {
 		return;
 	}
-	$line = 'NVX_ATTRIBUTION_DIRECT_RELAY=' . $outcome;
+	$line = 'NVX_ATTRIBUTION_DIRECT_RELAY=' . $legacy[ $outcome ];
 	if ( $status > 0 ) {
 		$line .= ' status=' . $status;
 	}
@@ -234,10 +262,15 @@ function nvx_attribution_relay_direct_form_after_hubspot( $preempt, array $args,
 		return $preempt;
 	}
 
-	$submission_id = function_exists( 'wp_generate_uuid4' ) ? strtolower( wp_generate_uuid4() ) : '';
+	$submission_id = nvx_attribution_submission_id_from_lead( $lead_id );
+	if ( ! nvx_attribution_is_uuid_v4( $submission_id ) ) {
+		$submission_id = function_exists( 'wp_generate_uuid4' ) ? strtolower( wp_generate_uuid4() ) : '';
+	}
 	if ( ! nvx_attribution_is_uuid_v4( $submission_id ) ) {
 		return $preempt;
 	}
+
+	$test_run_id = (string) ( $fields['nvx_test_run_id'] ?? '' );
 
 	if ( ! function_exists( 'nvx_hubspot_secure_form_id' ) ) {
 		return $preempt;
@@ -255,34 +288,44 @@ function nvx_attribution_relay_direct_form_after_hubspot( $preempt, array $args,
 	}
 
 	$collector_payload = array(
-		'submission_id' => $submission_id,
-		'nvx_lead_id'   => $lead_id,
-		'email_hash'    => nvx_attribution_email_hash( $email ),
-		'gclid'         => '' !== $gclid ? $gclid : null,
-		'gbraid'        => '' !== $gbraid ? $gbraid : null,
-		'wbraid'        => '' !== $wbraid ? $wbraid : null,
-		'gclsrc'        => '' !== $gclsrc ? $gclsrc : null,
-		'form_id'       => $form_id,
-		'landing_url'   => $landing_url,
+		'submission_id'  => $submission_id,
+		'nvx_lead_id'    => $lead_id,
+		'email_hash'     => nvx_attribution_email_hash( $email ),
+		'gclid'          => '' !== $gclid ? $gclid : null,
+		'gbraid'         => '' !== $gbraid ? $gbraid : null,
+		'wbraid'         => '' !== $wbraid ? $wbraid : null,
+		'gclsrc'         => '' !== $gclsrc ? $gclsrc : null,
+		'form_id'        => $form_id,
+		'landing_url'    => $landing_url,
+		'nvx_test_run_id' => '' !== $test_run_id ? $test_run_id : null,
 	);
 	$collector_body = wp_json_encode( $collector_payload );
 	if ( false === $collector_body ) {
-		nvx_attribution_log_direct_relay( 'FAILURE' );
+		nvx_attribution_log_direct_relay( 'FAILURE', 0, 'payload_encode' );
 		return $preempt;
 	}
 
 	$endpoint = nvx_attribution_collector_endpoint();
 	if ( '' === $endpoint ) {
-		nvx_attribution_log_direct_relay( 'FAILURE' );
+		nvx_attribution_log_direct_relay( 'FAILURE', 0, 'endpoint_unavailable' );
+		return $preempt;
+	}
+
+	$relay_headers = array(
+		'Origin' => $origin,
+	);
+	if ( function_exists( 'nvx_supabase_relay_dispatch' ) ) {
+		$result = nvx_supabase_relay_dispatch( 'google_click', $collector_body, $relay_headers );
+		nvx_attribution_log_direct_relay( $result['outcome'], $result['status'] );
 		return $preempt;
 	}
 
 	$response = wp_remote_post(
 		$endpoint,
 		array(
-			'timeout'     => 0.5,
+			'timeout'     => 3,
 			'redirection' => 0,
-			'blocking'    => false,
+			'blocking'    => true,
 			'headers'     => array(
 				'Content-Type' => 'application/json',
 				'Origin'       => $origin,
@@ -292,7 +335,10 @@ function nvx_attribution_relay_direct_form_after_hubspot( $preempt, array $args,
 	);
 
 	if ( is_wp_error( $response ) ) {
-		nvx_attribution_log_direct_relay( 'FAILURE' );
+		nvx_attribution_log_direct_relay( 'FAILURE', 0, 'transport' );
+	} else {
+		$status = (int) wp_remote_retrieve_response_code( $response );
+		nvx_attribution_log_direct_relay( ( $status >= 200 && $status < 300 ) ? 'SUCCESS' : 'FAILURE', $status );
 	}
 
 	return $preempt;

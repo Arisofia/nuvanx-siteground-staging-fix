@@ -4,7 +4,8 @@
  *
  * Site Kit is the single owner of Google Tag / GTM / GA4 / Google Ads and
  * Consent Mode snippets. This module never loads GTM, emits a GTM noscript
- * iframe, or resolves Google Ads conversion-action IDs.
+ * iframe, or resolves form conversion-action IDs. Theme-owned phone/WhatsApp
+ * click conversions are injected from ads-conversion-catalog.json.
  *
  * The theme owns only business context consumed by GTM/dataLayer and by the
  * NUVANX conversion-events client. Keeping this context independent from the
@@ -91,8 +92,9 @@ function nvx_gtm_context_page_type(): string {
 /**
  * Resolve non-Google business configuration consumed by nvx-conversion-events.js.
  *
- * This deliberately excludes GTM and Google Ads conversion IDs. Site Kit and
- * the GTM container own Google tag configuration; the theme only exposes the
+ * This deliberately excludes GTM container IDs and form conversion-action IDs.
+ * Site Kit owns Google tag configuration. Theme-owned click conversions are
+ * injected separately from ads-conversion-catalog.json. The theme exposes the
  * canonical HubSpot form identity required by the NUVANX event classifier.
  * The secure bridge is the single source of truth for that form identity.
  *
@@ -217,6 +219,9 @@ function nvx_gtm_push_context(): void {
 
 	$client_context = nvx_gtm_client_context();
 	$qa_context     = nvx_attribution_qa_context();
+	$ads_context    = function_exists( 'nvx_ads_conversion_client_context' )
+		? nvx_ads_conversion_client_context()
+		: array( 'phone_whatsapp_send_to' => '' );
 	$json_flags     = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
 	$data_layer     = wp_json_encode(
 		array(
@@ -234,31 +239,39 @@ function nvx_gtm_push_context(): void {
 		),
 		$json_flags
 	);
+	$client_ads   = wp_json_encode( $ads_context, $json_flags );
 
 	if (
 		! is_string( $data_layer ) || '' === $data_layer
 		|| ! is_string( $client_env ) || '' === $client_env
 		|| ! is_string( $client_forms ) || '' === $client_forms
 		|| ! is_string( $client_qa ) || '' === $client_qa
+		|| ! is_string( $client_ads ) || '' === $client_ads
 	) {
 		return;
 	}
 
 	$script = sprintf(
-		'window.dataLayer=window.dataLayer||[];window.dataLayer.push(%s);window.nvxConversionEvents=window.nvxConversionEvents||{};window.nvxConversionEvents.env=%s;window.nvxConversionEvents.forms=%s;window.nvxConversionEvents.qa=Object.assign(window.nvxConversionEvents.qa||{},%s);',
+		'window.dataLayer=window.dataLayer||[];window.dataLayer.push(%s);window.nvxConversionEvents=window.nvxConversionEvents||{};window.nvxConversionEvents.env=%s;window.nvxConversionEvents.forms=%s;window.nvxConversionEvents.qa=Object.assign(window.nvxConversionEvents.qa||{},%s);window.nvxConversionEvents.ads=Object.assign(window.nvxConversionEvents.ads||{},%s);',
 		$data_layer,
 		$client_env,
 		$client_forms,
-		$client_qa
+		$client_qa,
+		$client_ads
 	);
 
 	wp_print_inline_script_tag( $script );
 }
 add_action( 'wp_head', 'nvx_gtm_push_context', 1 );
 
+require_once __DIR__ . '/nvx-ads-conversion-catalog.php';
+
 // Load the secure HubSpot attribution bridge (Runtime Contract v2).
 require_once __DIR__ . '/nvx-hubspot-secure-attribution.php';
 require_once __DIR__ . '/nvx-attribution-integration.php';
+
+// Persistent at-least-once outbox shared by both Supabase relays.
+require_once __DIR__ . '/nvx-supabase-relay-queue.php';
 
 // Mirror successful secure HubSpot submissions into the canonical first-party capture ledger.
 require_once __DIR__ . '/nvx-lead-captured-relay.php';

@@ -52,9 +52,13 @@
 		return output;
 	}
 
-	var adsClickSendTo = 'AW-18236597403/qut3CLWflOAcEJvJ8fdD';
+	function adsPhoneWhatsAppSendTo() {
+		var sendTo = String((config.ads && config.ads.phone_whatsapp_send_to) || '');
+		return /^AW-[0-9]{8,12}\/[A-Za-z0-9_-]+$/.test(sendTo) ? sendTo : '';
+	}
 
 	function pushAdsConversion(sendTo, extra) {
+		if (!sendTo) return;
 		var payload = Object.assign({ send_to: sendTo }, extra || {});
 		if (typeof window.gtag === 'function') {
 			window.gtag('event', 'conversion', payload);
@@ -89,7 +93,7 @@
 		};
 
 		whenGtagReady(function () {
-			pushAdsConversion(adsClickSendTo, navigatesAway ? { event_callback: finish } : {});
+			pushAdsConversion(adsPhoneWhatsAppSendTo(), navigatesAway ? { event_callback: finish } : {});
 		});
 
 		if (navigatesAway) {
@@ -444,6 +448,23 @@
 		return '';
 	}
 
+	function uuidFromSha256Hex(hex) {
+		if (!/^[0-9a-f]{64}$/.test(hex)) return '';
+		var raw = hex.slice(0, 32);
+		var variant = ((parseInt(raw.slice(16, 18), 16) & 0x3f) | 0x80).toString(16).padStart(2, '0');
+		raw = raw.slice(0, 12) + '4' + raw.slice(13, 16) + variant + raw.slice(18);
+		return raw.slice(0, 8) + '-' + raw.slice(8, 12) + '-' + raw.slice(12, 16) + '-' + raw.slice(16, 20) + '-' + raw.slice(20);
+	}
+
+	async function createSubmissionIdFromLead(leadId) {
+		var normalized = String(leadId || '').trim().toLowerCase();
+		if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(normalized)) {
+			return createSubmissionId();
+		}
+		var digest = await sha256('nuvanx-google-click-submission-id-v1|' + normalized);
+		return uuidFromSha256Hex(digest) || createSubmissionId();
+	}
+
 	function getFieldValue(fields, propertyName) {
 		var names = fieldCandidates(propertyName);
 		for (var index = 0; index < fields.length; index += 1) {
@@ -476,9 +497,11 @@
 		if (!/^[0-9a-f]{64}$/.test(emailHash) || !hasMarketingConsent()) return null;
 		clickValues = collectClickValues();
 
+		var nvxLeadId = getNvxLeadId();
+		var testRunId = String((attributionConfig.qa && attributionConfig.qa.test_run_id) || '').trim();
 		return {
-			submission_id: createSubmissionId() || null,
-			nvx_lead_id: getNvxLeadId() || null,
+			submission_id: await createSubmissionIdFromLead(nvxLeadId) || null,
+			nvx_lead_id: nvxLeadId || null,
 			email_hash: emailHash,
 			gclid: clickValues.gclid || null,
 			gbraid: clickValues.gbraid || null,
@@ -486,6 +509,7 @@
 			gclsrc: clickValues.gclsrc || null,
 			form_id: FORM_ID,
 			landing_url: canonicalLandingUrl(),
+			nvx_test_run_id: testRunId || null,
 		};
 	}
 
@@ -644,10 +668,11 @@
 		var email = normalizeEmail(emailInput.value);
 		if (!email || email.length > 320 || email.indexOf('@') <= 0) return;
 
+		var pendingLeadId = getNvxLeadId();
 		var pending = {
 			root: root,
-			submissionId: createSubmissionId(),
-			nvxLeadId: getNvxLeadId(),
+			submissionId: await createSubmissionIdFromLead(pendingLeadId),
+			nvxLeadId: pendingLeadId,
 			emailHash: '',
 			retryCount: 0,
 			successSeen: false,
@@ -716,6 +741,7 @@
 				gclsrc: clickValues.gclsrc || null,
 				form_id: FORM_ID,
 				landing_url: canonicalLandingUrl(),
+				nvx_test_run_id: String((attributionConfig.qa && attributionConfig.qa.test_run_id) || '').trim() || null,
 			});
 			if (terminal || sent) clearLegacyPendingSubmission(pending);
 			else scheduleLegacyRetry(pending, true);

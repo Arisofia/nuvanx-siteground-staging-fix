@@ -327,7 +327,16 @@ function nvx_lead_captured_on_http_response( $response, array $parsed_args, stri
 			}
 		}
 	}
-	nvx_lead_captured_log_relay_failure( $relay );
+
+	if ( function_exists( 'nvx_supabase_relay_classify' ) ) {
+		$class = nvx_supabase_relay_classify( $relay );
+		nvx_supabase_relay_log( 'lead_captured', $class['outcome'], $class['status'], $class['reason'] );
+		if ( $class['retryable'] && function_exists( 'nvx_supabase_relay_queue_enqueue' ) ) {
+			nvx_supabase_relay_queue_enqueue( 'lead_captured', $relay_body );
+		}
+	} else {
+		nvx_lead_captured_log_relay_failure( $relay );
+	}
 
 	return $response;
 }
