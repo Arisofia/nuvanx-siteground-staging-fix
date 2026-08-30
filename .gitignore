@@ -65,6 +65,8 @@ Nuvanx-System/
 artifacts/
 scripts/staging2/block-c-artifacts/
 scripts/staging2/valoracion-artifacts/
+scripts/staging2/performance-artifacts/
+scripts/staging2/meta-no-consent-artifacts/
 production/artifacts/
 audit/
 audit-*.txt

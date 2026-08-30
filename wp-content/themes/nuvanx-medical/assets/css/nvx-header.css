@@ -51,6 +51,14 @@
   object-fit: contain;
 }
 
+@media (min-width: 768px) {
+  .nvx-logo__img,
+  .custom-logo {
+    height: var(--nvx-logo-height);
+    max-width: var(--nvx-logo-width);
+  }
+}
+
 .nvx-logo:hover {
   opacity: 0.8;
 }

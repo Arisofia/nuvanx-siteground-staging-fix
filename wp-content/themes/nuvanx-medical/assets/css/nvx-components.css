@@ -1431,30 +1431,30 @@ body.nvx-valoracion-modal-open{
 /* Clinical Factsheet (SSOT Matrix) */
 .nvx-clinical-factsheet {
   background: var(--nvx-surface-soft);
-  border: 1px solid var(--nvx-color-line);
-  border-radius: var(--nvx-radius-lg, 8px);
-  padding: var(--nvx-space-4, 24px);
-  margin-block: var(--nvx-space-5, 32px);
+  border: var(--nvx-border-hairline) solid var(--nvx-color-line);
+  border-radius: var(--nvx-radius-lg);
+  padding: var(--nvx-space-4);
+  margin-block: var(--nvx-space-5);
 }
 
 .nvx-clinical-factsheet__title {
-  font-family: var(--nvx-font-heading);
+  font-family: var(--nvx-serif);
   font-size: var(--nvx-type-h5);
   font-weight: var(--nvx-fw-medium);
-  margin-bottom: var(--nvx-space-3, 16px);
+  margin-bottom: var(--nvx-space-3);
   color: var(--nvx-ink);
 }
 
 .nvx-clinical-factsheet__list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--nvx-space-2, 12px);
+  gap: var(--nvx-space-2);
 }
 
 @media (min-width: 640px) {
   .nvx-clinical-factsheet__list {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--nvx-space-3, 16px);
+    gap: var(--nvx-space-3);
   }
 }
 
@@ -1563,5 +1563,26 @@ body.nvx-valoracion-modal-open{
 
   .nvx-bridal-studio__plate--papada {
     margin-bottom: var(--nvx-space-6);
+  }
+}
+
+.nvx-clinical-evidence-note {
+  margin-block-start: var(--nvx-space-6);
+  padding: var(--nvx-space-4) var(--nvx-space-5);
+  border-block-start: var(--nvx-border-hairline) solid var(--nvx-color-line);
+  background: var(--nvx-surface-base);
+  border-radius: var(--nvx-radius-card);
+}
+
+.nvx-clinical-evidence-note__inner {
+  font-size: var(--nvx-type-small);
+  line-height: var(--nvx-lh-body-sm);
+  color: var(--nvx-text-muted);
+  max-width: var(--nvx-measure);
+}
+
+@media (max-width: 768px) {
+  .nvx-clinical-evidence-note {
+    padding: var(--nvx-space-3);
   }
 }

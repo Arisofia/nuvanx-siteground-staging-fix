@@ -284,8 +284,8 @@ assert.match(
 
 assert.match(
   conversionEvents,
-  /AW-18236597403\/qut3CLWflOAcEJvJ8fdD/,
-  'phone/WhatsApp clicks must send the official Ads click conversion',
+  /config\.ads && config\.ads\.phone_whatsapp_send_to/,
+  'phone/WhatsApp clicks must send the catalog-owned Ads click conversion',
 );
 assert.match(
   conversionEvents,

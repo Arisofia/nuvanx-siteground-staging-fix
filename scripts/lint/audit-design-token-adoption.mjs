@@ -45,11 +45,7 @@ const GOVERNED_LEGACY_LITERAL_EXCEPTIONS = new Set([
   'wp-content/themes/nuvanx-medical/assets/css/nvx-patterns-editorial.css:170:z-index:2',
   'wp-content/themes/nuvanx-medical/assets/css/nvx-patterns-editorial.css:209:z-index:1',
   'wp-content/themes/nuvanx-medical/assets/css/nvx-components.css:244:padding-bottom:80px',
-  'wp-content/themes/nuvanx-medical/assets/css/nvx-components.css:723:box-shadow:0 0 0 3px var(--nvx-accent-glow)',
-  'wp-content/themes/nuvanx-medical/assets/css/nvx-components.css:999:margin:-1px',
-  'wp-content/themes/nuvanx-medical/assets/css/nvx-components.css:1467:margin-bottom:2px',
-  'wp-content/themes/nuvanx-medical/assets/css/nvx-posts.css:784:box-shadow:inset 0 0 0 var(--nvx-border-hairline) var(--nvx-color-line)',
-  'wp-content/themes/nuvanx-medical/assets/css/nvx-site-layout.css:417:border-radius:16px',
+  'wp-content/themes/nuvanx-medical/assets/css/nvx-posts.css:702:box-shadow:inset 0 0 0 var(--nvx-border-hairline) var(--nvx-color-line)',
 ]);
 
 const SPACING_PROPERTIES = /^(?:margin(?:-(?:top|right|bottom|left|inline|inline-start|inline-end|block|block-start|block-end))?|padding(?:-(?:top|right|bottom|left|inline|inline-start|inline-end|block|block-start|block-end))?|gap|row-gap|column-gap)$/;
@@ -243,17 +239,11 @@ function auditParserSelfTest() {
   const editorialFile = path.join(CSS_DIR, 'nvx-patterns-editorial.css');
   const componentsFile = path.join(CSS_DIR, 'nvx-components.css');
   const postsFile = path.join(CSS_DIR, 'nvx-posts.css');
-  const layoutFile = path.join(CSS_DIR, 'nvx-site-layout.css');
   if (!isGovernedLegacyLiteralException(editorialFile, 170, 'z-index', '2')) throw new Error('parser_self_test_governed_legacy_z_overlay_missing');
   if (!isGovernedLegacyLiteralException(editorialFile, 209, 'z-index', '1')) throw new Error('parser_self_test_governed_legacy_z_base_missing');
   if (isGovernedLegacyLiteralException(editorialFile, 171, 'z-index', '2')) throw new Error('parser_self_test_governed_legacy_z_exception_too_broad');
   if (!isGovernedLegacyLiteralException(componentsFile, 244, 'padding-bottom', '80px')) throw new Error('parser_self_test_governed_footer_spacing_missing');
-  if (!isGovernedLegacyLiteralException(componentsFile, 723, 'box-shadow', '0 0 0 3px var(--nvx-accent-glow)')) throw new Error('parser_self_test_governed_focus_shadow_missing');
-  if (!isGovernedLegacyLiteralException(componentsFile, 999, 'margin', '-1px')) throw new Error('parser_self_test_structural_hidden_margin_missing');
-  if (!isGovernedLegacyLiteralException(componentsFile, 1467, 'margin-bottom', '2px')) throw new Error('parser_self_test_governed_factsheet_spacing_missing');
-  if (!isGovernedLegacyLiteralException(postsFile, 784, 'box-shadow', 'inset 0 0 0 var(--nvx-border-hairline) var(--nvx-color-line)')) throw new Error('parser_self_test_structural_inset_shadow_missing');
-  if (!isGovernedLegacyLiteralException(layoutFile, 417, 'border-radius', '16px')) throw new Error('parser_self_test_governed_legal_radius_missing');
-  if (isGovernedLegacyLiteralException(layoutFile, 418, 'border-radius', '16px')) throw new Error('parser_self_test_governed_legacy_radius_exception_too_broad');
+  if (!isGovernedLegacyLiteralException(postsFile, 702, 'box-shadow', 'inset 0 0 0 var(--nvx-border-hairline) var(--nvx-color-line)')) throw new Error('parser_self_test_structural_inset_shadow_missing');
   if (isGovernedLegacyLiteralException(componentsFile, 245, 'padding-bottom', '80px')) throw new Error('parser_self_test_governed_spacing_exception_too_broad');
 }
 

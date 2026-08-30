@@ -45,8 +45,10 @@ assert.match(integration, /return 'https:\/\/ssvvuuysgxyqvmovrlvk\.supabase\.co\
 assert.match(integration, /NVX_ATTRIBUTION_COLLECTOR_ENDPOINT/);
 assert.match(integration, /NVX_ATTRIBUTION_COLLECTOR_ALLOWED_HOSTS/);
 assert.match(integration, /nvxAttributionMarketingFields/);
-assert.match(integration, /'timeout'\s*=>\s*0\.5/);
-assert.match(integration, /'blocking'\s*=>\s*false/);
+assert.match(integration, /'timeout'\s*=>\s*3/);
+assert.match(integration, /'blocking'\s*=>\s*true/);
+assert.match(integration, /nvx_attribution_submission_id_from_lead/);
+assert.match(integration, /nvx_supabase_relay_dispatch/);
 assert.match(syncSource, /typeof value === 'boolean'\) return value;/);
 assert.doesNotMatch(integration, /NVX_GOOGLE_CLICK_ATTRIBUTION_ENDPOINT/);
 const collectorPayload = integration.match(/\$collector_payload = array\(([\s\S]*?)\n\t\);/)?.[1] || '';

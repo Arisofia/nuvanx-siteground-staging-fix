@@ -24,6 +24,7 @@ DEPLOY_STAMP="$ROOT/wp-content/themes/nuvanx-medical/inc/nvx-deploy-stamp.php"
 LCP_CSS_CONTRACT="$ROOT/scripts/lint/test-lcp-css-delivery.mjs"
 CONVERSION_OWNERSHIP_CONTRACT="$ROOT/scripts/lint/test-conversion-ownership-contract.mjs"
 META_BROWSER_OWNER_CONTRACT="$ROOT/scripts/lint/test-meta-browser-owner-retirement.php"
+META_CAPI_GOVERNANCE_CONTRACT="$ROOT/scripts/lint/test-meta-capi-governance.mjs"
 SEO_OWNERSHIP_CONTRACT="$ROOT/scripts/lint/test-seo-catalog-ownership.php"
 WORDPRESS_SECURITY_CONTRACT="$ROOT/scripts/lint/test-wordpress-security-contract.php"
 FORENSIC_SCANNER="$ROOT/tools/migrations/scan-forensic-source.py"
@@ -32,7 +33,7 @@ SEO_GEO_AUDIT="$ROOT/scripts/production/seo-geo-origin-audit.sh"
 SEO_TOOLING_DIR="$ROOT/scripts/seo"
 THEME_DIR="$ROOT/wp-content/themes/nuvanx-medical"
 
-for required in "$BRIDAL" "$IDENTITY_CONTRACT" "$DEPLOY" "$WORKFLOW" "$PREMERGE_CONTRACT" "$BOUNDARY" "$VALORACION_FORM_CONTRACT" "$VALORACION_FORM_CONTRACT_TEST" "$SIGNATURE_FRAME_CONTRACT" "$SIGNATURE_FRAME_CONTRACT_TEST" "$ENV_FLAGS" "$DEPLOY_STAMP" "$LCP_CSS_CONTRACT" "$CONVERSION_OWNERSHIP_CONTRACT" "$META_BROWSER_OWNER_CONTRACT" "$SEO_OWNERSHIP_CONTRACT" "$WORDPRESS_SECURITY_CONTRACT" "$FORENSIC_SCANNER" "$HUBSPOT_ZERO_SUBMIT_CONTRACT" "$SEO_GEO_AUDIT" "$SEO_TOOLING_DIR/package-lock.json" "$THEME_DIR/composer.lock" "$THEME_DIR/composer.json" "$THEME_DIR/phpcs.xml.dist"; do
+for required in "$BRIDAL" "$IDENTITY_CONTRACT" "$DEPLOY" "$WORKFLOW" "$PREMERGE_CONTRACT" "$BOUNDARY" "$VALORACION_FORM_CONTRACT" "$VALORACION_FORM_CONTRACT_TEST" "$SIGNATURE_FRAME_CONTRACT" "$SIGNATURE_FRAME_CONTRACT_TEST" "$ENV_FLAGS" "$DEPLOY_STAMP" "$LCP_CSS_CONTRACT" "$CONVERSION_OWNERSHIP_CONTRACT" "$META_BROWSER_OWNER_CONTRACT" "$META_CAPI_GOVERNANCE_CONTRACT" "$SEO_OWNERSHIP_CONTRACT" "$WORDPRESS_SECURITY_CONTRACT" "$FORENSIC_SCANNER" "$HUBSPOT_ZERO_SUBMIT_CONTRACT" "$SEO_GEO_AUDIT" "$SEO_TOOLING_DIR/package-lock.json" "$THEME_DIR/composer.lock" "$THEME_DIR/composer.json" "$THEME_DIR/phpcs.xml.dist"; do
   [[ -s "$required" ]] || fail "missing_file:$required"
 done
 
@@ -204,6 +205,13 @@ pass_assert 'single-deploy-sha-head-owner'
 # silently restore pre-consent _fbp/_fbc, Pixel or browser dedupe behavior.
 php "$META_BROWSER_OWNER_CONTRACT" || fail 'meta_browser_owner_retirement_contract'
 pass_assert 'meta-browser-owner-retirement'
+
+# Meta CAPI governance: browser Pixel owner must remain 'none', server-side
+# CAPI must be governed, and the Supabase 402 gateway restriction must be
+# classified as TRANSIENT_INFRASTRUCTURE (not a code defect). Guardrails
+# prevent redeploy/credential-rotation/data-purge as a 402 response.
+node "$META_CAPI_GOVERNANCE_CONTRACT" || fail 'meta_capi_governance_contract'
+pass_assert 'meta-capi-governance'
 
 # WPCS is intentionally absent from Composer to keep the lock free of the LGPL
 # dependency chain and the vulnerable legacy WPCS release. Preserve the removed

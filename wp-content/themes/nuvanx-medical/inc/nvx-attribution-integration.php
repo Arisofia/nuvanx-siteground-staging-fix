@@ -288,15 +288,15 @@ function nvx_attribution_relay_direct_form_after_hubspot( $preempt, array $args,
 	}
 
 	$collector_payload = array(
-		'submission_id'  => $submission_id,
-		'nvx_lead_id'    => $lead_id,
-		'email_hash'     => nvx_attribution_email_hash( $email ),
-		'gclid'          => '' !== $gclid ? $gclid : null,
-		'gbraid'         => '' !== $gbraid ? $gbraid : null,
-		'wbraid'         => '' !== $wbraid ? $wbraid : null,
-		'gclsrc'         => '' !== $gclsrc ? $gclsrc : null,
-		'form_id'        => $form_id,
-		'landing_url'    => $landing_url,
+		'submission_id'   => $submission_id,
+		'nvx_lead_id'     => $lead_id,
+		'email_hash'      => nvx_attribution_email_hash( $email ),
+		'gclid'           => '' !== $gclid ? $gclid : null,
+		'gbraid'          => '' !== $gbraid ? $gbraid : null,
+		'wbraid'          => '' !== $wbraid ? $wbraid : null,
+		'gclsrc'          => '' !== $gclsrc ? $gclsrc : null,
+		'form_id'         => $form_id,
+		'landing_url'     => $landing_url,
 		'nvx_test_run_id' => '' !== $test_run_id ? $test_run_id : null,
 	);
 	$collector_body = wp_json_encode( $collector_payload );

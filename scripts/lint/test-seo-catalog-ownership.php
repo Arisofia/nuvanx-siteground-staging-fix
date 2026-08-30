@@ -131,6 +131,7 @@ $contracts = array(
     array( 'file' => 'test-local-seo-ownership.php', 'runtime' => 'php', 'label' => 'local_seo_ownership_contract' ),
     array( 'file' => 'test-goya-nap-display-contract.php', 'runtime' => 'php', 'label' => 'goya_nap_display_contract' ),
     array( 'file' => 'test-gsc-search-analytics-contract.mjs', 'runtime' => 'node', 'label' => 'gsc_search_analytics_contract' ),
+    array( 'file' => 'test-doctoralia-gbp-service-parity.mjs', 'runtime' => 'node', 'label' => 'doctoralia_gbp_service_parity_contract' ),
 );
 foreach ( $contracts as $contract ) {
     $path = __DIR__ . '/' . $contract['file'];

@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "governed_status": "external_public_parity_open",
+  "service_projection_source": "treatment-hub-schema.json",
+  "parity_rule": "Doctoralia_services(Chamberi) == Doctoralia_services(Goya) == approved_projection(NUVANX.com)",
+  "mutation_policy": {
+    "allowed_after_prerequisites": [
+      "edit_goya_clinic_profile_fields",
+      "edit_goya_public_service_visibility",
+      "edit_goya_service_names_descriptions",
+      "edit_specialist_service_mapping_when_authorized",
+      "edit_goya_online_booking_visibility",
+      "add_missing_canonical_goya_services_when_service_type_verified"
+    ],
+    "prerequisites_before_write": [
+      "integrated_goya_admin_access_confirmed",
+      "public_profile_identity_54924_confirmed",
+      "before_snapshot_captured",
+      "canonical_service_target_loaded"
+    ],
+    "blocked": [
+      "delete_merge_directions_53333_49168",
+      "globally_deactivate_clinic_cloud_services",
+      "change_legal_healthcare_responsible",
+      "change_agenda_hours_or_delete_agenda",
+      "remove_professionals",
+      "change_chamberi_until_admin_export_complete"
+    ]
+  },
+  "clinics": {
+    "chamberi": {
+      "facility_id": "47595",
+      "reg": "CS20144",
+      "admin_export_status": "pending",
+      "mutation_blocked": true,
+      "block_reason": "change_chamberi_until_admin_export_complete",
+      "services": [
+        "endolift-facial",
+        "endolaser-corporal",
+        "laser-co2-fraccionado",
+        "exion-btl",
+        "medicina-estetica-facial",
+        "bioestimulacion-colageno",
+        "btl-exilite-ipl",
+        "neuromodulador",
+        "acido-hialuronico",
+        "rinomodelacion"
+      ]
+    },
+    "goya": {
+      "facility_id": "54924",
+      "reg": "CS20073",
+      "admin_export_status": "captured",
+      "mutation_blocked": false,
+      "directions": {
+        "53333": {
+          "rows": 16,
+          "canonical_candidate": true,
+          "confirmed": false
+        },
+        "49168": {
+          "rows": 7,
+          "canonical_candidate": false,
+          "confirmed": false
+        }
+      },
+      "clinic_cloud_integrated_agendas": ["201546", "200338", "200346", "200337"],
+      "clinic_cloud_non_integrated_agendas": ["201736"],
+      "legacy_service_agendas": {
+        "200346": {
+          "user": "GOSIA",
+          "label": "ESTETICIEN",
+          "legacy_mappings": [
+            "HIFU",
+            "IPL",
+            "Maderoterapia",
+            "Micropigmentacion",
+            "Dermapen",
+            "despigmentante_facial"
+          ]
+        }
+      },
+      "public_responsible_person": "Javier Rivera Tejeda",
+      "legal_healthcare_responsible_verified": false,
+      "public_specialties": [
+        "Medicina estetica",
+        "Enfermeria",
+        "Geriatrica",
+        "Nutricion y dietetica"
+      ],
+      "public_equipment": [
+        "Endolaser/laserlipolisis",
+        "Endolift/LaseMAR 1500",
+        "DEKA SmartLipo"
+      ],
+      "public_service_count_observed": 13,
+      "services": [
+        "endolift-facial",
+        "endolaser-corporal",
+        "laser-co2-fraccionado",
+        "exion-btl",
+        "medicina-estetica-facial",
+        "bioestimulacion-colageno",
+        "btl-exilite-ipl",
+        "neuromodulador",
+        "acido-hialuronico",
+        "rinomodelacion"
+      ]
+    }
+  },
+  "forbidden_legacy_services": [
+    "HIFU",
+    "CoolSculpting",
+    "Dermapen",
+    "Visita Medicina Complementaria y terapias alternativas"
+  ],
+  "services_requiring_explicit_review": [
+    "Diatermia",
+    "Fototerapia",
+    "Maderoterapia",
+    "Micropigmentacion de cejas",
+    "despigmentante_facial",
+    "IPL_legacy"
+  ]
+}

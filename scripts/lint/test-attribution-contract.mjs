@@ -17,3 +17,5 @@ if (fs.existsSync(integrationPath)) {
 await import('./test-hubspot-v4-hidden-lineage.mjs');
 await import('./test-lead-captured-server-relay.mjs');
 await import('./test-google-attribution-relay-auth.mjs');
+await import('./test-supabase-relay-queue.mjs');
+await import('./test-ads-conversion-catalog.mjs');

@@ -6,7 +6,6 @@
 
 .nvx-footer {
   --nvx-footer-column-gap: var(--nvx-space-5);
-  --nvx-footer-link-gap: 12px;
   background: var(--nvx-surface-dark);
   color: var(--nvx-text-on-dark-72);
   padding: 0;

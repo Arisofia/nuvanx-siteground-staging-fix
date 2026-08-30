@@ -54,8 +54,6 @@
   --nvx-shadow-button-hover: 0 16px 32px rgba(26, 26, 26, 0.14);
   --nvx-shadow-focus-light: 0 0 0 2px var(--nvx-light);
   --nvx-shadow-focus-glow: 0 0 0 3px var(--nvx-accent-glow);
-  --nvx-shadow-button-on-dark: 0 4px 16px rgba(0, 0, 0, 0.3);
-  --nvx-shadow-button-on-dark-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
 
   /* Text shadows for dark overlays */
   --nvx-text-shadow-overlay-strong: 0 1px 6px rgba(0, 0, 0, 0.6);
@@ -151,7 +149,6 @@
   --nvx-icon-sm: 24px;
   --nvx-icon-md: 32px;
 
-
   --nvx-border-hairline: 1px;
   --nvx-border-focus: 2px;
   --nvx-radius-pill: 999px;
@@ -160,9 +157,7 @@
   --nvx-radius-lg: 8px;
   --nvx-radius-image: 0;
   --nvx-radius-legal-card-mobile: 16px;
-
-
-
+  --nvx-footer-link-gap: 12px;
 
   /* Home video stage: keep the upper frame open; scrim only under the bottom copy. */
   --nvx-home-hero-overlay: linear-gradient(
@@ -187,7 +182,6 @@
   /* ========== TIPOGRAFÍA OFICIAL ÚNICA ========== */
   --nvx-serif: "Playfair Display", "Playfair Display Fallback", Georgia, "Times New Roman", serif;
   --nvx-sans: "Manrope", "Manrope Fallback", "Helvetica Neue", Arial, sans-serif;
-  --nvx-font-heading: var(--nvx-serif);
 
   /* Escala tipográfica validada */
   --nvx-type-display: clamp(2.8rem, 5vw, 4.2rem);
@@ -227,6 +221,7 @@
   /* Shared editorial roles; do not substitute by numeric coincidence. */
   --nvx-lh-prose: 1.7;
   --nvx-lh-heading-editorial: 1.2;
+  --nvx-lh-body-sm: 1.5;
 
   --nvx-track-display: -0.02em;
   --nvx-track-h1: -0.02em;
@@ -268,14 +263,6 @@
   /* Effects */
   --nvx-blur-strong: 10px;
 
-  /* Alias para variables huérfanas (Audit 4.5) */
-  --nvx-color-soft: var(--nvx-surface-soft);
-  --nvx-edge: var(--nvx-color-line);
-  --nvx-fw-semibold: 600;
-  --nvx-lh-body-sm: 1.5;
-  --nvx-lh-heading: var(--nvx-lh-h2);
-  --nvx-type-body-sm: var(--nvx-type-small);
-
   /* Z-index system */
   --nvx-z-local-base: 1;
   --nvx-z-local-overlay: 2;
@@ -286,30 +273,4 @@
   --nvx-z-overlay: 2000;
   --nvx-z-modal: 3000;
   --nvx-z-a11y: 10000;
-}
-
-/* Clinical evidence note component */
-.nvx-clinical-evidence-note {
-  --_note-gap:        var(--nvx-space-6, 2rem);
-  --_note-border:     var(--nvx-color-border-subtle, #e2e2e2);
-  --_note-bg:         var(--nvx-color-surface-secondary, #f8f8f6);
-  --_note-text:       var(--nvx-type-body-sm);
-
-  margin-block-start:  var(--_note-gap);
-  padding:             var(--nvx-space-4, 1.25rem) var(--nvx-space-5, 1.5rem);
-  border-block-start:  1px solid var(--_note-border);
-  background:          var(--_note-bg);
-  border-radius:       var(--nvx-radius-sm, 4px);
-}
-
-.nvx-clinical-evidence-note__inner {
-  font:   var(--_note-text);
-  color:  var(--nvx-color-text-secondary);
-  max-width: 72ch;
-}
-
-@media (max-width: 768px) {
-  .nvx-clinical-evidence-note {
-    padding: var(--nvx-space-3, 1rem);
-  }
 }

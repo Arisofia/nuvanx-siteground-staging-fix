@@ -40,6 +40,7 @@ Prefer executable/data contracts over prose:
 - publication topology: `wp-content/themes/nuvanx-medical/inc/data/publication-manifest.json`
 - routes: `wp-content/themes/nuvanx-medical/inc/data/routes.json`
 - tariffs: `wp-content/themes/nuvanx-medical/inc/data/tariff-catalog.json`
+- ads click conversions: `wp-content/themes/nuvanx-medical/inc/data/ads-conversion-catalog.json`
 - design tokens: `wp-content/themes/nuvanx-medical/assets/css/nvx-tokens.css`
 - clinical content approval: `docs/approvals/endolaser-content-approval.json`
 - workflow behavior: the current canonical YAML and invoked scripts

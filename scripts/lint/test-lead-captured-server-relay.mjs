@@ -46,6 +46,8 @@ if (hmacAware) {
     'Signed capture must send only the HMAC signature, not the token');
   assert.match(relay, /401 === \$relay_status \|\| 503 === \$relay_status/,
     'Authentication/bootstrap failures must force exactly one re-bootstrap path');
+  assert.match(relay, /nvx_supabase_relay_queue_enqueue\(\s*'lead_captured'/,
+    'Retryable capture failures must enter the persistent outbox after the in-request bootstrap retry');
   const forcedBootstrap = relay.match(/nvx_lead_captured_bootstrap_runtime\( \$token, true \)/g) || [];
   assert.equal(forcedBootstrap.length, 1,
     'Bootstrap runtime must be invoked exactly once for stale Vault/bootstrap recovery');

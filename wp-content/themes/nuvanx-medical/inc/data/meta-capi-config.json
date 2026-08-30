@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "browser_pixel_owner": "none",
+  "server_side_capi_owner": "Nuvanx-System/Supabase",
+  "edge_function": {
+    "name": "web-events",
+    "version": "v13",
+    "status": "ACTIVE",
+    "supabase_project": "ssvvuuysgxyqvmovrlvk"
+  },
+  "gateway_status": {
+    "http_status": 402,
+    "violation": "exceed_db_size_quota",
+    "classification": "TRANSIENT_INFRASTRUCTURE",
+    "last_observed": "2026-08-28T18:27:12Z"
+  },
+  "guardrails": {
+    "no_redeploy_on_402": true,
+    "no_credential_rotation_on_402": true,
+    "no_data_purge_from_quota_label": true
+  },
+  "legacy_browser_owner": {
+    "mu_plugin": "nuvanx-meta-dedupe-event-id.php",
+    "status": "retired",
+    "pixel_id": "1497940655079106",
+    "remediation": "source-scoped-callback-retirement"
+  },
+  "production_no_consent_acceptance": {
+    "status": "PASS",
+    "sha": "d27d54db1dfd0b93cd65af6b8dcd2dbb2b705284",
+    "routes": ["/", "clinics-hub", "chamberi", "goya"],
+    "evidence": {
+      "fbp_cookies": 0,
+      "fbc_cookies": 0,
+      "meta_network_requests": 0
+    }
+  }
+}

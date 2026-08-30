@@ -39,6 +39,19 @@ on:
         required: true
         default: false
         type: boolean
+      run_performance:
+        description: Run the exact-SHA Staging Lighthouse performance gate after acceptance.
+        required: true
+        default: true
+        type: boolean
+      performance_gate_mode:
+        description: 'Gate mode: baseline (capture only, non-blocking) or enforce (blocking regression budgets).'
+        required: true
+        default: baseline
+        type: choice
+        options:
+          - baseline
+          - enforce
 
 permissions: {}
 
@@ -715,6 +728,34 @@ jobs:
           [[ "$valoracion_rc" -eq 0 ]] || exit "$valoracion_rc"
           echo 'STAGING_BLOCK_C=PASS'
 
+      - name: Run attribution lineage acceptance
+        if: ${{ steps.ssh_preflight.outputs.connected == 'true' && env.RUN_ACCEPTANCE == 'true' && env.STAGING_ACCEPTANCE_TRANSIENT != '1' }}
+        shell: bash
+        env:
+          BASE_URL: https://staging2.nuvanx.com
+          EXPECTED_HOST: staging2.nuvanx.com
+          SUPABASE_URL: https://ssvvuuysgxyqvmovrlvk.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -Eeuo pipefail
+          mkdir -p scripts/staging2/valoracion-artifacts
+
+          set +e
+          node scripts/staging2/attribution-lineage-e2e.mjs
+          lineage_rc=$?
+          set -e
+          if [[ "$lineage_rc" -eq 75 ]]; then
+            echo 'STAGING_ACCEPTANCE_TRANSIENT=1' >> "$GITHUB_ENV"
+            echo 'STAGING_ACCEPTANCE=RETRY_FRESH_RUNNER component=attribution-lineage exit=75'
+            exit 0
+          fi
+          if [[ "$lineage_rc" -eq 78 ]]; then
+            echo 'STAGING_ACCEPTANCE=FAIL_CONFIG component=attribution-lineage exit=78' >&2
+            exit 78
+          fi
+          [[ "$lineage_rc" -eq 0 ]] || exit "$lineage_rc"
+          echo 'STAGING_ATTRIBUTION_LINEAGE=PASS'
+
       - name: Verify production unchanged read-only
         if: ${{ steps.ssh_preflight.outputs.connected == 'true' && env.STAGING_ACCEPTANCE_TRANSIENT != '1' }}
         shell: bash
@@ -745,7 +786,7 @@ jobs:
             --arg head_sha "$GITHUB_SHA" \
             --arg head_branch "$GITHUB_REF_NAME" \
             --arg workflow_path '.github/workflows/staging.yml' \
-            '{schema:1,candidate_sha:$candidate_sha,run_id:$run_id,run_attempt:$run_attempt,event:$event,head_sha:$head_sha,head_branch:$head_branch,workflow_path:$workflow_path}' \
+            '{schema:1,candidate_sha:$candidate_sha,run_id:$run_id,run_attempt:$run_attempt,event:$event,head_sha:$head_sha,head_branch:$head_branch,workflow_path:$workflow_path,attribution_lineage:"pass"}' \
             > scripts/staging2/artifacts/acceptance-manifest.json
           jq -e --arg sha "$CANDIDATE_SHA" --arg run "$GITHUB_RUN_ID" '.schema == 1 and .candidate_sha == $sha and .run_id == $run' scripts/staging2/artifacts/acceptance-manifest.json >/dev/null
           echo "STAGING_ACCEPTANCE_MANIFEST=PASS sha=$CANDIDATE_SHA run_id=$GITHUB_RUN_ID"
@@ -921,6 +962,103 @@ jobs:
             exit "$SSH_TRANSPORT_EXIT_CODE"
           fi
           echo "STAGING_FRESH_RUNNER_GATE=PASS artifact=$artifact_name count=$count sha=$candidate"
+
+  performance:
+    name: Exact-SHA Staging Lighthouse performance gate
+    permissions:
+      contents: read
+    needs: deploy_staging
+    if: >-
+      always() &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      needs.deploy_staging.result == 'success' &&
+      (github.event_name == 'push' || inputs.run_performance)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CANDIDATE_SHA: ${{ github.event_name == 'workflow_dispatch' && inputs.sha != '' && inputs.sha || github.sha }}
+      GATE_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.performance_gate_mode || 'baseline' }}
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+
+      - name: Configure strict Staging2 SSH (read-only)
+        shell: bash
+        env:
+          HOST: ${{ secrets.STAGING2_SSH_HOST }}
+          PORT: ${{ secrets.STAGING2_SSH_PORT }}
+          USER: ${{ secrets.STAGING2_SSH_USER }}
+          KEY: ${{ secrets.STAGING2_SSH_PRIVATE_KEY }}
+          KH: ${{ secrets.STAGING2_SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          : "${HOST:?Missing STAGING2_SSH_HOST}"; : "${USER:?Missing STAGING2_SSH_USER}"; : "${KEY:?Missing STAGING2_SSH_PRIVATE_KEY}"; : "${KH:?Missing STAGING2_SSH_KNOWN_HOSTS}"
+          SSH_PORT="${PORT:-18765}"; [[ "$SSH_PORT" =~ ^[0-9]{1,5}$ ]]
+          mkdir -p "$HOME/.ssh"; chmod 700 "$HOME/.ssh"
+          printf '%s\n' "$KEY" > "$HOME/.ssh/staging_key"; chmod 600 "$HOME/.ssh/staging_key"
+          printf '%s\n' "$KH" > "$HOME/.ssh/known_hosts"; chmod 600 "$HOME/.ssh/known_hosts"
+          test -s "$HOME/.ssh/known_hosts" || { echo 'STAGING_KNOWN_HOSTS=EMPTY' >&2; exit 1; }
+          cat > "$HOME/.ssh/config" <<EOF
+          Host nvx-staging2
+            HostName $HOST
+            User $USER
+            Port $SSH_PORT
+            IdentityFile $HOME/.ssh/staging_key
+            IdentitiesOnly yes
+            BatchMode yes
+            StrictHostKeyChecking yes
+            UserKnownHostsFile $HOME/.ssh/known_hosts
+            ConnectTimeout 15
+            ConnectionAttempts 1
+            ServerAliveInterval 15
+            ServerAliveCountMax 2
+          EOF
+          chmod 600 "$HOME/.ssh/config"
+
+      - name: Verify Staging is exact candidate SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          candidate="$(printf '%s' "$CANDIDATE_SHA" | tr -d '[:space:]')"
+          [[ "$candidate" =~ ^[0-9a-f]{40}$ ]] || { echo 'Invalid candidate SHA.' >&2; exit 1; }
+          deployed="$(ssh nvx-staging2 "tr -d '\r\n' < '$STAGING_ROOT/wp-content/themes/nuvanx-medical/.nvx-deploy-sha' 2>/dev/null || true")"
+          [[ "$deployed" == "$candidate" ]] || { echo "STAGING_SHA_MISMATCH expected=$candidate deployed=$deployed" >&2; exit 1; }
+          echo "STAGING_SHA_VERIFIED=PASS sha=$candidate"
+
+      - name: Install Lighthouse
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm init -y >/dev/null 2>&1
+          npm install --ignore-scripts --no-audit --no-fund lighthouse@12.8.2 >/dev/null 2>&1
+          ./node_modules/.bin/lighthouse --version
+
+      - name: Run exact-SHA performance gate
+        shell: bash
+        env:
+          BASE_URL: https://staging2.nuvanx.com
+          EXPECTED_SHA: ${{ env.CANDIDATE_SHA }}
+          PERFORMANCE_GATE_MODE: ${{ env.GATE_MODE }}
+        run: |
+          set -euo pipefail
+          node scripts/staging2/lighthouse-performance-gate.mjs
+
+      - name: Upload performance evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: staging2-performance-${{ env.CANDIDATE_SHA }}
+          path: scripts/staging2/performance-artifacts/
+          retention-days: 14
+          if-no-files-found: error
 
   pr_preview:
     name: Labeled same-repo PR preview on Staging2

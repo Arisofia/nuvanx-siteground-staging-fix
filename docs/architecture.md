@@ -56,8 +56,9 @@ Canonical principles:
 External services are integrated through explicit contracts:
 
 - HubSpot form/attribution ownership is implemented in theme integration modules and verified by static/runtime tests.
+- Theme-owned Google Ads click conversion IDs live in `inc/data/ads-conversion-catalog.json`. Form conversions remain HubSpot → GA4 `generate_lead` → Ads import.
 - Google/Search tooling is isolated under `scripts/seo/`; Production owns Search Console post-release execution where applicable.
-- Meta browser ownership is intentionally retired in the theme; server-side/event ownership is governed separately.
+- Meta browser ownership is intentionally retired in the theme. Server-side Meta CAPI, click attribution ledgers and Ads reporting are owned by Nuvanx-System/Supabase.
 - Consent behavior must preserve the Complianz/Google consent contracts verified by the repository tests.
 
 No extra GitHub workflow should be created for an integration-specific task.

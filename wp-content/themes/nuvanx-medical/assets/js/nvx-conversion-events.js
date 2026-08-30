@@ -497,11 +497,10 @@
 		if (!/^[0-9a-f]{64}$/.test(emailHash) || !hasMarketingConsent()) return null;
 		clickValues = collectClickValues();
 
-		var nvxLeadId = getNvxLeadId();
 		var testRunId = String((attributionConfig.qa && attributionConfig.qa.test_run_id) || '').trim();
 		return {
-			submission_id: await createSubmissionIdFromLead(nvxLeadId) || null,
-			nvx_lead_id: nvxLeadId || null,
+			submission_id: await createSubmissionIdFromLead(getNvxLeadId()) || null,
+			nvx_lead_id: getNvxLeadId() || null,
 			email_hash: emailHash,
 			gclid: clickValues.gclid || null,
 			gbraid: clickValues.gbraid || null,
@@ -668,11 +667,10 @@
 		var email = normalizeEmail(emailInput.value);
 		if (!email || email.length > 320 || email.indexOf('@') <= 0) return;
 
-		var pendingLeadId = getNvxLeadId();
 		var pending = {
 			root: root,
-			submissionId: await createSubmissionIdFromLead(pendingLeadId),
-			nvxLeadId: pendingLeadId,
+			submissionId: await createSubmissionIdFromLead(getNvxLeadId()),
+			nvxLeadId: getNvxLeadId(),
 			emailHash: '',
 			retryCount: 0,
 			successSeen: false,

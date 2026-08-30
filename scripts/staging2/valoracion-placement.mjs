@@ -224,10 +224,9 @@ const stages = [
 ];
 
 // P0 staging acceptance proves public delivery, render integrity, form placement
-// and accessibility. Attribution lineage is a separate integration contract and
-// must not roll back a render-valid release; run attribution-lineage-e2e.mjs in
-// its dedicated attribution phase instead.
-console.log('STAGING_ACCEPTANCE_SCOPE=P0 attribution_lineage=deferred');
+// and accessibility. Attribution lineage runs in the dedicated Staging phase
+// after this suite and before acceptance-manifest.json is written.
+console.log('STAGING_ACCEPTANCE_SCOPE=P0 attribution_lineage=separate_phase');
 
 // Prove the real first-visit mobile state before the existing a11y gate accepts
 // consent. Every route/action uses a fresh browser context with no persisted

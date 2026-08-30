@@ -386,7 +386,7 @@
 }
 
 .nvx-solutions-page a:focus-visible {
-  outline: var(--nvx-border-focus, 2px) solid currentColor;
+  outline: var(--nvx-border-focus) solid currentColor;
   outline-offset: var(--nvx-space-1);
 }
 

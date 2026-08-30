@@ -315,14 +315,6 @@
   padding-bottom: var(--nvx-space-10);
 }
 
-.nvx-hp {
-  margin: var(--nvx-visually-hidden-offset);
-}
-
-.nvx-clinical-factsheet__list dt {
-  margin-bottom: var(--nvx-factsheet-term-gap);
-}
-
 @media (min-width: 768px) {
   .nvx-footer {
     padding-bottom: 0;

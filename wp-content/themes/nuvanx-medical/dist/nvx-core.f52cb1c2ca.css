@@ -83,8 +83,6 @@
   --nvx-shadow-button-hover: 0 16px 32px rgba(26, 26, 26, 0.14);
   --nvx-shadow-focus-light: 0 0 0 2px var(--nvx-light);
   --nvx-shadow-focus-glow: 0 0 0 3px var(--nvx-accent-glow);
-  --nvx-shadow-button-on-dark: 0 4px 16px rgba(0, 0, 0, 0.3);
-  --nvx-shadow-button-on-dark-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
 
   /* Text shadows for dark overlays */
   --nvx-text-shadow-overlay-strong: 0 1px 6px rgba(0, 0, 0, 0.6);
@@ -180,7 +178,6 @@
   --nvx-icon-sm: 24px;
   --nvx-icon-md: 32px;
 
-
   --nvx-border-hairline: 1px;
   --nvx-border-focus: 2px;
   --nvx-radius-pill: 999px;
@@ -189,9 +186,7 @@
   --nvx-radius-lg: 8px;
   --nvx-radius-image: 0;
   --nvx-radius-legal-card-mobile: 16px;
-
-
-
+  --nvx-footer-link-gap: 12px;
 
   /* Home video stage: keep the upper frame open; scrim only under the bottom copy. */
   --nvx-home-hero-overlay: linear-gradient(
@@ -216,7 +211,6 @@
   /* ========== TIPOGRAFÍA OFICIAL ÚNICA ========== */
   --nvx-serif: "Playfair Display", "Playfair Display Fallback", Georgia, "Times New Roman", serif;
   --nvx-sans: "Manrope", "Manrope Fallback", "Helvetica Neue", Arial, sans-serif;
-  --nvx-font-heading: var(--nvx-serif);
 
   /* Escala tipográfica validada */
   --nvx-type-display: clamp(2.8rem, 5vw, 4.2rem);
@@ -256,6 +250,7 @@
   /* Shared editorial roles; do not substitute by numeric coincidence. */
   --nvx-lh-prose: 1.7;
   --nvx-lh-heading-editorial: 1.2;
+  --nvx-lh-body-sm: 1.5;
 
   --nvx-track-display: -0.02em;
   --nvx-track-h1: -0.02em;
@@ -297,14 +292,6 @@
   /* Effects */
   --nvx-blur-strong: 10px;
 
-  /* Alias para variables huérfanas (Audit 4.5) */
-  --nvx-color-soft: var(--nvx-surface-soft);
-  --nvx-edge: var(--nvx-color-line);
-  --nvx-fw-semibold: 600;
-  --nvx-lh-body-sm: 1.5;
-  --nvx-lh-heading: var(--nvx-lh-h2);
-  --nvx-type-body-sm: var(--nvx-type-small);
-
   /* Z-index system */
   --nvx-z-local-base: 1;
   --nvx-z-local-overlay: 2;
@@ -315,32 +302,6 @@
   --nvx-z-overlay: 2000;
   --nvx-z-modal: 3000;
   --nvx-z-a11y: 10000;
-}
-
-/* Clinical evidence note component */
-.nvx-clinical-evidence-note {
-  --_note-gap:        var(--nvx-space-6, 2rem);
-  --_note-border:     var(--nvx-color-border-subtle, #e2e2e2);
-  --_note-bg:         var(--nvx-color-surface-secondary, #f8f8f6);
-  --_note-text:       var(--nvx-type-body-sm);
-
-  margin-block-start:  var(--_note-gap);
-  padding:             var(--nvx-space-4, 1.25rem) var(--nvx-space-5, 1.5rem);
-  border-block-start:  1px solid var(--_note-border);
-  background:          var(--_note-bg);
-  border-radius:       var(--nvx-radius-sm, 4px);
-}
-
-.nvx-clinical-evidence-note__inner {
-  font:   var(--_note-text);
-  color:  var(--nvx-color-text-secondary);
-  max-width: 72ch;
-}
-
-@media (max-width: 768px) {
-  .nvx-clinical-evidence-note {
-    padding: var(--nvx-space-3, 1rem);
-  }
 }
 
 /* nvx-base.css */
@@ -2490,30 +2451,30 @@ body.nvx-valoracion-modal-open{
 /* Clinical Factsheet (SSOT Matrix) */
 .nvx-clinical-factsheet {
   background: var(--nvx-surface-soft);
-  border: 1px solid var(--nvx-color-line);
-  border-radius: var(--nvx-radius-lg, 8px);
-  padding: var(--nvx-space-4, 24px);
-  margin-block: var(--nvx-space-5, 32px);
+  border: var(--nvx-border-hairline) solid var(--nvx-color-line);
+  border-radius: var(--nvx-radius-lg);
+  padding: var(--nvx-space-4);
+  margin-block: var(--nvx-space-5);
 }
 
 .nvx-clinical-factsheet__title {
-  font-family: var(--nvx-font-heading);
+  font-family: var(--nvx-serif);
   font-size: var(--nvx-type-h5);
   font-weight: var(--nvx-fw-medium);
-  margin-bottom: var(--nvx-space-3, 16px);
+  margin-bottom: var(--nvx-space-3);
   color: var(--nvx-ink);
 }
 
 .nvx-clinical-factsheet__list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--nvx-space-2, 12px);
+  gap: var(--nvx-space-2);
 }
 
 @media (min-width: 640px) {
   .nvx-clinical-factsheet__list {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--nvx-space-3, 16px);
+    gap: var(--nvx-space-3);
   }
 }
 
@@ -2622,6 +2583,27 @@ body.nvx-valoracion-modal-open{
 
   .nvx-bridal-studio__plate--papada {
     margin-bottom: var(--nvx-space-6);
+  }
+}
+
+.nvx-clinical-evidence-note {
+  margin-block-start: var(--nvx-space-6);
+  padding: var(--nvx-space-4) var(--nvx-space-5);
+  border-block-start: var(--nvx-border-hairline) solid var(--nvx-color-line);
+  background: var(--nvx-surface-base);
+  border-radius: var(--nvx-radius-card);
+}
+
+.nvx-clinical-evidence-note__inner {
+  font-size: var(--nvx-type-small);
+  line-height: var(--nvx-lh-body-sm);
+  color: var(--nvx-text-muted);
+  max-width: var(--nvx-measure);
+}
+
+@media (max-width: 768px) {
+  .nvx-clinical-evidence-note {
+    padding: var(--nvx-space-3);
   }
 }
 
@@ -3511,7 +3493,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   min-width: 0;
   border-collapse: collapse;
   font-family: var(--nvx-sans);
-  font-size: var(--nvx-type-body-sm);
+  font-size: var(--nvx-type-small);
   line-height: var(--nvx-lh-body-sm);
   color: var(--nvx-ink);
 }
@@ -3525,7 +3507,7 @@ body:not(.home) .nvx-page-hero__copy h1,
 
 .nvx-endolift-compare-table thead th {
   background: var(--nvx-surface-soft);
-  font-weight: var(--nvx-fw-semibold);
+  font-weight: var(--nvx-fw-medium);
   text-align: left;
   letter-spacing: var(--nvx-track-wide);
   color: var(--nvx-ink);
@@ -4182,7 +4164,7 @@ body:not(.home) .nvx-page-hero__copy h1,
   font-family: var(--nvx-serif);
   font-size: var(--nvx-type-h2);
   font-weight: var(--nvx-fw-regular);
-  line-height: var(--nvx-lh-heading);
+  line-height: var(--nvx-lh-h2);
   color: var(--nvx-ink);
 }
 
@@ -4309,6 +4291,14 @@ body:not(.home) .nvx-page-hero__copy h1,
   height: var(--nvx-logo-height-mobile);
   max-width: var(--nvx-logo-width-mobile);
   object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .nvx-logo__img,
+  .custom-logo {
+    height: var(--nvx-logo-height);
+    max-width: var(--nvx-logo-width);
+  }
 }
 
 .nvx-logo:hover {
@@ -4680,7 +4670,6 @@ body:not(.home) .nvx-page-hero__copy h1,
 
 .nvx-footer {
   --nvx-footer-column-gap: var(--nvx-space-5);
-  --nvx-footer-link-gap: 12px;
   background: var(--nvx-surface-dark);
   color: var(--nvx-text-on-dark-72);
   padding: 0;
@@ -5331,14 +5320,6 @@ body:not(.home) .nvx-page-hero__copy h1,
  * fail-closed in the adoption auditor. */
 .nvx-footer {
   padding-bottom: var(--nvx-space-10);
-}
-
-.nvx-hp {
-  margin: var(--nvx-visually-hidden-offset);
-}
-
-.nvx-clinical-factsheet__list dt {
-  margin-bottom: var(--nvx-factsheet-term-gap);
 }
 
 @media (min-width: 768px) {
